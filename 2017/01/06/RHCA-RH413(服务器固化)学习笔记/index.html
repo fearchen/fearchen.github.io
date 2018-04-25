@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RH413," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="413-1-operating system update:  CVES and Red Hat Errata a. Red Hat Security Advisory(RHSA) b. Red Hat Bug Fix Advisory(RHBA) c. Red Hat Enhancement Advisory(RHEA) Check update informaton a. yum update">
+<meta name="keywords" content="RH413">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RHCA-RH413(服务器固化)学习笔记">
+<meta property="og:url" content="http://fearchen.github.io/2017/01/06/RHCA-RH413(服务器固化)学习笔记/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="413-1-operating system update:  CVES and Red Hat Errata a. Red Hat Security Advisory(RHSA) b. Red Hat Bug Fix Advisory(RHBA) c. Red Hat Enhancement Advisory(RHEA) Check update informaton a. yum update">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-01-06T08:37:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RHCA-RH413(服务器固化)学习笔记">
+<meta name="twitter:description" content="413-1-operating system update:  CVES and Red Hat Errata a. Red Hat Security Advisory(RHSA) b. Red Hat Bug Fix Advisory(RHBA) c. Red Hat Enhancement Advisory(RHEA) Check update informaton a. yum update">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2017/01/06/RHCA-RH413(服务器固化)学习笔记/"/>
+
+
+
+
+
+  <title>RHCA-RH413(服务器固化)学习笔记 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/06/RHCA-RH413(服务器固化)学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RHCA-RH413(服务器固化)学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-06T16:30:12+08:00">
+                2017-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RHCA/" itemprop="url" rel="index">
+                    <span itemprop="name">RHCA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>413-1-operating system update:</p>
+<ol>
+<li>CVES and Red Hat Errata<br> a. Red Hat Security Advisory(RHSA)<br> b. Red Hat Bug Fix Advisory(RHBA)<br> c. Red Hat Enhancement Advisory(RHEA)</li>
+<li>Check update informaton<br> a. yum updateinfo<br> b. yum updateinfo –security<br> c. yum updateinfo –security list</li>
+<li>Apply certain type of update<br> a. yum update –security<br> b. yum update –bugfix </li>
+<li>BugTraq</li>
+<li>Package Integrity Check<br> a. rpm –import gpa-key-file<br> b. rpm K rpm-file<br> c. rpm -qa | grep gpg-pubkey<br> d. rpm -e gpg-pubkey-keyed<br> e. gpgcheck=1 in /etc/yum.conf0<br> f. gpgkey=/path/to/file<br> g. rpm -qpl rpm-file<br> h. rpm -qp –scripts rpm-file<br> i. rpm -qp –tiggers rpm-file<br>413-2-ecryption:</li>
+<li>Linux Unified Key Setup(LUKS)<br> a. cryptsetup luksFormat /dev/vg/lv<br> b. cryptsetup luksOpen /dev/vg/lv name<br> c. mkfs.ext4 /dev/mapper/name<br> d. mkdir /secure<br> e. mount /dev/mapper/name /secure<br> f. umount /secure<br> g. cryptserup liksClose name </li>
+<li>Persistently Mount Encrypted Volume<br> a. dd if=/dev/urandom of=/path/to/password/file bs=4096 count=1<br> b. chmod 600 /path/to/password/file<br> c. cryptsetup luksAddKey /dev/vg/lv /path/to/password/file<br> d. /etc/crypttab<pre><code>i. name  /dev/vg/lv  /path/to/password/file
+</code></pre> e. /etc/fstab<pre><code>i. /dev/mapper/name  /secure  ext4  defauls 0 0
+</code></pre></li>
+<li>File System Defauls Mount Options<br> a. dev,exec,suid,rw…<br> b. nodev<br> c. noexec<br> d. nosuid<br> e. ro</li>
+<li>Manae Superblock Mount Options<br> a. tune2fs -l /dev/vda1<br> b. tune2fs -o ^acl /dev/vda1<br> c. tune2fs -o acl /dev/vda1</li>
+<li>File System Attributes<br> a. chattr +a file(append only只读)<br> b. chattr +i file(Immutable免疫)<br> c. chattr +j file(Journal)<br> d. chattr +S file(Synchronous立即同步磁盘)<br> e. lsattr file</li>
+<li>Review Specia Permissions<br> a. SUID on executables<br> b. SGID on executables<br> c. SGID on directories<br> d. Sticky Bit on directories(or files)</li>
+<li>Search special files<br> a. find /bin -type f -perm -4000(SUID文件)<br> b. find /usr/bin -type f -perm -2000（SGID文件）<br> c. find /var -perm -1000<br> d. find /usr/bin -perm /7000（所有带特殊位文件</li>
+<li>Default File Permissions<br> a. umask<br> b. Default user mask is 002<pre><code>i. file will be:777-002-111=664
+ii. directory will be:777-002=775
+</code></pre> c. Default root mask is 022<pre><code>i. file will be:777-002-111=644
+ii. directory will be:777-022=755
+</code></pre> d. Global change<pre><code>i. /etc/profile
+ii. /etc/bashrc
+</code></pre> e. Individual change<pre><code>i. ~/.bash_profile
+ii. ~/.bashrc
+</code></pre></li>
+<li>ACLs<br> a. setfacl -m … dir<br> b. setfacl -m d:… dir<br> c. serfacl -x … dir </li>
+<li>Intrusion Detection<br>a. AIDE<pre><code>i. yum install aide
+ii. vim /etc/aide.conf
+iii. aide --init;
+iv. mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+v. aide --check
+</code></pre>413-3-password policy</li>
+<li>chage passwd<br> a. chage -m 3 -M 90 -W 7 -l 356 username<br> b. chage -l username<br> c. chage -d 0 username<br> d. defaults passwd defined in /etc/login.defs<pre><code>i. PASS_MAX_DAYS 60
+ii. PASS_MIN_DAYS 3
+</code></pre></li>
+<li><p>PAM<br> a. ls /lib64/security/<br> b. ls /etc/pam.d/</p>
+<pre><code>i. more system-auth
+ii. more passwd-auth
+</code></pre><p> c. pam_cracklib.so</p>
+<pre><code>i. minlen
+ii. lcredit,ucredit,dcredit,ocredit
+iii. minclass
+iv. vi /etc/pam.d/system-auth
+v. vi /etc/pam.d/passwd-auth
+</code></pre><p> d. pam_tally2.so</p>
+<pre><code>i. pam_tally2
+ii. pam_tally2 --reset -u username
+</code></pre></li>
+<li><p>/etc/security/limits.conf<br> a. more /etc/security/limits.d/90-nproc.conf<br> b. ulimit -a<br>413-4-ipa server</p>
+</li>
+<li>IPA project(Identity,Policy,Audit)<br> a. LDAP<br> b. MIT Kerberos KDC<br> c. Dogtag project<br> d. NTP service<br> e. DNS service</li>
+<li>Install IPA Server<br> a. chkconfig NetworkManager off<br> b. service NEtworkManager stop<br> c. config static ipaddr<br> d. chkconfig network on<br> e. service network restart<br> f. yum install ipa-server<br> g. ipa-server-install –help<br> h. ipa-sever-install –hostname=server1.example.com -n example.com -r EXAMPLE.COM -p redhat123 -a redhat123 -idstart=5000 -idmax=7000 -N -U<br> i. service sshd restart<br> j. kinit admin<br> k. klist<br> l. firefox<br> m.  <a href="http://server.example.com" target="_blank" rel="noopener">http://server.example.com</a><br> n. configure browser for SSO</li>
+<li>Install IPA Client<br> a. yum install ipa-client<br> b. ipa-client-install –domian=example.com –server=server.example.com –realm=EXAMPLE.COM -p admin -w redhat123 –mkhomedir -N -U<br> c. kinit username<br> d. ssh username@server1</li>
+<li>Uninstall IPA Client<br> a. ipa-client-install –uninstall<br> b. rm -rf /etc/ipa/ca.crt<br> c. reboot<br>413-5(1)-log srver and client:</li>
+<li>vi /etc/rsyslog.conf</li>
+<li>vi /etc/rsyslog.d/filter.conf<br> a. :fromhost, isequal, “desktop1.example.com” /var/log/desktop1.log<br> b. :fromhost, isequal, “desktop1.example.com” ~<br>413-5(2)-log srver and client:</li>
+<li>vi /etc/rsyslog.d/ssl.conf<br>413-6-audit file access:</li>
+<li>auditd</li>
+<li>/vat/log/audit/audit.log</li>
+<li>ausearch -i -a 28708</li>
+<li>auditctl</li>
+<li>vi /etc/audit/audit.rules</li>
+<li>/etc/init.d/auditd restart</li>
+<li>pam_tty_audit.so</li>
+<li>vi /etc/pam.d/system-auth<br> a. session required pam_tty_audit.so enable=root</li>
+<li>vi /etc/pam.d/passwd-auth<br> a. session required pam_tty_audit.so enable=root</li>
+<li>/etc/init.d/auditd restart</li>
+<li>aureport –tty<br>413-7- firewall:</li>
+<li>iptables<br> a. setup<br> b. iptables -L -v -n</li>
+<li>/etc/sysconfig/iptables-config<br> a. IPTABLES_MODULES=”nf_conntrack_ftp”<br> b. /etc/init.d/iptables restart</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RH413/" rel="tag"># RH413</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/03/Tomcat安全配置参考/" rel="next" title="Tomcat安全配置参考">
+                <i class="fa fa-chevron-left"></i> Tomcat安全配置参考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/25/Centos7.2部署kubernetes/" rel="prev" title="Centos7.2部署kubernetes">
+                Centos7.2部署kubernetes <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

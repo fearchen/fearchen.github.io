@@ -1,0 +1,2390 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rm -rf /*" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="=======================  OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比   参考链接：http://t.cn/RlPRzS5     ./media/image1.png     启动OpenShift Origin准备工作 虚拟机配置如下：     CPU 内存 磁盘 系统 安装模式     1核 2GB 20GB Ce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenShift架构了解与实践">
+<meta property="og:url" content="http://fearchen.github.io/2018/04/25/OpenShift-架构了解与实践/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="=======================  OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比   参考链接：http://t.cn/RlPRzS5     ./media/image1.png     启动OpenShift Origin准备工作 虚拟机配置如下：     CPU 内存 磁盘 系统 安装模式     1核 2GB 20GB Ce">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-25T02:04:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenShift架构了解与实践">
+<meta name="twitter:description" content="=======================  OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比   参考链接：http://t.cn/RlPRzS5     ./media/image1.png     启动OpenShift Origin准备工作 虚拟机配置如下：     CPU 内存 磁盘 系统 安装模式     1核 2GB 20GB Ce">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2018/04/25/OpenShift-架构了解与实践/"/>
+
+
+
+
+
+  <title>OpenShift架构了解与实践 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-架构了解与实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenShift架构了解与实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>=======================</p>
+<h1 id="OpenShift-Origin-与OPENSHIFT-CONTAINER-PLATFORM对比"><a href="#OpenShift-Origin-与OPENSHIFT-CONTAINER-PLATFORM对比" class="headerlink" title=" OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比"></a> OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比</h1><table>
+<thead>
+<tr>
+<th>参考链接：<a href="http://t.cn/RlPRzS5" target="_blank" rel="noopener">http://t.cn/RlPRzS5</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image1.png">./media/image1.png</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="启动OpenShift-Origin"><a href="#启动OpenShift-Origin" class="headerlink" title=" 启动OpenShift Origin"></a> 启动OpenShift Origin</h1><h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ul>
+<li>虚拟机配置如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>CPU</th>
+<th>内存</th>
+<th>磁盘</th>
+<th>系统</th>
+<th>安装模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1核</td>
+<td>2GB</td>
+<td>20GB</td>
+<td>Centos7.2</td>
+<td>Minimal</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>操作系统配置：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#配置固定IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#试验环境关闭防火墙</td>
+</tr>
+<tr>
+<td>#配置主机名</td>
+</tr>
+<tr>
+<td>hostnamectl set-hostname master.example.com</td>
+</tr>
+<tr>
+<td>#修改hosts</td>
+</tr>
+<tr>
+<td>Vi /etc/hosts</td>
+</tr>
+<tr>
+<td>#添加主机名记录</td>
+</tr>
+<tr>
+<td>172.16.142.132 master.example.com</td>
+</tr>
+</tbody>
+</table>
+<h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><table>
+<thead>
+<tr>
+<th>#Yum安装</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yum install docker -y</td>
+</tr>
+<tr>
+<td>#配置启动服务</td>
+</tr>
+<tr>
+<td>systemctl enable docker &amp;&amp; systemctl start docker</td>
+</tr>
+<tr>
+<td>#修改docker镜像站</td>
+</tr>
+<tr>
+<td>vim /etc/sysconfig/docker</td>
+</tr>
+<tr>
+<td>OPTIONS=’–selinux-enabled –log-driver=journald –signature-verification=false –registry-mirror=<a href="https://docker.mirrors.ustc.edu.cn’" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn’</a></td>
+</tr>
+<tr>
+<td>systemctl restart docker</td>
+</tr>
+</tbody>
+</table>
+<h2 id="下载OpenShift-Origin安装包"><a href="#下载OpenShift-Origin安装包" class="headerlink" title="下载OpenShift Origin安装包"></a>下载OpenShift Origin安装包</h2><table>
+<thead>
+<tr>
+<th>#书中使用版本为1.3.0，目前最新为3.6，可在github release中下载，URL： <a href="https://github.com/OpenShift/origin/releases" target="_blank" rel="noopener">https://github.com/OpenShift/origin/releases</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cd /opt</td>
+</tr>
+<tr>
+<td>wget <a href="https://github.com/OpenShift/origin/releases/download/v1.3.0/OpenShift-origin-server-v1.3.0-3ab7af3d097b57f933eccef684a714f2368804e7-linux-64bit.tar.gz" target="_blank" rel="noopener">https://github.com/OpenShift/origin/releases/download/v1.3.0/OpenShift-origin-server-v1.3.0-3ab7af3d097b57f933eccef684a714f2368804e7-linux-64bit.tar.gz</a></td>
+</tr>
+<tr>
+<td>#解压</td>
+</tr>
+<tr>
+<td>tar zxvf <a href="https://github.com/OpenShift/origin/releases/download/v1.3.0/OpenShift-origin-server-v1.3.0-3ab7af3d097b57f933eccef684a714f2368804e7-linux-64bit.tar.gz" target="_blank" rel="noopener">https://github.com/OpenShift/origin/releases/download/v1.3.0/OpenShift-origin-server-v1.3.0-3ab7af3d097b57f933eccef684a714f2368804e7-linux-64bit.tar.gz</a></td>
+</tr>
+<tr>
+<td>#建软连接</td>
+</tr>
+<tr>
+<td>ln -s OpenShift-origin-server-v1.3.0-3ab7af3d097b57f933eccef684a714f2368804e7-linux-64bit /opt/OpenShift</td>
+</tr>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+<tr>
+<td>#添加环境变量</td>
+</tr>
+<tr>
+<td>vim /etc/profile PATH=\$PATH:/opt/OpenShift/</td>
+</tr>
+<tr>
+<td>source /etc/profile</td>
+</tr>
+</tbody>
+</table>
+<h2 id="验证启动"><a href="#验证启动" class="headerlink" title="验证启动 "></a>验证启动 </h2><table>
+<thead>
+<tr>
+<th>#查看版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>openshift version</td>
+</tr>
+<tr>
+<td><a href="./media/image3.png">./media/image3.png</a></td>
+</tr>
+<tr>
+<td>#启动</td>
+</tr>
+<tr>
+<td>cd /opt/openshift</td>
+</tr>
+<tr>
+<td>openshift start &amp;</td>
+</tr>
+<tr>
+<td>#注： #“OpenShift start”命令启动是为了可以在控制台看到日志输出； #正式环境官方推荐使用“oc cluster up”方式启动。</td>
+</tr>
+<tr>
+<td>#当日志停止输出表示启动完成</td>
+</tr>
+<tr>
+<td>#浏览器访问<a href="https://master.example.com:8443" target="_blank" rel="noopener">https://master.example.com:8443</a></td>
+</tr>
+<tr>
+<td><a href="./media/image4.png">./media/image4.png</a></td>
+</tr>
+<tr>
+<td>默认账号密码dev:dev</td>
+</tr>
+</tbody>
+</table>
+<h1 id="简单使用OpenShift"><a href="#简单使用OpenShift" class="headerlink" title=" 简单使用OpenShift"></a> 简单使用OpenShift</h1><h2 id="运行容器应用"><a href="#运行容器应用" class="headerlink" title="运行容器应用"></a>运行容器应用</h2><ul>
+<li>创建项目</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#登陆后的初始页，点击“New Project”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image5.png">./media/image5.png</a></td>
+</tr>
+<tr>
+<td>#填入相应信息</td>
+</tr>
+<tr>
+<td><a href="./media/image6.png">./media/image6.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>部署Docker镜像</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#通过“Deploy Image”部署</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image7.png">./media/image7.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image8.png">./media/image8.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image9.png">./media/image9.png</a></td>
+</tr>
+<tr>
+<td>#启动成功</td>
+</tr>
+<tr>
+<td><a href="./media/image10.png">./media/image10.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>访问容器应用</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#确认应用IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image11.png">./media/image11.png</a></td>
+</tr>
+<tr>
+<td>#终端访问测试</td>
+</tr>
+<tr>
+<td>curl 172.30.248.254:8080</td>
+</tr>
+<tr>
+<td><a href="./media/image12.png">./media/image12.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="使用命令行工具"><a href="#使用命令行工具" class="headerlink" title="使用命令行工具"></a>使用命令行工具</h2><table>
+<thead>
+<tr>
+<th>#命令行登陆</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc login -u dev <a href="https://172.16.142.132:8443" target="_blank" rel="noopener">https://172.16.142.132:8443</a></td>
+</tr>
+<tr>
+<td><a href="./media/image13.png">./media/image13.png</a></td>
+</tr>
+<tr>
+<td>#创建project</td>
+</tr>
+<tr>
+<td>oc new-project hello-world-oc</td>
+</tr>
+<tr>
+<td><a href="./media/image14.png">./media/image14.png</a></td>
+</tr>
+<tr>
+<td>#部署应用</td>
+</tr>
+<tr>
+<td>oc new-app OpenShift/hello-world</td>
+</tr>
+<tr>
+<td>#查看状态</td>
+</tr>
+<tr>
+<td>oc get pod</td>
+</tr>
+</tbody>
+</table>
+<h2 id="集群管理员登陆"><a href="#集群管理员登陆" class="headerlink" title="集群管理员登陆"></a>集群管理员登陆</h2><ul>
+<li>配置证书</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>默认集群管理员是system:admin，没有密码，只能通过证书登陆</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mkdir -p ~/.kube</td>
+</tr>
+<tr>
+<td>cp /opt/OpenShift/OpenShift.local.config/master/admin.kubeconfig ~/.kube/config</td>
+</tr>
+<tr>
+<td>#重复覆盖</td>
+</tr>
+<tr>
+<td><a href="./media/image15.png">./media/image15.png</a></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>命令登陆</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>oc login -u system:admin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image16.png">./media/image16.png</a>  oc whoami</td>
+</tr>
+<tr>
+<td><a href="./media/image17.png">./media/image17.png</a></td>
+</tr>
+<tr>
+<td>oc get node</td>
+</tr>
+<tr>
+<td><a href="./media/image18.png">./media/image18.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="添加Router"><a href="#添加Router" class="headerlink" title="添加Router"></a>添加Router</h2><table>
+<thead>
+<tr>
+<th>#Router是OpenShift集群中的一个重要组件，它是外部访问集群内容器应用的入口。 #集群外部的请求都会到达Router,由Router分发到具体的容器中。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td># Router组件需要读取集群的信息，所以它需要关联一个系统账号Service Account，并为这个账号授权。</td>
+</tr>
+<tr>
+<td>oc login –u system:admin</td>
+</tr>
+<tr>
+<td>oc project default</td>
+</tr>
+<tr>
+<td><a href="./media/image19.png">./media/image19.png</a></td>
+</tr>
+<tr>
+<td>#配置权限策略</td>
+</tr>
+<tr>
+<td>oadm policy add-scc-to-user privileged system:serviceaccount:default:router</td>
+</tr>
+<tr>
+<td>#创建Router #在实际生产时，为了达到高可用的效果，可以通过设置–replicas创建多个Router实例防止单点失效。</td>
+</tr>
+<tr>
+<td>oadm router router –replicas=1 –service-account=router</td>
+</tr>
+<tr>
+<td><a href="./media/image20.png">./media/image20.png</a></td>
+</tr>
+<tr>
+<td>#查看Router状态</td>
+</tr>
+<tr>
+<td>oc get pod –n default</td>
+</tr>
+<tr>
+<td>ss -ltn\</td>
+<td>egrep -w ‘80\</td>
+<td>443’</td>
+</tr>
+<tr>
+<td><a href="./media/image21.png">./media/image21.png</a></td>
+</tr>
+<tr>
+<td>#Router就是一个运行在容器里的Haproxy #用户可以创建route对象，称为route规则，一个route规则会与一个service相关联，并且绑定一个域名。 #route规则会被Router加载。当用户通过指定的域名访问应用时，域名会被解析并指向Router所在的计算节点上。Router获取这个请求后，会根据route规则定义转发给与这个域名对应的service后端相关联的Pod容器实例。</td>
+</tr>
+<tr>
+<td>#Router负责将集群外的请求转发到集群的容器。</td>
+</tr>
+<tr>
+<td>#Service负责将集群内的请求转发到指定的容器。</td>
+</tr>
+<tr>
+<td>#一个对外，一个对内。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="添加Registry"><a href="#添加Registry" class="headerlink" title="添加Registry"></a>添加Registry</h2><ul>
+<li>这里的Registry是部署集群内部的Docker镜像仓库。从功能上来说，它与其他诸如DockerHub没有本质上的区别，只是这个内部镜像仓库会存储由Source<br>to<br>Image（S2I）创建的镜像。S2I的工作是辅助将应用的源代码转换成可以部署的Docker镜像。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>一个典型的S2I流程包括如下：</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户输入源代码仓库的地址。</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><p>用户选择S2I构建的基础镜像（Builder镜像）。OpenShift提供了多种编程语言的Builder镜像，用户也可以定制自己的Builder镜像，并发布到服务目录中。</p>
+</li>
+<li><p>系统或用户触发S2I构建。OpenShift将实例化S2I构建执行器。</p>
+</li>
+<li><p>S2I构建执行器将从用户指定的代码仓库下载源代码。</p>
+</li>
+<li><p>S2I构建执行器实例化Builder镜像，并将代码注入Builder镜像中。</p>
+</li>
+<li><p>Builder镜像将根据预定义的逻辑执行源代码的编译、构建并完成部署。</p>
+</li>
+<li><p>S2I构建执行器将完成操作的Builder镜像并生成新的Docker镜像。</p>
+</li>
+<li><p>S2I构建执行器将新的镜像推送到OpenShift内部的镜像仓库中。</p>
+</li>
+<li><p>S2I构建执行器更新该次构建相关的Image Stream信息。</p>
+</li>
+</ol>
+<p>S2I还可以接受Dockerfile以及二进制文件作为构建的输入。用户甚至可以完全自定义构建逻辑。</p>
+<ul>
+<li>开始添加</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#以管理员登陆，并切换到default Project</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc login -u system:admin</td>
+</tr>
+<tr>
+<td>oc project default</td>
+</tr>
+<tr>
+<td>#部署Registry</td>
+</tr>
+<tr>
+<td>oadm registry –config=/opt/OpenShift/OpenShift.local.config/master/admin.kubeconfig –service-account=registry</td>
+</tr>
+<tr>
+<td><a href="./media/image22.png">./media/image22.png</a></td>
+</tr>
+<tr>
+<td>#查看状态</td>
+</tr>
+<tr>
+<td>oc get pod -n default</td>
+</tr>
+<tr>
+<td><a href="./media/image23.png">./media/image23.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>添加非HTTPS验证</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#这里部署的Registry没有启用Https，所以需要修改主机上Docker的配置，让Docker能以非Https的方式连接到Registry。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vi /etc/sysconfig/docker</td>
+</tr>
+<tr>
+<td>OPTIONS变量追加” –insecure-registry=172.30.0.0/16”</td>
+</tr>
+<tr>
+<td>#172.30.0.0/16是在master-config.yaml里定义的服务网络的默认值，如果需要修改，则master-config.yaml和/etc/sysconfig/docker需要一致修改。</td>
+</tr>
+<tr>
+<td><a href="./media/image24.png">./media/image24.png</a></td>
+</tr>
+<tr>
+<td>#重启Docker</td>
+</tr>
+<tr>
+<td>systemctl restart docker</td>
+</tr>
+</tbody>
+</table>
+<h2 id="添加Image-Stream"><a href="#添加Image-Stream" class="headerlink" title="添加Image Stream"></a>添加Image Stream</h2><table>
+<thead>
+<tr>
+<th>#Image Stream是一组镜像的集合，可以在一个Image Stream中定义一些名称及标签（tag），并定义这些名字及标签指向的具体镜像。 #使用Image Stream的目的是方便地将一组相关联的镜像进行整合管理和使用。 #OpenShift默认为用户定义了一系列开箱即用的Image Stream。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#以管理员登陆，并切换到OpenShift Project #OpenShift是一个特殊的项目，在这个项目下创建的所有Image Stream及Template对集群内所有的用户和项目可见。</td>
+</tr>
+<tr>
+<td>oc login -u system:admin</td>
+</tr>
+<tr>
+<td>oc project openshift</td>
+</tr>
+<tr>
+<td>#导入Image Stream</td>
+</tr>
+<tr>
+<td>curl -k <a href="https://raw.githubusercontent.com/OpenShift/origin/v1.3.0/examples/image-streams/image-streams-centos7.json\" target="_blank" rel="noopener">https://raw.githubusercontent.com/OpenShift/origin/v1.3.0/examples/image-streams/image-streams-centos7.json\</a></td>
+<td>oc create -f - -n OpenShift</td>
+</tr>
+<tr>
+<td><a href="./media/image25.png">./media/image25.png</a></td>
+</tr>
+<tr>
+<td>#查看Image Stream对象</td>
+</tr>
+<tr>
+<td>oc get is -n openshift</td>
+</tr>
+<tr>
+<td><a href="./media/image26.png">./media/image26.png</a></td>
+</tr>
+<tr>
+<td>#web console验证</td>
+</tr>
+<tr>
+<td>#登录web console，重新建立工程，可以在界面上看到导入Image Stream之后的可用镜像列表</td>
+</tr>
+<tr>
+<td><a href="./media/image27.png">./media/image27.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="添加Template"><a href="#添加Template" class="headerlink" title="添加Template"></a>添加Template</h2><table>
+<thead>
+<tr>
+<th>#为了满足用户对复杂应用部署的需求，提供应用部署的效率，OpenShift引入了应用部署模板（Template）的概念。 #通过Template，可以定义一个或多个需要部署的镜像，定义依赖的对象，定义可供用户输入的配置参数项。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#以管理员登录，并切换到OpenShift工程。</td>
+</tr>
+<tr>
+<td>oc login -u system:admin</td>
+</tr>
+<tr>
+<td>oc project openshift</td>
+</tr>
+<tr>
+<td>#以cakephp-mysql模版为例</td>
+</tr>
+<tr>
+<td>oc create -f <a href="https://raw.githubusercontent.com/OpenShift/origin/v1.3.0/examples/quickstarts/cakephp-mysql.json" target="_blank" rel="noopener">https://raw.githubusercontent.com/OpenShift/origin/v1.3.0/examples/quickstarts/cakephp-mysql.json</a> -n openshift</td>
+</tr>
+<tr>
+<td>#<a href="https://github.com/OpenShift/origin/tree/release-1.3/examples/quickstarts下有官方提供的一系列模版可用" target="_blank" rel="noopener">https://github.com/OpenShift/origin/tree/release-1.3/examples/quickstarts下有官方提供的一系列模版可用</a> #最新3.6版本：<a href="https://github.com/OpenShift/origin/tree/release-3.6/examples/quickstarts" target="_blank" rel="noopener">https://github.com/OpenShift/origin/tree/release-3.6/examples/quickstarts</a></td>
+</tr>
+<tr>
+<td><a href="./media/image28.png">./media/image28.png</a></td>
+</tr>
+<tr>
+<td>#查看模版信息</td>
+</tr>
+<tr>
+<td>oc get template -n openshift</td>
+</tr>
+<tr>
+<td><a href="./media/image29.png">./media/image29.png</a></td>
+</tr>
+<tr>
+<td>#查看模版json信息</td>
+</tr>
+<tr>
+<td>oc get template cakephp-mysql-example -o json -n openshift</td>
+</tr>
+<tr>
+<td>#web console验证</td>
+</tr>
+<tr>
+<td><a href="./media/image30.png">./media/image30.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="模版部署应用"><a href="#模版部署应用" class="headerlink" title="模版部署应用"></a>模版部署应用</h2><table>
+<thead>
+<tr>
+<th>#新建Project</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image31.png">./media/image31.png</a></td>
+</tr>
+<tr>
+<td>#过滤cake，选中cakephp-mysql-example模版</td>
+</tr>
+<tr>
+<td><a href="./media/image32.png">./media/image32.png</a></td>
+</tr>
+<tr>
+<td>#指定主机名</td>
+</tr>
+<tr>
+<td>#本地修改hosts #172.16.142.132 php.apps.example.com</td>
+</tr>
+<tr>
+<td><a href="./media/image33.png">./media/image33.png</a></td>
+</tr>
+<tr>
+<td>#创建</td>
+</tr>
+<tr>
+<td><a href="./media/image34.png">./media/image34.png</a></td>
+</tr>
+<tr>
+<td>#部署完成页面</td>
+</tr>
+<tr>
+<td><a href="./media/image35.png">./media/image35.png</a></td>
+</tr>
+<tr>
+<td>#单机”Continue to overview”</td>
+</tr>
+<tr>
+<td>#跳转到项目的概览页面。Openshif会在后台创建相应的对象，并下载相关的镜像。 #由于CakePHP应用涉及一个镜像构建的过程，即Source to Image，所以构建速度较慢。</td>
+</tr>
+<tr>
+<td><a href="./media/image36.png">./media/image36.png</a></td>
+</tr>
+<tr>
+<td>#由于网络原因，这里从github拉代码失败了</td>
+</tr>
+<tr>
+<td><a href="./media/image37.png">./media/image37.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image38.png">./media/image38.png</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="应用的构建与部署"><a href="#应用的构建与部署" class="headerlink" title=" 应用的构建与部署"></a> 应用的构建与部署</h1><h2 id="JAVA应用容器化"><a href="#JAVA应用容器化" class="headerlink" title="JAVA应用容器化"></a>JAVA应用容器化</h2><ul>
+<li><p>执行容器化的环境为Centos7.2</p>
+</li>
+<li><p>Github项目地址：<a href="https://github.com/nichochen/mybank-demo-maven" target="_blank" rel="noopener">https://github.com/nichochen/mybank-demo-maven</a></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#安装git和maven</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yum install git maven -y</td>
+</tr>
+<tr>
+<td>#下载源码</td>
+</tr>
+<tr>
+<td>cd /opt/</td>
+</tr>
+<tr>
+<td>git clone <a href="https://github.com/nichochen/mybank-demo-maven.git" target="_blank" rel="noopener">https://github.com/nichochen/mybank-demo-maven.git</a></td>
+</tr>
+<tr>
+<td>#编译及构建应用</td>
+</tr>
+<tr>
+<td>cd mybank-demo-maven/</td>
+</tr>
+<tr>
+<td>mvn package</td>
+</tr>
+<tr>
+<td><a href="./media/image39.png">./media/image39.png</a></td>
+</tr>
+<tr>
+<td>#构建完毕。会在target目录下生成一个WAR包ROOT.war</td>
+</tr>
+<tr>
+<td><a href="./media/image40.png">./media/image40.png</a></td>
+</tr>
+<tr>
+<td>#选择Tomcat7官方镜像pull到本地</td>
+</tr>
+<tr>
+<td>docker pull tomcat:7.0.70-jre7-alpine</td>
+</tr>
+<tr>
+<td>#编写Dockerfile，把构建好的应用部署包拷贝到发布目录</td>
+</tr>
+<tr>
+<td>cat Docekrfile FROM tomcat:7.0.70-jre7-alpine ADD ./target/ROOT.war /usr/local/tomcat/webapps/mybank.war</td>
+</tr>
+<tr>
+<td><a href="./media/image41.png">./media/image41.png</a></td>
+</tr>
+<tr>
+<td>#执行Docker Build构建镜像</td>
+</tr>
+<tr>
+<td>docker build -t mybank-tomcat .</td>
+</tr>
+<tr>
+<td><a href="./media/image42.png">./media/image42.png</a></td>
+</tr>
+<tr>
+<td>#查看生成的新镜像</td>
+</tr>
+<tr>
+<td>docker images \</td>
+<td>grep mybank-tomcat</td>
+</tr>
+<tr>
+<td><a href="./media/image43.png">./media/image43.png</a></td>
+</tr>
+<tr>
+<td>#测试run镜像</td>
+</tr>
+<tr>
+<td>docker run -it –rm -p 8080:8080 mybank-tomcat</td>
+</tr>
+<tr>
+<td>#访问IP:8080即可看到访问页面</td>
+</tr>
+<tr>
+<td>#推送镜像到私有仓库</td>
+</tr>
+<tr>
+<td>#打tag</td>
+</tr>
+<tr>
+<td>docker tag mybank-tomcat:latest registry.your-registry.com/mybank-tomcat:latest</td>
+</tr>
+<tr>
+<td>#推送</td>
+</tr>
+<tr>
+<td>docker push registry.your-registry.com/mybank-tomcat:latest</td>
+</tr>
+</tbody>
+</table>
+<h2 id="OpenShift的构建与部署"><a href="#OpenShift的构建与部署" class="headerlink" title="OpenShift的构建与部署"></a>OpenShift的构建与部署</h2><h3 id="2-1-快速构建部署一个应用"><a href="#2-1-快速构建部署一个应用" class="headerlink" title="2.1. 快速构建部署一个应用"></a>2.1. 快速构建部署一个应用</h3><table>
+<thead>
+<tr>
+<th>#web console创建一个应用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image44.png">./media/image44.png</a></td>
+</tr>
+<tr>
+<td>#选择“wildfly:10”的Builder镜像</td>
+</tr>
+<tr>
+<td><a href="./media/image45.png">./media/image45.png</a></td>
+</tr>
+<tr>
+<td>#输入示例项目代码地址：<a href="https://github.com/nichochen/mybank-demo-maven" target="_blank" rel="noopener">https://github.com/nichochen/mybank-demo-maven</a></td>
+</tr>
+<tr>
+<td><a href="./media/image46.png">./media/image46.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image47.png">./media/image47.png</a></td>
+</tr>
+<tr>
+<td>#如果构建日志报错，尝试手动先pull需要的镜像 #docker pull OpenShift/wildfly-100-centos7</td>
+</tr>
+<tr>
+<td>#日中可以看到构建的过程</td>
+</tr>
+<tr>
+<td><a href="./media/image48.png">./media/image48.png</a></td>
+</tr>
+<tr>
+<td>#构建到最后可以看到是将生成的镜像推送到内部的镜像仓库中（Registry）</td>
+</tr>
+<tr>
+<td><a href="./media/image49.png">./media/image49.png</a></td>
+</tr>
+<tr>
+<td>#完成状态</td>
+</tr>
+<tr>
+<td><a href="./media/image50.png">./media/image50.png</a></td>
+</tr>
+<tr>
+<td>#查看本地Docker镜像列表，可以看到mybank镜像</td>
+</tr>
+<tr>
+<td>docker images \</td>
+<td>grep mybank</td>
+</tr>
+<tr>
+<td><a href="./media/image51.png">./media/image51.png</a></td>
+</tr>
+<tr>
+<td>#查看应用状态</td>
+</tr>
+<tr>
+<td>oc get pod -n mybank</td>
+</tr>
+<tr>
+<td><a href="./media/image52.png">./media/image52.png</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-镜像构建介绍"><a href="#2-2-镜像构建介绍" class="headerlink" title="2.2. 镜像构建介绍"></a>2.2. 镜像构建介绍</h3><ul>
+<li><strong>Build Config</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#在上一个实例中，单击create后，OpenShift会创建名为“Build Config”的对象。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#查询创建的Build Config</td>
+</tr>
+<tr>
+<td>oc get bc</td>
+</tr>
+<tr>
+<td><a href="./media/image53.png">./media/image53.png</a></td>
+</tr>
+<tr>
+<td>#查询bc中的具体配置信息</td>
+</tr>
+<tr>
+<td>oc get bc mybank -o yaml</td>
+</tr>
+<tr>
+<td><a href="./media/image54.png">./media/image54.png</a></td>
+</tr>
+<tr>
+<td>#红框中标示出bc的重要内容 #定义构建输出到了一个mybank:latest的Image Stream #源代码仓库地址 #前面制定的Builder镜像信息，没有指向某个实际的镜像，而是指向了一个Image Stream（用Image Stream的概念来管理一组镜像的集合，定义多个镜像名称和Tag，再指向实际的Docker镜像），</td>
+</tr>
+<tr>
+<td>#查看定义的刚生成名为mybank的Image Stream</td>
+</tr>
+<tr>
+<td>oc get is mybank</td>
+</tr>
+<tr>
+<td><a href="./media/image55.png">./media/image55.png</a></td>
+</tr>
+<tr>
+<td>#查看详细信息 #该Image Stream实际指向了OpenShift/wildfly-100-centos7\@sha256:968b2cb9f11c347fbaa6830d33386e5d31b283bdf0060b4cff865e14f5064848</td>
+</tr>
+<tr>
+<td>oc describe is mybank</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Build</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#Build Config只是静态的配置信息，OpenShift根据这个配置信息可以触发多次实际构建实例，构建的实例称为Build。 #一个Build Config可以被多次触发，生成多个Build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#查看mybank的build构建记录</td>
+</tr>
+<tr>
+<td>oc get build</td>
+</tr>
+<tr>
+<td><a href="./media/image56.png">./media/image56.png</a></td>
+</tr>
+<tr>
+<td>#查看build构建详细信息，这里的信息与web console下看到的日志信息相同</td>
+</tr>
+<tr>
+<td>oc log build/mybank-1</td>
+</tr>
+<tr>
+<td>#可以通过之前的Build Config再执行一个新的Build构建</td>
+</tr>
+<tr>
+<td>oc start-build mybank</td>
+</tr>
+<tr>
+<td>oc get build</td>
+</tr>
+<tr>
+<td><a href="./media/image57.png">./media/image57.png</a></td>
+</tr>
+<tr>
+<td>#查看新的构建状态</td>
+</tr>
+<tr>
+<td>oc logs build/mybank-2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-3-镜像部署介绍"><a href="#2-3-镜像部署介绍" class="headerlink" title="2.3. 镜像部署介绍"></a>2.3. 镜像部署介绍</h3><ul>
+<li><strong>Deployment Config</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#当前文的Build构建完成，就是S2I流程完成后，生成的应用镜像被推送到内部的镜像仓库，同时更新相关的Image Stream，之后OpenShift就会触发一次部署，部署也有配置定义对象：Deployment Config。DC描述了镜像部署的参数和要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#查看Deployment Config列表</td>
+</tr>
+<tr>
+<td>oc get dc</td>
+</tr>
+<tr>
+<td><a href="./media/image58.png">./media/image58.png</a></td>
+</tr>
+<tr>
+<td>#查看dc详细定义</td>
+</tr>
+<tr>
+<td>oc get dc mybank -o yaml</td>
+</tr>
+<tr>
+<td>#在Deployment Config中，可以定义容器运行的细节配置 ，如容器的启动命令，容器可用的CPU和内存配置等等。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Deploy</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#每个DC可以被多次触发，每一次触发称为一个Deploy #每一次Deploy都会生成一个Replication Controller，用以监控容器的状态，RC实际是kubernetes中的一个组件，其负责监控容器的实际数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#查看Replication Controller</td>
+</tr>
+<tr>
+<td>oc get rc</td>
+</tr>
+<tr>
+<td><a href="./media/image59.png">./media/image59.png</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-4-服务的连通性介绍（Service-amp-Route）"><a href="#2-4-服务的连通性介绍（Service-amp-Route）" class="headerlink" title="2.4. 服务的连通性介绍（Service &amp; Route）"></a>2.4. 服务的连通性介绍（Service &amp; Route）</h3><ul>
+<li><strong>Service</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#在部署应用时，OpenShift会自动生成DC对应的Service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc get svc</td>
+</tr>
+<tr>
+<td>oc describe svc mybank</td>
+</tr>
+<tr>
+<td><a href="./media/image60.png">./media/image60.png</a></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Route</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#基于Service，OpenShift同时也自动创建了对应的Route</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc get route</td>
+</tr>
+<tr>
+<td>oc describe route mybank</td>
+</tr>
+<tr>
+<td><a href="./media/image61.png">./media/image61.png</a></td>
+</tr>
+<tr>
+<td>#修改指定域名</td>
+</tr>
+<tr>
+<td>oc edit route</td>
+</tr>
+</tbody>
+</table>
+<h2 id="弹性伸缩"><a href="#弹性伸缩" class="headerlink" title="弹性伸缩"></a>弹性伸缩</h2><ul>
+<li><strong>Replication Controller</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#正常情况下，每一个部署的应用的容器实例数量在其Deployment Config中定义，OpenShift会为每次的部署实例化一个RC(可以不定义RC)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#查看当前mybank应用活动实例数为1</td>
+</tr>
+<tr>
+<td>oc get pod</td>
+</tr>
+<tr>
+<td><a href="./media/image62.png">./media/image62.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>扩展容器实例</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#通过RC，可以调整实例存着的数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc scale dc mybank –replicas=2</td>
+</tr>
+<tr>
+<td><a href="./media/image63.png">./media/image63.png</a></td>
+</tr>
+<tr>
+<td>#可以看到pod变为2个，rc中的数量也已经被更新为2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>状态自服务</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#删除运行中的pod，测试rc恢复pod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc delete pod mybank-1-5ek1w</td>
+</tr>
+<tr>
+<td>oc get pod</td>
+</tr>
+<tr>
+<td><a href="./media/image64.png">./media/image64.png</a></td>
+</tr>
+<tr>
+<td>#可以看到其中一个pod被删除的瞬间，一个新的pod同时被创建了</td>
+</tr>
+<tr>
+<td>#RC的作用就是监控容器状态，并始终保持正常运行的pod数量</td>
+</tr>
+</tbody>
+</table>
+<h2 id="应用更新发布"><a href="#应用更新发布" class="headerlink" title="应用更新发布"></a>应用更新发布</h2><ul>
+<li><strong>触发更新构建</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#Build Config信息中可以看到定义了两个WebHook触发器 #Generic WebHook #GitHub WebHook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc get bc mybank -o yaml</td>
+</tr>
+<tr>
+<td><a href="./media/image65.png">./media/image65.png</a></td>
+</tr>
+<tr>
+<td>#在web console中可以看到实际的调用地址</td>
+</tr>
+<tr>
+<td><a href="./media/image66.png">./media/image66.png</a></td>
+</tr>
+<tr>
+<td># Generic WebHook使用，只需向调用地址发送POST请求即可触发</td>
+</tr>
+<tr>
+<td>curl -k -X POST <a href="https://172.16.142.132:8443/oapi/v1/namespaces/mybank/buildconfigs/mybank/webhooks/a62289d1f901ea32/generic" target="_blank" rel="noopener">https://172.16.142.132:8443/oapi/v1/namespaces/mybank/buildconfigs/mybank/webhooks/a62289d1f901ea32/generic</a></td>
+</tr>
+<tr>
+<td><a href="./media/image67.png">./media/image67.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image68.png">./media/image68.png</a></td>
+</tr>
+<tr>
+<td>#post请求发送到OpenShift之后，一个新的build就产生并开始执行</td>
+</tr>
+<tr>
+<td>#GitHub WebHook需要用户登陆到GitHub</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>更新部署</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#构建结束后，更新部署被触发，OpenShift有Rolling（滚动更新）和Recreate（重新创建）两种，默认是Rolling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#更新策略在Deployment Config中定义</td>
+</tr>
+<tr>
+<td>oc get dc mybank -o yaml</td>
+</tr>
+<tr>
+<td><a href="./media/image69.png">./media/image69.png</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="持续集成与部署"><a href="#持续集成与部署" class="headerlink" title=" 持续集成与部署"></a> 持续集成与部署</h1><h2 id="部署Jenkins服务"><a href="#部署Jenkins服务" class="headerlink" title="部署Jenkins服务"></a>部署Jenkins服务</h2><ul>
+<li><p>OpenShift提供了集成OpenShift插件的Jenkins容器镜像和部署模版</p>
+</li>
+<li><p>默认提供两个Jenkins部署模版：Jenkins-ephemeral（测试验证用）和jenkins-persistent（持久化支持）</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#以dev用户登陆</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc login -u dev</td>
+</tr>
+<tr>
+<td>#创建名为ci的新项目用来部署jenkins</td>
+</tr>
+<tr>
+<td>oc new-project ci</td>
+</tr>
+<tr>
+<td><a href="./media/image70.png">./media/image70.png</a></td>
+</tr>
+<tr>
+<td>#下载并导入Jenkins模版Jenkins-ephemeral</td>
+</tr>
+<tr>
+<td>oc create -f <a href="https://raw.githubusercontent.com/openshift/origin/v1.3.0/examples/jenkins/jenkins-ephemeral-template.json" target="_blank" rel="noopener">https://raw.githubusercontent.com/openshift/origin/v1.3.0/examples/jenkins/jenkins-ephemeral-template.json</a></td>
+</tr>
+<tr>
+<td><a href="./media/image71.png">./media/image71.png</a></td>
+</tr>
+<tr>
+<td>oc get template</td>
+</tr>
+<tr>
+<td><a href="./media/image72.png">./media/image72.png</a></td>
+</tr>
+<tr>
+<td>#为默认的Service Account用户添加权限，使Jenkins容器有足够的权限操作项目的配置及执行部署</td>
+</tr>
+<tr>
+<td>oc policy add-role-to-user edit -z default</td>
+</tr>
+<tr>
+<td>#通过Jenkins模版部署Jenkins服务，指定默认管理员密码为123\@abcd</td>
+</tr>
+<tr>
+<td>oc new-app –template=jenkins-ephemeral –param=JENKINS_PASSWORD=123\@abcd</td>
+</tr>
+<tr>
+<td><a href="./media/image73.png">./media/image73.png</a></td>
+</tr>
+<tr>
+<td>#时间稍长，应为需要联网下载jenkins镜像 #查看服务状态</td>
+</tr>
+<tr>
+<td>oc get pod</td>
+</tr>
+<tr>
+<td><a href="./media/image74.png">./media/image74.png</a></td>
+</tr>
+<tr>
+<td>#Jenkins模版中定义了Route，通过指定的主机名（配好hosts，手动添加解析将jenkins-ci.router.default.svc.cluster.local指向Router服务所在的IP地址），便可以访问Jenkins服务</td>
+</tr>
+<tr>
+<td>oc get route</td>
+</tr>
+<tr>
+<td><a href="./media/image75.png">./media/image75.png</a></td>
+</tr>
+<tr>
+<td>#访问Jenkins服务 #<a href="https://jenkins-ci.router.default.svc.cluster.local/" target="_blank" rel="noopener">https://jenkins-ci.router.default.svc.cluster.local/</a> #admin:123\@abcd</td>
+</tr>
+<tr>
+<td><a href="./media/image76.png">./media/image76.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image77.png">./media/image77.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="触发项目构建"><a href="#触发项目构建" class="headerlink" title="触发项目构建"></a>触发项目构建</h2><ul>
+<li>Jenkins部署好了之后，就可以在jenkins上出发mybank的S2I构建</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#为jenkins授权，可以在mybank项目中执行操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc policy add-role-to-user edit system:serviceaccount:ci:jenkins -n mybank</td>
+</tr>
+<tr>
+<td>#创建Jenkins项目，Jenkins界面操作</td>
+</tr>
+<tr>
+<td><a href="./media/image78.png">./media/image78.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image79.png">./media/image79.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image80.png">./media/image80.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image81.png">./media/image81.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>手动触发构建</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#Jenkins控制台首页</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image82.png">./media/image82.png</a></td>
+</tr>
+<tr>
+<td>#查看构建输出</td>
+</tr>
+<tr>
+<td><a href="./media/image83.png">./media/image83.png</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="应用数据持久化"><a href="#应用数据持久化" class="headerlink" title=" 应用数据持久化"></a> 应用数据持久化</h1><h2 id="持久化镜像仓库"><a href="#持久化镜像仓库" class="headerlink" title="持久化镜像仓库"></a>持久化镜像仓库</h2><ul>
+<li><strong>检查挂载点</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>oc login -u system:admin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc project default</td>
+</tr>
+<tr>
+<td>oc get pod</td>
+</tr>
+<tr>
+<td><a href="./media/image84.png">./media/image84.png</a></td>
+</tr>
+<tr>
+<td>#通过oc volume查看Registry组件的DC关于Volume的定义，创建了一个Volume Mounts对象registry-storage，这个挂载点指向了/registry目录 #我们要做的就是给registry-storage这个挂载点挂上一个持久化后端</td>
+</tr>
+<tr>
+<td>oc get dc</td>
+</tr>
+<tr>
+<td>oc volumes dc/docker-registry –all</td>
+</tr>
+<tr>
+<td><a href="./media/image85.png">./media/image85.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>备份数据</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#当前Registry容器内的/registry目录下已有很多镜像相关的文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc get po</td>
+</tr>
+<tr>
+<td>oc rsh docker-registry-1-akri7 ‘du’ ‘-sh’ /registry</td>
+</tr>
+<tr>
+<td><a href="./media/image86.png">./media/image86.png</a></td>
+</tr>
+<tr>
+<td>#需要先备份这些文件，通过ocrsync命令同步到宿主机上</td>
+</tr>
+<tr>
+<td>mkdir /root/backup cd /root/backup</td>
+</tr>
+<tr>
+<td>oc rsync docker-registry-1-akri7:/registry .</td>
+</tr>
+<tr>
+<td><a href="./media/image87.png">./media/image87.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>创建存储</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#选用NFS作为后端存储，生产环境可使用GlusterFS，Ceph</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#创建一个NFS共享目录</td>
+</tr>
+<tr>
+<td>mkdir -p /exports/pv0001 yum -y install nfs-utils rpcbind chown nfsnobody:nfsnobody /exports/ -R echo “/exports/pv0001 *(rw,sync,all_squash)” >> /etc/exports systemctl start rpcbind exportfs -r systemctl start nfs-server showmount -e 127.0.0.1</td>
+</tr>
+<tr>
+<td>setenforce 0</td>
+</tr>
+<tr>
+<td>getenforce</td>
+</tr>
+<tr>
+<td>#测试挂载</td>
+</tr>
+<tr>
+<td>[root\@master ~]# mount 172.16.142.132:exports/pv0001 /mnt/ [root\@master ~]# [root\@master ~]# [root\@master ~]# touch /mnt/test [root\@master ~]# ls /mnt/ test [root\@master ~]# rm -rf /mnt/test [root\@master ~]# umount /mnt/</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>创建持久化卷</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#创建pv.json文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[root\@master ~]# more pv.json { “apiVersion”: “v1”, “kind”: “PersistentVolume”, “metadata”: { “name”: “pv0001” }, “spec”: { “capacity”: { “storage”: “5Gi” }, “accessModes”: [ “ReadWriteOnce” ], “nfs”: { “path”: “/exports/pv0001”, “server”: “172.16.142.132” }, “persistentVolumeReclaimPolicy”: “Retain” } }</td>
+</tr>
+<tr>
+<td>oc create -f pv.json</td>
+</tr>
+<tr>
+<td>oc get pv</td>
+</tr>
+<tr>
+<td><a href="./media/image88.png">./media/image88.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>创建持久化卷请求</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#创建pvc.json文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[root\@master ~]# more pvc.json { “apiVersion”: “v1”, “kind”: “PersistentVolumeClaim”, “metadata”: { “name”: “docker-registry-claim” }, “spec”: { “accessModes”: [ “ReadWriteOnce” ], “resources”: { “requests”: { “storage”: “3Gi” } } } }</td>
+</tr>
+<tr>
+<td>oc create -f pvc.json</td>
+</tr>
+<tr>
+<td>oc get pvc</td>
+</tr>
+<tr>
+<td>oc get pv</td>
+</tr>
+<tr>
+<td><a href="./media/image89.png">./media/image89.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>关联持久化卷请求</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#将备份的文件恢复到创建的nfs目录中</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mv /root/backup/registry/* /exports/pv0001/</td>
+</tr>
+<tr>
+<td>chown nfsnobody:nfsnobody /exports/ -R</td>
+</tr>
+<tr>
+<td>#测试删除Registry容器，RC将会重新创建它</td>
+</tr>
+<tr>
+<td>oc get pod</td>
+</tr>
+<tr>
+<td>oc delete pod docker-registry-1-akri7</td>
+</tr>
+<tr>
+<td><a href="./media/image90.png">./media/image90.png</a></td>
+</tr>
+<tr>
+<td>#容器启动后，再次检查/registry目录，发现数据消失，应为之前并没有做持久化</td>
+</tr>
+<tr>
+<td>oc rsh docker-registry-1-fqtfp ‘du’ ‘-sh’ /registry</td>
+</tr>
+<tr>
+<td><a href="./media/image91.png">./media/image91.png</a></td>
+</tr>
+<tr>
+<td>#为Registry的容器添加持久化卷请求，docker-registry-claim，并与挂载点registry-storage关联</td>
+</tr>
+<tr>
+<td>oc volume dc/docker-registry –add –name=registry-storage -t pvc –claim-name=docker-registry-claim –overwrite</td>
+</tr>
+<tr>
+<td>#DC被修改后，Openshift会创建新的容器实例</td>
+</tr>
+<tr>
+<td>#再次检查容器的/registry目录，发现目录数据恢复了</td>
+</tr>
+<tr>
+<td>oc volume dc/docker-registry –add –name=registry-storage -t pvc –claim-name=docker-registry-claim –overwrite</td>
+</tr>
+<tr>
+<td>oc get pod</td>
+</tr>
+<tr>
+<td>oc rsh docker-registry-2-f36ot ‘du’ ‘-sh’ /registry</td>
+</tr>
+<tr>
+<td><a href="./media/image92.png">./media/image92.png</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="监控与日志管理"><a href="#监控与日志管理" class="headerlink" title=" 监控与日志管理"></a> 监控与日志管理</h1><h2 id="容器集群数据采集"><a href="#容器集群数据采集" class="headerlink" title="容器集群数据采集"></a>容器集群数据采集</h2><h2 id="容器集群日志管理"><a href="#容器集群日志管理" class="headerlink" title="容器集群日志管理"></a>容器集群日志管理</h2><ul>
+<li><p>使用开源方案EFK：Elasticsearch，Fluentd，Kibana</p>
+<ul>
+<li><p>Fluentd：将以容器方式运行在集群的各个节点上。读取宿主机上的/var/log/message及/var/lib/docker目录下的系统及容器日志信息，并对信息进行格式化成JSON格式，最好发送给Elasticsearch</p>
+</li>
+<li><p>Elasticsearch：收到日志信息后，存储信息并建立索引</p>
+</li>
+<li><p>Kibana：提供图形界面用用户检索分析Elasticsearch中的日志</p>
+</li>
+<li><p>AuthProxy：为Kibana实现身份验证，与Openshift Web实现单点登陆</p>
+</li>
+<li><p>Curator：管理和优化Elasticsearch索引</p>
+</li>
+</ul>
+</li>
+<li><p>创建部署模版</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#管理员身份登陆</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc login –u system:admin</td>
+</tr>
+<tr>
+<td>#下载部署模版并解压</td>
+</tr>
+<tr>
+<td>wget <a href="https://github.com/openshift/origin-aggregated-logging/archive/v1.3.0.tar.gz" target="_blank" rel="noopener">https://github.com/openshift/origin-aggregated-logging/archive/v1.3.0.tar.gz</a></td>
+</tr>
+<tr>
+<td>tar zxvf v1.3.0.tar.gz</td>
+</tr>
+<tr>
+<td>#导入日志部署模版</td>
+</tr>
+<tr>
+<td>oc create -n openshift -f origin-aggregated-logging-1.3.0/deployer/deployer.yaml</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>配置Service Account</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#新建项目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oadm new-project logging –node-selector=””</td>
+</tr>
+<tr>
+<td>oc project logging</td>
+</tr>
+<tr>
+<td>#创建应用部署的Service Account账号</td>
+</tr>
+<tr>
+<td>oc new-app logging-deployer-account-template</td>
+</tr>
+<tr>
+<td>#配置服务授权</td>
+</tr>
+<tr>
+<td>oadm policy add-cluster-role-to-user oauth-editor \ system:serviceaccount:logging:logging-deployer</td>
+</tr>
+<tr>
+<td>oadm policy add-scc-to-user privileged \ system:serviceaccount:logging:aggregated-logging-fluentd</td>
+</tr>
+<tr>
+<td>oadm policy add-cluster-role-to-user cluster-reader \ system:serviceaccount:logging:aggregated-logging-fluentd</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>配置证书</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#创建应用组件使用的证书，并创建Secret对象loging-deployer存储对应的证书。改Secret对象会被部署引用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oadm ca create-server-cert \ –signer-cert=/opt/openshift/openshift.local.config/master/ca.crt \ –signer-key=/opt/openshift/openshift.local.config/master/ca.key \ –signer-serial=/opt/openshift/openshift.local.config/master/ca.serial.txt \ –hostnames=’kibana.apps.example.com’ \ –cert=/etc/opt/openshift/openshift.local.config/master/kibana.crt \ –key=/etc//opt/openshift/openshift.local.config/master/kibana.key</td>
+</tr>
+<tr>
+<td>oc create secret generic logging-deployer \ –from-file kibana.crt=/etc/opt/openshift/openshift.local.config/master/kibana.crt \ –from-file kibana.key=/etc/opt/openshift/openshift.local.config/master/kibana.key</td>
+</tr>
+<tr>
+<td><a href="./media/image93.png">./media/image93.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image94.png">./media/image94.png</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>部署日志组件模版</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#设置集群部署参数，创建一个Config Map对象logging-deployer为日志组件的部署设定参数 #参数指定Kinbana域名，Openshift集群Master地址，Elasticsearch的实例数及使用的内存大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc create configmap logging-deployer \ –from-literal kibana-hostname=kibana.apps.example.com \ –from-literal public-master-url=<a href="https://master.example.com:8443" target="_blank" rel="noopener">https://master.example.com:8443</a> \ –from-literal es-cluster-size=1 \ –from-literal es-instance-ram=1G</td>
+</tr>
+<tr>
+<td><a href="./media/image95.png">./media/image95.png</a></td>
+</tr>
+<tr>
+<td>#通过模版部署日志组件</td>
+</tr>
+<tr>
+<td>#网络原因，提前下好所需镜像</td>
+</tr>
+<tr>
+<td>for i in openshift/origin-logging-curator:v1.3.0 \ openshift/origin-logging-fluentd:v1.3.0 \ openshift/origin-logging-auth-proxy:v1.3.0 \ openshift/origin-logging-deployment:v1.3.0 \ openshift/origin-logging-elasticsearch:v1.3.0 \ openshift/origin-logging-kibana:v1.3.0 ; do docker pull \$i; done</td>
+</tr>
+<tr>
+<td>oc new-app logging-deployer-template \ –param IMAGE_VERSION=v1.3.0 \ –param IMAGE_PREFIX=openshift/origin- \ –param MODE=install</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-混合云管理/" rel="next" title="OpenShift-混合云管理">
+                <i class="fa fa-chevron-left"></i> OpenShift-混合云管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-企业应用-3.6.1/" rel="prev" title="OpenShift-企业应用">
+                OpenShift-企业应用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenShift-Origin-与OPENSHIFT-CONTAINER-PLATFORM对比"><span class="nav-number">1.</span> <span class="nav-text"> OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动OpenShift-Origin"><span class="nav-number">2.</span> <span class="nav-text"> 启动OpenShift Origin</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">2.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker"><span class="nav-number">2.2.</span> <span class="nav-text">安装docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载OpenShift-Origin安装包"><span class="nav-number">2.3.</span> <span class="nav-text">下载OpenShift Origin安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证启动"><span class="nav-number">2.4.</span> <span class="nav-text">验证启动 </span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单使用OpenShift"><span class="nav-number">3.</span> <span class="nav-text"> 简单使用OpenShift</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器应用"><span class="nav-number">3.1.</span> <span class="nav-text">运行容器应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用命令行工具"><span class="nav-number">3.2.</span> <span class="nav-text">使用命令行工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群管理员登陆"><span class="nav-number">3.3.</span> <span class="nav-text">集群管理员登陆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Router"><span class="nav-number">3.4.</span> <span class="nav-text">添加Router</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Registry"><span class="nav-number">3.5.</span> <span class="nav-text">添加Registry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Image-Stream"><span class="nav-number">3.6.</span> <span class="nav-text">添加Image Stream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Template"><span class="nav-number">3.7.</span> <span class="nav-text">添加Template</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模版部署应用"><span class="nav-number">3.8.</span> <span class="nav-text">模版部署应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应用的构建与部署"><span class="nav-number">4.</span> <span class="nav-text"> 应用的构建与部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA应用容器化"><span class="nav-number">4.1.</span> <span class="nav-text">JAVA应用容器化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenShift的构建与部署"><span class="nav-number">4.2.</span> <span class="nav-text">OpenShift的构建与部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-快速构建部署一个应用"><span class="nav-number">4.2.1.</span> <span class="nav-text">2.1. 快速构建部署一个应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-镜像构建介绍"><span class="nav-number">4.2.2.</span> <span class="nav-text">2.2. 镜像构建介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-镜像部署介绍"><span class="nav-number">4.2.3.</span> <span class="nav-text">2.3. 镜像部署介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-服务的连通性介绍（Service-amp-Route）"><span class="nav-number">4.2.4.</span> <span class="nav-text">2.4. 服务的连通性介绍（Service &amp; Route）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#弹性伸缩"><span class="nav-number">4.3.</span> <span class="nav-text">弹性伸缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用更新发布"><span class="nav-number">4.4.</span> <span class="nav-text">应用更新发布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#持续集成与部署"><span class="nav-number">5.</span> <span class="nav-text"> 持续集成与部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Jenkins服务"><span class="nav-number">5.1.</span> <span class="nav-text">部署Jenkins服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发项目构建"><span class="nav-number">5.2.</span> <span class="nav-text">触发项目构建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应用数据持久化"><span class="nav-number">6.</span> <span class="nav-text"> 应用数据持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化镜像仓库"><span class="nav-number">6.1.</span> <span class="nav-text">持久化镜像仓库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监控与日志管理"><span class="nav-number">7.</span> <span class="nav-text"> 监控与日志管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器集群数据采集"><span class="nav-number">7.1.</span> <span class="nav-text">容器集群数据采集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器集群日志管理"><span class="nav-number">7.2.</span> <span class="nav-text">容器集群日志管理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

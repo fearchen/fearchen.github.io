@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rm -rf /*" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。 容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全 用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenShift-安全与配额">
+<meta property="og:url" content="http://fearchen.github.io/2018/04/25/OpenShift-安全与配额/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。 容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全 用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-25T02:05:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenShift-安全与配额">
+<meta name="twitter:description" content="概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。 容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全 用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2018/04/25/OpenShift-安全与配额/"/>
+
+
+
+
+
+  <title>OpenShift-安全与配额 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-安全与配额/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenShift-安全与配额</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:18+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h2><p>容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。</p>
+<p>容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全</p>
+<h2 id="用户认证："><a href="#用户认证：" class="headerlink" title="用户认证："></a>用户认证：</h2><p>openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时间内对系统进行访问。</p>
+<ul>
+<li><p>获取token：oc whoami -t</p>
+</li>
+<li><p>获取tokenAPI：/oauth/token/request</p>
+</li>
+</ul>
+<h2 id="身份验证-identity-provider"><a href="#身份验证-identity-provider" class="headerlink" title="身份验证 identity provider"></a>身份验证 identity provider</h2><p>openshift提供不同的适配器链接不同的用户信息管理系统：LDAP、Active<br>Directory、HTPasswd。</p>
+<p>openshift默认采用HTPasswd的文件存储用户信息。该文件存储位置在：/etc/origin/master/htpasswd</p>
+<p>使用htpasswd命令可以对用户数据库进行增删改查</p>
+<h2 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h2><ul>
+<li><p>查看provider来源：oc get identity</p>
+</li>
+<li><p>认证系统：authentication</p>
+</li>
+<li><p>授权系统：authorization</p>
+</li>
+<li><p>角色访问控制系统：RBAC （role based access control）</p>
+</li>
+</ul>
+<h2 id="权限cluster-local"><a href="#权限cluster-local" class="headerlink" title="权限cluster local"></a>权限cluster local</h2><ol>
+<li><p>role：角色，一组权限的集合，RBAC系统中，权限–>role–>用户或者组</p>
+</li>
+<li><p>rule：规则，rule三要素：角色role、资源resource、动作verb。</p>
+</li>
+<li><p>policy：策略，若干role组成的集合</p>
+</li>
+<li><p>role binding ，角色与用户或者组的绑定关系</p>
+</li>
+<li><p>policy binding，若干role组成的集合与用户或者组的绑定关系。</p>
+</li>
+</ol>
+<h2 id="权限操作"><a href="#权限操作" class="headerlink" title="权限操作"></a>权限操作</h2><ol>
+<li>授予用户查看当前项目权限：</li>
+</ol>
+<p>oc policy add-role-to-user view user2</p>
+<ol>
+<li>编辑权限：</li>
+</ol>
+<p>oc policy add-role-to-user edit user2</p>
+<p>删除：oc policy remove-role-from-user edit user2</p>
+<ol>
+<li>查看角色绑定关系：</li>
+</ol>
+<p>oc get rolebinding</p>
+<ol>
+<li>查看role的详细信息</li>
+</ol>
+<p>oc describe clusterrole admin</p>
+<ol>
+<li>创建组：</li>
+</ol>
+<p>oc adm groups new newgroups</p>
+<ol>
+<li>增加用户到组</li>
+</ol>
+<p>oc adm groups add-users newgroups user2</p>
+<ol>
+<li>绑定cluster-admin role到新建组</li>
+</ol>
+<p>oc adm policy add-cluster-role-to-group cluster-admin newgroups</p>
+<p>cluster-admin是系统管理员角色，这个角色可以在系统中对任意对象执行任意操作。</p>
+<h2 id="Service-Account"><a href="#Service-Account" class="headerlink" title="Service Account"></a>Service Account</h2><ul>
+<li><p>builder对象：用于S2I</p>
+</li>
+<li><p>default对象：用于运行容器</p>
+</li>
+<li><p>depolyer对象：用于部署容器</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>每个service account包含secret 和token</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image1.png">./media/image1.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="安全上下文SCC"><a href="#安全上下文SCC" class="headerlink" title="安全上下文SCC"></a>安全上下文SCC</h2><p>privileged权限最大，restricted权限最小，普通用户及其创建的项目，都属于restricted组。这个组不允许容器以root用户运行，如该要容器以root权限运行，可以把项目默认的default<br>service account加入到高权限的组中，</p>
+<p>比如加入到anyuid组中，因为anyuid组中的RUNASUSER属性值为：RUNASANY，命令如下：</p>
+<p>oc adm policy add-scc-to-user anyuid -z default -n projectname</p>
+<table>
+<thead>
+<tr>
+<th>查看当前用户的scc（Security content constraint）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Quota额度配置"><a href="#Quota额度配置" class="headerlink" title="Quota额度配置"></a>Quota额度配置</h2><p>额度的控制通过资源额度对象resource quota管理（集群用clusterresourcequota），</p>
+<p>resource<br>quota是基于项目的，以项目为单位对资源进行额度管理，资源的额度对象分为两种：</p>
+<p>- 计算资源：compute resource</p>
+<ol>
+<li>计算资源：对CPU、内存资源的额度管理</li>
+</ol>
+<p>CPU：</p>
+<table>
+<thead>
+<tr>
+<th>limits.cpu: “40” #limits ：容器所能使用的cpu上限值。 limits.memory: 40Gi requests.cpu: “4” #requests：容器运行所需的cpu下限值。 requests.memory: 4Gi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>CPU资源的度量最小单位是Millicore，一个计算节点上CPU核数乘以1000，即为该节点CPU资源总量。</p>
+<p>例如：4Core=4000m</p>
+<p>注意：设置计算资源以后，用户部署容器的时候，必须显示的为每一个容器指定CPU和内存的requests及limits的值，否则容器无法部署。</p>
+<ol>
+<li>对象数量额度：pod、rc、rq、svc、cm、pvc、is、secrets</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>openshift.io/imagestreams: “400” persistentvolumeclaims: “400” pods: “40” replicationcontrollers: “40” resourcequotas: “40” secrets: “100” services: “100”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>cluster resource quota</li>
+</ol>
+<p>ClusterResourceQuota允许限制多个project，多个project可以通过annotation 或者<br>label<br>进行选择，比如某个用户下的所有project就可以通过：annotations：openshift.io/requester=<br>进行限制。项目管理员不能创建和修改ClusterResourceQuota，但是可以查看集群限额在当前项目的应用情况，通过以下命令查看：</p>
+<table>
+<thead>
+<tr>
+<th>oc describe AppliedClusterResourceQuota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Limit-Range-资源限制"><a href="#Limit-Range-资源限制" class="headerlink" title="Limit Range 资源限制"></a>Limit Range 资源限制</h2><p>资源限制是更具体的控制每个容器具体使用多少CPU和内存资源。</p>
+<p>可以通过两个层面进行定义：</p>
+<ul>
+<li><p>项目级别统一定义每个容器资源是用总量</p>
+</li>
+<li><p>容器级别单独定义某个容器资源是用总量</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-S2I构建过程/" rel="next" title="OpenShift-S2I构建过程">
+                <i class="fa fa-chevron-left"></i> OpenShift-S2I构建过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-持续集成-Jenkins/" rel="prev" title="OpenShift-持续集成-Jenkins">
+                OpenShift-持续集成-Jenkins <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述："><span class="nav-number">1.</span> <span class="nav-text">概述：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户认证："><span class="nav-number">2.</span> <span class="nav-text">用户认证：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#身份验证-identity-provider"><span class="nav-number">3.</span> <span class="nav-text">身份验证 identity provider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户组"><span class="nav-number">4.</span> <span class="nav-text">用户组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限cluster-local"><span class="nav-number">5.</span> <span class="nav-text">权限cluster local</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限操作"><span class="nav-number">6.</span> <span class="nav-text">权限操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Service-Account"><span class="nav-number">7.</span> <span class="nav-text">Service Account</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全上下文SCC"><span class="nav-number">8.</span> <span class="nav-text">安全上下文SCC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Quota额度配置"><span class="nav-number">9.</span> <span class="nav-text">Quota额度配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limit-Range-资源限制"><span class="nav-number">10.</span> <span class="nav-text">Limit Range 资源限制</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

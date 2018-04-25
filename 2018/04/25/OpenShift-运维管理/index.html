@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rm -rf /*" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。 项目URL：https:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenShift-运维管理">
+<meta property="og:url" content="http://fearchen.github.io/2018/04/25/OpenShift-运维管理/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。 项目URL：https:">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-25T02:05:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenShift-运维管理">
+<meta name="twitter:description" content="Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。 项目URL：https:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2018/04/25/OpenShift-运维管理/"/>
+
+
+
+
+
+  <title>OpenShift-运维管理 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-运维管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenShift-运维管理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Cockpit介绍"><a href="#Cockpit介绍" class="headerlink" title="Cockpit介绍"></a>Cockpit介绍</h2><p>Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。</p>
+<p>项目URL：<a href="https://github.com/cockpit-project" target="_blank" rel="noopener">https://github.com/cockpit-project</a></p>
+<h2 id="Cockpit部署"><a href="#Cockpit部署" class="headerlink" title="Cockpit部署"></a>Cockpit部署</h2><ul>
+<li>所有节点执行</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>yum install cockpit cockpit-docker cockpit-kubernetes -y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>systemctl start cockpit &amp;&amp; systemctl enable cockpit</td>
+</tr>
+<tr>
+<td>vim /etc/sysconfig/iptables</td>
+</tr>
+<tr>
+<td>A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT</td>
+</tr>
+<tr>
+<td><a href="./media/image1.png">./media/image1.png</a></td>
+</tr>
+<tr>
+<td>systemctl restart iptables</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>登陆</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>登陆<a href="https://master.example.com:9090/" target="_blank" rel="noopener">https://master.example.com:9090/</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户名密码即服务器用户名密码</td>
+</tr>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image3.png">./media/image3.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Cockpit集群运维"><a href="#Cockpit集群运维" class="headerlink" title="Cockpit集群运维"></a>Cockpit集群运维</h2><table>
+<thead>
+<tr>
+<th>在集群选项中可以添加OpenShift集群</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image4.png">./media/image4.png</a></td>
+</tr>
+<tr>
+<td>各信息在浏览器中直观展现</td>
+</tr>
+<tr>
+<td>节点</td>
+</tr>
+<tr>
+<td><a href="./media/image5.png">./media/image5.png</a></td>
+</tr>
+<tr>
+<td>拓扑</td>
+</tr>
+<tr>
+<td><a href="./media/image6.png">./media/image6.png</a></td>
+</tr>
+<tr>
+<td>持久化卷</td>
+</tr>
+<tr>
+<td><a href="./media/image7.png">./media/image7.png</a></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="OpenShift集群扩容"><a href="#OpenShift集群扩容" class="headerlink" title="OpenShift集群扩容"></a>OpenShift集群扩容</h2><p>根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120<br>000。</p>
+<p>目前集群扩容的方式有：</p>
+<ul>
+<li>半自动扩容：</li>
+</ul>
+<blockquote>
+<p>  OpenShift默认提供了扩容的Ansible<br>  Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。</p>
+</blockquote>
+<ul>
+<li>全自动扩容：</li>
+</ul>
+<blockquote>
+<p>  自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible<br>  Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。</p>
+</blockquote>
+<h3 id="Ansible-Playbook"><a href="#Ansible-Playbook" class="headerlink" title="Ansible Playbook"></a>Ansible Playbook</h3><p>通过Ansible<br>Playboko进行扩容需要编辑Ansible的Inventory，/etc/ansible/hosts文件，在相应角色下添加新节点的域名以及配置信息</p>
+<table>
+<thead>
+<tr>
+<th># host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="主节点扩容Playbook"><a href="#主节点扩容Playbook" class="headerlink" title="主节点扩容Playbook"></a>主节点扩容Playbook</h3><table>
+<thead>
+<tr>
+<th>ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-master/scaleup.yml</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="计算节点扩容Playbook"><a href="#计算节点扩容Playbook" class="headerlink" title="计算节点扩容Playbook"></a>计算节点扩容Playbook</h3><table>
+<thead>
+<tr>
+<th>ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="OpenShift集群缩容"><a href="#OpenShift集群缩容" class="headerlink" title="OpenShift集群缩容"></a>OpenShift集群缩容</h2><p>缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。</p>
+<h3 id="禁止参与调度"><a href="#禁止参与调度" class="headerlink" title="禁止参与调度"></a>禁止参与调度</h3><table>
+<thead>
+<tr>
+<th>控制一个计算节点是否参与到集群的调度运行应用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc adm manage-node master.example.com –schedulable=false</td>
+</tr>
+<tr>
+<td><a href="./media/image8.png">./media/image8.png</a></td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-性能监控/" rel="next" title="OpenShift-性能监控">
+                <i class="fa fa-chevron-left"></i> OpenShift-性能监控
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-Project权限管理/" rel="prev" title="OpenShift-Project权限管理">
+                OpenShift-Project权限管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cockpit介绍"><span class="nav-number">1.</span> <span class="nav-text">Cockpit介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cockpit部署"><span class="nav-number">2.</span> <span class="nav-text">Cockpit部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cockpit集群运维"><span class="nav-number">3.</span> <span class="nav-text">Cockpit集群运维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenShift集群扩容"><span class="nav-number">4.</span> <span class="nav-text">OpenShift集群扩容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ansible-Playbook"><span class="nav-number">4.1.</span> <span class="nav-text">Ansible Playbook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主节点扩容Playbook"><span class="nav-number">4.2.</span> <span class="nav-text">主节点扩容Playbook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算节点扩容Playbook"><span class="nav-number">4.3.</span> <span class="nav-text">计算节点扩容Playbook</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenShift集群缩容"><span class="nav-number">5.</span> <span class="nav-text">OpenShift集群缩容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#禁止参与调度"><span class="nav-number">5.1.</span> <span class="nav-text">禁止参与调度</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

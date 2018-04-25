@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rm -rf /*" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。    项目URL：https://github.com/openshift/origin-metrics  主要通过以下组件实现：  Heapster     Heapster通过Master  API收集系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenShift-性能监控">
+<meta property="og:url" content="http://fearchen.github.io/2018/04/25/OpenShift-性能监控/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。    项目URL：https://github.com/openshift/origin-metrics  主要通过以下组件实现：  Heapster     Heapster通过Master  API收集系">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://fearchen.github.io/2018/04/25/OpenShift-性能监控/media/6e089fd62397d30c1533bb14d818b607.jpg">
+<meta property="og:image" content="http://fearchen.github.io/2018/04/25/OpenShift-性能监控/media/723b74430b2819fc8b4f872e804a4d8f.png">
+<meta property="og:updated_time" content="2018-04-25T02:05:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenShift-性能监控">
+<meta name="twitter:description" content="简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。    项目URL：https://github.com/openshift/origin-metrics  主要通过以下组件实现：  Heapster     Heapster通过Master  API收集系">
+<meta name="twitter:image" content="http://fearchen.github.io/2018/04/25/OpenShift-性能监控/media/6e089fd62397d30c1533bb14d818b607.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2018/04/25/OpenShift-性能监控/"/>
+
+
+
+
+
+  <title>OpenShift-性能监控 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-性能监控/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenShift-性能监控</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。</p>
+<blockquote>
+<p>  项目URL：<a href="https://github.com/openshift/origin-metrics" target="_blank" rel="noopener">https://github.com/openshift/origin-metrics</a></p>
+</blockquote>
+<p>主要通过以下组件实现：</p>
+<ul>
+<li>Heapster</li>
+</ul>
+<blockquote>
+<p>  Heapster通过Master<br>  API收集系统级别的信息，如CPU、内存、网络，然后将这些信息发送到Hawkular</p>
+</blockquote>
+<blockquote>
+<p>  <a href="https://github.com/kubernetes/heapster" target="_blank" rel="noopener">https://github.com/kubernetes/heapster</a></p>
+</blockquote>
+<ul>
+<li>Hawkular Metrics</li>
+</ul>
+<blockquote>
+<p>  Hawkular Metrics是来此Hawkular项目的监控存储引擎。它提供了通过json<br>  REST接口来创建、访问和管理历史存储指标的方法。</p>
+</blockquote>
+<blockquote>
+<p>  <a href="https://github.com/hawkular/hawkular-metrics" target="_blank" rel="noopener">https://github.com/hawkular/hawkular-metrics</a></p>
+</blockquote>
+<ul>
+<li>Cassandra</li>
+</ul>
+<blockquote>
+<p>  Cassandra是Hawkular的分布式数据库</p>
+</blockquote>
+<p><a href="http://cassandra.apache.org/" target="_blank" rel="noopener">http://cassandra.apache.org/</a></p>
+<ul>
+<li>Hawkular OpenShift Agent</li>
+</ul>
+<blockquote>
+<p>  Hawkular OpenShift<br>  Agent是一个代理组件，用来收集来此pod的应用程序级别的数据。前提是pod公开自己希望被收集的信息。</p>
+</blockquote>
+<p><img src="media/6e089fd62397d30c1533bb14d818b607.jpg" alt=""></p>
+<p>OpenShift的监控采集方案的组件Heapster、Hawkular<br>Metrics、Canssandra数据库都是以容器的形式提供，并默认提供了可快速部署的Temaplate。</p>
+<h2 id="启用集群监控"><a href="#启用集群监控" class="headerlink" title="启用集群监控"></a>启用集群监控</h2><p>版本1.4之前OpenShift<br>Origin提供template的方式，供用户安装Metrics组件，从版本1.5开始到当前环境的3.6版本，OpenShift<br>Origin开始已Ansible Playbook的方式安装Metris组件。</p>
+<p>Playbook URL：./openshift-ansible/playbooks/common/openshift-cluster/<br>openshift_metrics.yml</p>
+<table>
+<thead>
+<tr>
+<th>由于部署需要联网下载docker 镜像，网络原因导致失败，提前下载。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在infra-node上下载以下镜像，并保证infrra-node物理内存>4G</td>
+</tr>
+<tr>
+<td>docker pull docker.io/openshift/origin-metrics-heapster:latest docker pull docker.io/openshift/origin-metrics-hawkular-metrics:latest docker pull docker.io/openshift/origin-metrics-heapster:lates</td>
+</tr>
+<tr>
+<td></td>
+</tr>
+<tr>
+<td>开始部署Metric组件</td>
+</tr>
+<tr>
+<td>ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml \ -e openshift_metrics_install_metrics=True \ -e openshift_metrics_hawkular_hostname=hawkular-metrics.example.com</td>
+</tr>
+<tr>
+<td>因为测试使用临时存储，若要持久化存储： ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml \ -e openshift_metrics_install_metrics=True \ -e openshift_metrics_hawkular_hostname=hawkular-metrics.example.com \ -e openshift_metrics_cassandra_storage_type=pv</td>
+</tr>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+<tr>
+<td>oc project openshift-infra</td>
+</tr>
+<tr>
+<td>oc get po</td>
+</tr>
+<tr>
+<td><a href="./media/image3.png">./media/image3.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="使用集群监控"><a href="#使用集群监控" class="headerlink" title="使用集群监控"></a>使用集群监控</h2><table>
+<thead>
+<tr>
+<th>部署完成后，在OpenShift的Web控制台，进入某一个Pod的详情页面，单机Metrics页签，可以看到当前Pod的CPU，内存及网络的使用情况，如下图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><img src="media/723b74430b2819fc8b4f872e804a4d8f.png" alt=""></p>
+<h2 id="集群监控容量规划"><a href="#集群监控容量规划" class="headerlink" title="集群监控容量规划"></a>集群监控容量规划</h2><p>OpenShift<br>Origin监控存储使用的是Cassandra数据库。默认设置，监控数据存储七天，七天后，Cassandra开始清除旧数据。已删除的Pod和Project的监控数据不会自动清除，只要超过7天才会被删除</p>
+<table>
+<thead>
+<tr>
+<th>Pod运行累计数据表</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>1000Pod</td>
+<td>10000Pod</td>
+</tr>
+<tr>
+<td>24小时Cassandra数据占用</td>
+<td>2.5GB</td>
+<td>11.4GB</td>
+</tr>
+<tr>
+<td>7天Cassandra数据占用</td>
+<td>20GB</td>
+<td>90GB</td>
+</tr>
+</tbody>
+</table>
+<h2 id="监控组件配置"><a href="#监控组件配置" class="headerlink" title="监控组件配置"></a>监控组件配置</h2><p>在实际环境中，强烈建议为Cassandra数据库配置后端持久化存储，并且规划好容量。此外根据集群以及应用规模，可以调整Hawkular<br>Metrics及Cassandra数据库的实例数量，保证性能及相应速度。</p>
+<p>详细关于监控的配置项，参考官方文档：<a href="https://docs.openshift.org/3.6/install_config/cluster_metrics.html" target="_blank" rel="noopener">https://docs.openshift.org/3.6/install_config/cluster_metrics.html</a></p>
+<h2 id="监控接口"><a href="#监控接口" class="headerlink" title="监控接口"></a>监控接口</h2><p>OpenShift的监控信息最终都存放在Hawkular<br>Metrics后端的Cassandra数据库中。可以访问Hawkular<br>Metrics的RESTful接口获取其中的信息，着对需要将OpenShift的监控和企业现有监控对接有很大帮助。</p>
+<p>Heapster已配置通过API访问，并且需要cluster-reader或cluster-admin权限。</p>
+<table>
+<thead>
+<tr>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>curl -H “Authorization: Bearer \$(oc whoami -t)” \ -X GET https://\${KUBERNETES_MASTER}/api/v1/proxy/namespaces/openshift-infra/services/https:heapster:/validate</td>
+</tr>
+</tbody>
+</table>
+<p>更多API接口信息，参考Heapster项目：</p>
+<p><a href="https://github.com/kubernetes/heapster/" target="_blank" rel="noopener">https://github.com/kubernetes/heapster/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-日志管理/" rel="next" title="OpenShift-日志管理">
+                <i class="fa fa-chevron-left"></i> OpenShift-日志管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-运维管理/" rel="prev" title="OpenShift-运维管理">
+                OpenShift-运维管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启用集群监控"><span class="nav-number">2.</span> <span class="nav-text">启用集群监控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用集群监控"><span class="nav-number">3.</span> <span class="nav-text">使用集群监控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群监控容量规划"><span class="nav-number">4.</span> <span class="nav-text">集群监控容量规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监控组件配置"><span class="nav-number">5.</span> <span class="nav-text">监控组件配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监控接口"><span class="nav-number">6.</span> <span class="nav-text">监控接口</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

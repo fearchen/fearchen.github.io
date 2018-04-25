@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rm -rf /*" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="创建S2I项目   s2i create nginx-centos7-s2i nginx-centos7     ./media/image1.png    准备S2I脚本assemble   #!/bin/bash -e # # S2I assemble script for the ‘nginx-centos7’ image. # The ‘assemble’ script builds yo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenShift-构建自动化-Nginx">
+<meta property="og:url" content="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-S2i-Nginx/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="创建S2I项目   s2i create nginx-centos7-s2i nginx-centos7     ./media/image1.png    准备S2I脚本assemble   #!/bin/bash -e # # S2I assemble script for the ‘nginx-centos7’ image. # The ‘assemble’ script builds yo">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-25T02:03:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenShift-构建自动化-Nginx">
+<meta name="twitter:description" content="创建S2I项目   s2i create nginx-centos7-s2i nginx-centos7     ./media/image1.png    准备S2I脚本assemble   #!/bin/bash -e # # S2I assemble script for the ‘nginx-centos7’ image. # The ‘assemble’ script builds yo">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-S2i-Nginx/"/>
+
+
+
+
+
+  <title>OpenShift-构建自动化-Nginx | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-S2i-Nginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenShift-构建自动化-Nginx</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:19+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="创建S2I项目"><a href="#创建S2I项目" class="headerlink" title="创建S2I项目"></a>创建S2I项目</h2><table>
+<thead>
+<tr>
+<th>s2i create nginx-centos7-s2i nginx-centos7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image1.png">./media/image1.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="准备S2I脚本"><a href="#准备S2I脚本" class="headerlink" title="准备S2I脚本"></a>准备S2I脚本</h2><h2 id="assemble"><a href="#assemble" class="headerlink" title="assemble"></a>assemble</h2><table>
+<thead>
+<tr>
+<th>#!/bin/bash -e # # S2I assemble script for the ‘nginx-centos7’ image. # The ‘assemble’ script builds your application source so that it is ready to run. # # For more information refer to the documentation: # <a href="https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md</a> # if [[ “\$1” == “-h” ]]; then # If the ‘nginx-centos7’ assemble script is executed with ‘-h’ flag, # print the usage. exec /usr/libexec/s2i/usage fi # Restore artifacts from the previous build (if they exist). # We set them here just for show, but you will need to set this up with your logic # according to the application directory that you chose. #if [ “\$(ls /tmp/artifacts/ 2>/dev/null)” ]; then # echo “—> Restoring build artifacts…” # mv /tmp/artifacts/* \<your directory="" here\=""> #fi # Override the default nginx index.html file. # This is what we consider in this example ‘installing the application’ # here you can go ahead an replace this with the actual building of python modules, # bundle install, and anything else you need. echo “—> Building and installing application from source…” if [ -f /tmp/src/nginx.conf ]; then mv /tmp/src/nginx.conf /etc/nginx/nginx.conf fi if [ “\$(ls -A /tmp/src)” ]; then mv /tmp/src/* /usr/share/nginx/html/ fi</your></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><table>
+<thead>
+<tr>
+<th>#!/bin/bash -e # The run script executes the server that runs your application. # # For more information see the documentation: # <a href="https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md</a> # # We will turn off daemonizing for the nginx process so that the container # doesn’t exit after the process runs. exec /usr/sbin/nginx -g “daemon off;”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="save-artifacts"><a href="#save-artifacts" class="headerlink" title="save-artifacts"></a>save-artifacts</h2><table>
+<thead>
+<tr>
+<th>#!/bin/sh -e # # S2I save-artifacts script for the ‘nginx-centos7’ image. # The save-artifacts script streams a tar archive to standard output. # The archive contains the files and folders you want to re-use in the next build. # # For more information see the documentation: # <a href="https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md</a> # #tar cf - \<your files="" here\=""></your></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="usage"><a href="#usage" class="headerlink" title="usage"></a>usage</h2><table>
+<thead>
+<tr>
+<th>#!/bin/bash -e cat \&lt;\&lt;EOF This is the nginx-centos7 S2I image: To use it, install S2I: <a href="https://github.com/openshift/source-to-image" target="_blank" rel="noopener">https://github.com/openshift/source-to-image</a> Sample invocation: s2i build test/test-app nginx-centos7 nginx-centos7-app You can then run the resulting image via: docker run -d -p 8080:8080 nginx-centos7-app and see the test via <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> EOF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="准备Dockfile"><a href="#准备Dockfile" class="headerlink" title="准备Dockfile"></a>准备Dockfile</h2><table>
+<thead>
+<tr>
+<th># nginx-centos7 # Here you can use whatever base image is relevant for your application. FROM centos:centos7 # Here you can specify the maintainer for the image that you’re building LABEL maintainer=”Chen Fei \&lt;chenf\@inno-view.cn>“ # Export an environment variable that provides information about the application version. # Replace this with the version for your application. ENV NGINX_VERSION=1.6.3 # Set the labels that are used for OpenShift to describe the builder image. LABEL io.k8s.description=”Nginx Webserver” \ io.k8s.display-name=”Nginx 1.6.3” \ io.openshift.expose-services=”8080:http” \ io.openshift.tags=”builder,webserver,html,nginx” \ # this label tells s2i where to find its mandatory scripts # (run, assemble, save-artifacts) io.openshift.s2i.scripts-url=”image:///usr/libexec/s2i” # Install the nginx web server package and clean the yum cache RUN yum install -y epel-release &amp;&amp; \ yum install -y –setopt=tsflags=nodocs nginx &amp;&amp; \ yum clean all # Change the default port for nginx # Required if you plan on running images as a non-root user). RUN sed -i ‘s/80/8080/‘ /etc/nginx/nginx.conf RUN sed -i ‘s/user nginx;//‘ /etc/nginx/nginx.conf # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way COPY ./s2i/bin/ /usr/libexec/s2i RUN chown -R 1001:1001 /usr/share/nginx RUN chown -R 1001:1001 /var/log/nginx RUN chown -R 1001:1001 /var/lib/nginx RUN touch /run/nginx.pid RUN chown -R 1001:1001 /run/nginx.pid RUN chown -R 1001:1001 /etc/nginx USER 1001 # Set the default port for applications built using this image EXPOSE 8080 # Modify the usage script in your application dir to inform the user how to run # this image. CMD [“/usr/libexec/s2i/usage”]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="生成Builder-Image"><a href="#生成Builder-Image" class="headerlink" title="生成Builder Image"></a>生成Builder Image</h2><table>
+<thead>
+<tr>
+<th>docker build -t nginx-centos7 .</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="上传OpenShift"><a href="#上传OpenShift" class="headerlink" title="上传OpenShift"></a>上传OpenShift</h2><h2 id="上传到Harbor"><a href="#上传到Harbor" class="headerlink" title="上传到Harbor"></a>上传到Harbor</h2><table>
+<thead>
+<tr>
+<th>docker tag nginx-centos7:latest dtr.ivops.cn:5443/openshift-chenf/nginx-centos7:latest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker push dtr.ivops.cn:5443/openshift-chenf/nginx-centos7:latest</td>
+</tr>
+</tbody>
+</table>
+<h2 id="创建Image-Stream"><a href="#创建Image-Stream" class="headerlink" title="创建Image Stream"></a>创建Image Stream</h2><table>
+<thead>
+<tr>
+<th>oc import-image dtr.ivops.cn:5443/openshift-chenf/nginx-centos7 -n openshift –confirm –insecure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>添加Builder tags</td>
+</tr>
+<tr>
+<td>oc edit is nginx-centos7 -n openshift</td>
+</tr>
+<tr>
+<td><a href="./media/image3.png">./media/image3.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image4.png">./media/image4.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="根据源代码构建"><a href="#根据源代码构建" class="headerlink" title="根据源代码构建"></a>根据源代码构建</h2><table>
+<thead>
+<tr>
+<th><a href="./media/image5.png">./media/image5.png</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Builds:</td>
+</tr>
+<tr>
+<td><a href="./media/image6.png">./media/image6.png</a></td>
+</tr>
+<tr>
+<td>完成</td>
+</tr>
+<tr>
+<td><a href="./media/image7.png">./media/image7.png</a></td>
+</tr>
+<tr>
+<td>验证应用</td>
+</tr>
+<tr>
+<td><a href="./media/image8.png">./media/image8.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="代码更新"><a href="#代码更新" class="headerlink" title="代码更新"></a>代码更新</h2><table>
+<thead>
+<tr>
+<th>代码侧有版本更新，重新构建</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image9.png">./media/image9.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image10.png">./media/image10.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image11.png">./media/image11.png</a></td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-构建自动化-NodeJS/" rel="next" title="OpenShift-构建自动化-NodeJS">
+                <i class="fa fa-chevron-left"></i> OpenShift-构建自动化-NodeJS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-核心组件和概念/" rel="prev" title="OpenShift-核心组件和概念">
+                OpenShift-核心组件和概念 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建S2I项目"><span class="nav-number">1.</span> <span class="nav-text">创建S2I项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备S2I脚本"><span class="nav-number">2.</span> <span class="nav-text">准备S2I脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#assemble"><span class="nav-number">3.</span> <span class="nav-text">assemble</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#run"><span class="nav-number">4.</span> <span class="nav-text">run</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#save-artifacts"><span class="nav-number">5.</span> <span class="nav-text">save-artifacts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usage"><span class="nav-number">6.</span> <span class="nav-text">usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备Dockfile"><span class="nav-number">7.</span> <span class="nav-text">准备Dockfile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成Builder-Image"><span class="nav-number">8.</span> <span class="nav-text">生成Builder Image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传OpenShift"><span class="nav-number">9.</span> <span class="nav-text">上传OpenShift</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传到Harbor"><span class="nav-number">10.</span> <span class="nav-text">上传到Harbor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Image-Stream"><span class="nav-number">11.</span> <span class="nav-text">创建Image Stream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据源代码构建"><span class="nav-number">12.</span> <span class="nav-text">根据源代码构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码更新"><span class="nav-number">13.</span> <span class="nav-text">代码更新</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

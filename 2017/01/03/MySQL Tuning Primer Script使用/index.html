@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tuning-script," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="脚本站点：https://launchpad.net/mysql-tuning-primer 下载URL：https://launchpadlibrarian.net/78745738/tuning-primer.sh 安装mariadb： a. yum install mariadb mariadb-server 启动并设置开机启动： a. systemctl start mariadb b.">
+<meta name="keywords" content="tuning-script">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL Tuning Primer Script使用（Mysql调优脚本）">
+<meta property="og:url" content="http://fearchen.github.io/2017/01/03/MySQL Tuning Primer Script使用/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="脚本站点：https://launchpad.net/mysql-tuning-primer 下载URL：https://launchpadlibrarian.net/78745738/tuning-primer.sh 安装mariadb： a. yum install mariadb mariadb-server 启动并设置开机启动： a. systemctl start mariadb b.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-01-03T05:44:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL Tuning Primer Script使用（Mysql调优脚本）">
+<meta name="twitter:description" content="脚本站点：https://launchpad.net/mysql-tuning-primer 下载URL：https://launchpadlibrarian.net/78745738/tuning-primer.sh 安装mariadb： a. yum install mariadb mariadb-server 启动并设置开机启动： a. systemctl start mariadb b.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2017/01/03/MySQL Tuning Primer Script使用/"/>
+
+
+
+
+
+  <title>MySQL Tuning Primer Script使用（Mysql调优脚本） | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MySQL Tuning Primer Script使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL Tuning Primer Script使用（Mysql调优脚本）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">
+                2017-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li>脚本站点：<a href="https://launchpad.net/mysql-tuning-primer" target="_blank" rel="noopener">https://launchpad.net/mysql-tuning-primer</a></li>
+<li>下载URL：<a href="https://launchpadlibrarian.net/78745738/tuning-primer.sh" target="_blank" rel="noopener">https://launchpadlibrarian.net/78745738/tuning-primer.sh</a></li>
+<li>安装mariadb：<br> a. yum install mariadb mariadb-server</li>
+<li>启动并设置开机启动：<br> a. systemctl start mariadb<br> b. systemctl enable mariadb</li>
+<li>初始化mariadb：<br> a. mysql_secure_installation</li>
+<li>测试登陆：<br> a. mysql -uroot -pdell_456</li>
+<li>将tuning-primer.sh拷贝到my.cnf的同级目录</li>
+<li>运行：<br>[root@localhost etc]# sh tuning-primer.sh </li>
+</ol>
+<p>Using login values from ~/.my.cnf</p>
+<ul>
+<li>INITIAL LOGIN ATTEMPT FAILED -<br>Testing for stored webmin passwords:<br>None Found<br>Could not auto detect login info!<br>Found potential sockets: /var/lib/mysql/mysql.sock //找到一个mysql.sock<br>Using: /var/lib/mysql/mysql.sock //使用这个.sock文件<br>Would you like to provide a different socket?: [y/N] N //是否使用其他的socket<br>Do you have your login handy ? [y/N] : y //是否手动输入用户名和密码<br>User: root<br>Password: dell_456</li>
+</ul>
+<p>Would you like me to create a ~/.my.cnf file for you? [y/N] : N /是不是要帮你再创建一个my.cnf</p>
+<ol start="9">
+<li>运行结果：<br>– MYSQL PERFORMANCE TUNING PRIMER –<ul>
+<li>By: Matthew Montgomery -</li>
+</ul>
+</li>
+</ol>
+<p>MySQL Version 5.5.52-MariaDB x86_64</p>
+<p>Uptime = 0 days 0 hrs 7 min 2 sec<br>Avg. qps = 0<br>Total Questions = 39<br>Threads Connected = 1</p>
+<p>Warning: Server has not been running for at least 48hrs.<br>It may not be safe to use these recommendations  //告诉服务运行还不超过48个小时，这样不安全</p>
+<p>To find out more information on how each of these<br>runtime variables effects performance visit:<br><a href="http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html</a><br>Visit <a href="http://www.mysql.com/products/enterprise/advisors.html" target="_blank" rel="noopener">http://www.mysql.com/products/enterprise/advisors.html</a><br>for info about MySQL’s Enterprise Monitoring and Advisory Service</p>
+<p>SLOW QUERIES<br>The slow query log is NOT enabled.<br>Current long_query_time = 10.000000 sec.<br>You have 0 out of 60 that take longer than 10.000000 sec. to complete<br>Your long_query_time seems to be fine</p>
+<p>BINARY UPDATE LOG<br>The binary update log is NOT enabled.<br>You will not be able to do point in time recovery<br>See <a href="http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html</a><br>//告诉binary log没有设置生存时间，会一直保存下来，只到主服务器重起，<br>//并且binlog的同步并没有激活，如果服务器崩溃binlog数据将丢失</p>
+<p>WORKER THREADS<br>Current thread_cache_size = 0<br>Current threads_cached = 0<br>Current threads_per_sec = 1<br>Historic threads_per_sec = 0<br>Your thread_cache_size is fine</p>
+<p>MAX CONNECTIONS<br>Current max_connections = 151<br>Current threads_connected = 1<br>Historic max_used_connections = 1<br>The number of used connections is 0% of the configured maximum.<br>You are using less than 10% of your configured max_connections.<br>Lowering max_connections could help to avoid an over-allocation of memory<br>See “MEMORY USAGE” section to make sure you are not over-allocating<br>//告诉目前已连接的最大连接和设置的最大连接的比率差不多是0％，<br>//建议我把最大连接设置小一点，可以节省一点内存</p>
+<p>INNODB STATUS<br>Current InnoDB index space = 0 bytes<br>Current InnoDB data space = 0 bytes<br>Current InnoDB buffer pool free = 96 %<br>Current innodb_buffer_pool_size = 128 M<br>Depending on how much space your innodb indexes take up it may be safe<br>to increase this value to up to 2 / 3 of total system memory</p>
+<p>MEMORY USAGE<br>Max Memory Ever Allocated : 274 M<br>Configured Max Per-thread Buffers : 419 M<br>Configured Max Global Buffers : 272 M<br>Configured Max Memory Limit : 691 M<br>Physical Memory : 3.68 G<br>Max memory limit seem to be within acceptable norms</p>
+<p>KEY BUFFER<br>Current MyISAM index space = 99 K<br>Current key_buffer_size = 128 M<br>Key cache miss rate is 1 : 2<br>Key buffer free ratio = 81 %<br>Your key_buffer_size seems to be fine</p>
+<p>QUERY CACHE<br>Query cache is supported but not enabled  //查询缓存是支持的，但是没有激活<br>Perhaps you should set the query_cache_size  //建议我设置一下query_cache_size的大小</p>
+<p>SORT OPERATIONS<br>Current sort_buffer_size = 2 M<br>Current read_rnd_buffer_size = 256 K<br>No sort operations have been performed<br>Sort buffer seems to be fine</p>
+<p>JOINS<br>tuning-primer.sh: line 402: export: `2097152’: not a valid identifier<br>Current join_buffer_size = 132.00 K<br>You have had 0 queries where a join could not use an index properly<br>Your joins seem to be using indexes properly</p>
+<p>OPEN FILES LIMIT<br>Current open_files_limit = 1024 files<br>The open_files_limit should typically be set to at least 2x-3x<br>that of table_cache if you have heavy MyISAM usage.<br>Your open_files_limit value seems to be fine</p>
+<p>TABLE CACHE<br>Current table_open_cache = 400 tables<br>Current table_definition_cache = 400 tables<br>You have a total of 41 tables<br>You have 41 open tables.<br>The table_cache value seems to be fine</p>
+<p>TEMP TABLES<br>Current max_heap_table_size = 16 M<br>Current tmp_table_size = 16 M<br>Of 348 temp tables, 9% were created on disk<br>Created disk tmp tables ratio seems fine</p>
+<p>TABLE SCANS<br>Current read_buffer_size = 128 K<br>Current table scan ratio = 4 : 1<br>read_buffer_size seems to be fine</p>
+<p>TABLE LOCKING<br>Current Lock Wait ratio = 0 : 318<br>Your table locking seems to be fine</p>
+<ol start="10">
+<li>最后根据结果做相应的优化</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tuning-script/" rel="tag"># tuning-script</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/22/Markdown基本语法/" rel="next" title="Markdown基本语法">
+                <i class="fa fa-chevron-left"></i> Markdown基本语法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/03/linux漏洞扫描工具【lynis】/" rel="prev" title="Linux漏洞扫描工具【lynis】">
+                Linux漏洞扫描工具【lynis】 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

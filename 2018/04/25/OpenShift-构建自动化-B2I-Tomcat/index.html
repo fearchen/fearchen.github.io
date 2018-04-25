@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rm -rf /*" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="应用容器化方式 应用容器化，常见的方法有以下三种：     名称 举例 类别 适用场景 特点     本地构建 工程师编写Dockerfile，并手工在一台或多台主机上手工执行Docker Build命令构建应用镜像 人工 开发测试 简单   CI构建 Jenkins集群在CI流程中调用Maven执行构建，Maven 通过插件按指定的Dockerfile生成应用的镜像。 自动化 传统持续集成 常规">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenShift构建自动化-Tomcat8">
+<meta property="og:url" content="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="应用容器化方式 应用容器化，常见的方法有以下三种：     名称 举例 类别 适用场景 特点     本地构建 工程师编写Dockerfile，并手工在一台或多台主机上手工执行Docker Build命令构建应用镜像 人工 开发测试 简单   CI构建 Jenkins集群在CI流程中调用Maven执行构建，Maven 通过插件按指定的Dockerfile生成应用的镜像。 自动化 传统持续集成 常规">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/media/9512130e33c8b58ad83a039f55b0648f.png">
+<meta property="og:updated_time" content="2018-04-25T02:03:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenShift构建自动化-Tomcat8">
+<meta name="twitter:description" content="应用容器化方式 应用容器化，常见的方法有以下三种：     名称 举例 类别 适用场景 特点     本地构建 工程师编写Dockerfile，并手工在一台或多台主机上手工执行Docker Build命令构建应用镜像 人工 开发测试 简单   CI构建 Jenkins集群在CI流程中调用Maven执行构建，Maven 通过插件按指定的Dockerfile生成应用的镜像。 自动化 传统持续集成 常规">
+<meta name="twitter:image" content="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/media/9512130e33c8b58ad83a039f55b0648f.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/"/>
+
+
+
+
+
+  <title>OpenShift构建自动化-Tomcat8 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenShift构建自动化-Tomcat8</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:19+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="应用容器化方式"><a href="#应用容器化方式" class="headerlink" title="应用容器化方式"></a>应用容器化方式</h2><ul>
+<li>应用容器化，常见的方法有以下三种：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>举例</th>
+<th>类别</th>
+<th>适用场景</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本地构建</td>
+<td>工程师编写Dockerfile，并手工在一台或多台主机上手工执行Docker Build命令构建应用镜像</td>
+<td>人工</td>
+<td>开发测试</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>CI构建</td>
+<td>Jenkins集群在CI流程中调用Maven执行构建，Maven 通过插件按指定的Dockerfile生成应用的镜像。</td>
+<td>自动化</td>
+<td>传统持续集成</td>
+<td>常规CI方案</td>
+</tr>
+<tr>
+<td>Source 2 Image</td>
+<td>OpenShift在隔离的容器环境中进行应用的构建编译并生成应用的容器镜像</td>
+<td>自动化</td>
+<td>容器及微服务场景下的持续集成</td>
+<td>基于容器集群的CI方案</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>每个开发团队均需要编写Dockerfile</p>
+</li>
+<li><p>重复多次执行时间和人力成本陡增</p>
+</li>
+<li><p>每个开发团队均需要编写Dockerfile</p>
+</li>
+<li><p>微服务多语言多版本混合构建时无隔离</p>
+</li>
+<li><p>构建资源池不可动态扩展</p>
+</li>
+<li><p>资源利用率较低</p>
+</li>
+<li><p>开发团队通过容器镜像精确定义构建环境</p>
+</li>
+<li><p>基于容器的构建环境，提供更好的隔离性</p>
+</li>
+<li><p>满足多语言多版本微服务混合构建的场景</p>
+</li>
+<li><p>构建资源池可动态扩展，更灵活</p>
+</li>
+<li><p>构建与应用运行共享资源池降低运维工作量</p>
+</li>
+<li><p>资源按需投入及回收，利用率高</p>
+</li>
+<li><p>第一种本地构建最常见，也比较简单，但效率太低。</p>
+</li>
+<li><p>第二种方式是通过CI构建。这种方式则是比较传统的方法。需要指出的：CI/CD的实现，与容器并无必然的联系。在容器火之前，很多客户也基于Jenkins和虚拟机实现了CD/CD。只是容器轻量级的优势，更容易实现CI/CD。在红帽Openshift中，我们可以通过CI构建实现容器镜像。这种构建方式，实际上是在openshift中部署Jenkins<br>Slave Pod,在Slave Pod实现构建。红帽提供四种Jenkins Slave<br>Pod的镜像（根据应用开发语言的不同），有基于maven的，有基于nodejs的、基于.net的、也有基础镜像（使用者基于基础镜像进行构建）。</p>
+</li>
+<li><p>第三种方式是通过S2I的方式构建应用镜像。这种方式有第二种方式构建的优点（构建好的应用客户实现CI），并且比第二种方式效率更高、适用多种开发语言。</p>
+</li>
+</ul>
+<h2 id="S2I的应用容器化过程"><a href="#S2I的应用容器化过程" class="headerlink" title="S2I的应用容器化过程"></a>S2I的应用容器化过程</h2><ul>
+<li>S2I方式构建通常有6个步骤，下图为构建一个tomcat容器应用镜像示例：</li>
+</ul>
+<p><img src="media/9512130e33c8b58ad83a039f55b0648f.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>1．装S2I命令行工具：</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>指的是在构建builder的rhel/centos主机上安装s2i的命令行工具</td>
+</tr>
+<tr>
+<td>2．选定base image：</td>
+</tr>
+<tr>
+<td>也就是说，我们选则一个最初的原始docker image。在基础镜像的选择上，也需要一些考量。比如：我可以选择一个docker.io上的tomcat 镜像直接用，也可以选择一个centos的docker image安装tomcat。</td>
+</tr>
+<tr>
+<td>3．编写S2I脚本：</td>
+</tr>
+<tr>
+<td>S2I有四个脚本。在S2I脚本的编写中，我的经验是采取“反推法”。也就是应用镜像运行起来，到底需要assmble和run做什么，这两个脚本就应该怎么写。 在这个阶段，我们还需要书写Dockerfile，准备基于第二步选定的base image构建新的builder image。Dockerfile中需要定义S2I脚本的拷贝和执行，base image的名称、和应用相关的一些目录权限、用户和权限等。</td>
+</tr>
+<tr>
+<td>4．生成builder image。</td>
+</tr>
+<tr>
+<td>5．选定源码库。</td>
+</tr>
+<tr>
+<td>6．根据选定的代码地址和builder image，构建应用镜像并部署。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="安装S2I命令行工具"><a href="#安装S2I命令行工具" class="headerlink" title="安装S2I命令行工具"></a>安装S2I命令行工具</h2><table>
+<thead>
+<tr>
+<th>下载地址：<a href="https://github.com/openshift/source-to-image/releases" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/releases</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>curl -L -O <a href="https://github.com/openshift/source-to-image/releases/download/v1.1.8/source-to-image-v1.1.8-e3140d01-linux-amd64.tar.gz" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/releases/download/v1.1.8/source-to-image-v1.1.8-e3140d01-linux-amd64.tar.gz</a></td>
+</tr>
+<tr>
+<td>tar zxvf source-to-image-v1.1.8-e3140d01-linux-amd64.tar.gz</td>
+</tr>
+<tr>
+<td>mv s2i sti /usr/bin/</td>
+</tr>
+<tr>
+<td>s2i version</td>
+</tr>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="选定base-image"><a href="#选定base-image" class="headerlink" title="选定base image"></a>选定base image</h2><ul>
+<li><p>基于S2I构建一个tomcat容器应用镜像</p>
+</li>
+<li><p>选择centos的镜像，然后在dockerfile中指定安装tomcat</p>
+</li>
+<li><p>base image选择 openshift/base-centos7</p>
+</li>
+</ul>
+<h2 id="编写S2I脚本并书写Dockerfile"><a href="#编写S2I脚本并书写Dockerfile" class="headerlink" title="编写S2I脚本并书写Dockerfile"></a>编写S2I脚本并书写Dockerfile</h2><ul>
+<li>一个符合S2I/B2I的building image，在bin目录下，是需要包含如下四个脚本的：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>assemble脚本：</th>
+<th>这个脚本负责将外部代码库的代码下载到本地，并且进行编译打包。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run脚本：</td>
+<td>这个脚本负责运行assemble编译好的应用。</td>
+</tr>
+<tr>
+<td>save-artifacts脚本：</td>
+<td>save-artifacts脚本负责将构建所需要的所有依赖包收集到一个tar文件中。save-artifacts的好处是可以加速构建的过程。</td>
+</tr>
+<tr>
+<td>usage脚本：</td>
+<td>usage脚本是告诉使用者如何使用镜像。</td>
+</tr>
+<tr>
+<td>在S2I的四个脚本中，通常我们只会用到assemble和run两个脚本。实际上脚本的书写，和应用是关系很大的。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="创建S2I目录结构"><a href="#创建S2I目录结构" class="headerlink" title="创建S2I目录结构"></a>创建S2I目录结构</h3><table>
+<thead>
+<tr>
+<th>mkdir tomcat8-jdk8 &amp;&amp; cd tomcat8-jdk8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mkdir -p .s2i/bin touch .s2i/bin/assemble.sh touch .s2i/bin/run.sh touch .s2i/bin/usage.sh</td>
+</tr>
+<tr>
+<td>#也可以使用s2i create直接创建</td>
+</tr>
+</tbody>
+</table>
+<h3 id="配置assemble"><a href="#配置assemble" class="headerlink" title="配置assemble"></a>配置assemble</h3><table>
+<thead>
+<tr>
+<th>请记住如下脚本中的”WAR’s copied”输出，这在后文中将作为应用build成功的标志。 assemble 脚本的作用，就是将代码库的代码，拷贝到\$CATALINA_HOME/webapps下去运行。\$CATALINA_HOME变量在dockerfile中被指定成/tomcat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>echo “—> Installing application source…” cp -Rf /tmp/src/. \$CATALINA_HOME/webapps echo “WAR’s copied”</td>
+</tr>
+</tbody>
+</table>
+<h3 id="配置run"><a href="#配置run" class="headerlink" title="配置run"></a>配置run</h3><table>
+<thead>
+<tr>
+<th>run脚本的作用，就是当build包的应用镜像部署成功以后，启动镜像中的tomcat应用。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\${CATALINA_HOME}/bin/catalina.sh run</td>
+</tr>
+</tbody>
+</table>
+<h3 id="配置usage"><a href="#配置usage" class="headerlink" title="配置usage"></a>配置usage</h3><table>
+<thead>
+<tr>
+<th>#!/bin/bash -e cat \&lt;\&lt;EOF This is not an application image, please refer this documentation on using this image <a href="https://github.com/debianmaster/openshift-s2i-example.git" target="_blank" rel="noopener">https://github.com/debianmaster/openshift-s2i-example.git</a> EOF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="配置save-artifacts"><a href="#配置save-artifacts" class="headerlink" title="配置save-artifacts"></a>配置save-artifacts</h3><table>
+<thead>
+<tr>
+<th>#curl -o \$CATALINA_HOME/webapps/ROOT.war -O \${WAR_FILE_URL}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><p>编写Dockerfile</p>
+<ol>
+<li>指定base image并安装依赖包</li>
+</ol>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>vim tomcat8-jdk8/Dockerfile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FROM openshift/base-centos7 MAINTAINER Chen Fei (chenf\@inno-view.cn) ENV BUILDER_VERSION 1.1 RUN yum install wget -y; \ yum install tar -y; \ yum install unzip -y; \ yum install ca-certificates -y;\ yum install sudo -y;\ yum clean all -y ENV TOMCAT_MAJOR_VERSION 8 ENV TOMCAT_MINOR_VERSION 8.0.32 ENV CATALINA_HOME /tomcat</td>
+</tr>
+</tbody>
+</table>
+<h3 id="安装jdk和tomcat"><a href="#安装jdk和tomcat" class="headerlink" title="安装jdk和tomcat"></a>安装jdk和tomcat</h3><table>
+<thead>
+<tr>
+<th># Install openjdk 1.8 RUN yum install java-1.8.0-openjdk.x86_64* -y &amp;&amp; \ yum clean all -y &amp;&amp; \ rm -rf /var/lib/apt/lists/* # INSTALL TOMCAT WORKDIR / RUN wget -q -e use_proxy=yes <a href="https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.32/bin/apache-tomcat-8.0.32.tar.gz" target="_blank" rel="noopener">https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.32/bin/apache-tomcat-8.0.32.tar.gz</a> &amp;&amp; \ tar -zxf apache-tomcat-*.tar.gz &amp;&amp;\ rm -f apache-tomcat-*.tar.gz &amp;&amp; \ mv apache-tomcat* tomcat ENV JAVA_OPTS=”-Dtuf.environment=DEV -Dtuf.appFiles.rootDirectory=/TempDirRoot”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="创建用户、目录"><a href="#创建用户、目录" class="headerlink" title="创建用户、目录"></a>创建用户、目录</h3><table>
+<thead>
+<tr>
+<th>RUN groupadd -r safe RUN useradd -r -g safe safe RUN mkdir -p /tomcat/webapps /TempDirRoot /usr/libexec/s2i /tmp/src RUN chmod -R 755 /tomcat /TempDirRoot /tmp/src /usr/libexec/s2i /tomcat/bin RUN chown -R 1001:1001 /tomcat /TempDirRoot /tmp/src /usr/libexec/s2i /tomcat/bin RUN chmod -R 777 /tomcat /TempDirRoot RUN cd /tomcat/webapps/; rm -rf ROOT docs examples host-manager manager COPY ./.s2i/bin/ /usr/libexec/s2i RUN chmod -R 755 /usr/libexec/s2i USER 1001 EXPOSE 8080 CMD \$STI_SCRIPTS_PATH/usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="生成builder-image"><a href="#生成builder-image" class="headerlink" title="生成builder image"></a>生成builder image</h2><h3 id="生成builder-image-1"><a href="#生成builder-image-1" class="headerlink" title="生成builder image"></a>生成builder image</h3><table>
+<thead>
+<tr>
+<th>命名名字为tomcat8-jdk8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker build -t tomcat8-jdk8 .</td>
+</tr>
+</tbody>
+</table>
+<h3 id="验证builder-image"><a href="#验证builder-image" class="headerlink" title="验证builder image"></a>验证builder image</h3><table>
+<thead>
+<tr>
+<th>docker run -it d67311e72289 /bin/bash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前面拷贝的文件都在</td>
+</tr>
+<tr>
+<td><a href="./media/image3.png">./media/image3.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="OpenShift使用builder-image"><a href="#OpenShift使用builder-image" class="headerlink" title="OpenShift使用builder image"></a>OpenShift使用builder image</h2><h3 id="上传到内部docker-registry"><a href="#上传到内部docker-registry" class="headerlink" title="上传到内部docker registry"></a>上传到内部docker registry</h3><table>
+<thead>
+<tr>
+<th>docker tag tomcat8-jdk8:latest dtr.ivops.cn:5443/openshift-chenf/tomcat8-jdk8:latest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker push dtr.ivops.cn:5443/openshift-chenf/tomcat8-jdk8:latest</td>
+</tr>
+<tr>
+<td><a href="./media/image4.png">./media/image4.png</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="创建Image-Stream"><a href="#创建Image-Stream" class="headerlink" title="创建Image Stream"></a>创建Image Stream</h3><table>
+<thead>
+<tr>
+<th>要导入到openshift项目中，以使该Image Stream可以被其他项目引用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc import-image dtr.ivops.cn:5443/openshift-chenf/tomcat8-jdk8 -n openshift –confirm –insecure</td>
+</tr>
+<tr>
+<td><a href="./media/image5.png">./media/image5.png</a></td>
+</tr>
+<tr>
+<td>为了让openshift识别出这个镜像是S2I的Builder镜像，需要编辑刚刚导入的Image Stream。添加注解”tags”:”builder”</td>
+</tr>
+<tr>
+<td>oc edit is tomcat8-jdk8</td>
+</tr>
+<tr>
+<td><a href="./media/image6.png">./media/image6.png</a></td>
+</tr>
+<tr>
+<td>这样，在web控制台就能看到</td>
+</tr>
+<tr>
+<td><a href="./media/image7.png">./media/image7.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="选定代码库"><a href="#选定代码库" class="headerlink" title="选定代码库"></a>选定代码库</h2><table>
+<thead>
+<tr>
+<th>示例使用GitHub上的代码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>URL：<a href="https://github.com/debianmaster/sample-binaries.git" target="_blank" rel="noopener">https://github.com/debianmaster/sample-binaries.git</a></td>
+</tr>
+<tr>
+<td>war中的内容：</td>
+</tr>
+<tr>
+<td><a href="./media/image8.tiff">./media/image8.tiff</a></td>
+</tr>
+<tr>
+<td>查看war包中的index.html:</td>
+</tr>
+<tr>
+<td><a href="./media/image9.tiff">./media/image9.tiff</a></td>
+</tr>
+<tr>
+<td>查看hello.jsp中的代码：</td>
+</tr>
+<tr>
+<td><a href="./media/image10.tiff">./media/image10.tiff</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="根据选定的代码和builder-image，构建应用镜像并部署"><a href="#根据选定的代码和builder-image，构建应用镜像并部署" class="headerlink" title="根据选定的代码和builder image，构建应用镜像并部署"></a>根据选定的代码和builder image，构建应用镜像并部署</h2><table>
+<thead>
+<tr>
+<th>进入project</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc project test</td>
+</tr>
+<tr>
+<td>指定builder image的image stream和代码的git地址:</td>
+</tr>
+<tr>
+<td>oc new-app tomcat8-jdk8~<a href="https://github.com/debianmaster/sample-binaries.git" target="_blank" rel="noopener">https://github.com/debianmaster/sample-binaries.git</a> –name=’tomcat8-jdk8-war’</td>
+</tr>
+<tr>
+<td><a href="./media/image11.png">./media/image11.png</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="Build过程"><a href="#Build过程" class="headerlink" title="Build过程"></a>Build过程</h3><table>
+<thead>
+<tr>
+<th>第一部分：其实就是assemble脚本执行成功后的输出 第二部分：镜像构建成功以后，会先push到docker registry中</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image12.png">./media/image12.png</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="触发DC"><a href="#触发DC" class="headerlink" title="触发DC"></a>触发DC</h3><table>
+<thead>
+<tr>
+<th>再会根据build成功的镜像，触发dc，也就是部署一个应用的容器</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image13.png">./media/image13.png</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="部署完成"><a href="#部署完成" class="headerlink" title="部署完成"></a>部署完成</h3><table>
+<thead>
+<tr>
+<th><a href="./media/image14.png">./media/image14.png</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="添加route"><a href="#添加route" class="headerlink" title="添加route"></a>添加route</h3><table>
+<thead>
+<tr>
+<th><a href="./media/image15.png">./media/image15.png</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image16.png">./media/image16.png</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="测试访问"><a href="#测试访问" class="headerlink" title="测试访问"></a>测试访问</h3><table>
+<thead>
+<tr>
+<th>dnsmasq添加解析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vim /etc/dnsmasq.d/local.conf</td>
+</tr>
+<tr>
+<td><a href="./media/image17.png">./media/image17.png</a></td>
+</tr>
+<tr>
+<td>systemctl restart dnsmasq</td>
+</tr>
+<tr>
+<td><a href="./media/image18.png">./media/image18.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="生成Template"><a href="#生成Template" class="headerlink" title="生成Template"></a>生成Template</h2><table>
+<thead>
+<tr>
+<th>导出成yaml格式的template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc export is,bc,dc,svc –as-template=tomcat8-jdk8 > ./tomcat8-jdk8.yml</td>
+</tr>
+<tr>
+<td>导入</td>
+</tr>
+<tr>
+<td>oc create -f tomcat8-jdk8.yml -n openshift</td>
+</tr>
+<tr>
+<td><a href="./media/image19.png">./media/image19.png</a></td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-构建-Rabbitmq/" rel="next" title="OpenShift-构建-Rabbitmq">
+                <i class="fa fa-chevron-left"></i> OpenShift-构建-Rabbitmq
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-构建自动化-NodeJS/" rel="prev" title="OpenShift-构建自动化-NodeJS">
+                OpenShift-构建自动化-NodeJS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用容器化方式"><span class="nav-number">1.</span> <span class="nav-text">应用容器化方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S2I的应用容器化过程"><span class="nav-number">2.</span> <span class="nav-text">S2I的应用容器化过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装S2I命令行工具"><span class="nav-number">3.</span> <span class="nav-text">安装S2I命令行工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选定base-image"><span class="nav-number">4.</span> <span class="nav-text">选定base image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写S2I脚本并书写Dockerfile"><span class="nav-number">5.</span> <span class="nav-text">编写S2I脚本并书写Dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建S2I目录结构"><span class="nav-number">5.1.</span> <span class="nav-text">创建S2I目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置assemble"><span class="nav-number">5.2.</span> <span class="nav-text">配置assemble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置run"><span class="nav-number">5.3.</span> <span class="nav-text">配置run</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置usage"><span class="nav-number">5.4.</span> <span class="nav-text">配置usage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置save-artifacts"><span class="nav-number">5.5.</span> <span class="nav-text">配置save-artifacts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装jdk和tomcat"><span class="nav-number">5.6.</span> <span class="nav-text">安装jdk和tomcat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户、目录"><span class="nav-number">5.7.</span> <span class="nav-text">创建用户、目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成builder-image"><span class="nav-number">6.</span> <span class="nav-text">生成builder image</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成builder-image-1"><span class="nav-number">6.1.</span> <span class="nav-text">生成builder image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证builder-image"><span class="nav-number">6.2.</span> <span class="nav-text">验证builder image</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenShift使用builder-image"><span class="nav-number">7.</span> <span class="nav-text">OpenShift使用builder image</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上传到内部docker-registry"><span class="nav-number">7.1.</span> <span class="nav-text">上传到内部docker registry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Image-Stream"><span class="nav-number">7.2.</span> <span class="nav-text">创建Image Stream</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选定代码库"><span class="nav-number">8.</span> <span class="nav-text">选定代码库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据选定的代码和builder-image，构建应用镜像并部署"><span class="nav-number">9.</span> <span class="nav-text">根据选定的代码和builder image，构建应用镜像并部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Build过程"><span class="nav-number">9.1.</span> <span class="nav-text">Build过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发DC"><span class="nav-number">9.2.</span> <span class="nav-text">触发DC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署完成"><span class="nav-number">9.3.</span> <span class="nav-text">部署完成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加route"><span class="nav-number">9.4.</span> <span class="nav-text">添加route</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试访问"><span class="nav-number">9.5.</span> <span class="nav-text">测试访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成Template"><span class="nav-number">10.</span> <span class="nav-text">生成Template</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

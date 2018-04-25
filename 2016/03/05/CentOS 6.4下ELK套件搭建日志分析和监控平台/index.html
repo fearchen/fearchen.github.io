@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="elk," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介：ELK套件（ELK stack）是指ElasticSearch、Logstash和Kibana三件套。这三个软件可以组成一套日志分析和监控工具。由于三个软件各自的版本号太多，建议采用ElasticSearch官网推荐的搭配组合：http://www.elasticsearch.org/overview/elkdownloads/ELK官网：https://www.elastic.co/参考链">
+<meta name="keywords" content="elk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS 6.4下ELK套件搭建日志分析和监控平台">
+<meta property="og:url" content="http://fearchen.github.io/2016/03/05/CentOS 6.4下ELK套件搭建日志分析和监控平台/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="简介：ELK套件（ELK stack）是指ElasticSearch、Logstash和Kibana三件套。这三个软件可以组成一套日志分析和监控工具。由于三个软件各自的版本号太多，建议采用ElasticSearch官网推荐的搭配组合：http://www.elasticsearch.org/overview/elkdownloads/ELK官网：https://www.elastic.co/参考链">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-01-03T05:41:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS 6.4下ELK套件搭建日志分析和监控平台">
+<meta name="twitter:description" content="简介：ELK套件（ELK stack）是指ElasticSearch、Logstash和Kibana三件套。这三个软件可以组成一套日志分析和监控工具。由于三个软件各自的版本号太多，建议采用ElasticSearch官网推荐的搭配组合：http://www.elasticsearch.org/overview/elkdownloads/ELK官网：https://www.elastic.co/参考链">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2016/03/05/CentOS 6.4下ELK套件搭建日志分析和监控平台/"/>
+
+
+
+
+
+  <title>CentOS 6.4下ELK套件搭建日志分析和监控平台 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/CentOS 6.4下ELK套件搭建日志分析和监控平台/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CentOS 6.4下ELK套件搭建日志分析和监控平台</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:30:59+08:00">
+                2016-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ELK/" itemprop="url" rel="index">
+                    <span itemprop="name">ELK</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>简介：<br>ELK套件（ELK stack）是指ElasticSearch、Logstash和Kibana三件套。这三个软件可以组成一套日志分析和监控工具。<br>由于三个软件各自的版本号太多，建议采用ElasticSearch官网推荐的搭配组合：<a href="http://www.elasticsearch.org/overview/elkdownloads/" target="_blank" rel="noopener">http://www.elasticsearch.org/overview/elkdownloads/</a><br>ELK官网：<a href="https://www.elastic.co/" target="_blank" rel="noopener">https://www.elastic.co/</a><br>参考链接：<br><a href="http://blog.kazaff.me/2015/06/05/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E6%9E%B6%E6%9E%84--ELK/" target="_blank" rel="noopener">http://blog.kazaff.me/2015/06/05/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E6%9E%B6%E6%9E%84--ELK/</a><br>这次使用版本：<br>ElasticSearch-2.1.1<br>Logstash-2.1.0<br>Kibana-4.3.1</p>
+<p>开启iptables允许</p>
+<h1 id="vim-etc-sysconfig-iptables"><a href="#vim-etc-sysconfig-iptables" class="headerlink" title="vim /etc/sysconfig/iptables"></a>vim /etc/sysconfig/iptables</h1><p>-A INPUT -m state –state NEW -m tcp -p tcp –dport 80 -j ACCEPT</p>
+<p>-A INPUT -m state –state NEW -m tcp -p tcp –dport 9200 -j ACCEPT</p>
+<p>-A INPUT -m state –state NEW -m tcp -p tcp –dport 9292 -j ACCEPT</p>
+<p>-A INPUT -m state –state NEW -m tcp -p tcp –dport 5601 -j ACCEPT</p>
+<h1 id="service-iptables-restart"><a href="#service-iptables-restart" class="headerlink" title="service iptables restart"></a>service iptables restart</h1><p>安装JDK<br>yum -y install java-1.7.0-openjdk*</p>
+<p>安装Logstash<br>（Logstash默认的对外服务的端口是9292。）<br>下载地址：<a href="https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.1.0.tar.gz" target="_blank" rel="noopener">https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.1.0.tar.gz</a></p>
+<p>上传到/root/back/下：<br>解压：<br>tar zxvf logstash-all-plugins-2.1.0.tar.gz<br>拷贝到/usr/local/下：<br>cp -r logstash-2.1.0 /usr/local/</p>
+<p>/usr/local/logstash-2.1.0/下创建了两个文件夹，分别用来放配置文件和日志<br>mkdir conf logs</p>
+<p>测试logstash：<br>./bin/logstash -e ‘input { stdin { } } output { stdout {} }’</p>
+<p>安装ElasticSearch<br>（ElasticSearch默认的对外服务的HTTP端口是9200，节点间交互的TCP端口是9300。）<br>下载链接：<a href="https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.1.1/elasticsearch-2.1.1.tar.gz" target="_blank" rel="noopener">https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.1.1/elasticsearch-2.1.1.tar.gz</a><br>上传到/root/backup/下：<br>解压：<br>tar zxvf elasticsearch-2.1.1.tar.gz<br>拷贝到/usr/local/下：<br>cp -r elasticsearch-2.1.1 /usr/local/</p>
+<p>创建elasticsearch运行时所需要的系统账号（elasticsearch-2.0.0版本禁止使用root账号直接运行，所以需要创建账号用于运行elasticsearch）<br>useradd elasticsearch<br>切换到elasticsearch用户启动<br>su - elasticsearch<br>启动：<br>./bin/elasticsearch -d</p>
+<p>安装kibana<br>下载地址：<a href="https://download.elastic.co/kibana/kibana/kibana-4.3.1-linux-x64.tar.gz" target="_blank" rel="noopener">https://download.elastic.co/kibana/kibana/kibana-4.3.1-linux-x64.tar.gz</a><br>上传到/root/backup/下：<br>解压：<br>tar zxvf kibana-4.3.1-linux-x64.tar.gz<br>拷贝到/usr/local/下<br>cp -r kibana-4.3.1-linux-x64 /usr/local/<br>启动：<br>./bin/kibana</p>
+<p>使用的是kibana默认的配置，现在可以直接在浏览器中访问： <a href="http://127.0.0.1:5601" target="_blank" rel="noopener">http://127.0.0.1:5601</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/elk/" rel="tag"># elk</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/05/Centos7.2部署elk过程/" rel="next" title="Centos7.2部署elk过程">
+                <i class="fa fa-chevron-left"></i> Centos7.2部署elk过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/05/sh脚本myql数据库导出导入/" rel="prev" title="sh脚本myql数据库导出导入">
+                sh脚本myql数据库导出导入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vim-etc-sysconfig-iptables"><span class="nav-number">1.</span> <span class="nav-text">vim /etc/sysconfig/iptables</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#service-iptables-restart"><span class="nav-number">2.</span> <span class="nav-text">service iptables restart</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

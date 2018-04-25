@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="k8s," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="环境： a. 192.168.254.160 k8s01.160 b. 192.168.254.161 k8s02.161 c. 192.168.254.162 k8s03.162 d. 配置好hosts和hostname e. 保证时间一致 以下在所有机器上安装 a. 配置阿里k8s源cat &amp;lt; /etc/yum.repos.d/kubernetes.repo[kubernetes]na">
+<meta name="keywords" content="k8s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kuadm搭建kubernetes 1.5">
+<meta property="og:url" content="http://fearchen.github.io/2017/02/16/kuadm搭建kubernetes 1.5/index.html">
+<meta property="og:site_name" content="Fearchen&#39;s Blog">
+<meta property="og:description" content="环境： a. 192.168.254.160 k8s01.160 b. 192.168.254.161 k8s02.161 c. 192.168.254.162 k8s03.162 d. 配置好hosts和hostname e. 保证时间一致 以下在所有机器上安装 a. 配置阿里k8s源cat &amp;lt; /etc/yum.repos.d/kubernetes.repo[kubernetes]na">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-02-16T06:38:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kuadm搭建kubernetes 1.5">
+<meta name="twitter:description" content="环境： a. 192.168.254.160 k8s01.160 b. 192.168.254.161 k8s02.161 c. 192.168.254.162 k8s03.162 d. 配置好hosts和hostname e. 保证时间一致 以下在所有机器上安装 a. 配置阿里k8s源cat &amp;lt; /etc/yum.repos.d/kubernetes.repo[kubernetes]na">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fearchen.github.io/2017/02/16/kuadm搭建kubernetes 1.5/"/>
+
+
+
+
+
+  <title>kuadm搭建kubernetes 1.5 | Fearchen's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fearchen's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/02/16/kuadm搭建kubernetes 1.5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">kuadm搭建kubernetes 1.5</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-16T14:38:06+08:00">
+                2017-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li>环境：<br> a. 192.168.254.160 k8s01.160<br> b. 192.168.254.161 k8s02.161<br> c. 192.168.254.162 k8s03.162<br> d. 配置好hosts和hostname<br> e. 保证时间一致</li>
+<li>以下在所有机器上安装<br> a. 配置阿里k8s源<br>cat &lt;<eof> /etc/yum.repos.d/kubernetes.repo<br>[kubernetes]<br>name=Kubernetes<br>baseurl=<a href="http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64" target="_blank" rel="noopener">http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</a><br>enabled=1<br>gpgcheck=0<br>EOF<br> b. setenforce 0 //为了让docker可以访问文件系统<br> c. sed -i ‘s/SELINUX=enforcing/SELINUX=permissive/‘ /etc/selinux/config<br> d. systemctl stop firewalld &amp;&amp; systemctl disable firewalld<br> e. yum install -y docker kubelet kubeadm kubectl kubernetes-cni<br> f. systemctl enable docker &amp;&amp; systemctl start docker<br> g. 提前将google相关的一些image下载到本地会加快构建集群的速度，，这里用自己提前自动构建的镜像<br>images=(kube-proxy-amd64:v1.5.2 \<br>   kube-discovery-amd64:1.0 \<br>   kubedns-amd64:1.9 \<br>   kube-scheduler-amd64:v1.5.2 \<br>   kube-controller-manager-amd64:v1.5.2 \<br>   kube-apiserver-amd64:v1.5.2 \<br>   etcd-amd64:3.0.14-kubeadm \<br>   kube-dnsmasq-amd64:1.4 \<br>   exechealthz-amd64:v1.2.0 \<br>   pause-amd64:3.0 \<br>   kubernetes-dashboard-amd64:v1.5.1)<br>for imageName in ${images[@]} ; do<br>docker pull fearchan/$imageName<br>docker tag fearchan/$imageName gcr.io/google_containers/$imageName<br>docker rmi fearchan/$imageName<br>done</eof></li>
+<li><p>初始化Maseter节点<br> a. systemctl enable kubelet &amp;&amp; systemctl start kubelet<br> b. kubeadm init</p>
+<p> c. 初始化成功，记住生成的token值以便后续加节点</p>
+<pre><code>i. 记住：kubeadm join --token=50d2be.a776c64bb95af773 192.168.254.160
+</code></pre></li>
+<li><p>添加node<br> a. systemctl enable kubelet &amp;&amp; systemctl start kubelet<br> b. kubeadm join –token=50d2be.a776c64bb95af773 192.168.254.160</p>
+<p> c. 添加成功</p>
+</li>
+<li><p>在Master测试<br> a. kubectl get nodes</p>
+</li>
+<li><p>部署 weave 网络，不部署weave，dns无法启动<br> a. 浏览器打开<a href="https://git.io/weave-kube，下载好weave-daemonset.yaml文件传到服务器上" target="_blank" rel="noopener">https://git.io/weave-kube，下载好weave-daemonset.yaml文件传到服务器上</a><br> b. kubectl create -f weave-daemonset.yaml</p>
+</li>
+<li><p>部署 dashboard<br> a. 下载<a href="https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml文件，并做修改，是为了使用本地dashboard镜像" target="_blank" rel="noopener">https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml文件，并做修改，是为了使用本地dashboard镜像</a><br> b. 编辑 yaml 改一下 imagePullPolicy，把 Always 改成 IfNotPresent(本地没有再去拉取) 或者 Never(从不去拉取) 即可<br> c. 保证本地有gcr.io/google_containers/kubernetes-dashboard-amd64:v1.5.1<br> d. 执行：</p>
+<pre><code>i. kubectl create -f kubernetes-dashboard.yaml
+</code></pre><p> e. 等待创建完成：</p>
+<pre><code>i. kubectl get pod --all-namespaces | grep dashboard
+</code></pre><p> f. 查看暴露出来的端口即可访问</p>
+<pre><code>i. kubectl describe svc kubernetes-dashboard --namespace=kube-system
+</code></pre><p> g. 访问地址：</p>
+<pre><code>i. http://192.168.254.160:31618/
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/k8s/" rel="tag"># k8s</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/09/hub.docker上搭建仓库并上传镜像/" rel="next" title="hub.docker上搭建仓库并上传镜像">
+                <i class="fa fa-chevron-left"></i> hub.docker上搭建仓库并上传镜像
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/OpenShift-混合云管理/" rel="prev" title="OpenShift-混合云管理">
+                OpenShift-混合云管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chen Fei</p>
+              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
