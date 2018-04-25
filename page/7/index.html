@@ -160,7 +160,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <p class="site-subtitle">把我的过程记录下来，以免以后忘了</p>
       
   </div>
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MariaDB调整最大连接数－centos7.2/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MySQL Tuning Primer Script使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
@@ -261,7 +261,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/MariaDB调整最大连接数－centos7.2/" itemprop="url">MariaDB调整最大连接数－centos7.2</a></h1>
+                <a class="post-title-link" href="/2017/01/03/MySQL Tuning Primer Script使用/" itemprop="url">MySQL Tuning Primer Script使用（Mysql调优脚本）</a></h1>
         
 
         <div class="post-meta">
@@ -296,8 +296,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MariaDB/" itemprop="url" rel="index">
-                    <span itemprop="name">MariaDB</span>
+                  <a href="/categories/Mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql</span>
                   </a>
                 </span>
 
@@ -335,14 +335,49 @@
       
         
           
-            <p>首先查看mariadb数据库最大连接数，默认为151</p>
-<p>show variables like ‘max_connections’;</p>
-<p>配置/etc/my.cnf<br>[mysqld]新添加一行如下参数：<br>max_connections=1000<br>重启mariadb服务，再次查看mariadb数据库最大连接数，可以看到最大连接数是214，并非我们设置的1000。</p>
-<p>这是由于mariadb有默认打开文件数限制。可以通过配置/usr/lib/systemd/system/mariadb.service来调大打开文件数目。</p>
-<p>配置/usr/lib/systemd/system/mariadb.service<br>[Service]新添加两行如下参数：<br>LimitNOFILE=10000<br>LimitNPROC=10000</p>
-<p>重新加载系统服务，并重启mariadb服务<br>systemctl daemon-reload<br>systemctl restart mariadb.service</p>
-<p>再次查看mariadb数据库最大连接数，可以看到最大连接数已经是1000</p>
-<p>参考链接：<br><a href="http://blog.csdn.net/hnhuangyiyang/article/details/51132141" target="_blank" rel="noopener">http://blog.csdn.net/hnhuangyiyang/article/details/51132141</a></p>
+            <ol>
+<li>脚本站点：<a href="https://launchpad.net/mysql-tuning-primer" target="_blank" rel="noopener">https://launchpad.net/mysql-tuning-primer</a></li>
+<li>下载URL：<a href="https://launchpadlibrarian.net/78745738/tuning-primer.sh" target="_blank" rel="noopener">https://launchpadlibrarian.net/78745738/tuning-primer.sh</a></li>
+<li>安装mariadb：<br> a. yum install mariadb mariadb-server</li>
+<li>启动并设置开机启动：<br> a. systemctl start mariadb<br> b. systemctl enable mariadb</li>
+<li>初始化mariadb：<br> a. mysql_secure_installation</li>
+<li>测试登陆：<br> a. mysql -uroot -pdell_456</li>
+<li>将tuning-primer.sh拷贝到my.cnf的同级目录</li>
+<li>运行：<br>[root@localhost etc]# sh tuning-primer.sh </li>
+</ol>
+<p>Using login values from ~/.my.cnf</p>
+<ul>
+<li>INITIAL LOGIN ATTEMPT FAILED -<br>Testing for stored webmin passwords:<br>None Found<br>Could not auto detect login info!<br>Found potential sockets: /var/lib/mysql/mysql.sock //找到一个mysql.sock<br>Using: /var/lib/mysql/mysql.sock //使用这个.sock文件<br>Would you like to provide a different socket?: [y/N] N //是否使用其他的socket<br>Do you have your login handy ? [y/N] : y //是否手动输入用户名和密码<br>User: root<br>Password: dell_456</li>
+</ul>
+<p>Would you like me to create a ~/.my.cnf file for you? [y/N] : N /是不是要帮你再创建一个my.cnf</p>
+<ol start="9">
+<li>运行结果：<br>– MYSQL PERFORMANCE TUNING PRIMER –<ul>
+<li>By: Matthew Montgomery -</li>
+</ul>
+</li>
+</ol>
+<p>MySQL Version 5.5.52-MariaDB x86_64</p>
+<p>Uptime = 0 days 0 hrs 7 min 2 sec<br>Avg. qps = 0<br>Total Questions = 39<br>Threads Connected = 1</p>
+<p>Warning: Server has not been running for at least 48hrs.<br>It may not be safe to use these recommendations  //告诉服务运行还不超过48个小时，这样不安全</p>
+<p>To find out more information on how each of these<br>runtime variables effects performance visit:<br><a href="http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html</a><br>Visit <a href="http://www.mysql.com/products/enterprise/advisors.html" target="_blank" rel="noopener">http://www.mysql.com/products/enterprise/advisors.html</a><br>for info about MySQL’s Enterprise Monitoring and Advisory Service</p>
+<p>SLOW QUERIES<br>The slow query log is NOT enabled.<br>Current long_query_time = 10.000000 sec.<br>You have 0 out of 60 that take longer than 10.000000 sec. to complete<br>Your long_query_time seems to be fine</p>
+<p>BINARY UPDATE LOG<br>The binary update log is NOT enabled.<br>You will not be able to do point in time recovery<br>See <a href="http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html</a><br>//告诉binary log没有设置生存时间，会一直保存下来，只到主服务器重起，<br>//并且binlog的同步并没有激活，如果服务器崩溃binlog数据将丢失</p>
+<p>WORKER THREADS<br>Current thread_cache_size = 0<br>Current threads_cached = 0<br>Current threads_per_sec = 1<br>Historic threads_per_sec = 0<br>Your thread_cache_size is fine</p>
+<p>MAX CONNECTIONS<br>Current max_connections = 151<br>Current threads_connected = 1<br>Historic max_used_connections = 1<br>The number of used connections is 0% of the configured maximum.<br>You are using less than 10% of your configured max_connections.<br>Lowering max_connections could help to avoid an over-allocation of memory<br>See “MEMORY USAGE” section to make sure you are not over-allocating<br>//告诉目前已连接的最大连接和设置的最大连接的比率差不多是0％，<br>//建议我把最大连接设置小一点，可以节省一点内存</p>
+<p>INNODB STATUS<br>Current InnoDB index space = 0 bytes<br>Current InnoDB data space = 0 bytes<br>Current InnoDB buffer pool free = 96 %<br>Current innodb_buffer_pool_size = 128 M<br>Depending on how much space your innodb indexes take up it may be safe<br>to increase this value to up to 2 / 3 of total system memory</p>
+<p>MEMORY USAGE<br>Max Memory Ever Allocated : 274 M<br>Configured Max Per-thread Buffers : 419 M<br>Configured Max Global Buffers : 272 M<br>Configured Max Memory Limit : 691 M<br>Physical Memory : 3.68 G<br>Max memory limit seem to be within acceptable norms</p>
+<p>KEY BUFFER<br>Current MyISAM index space = 99 K<br>Current key_buffer_size = 128 M<br>Key cache miss rate is 1 : 2<br>Key buffer free ratio = 81 %<br>Your key_buffer_size seems to be fine</p>
+<p>QUERY CACHE<br>Query cache is supported but not enabled  //查询缓存是支持的，但是没有激活<br>Perhaps you should set the query_cache_size  //建议我设置一下query_cache_size的大小</p>
+<p>SORT OPERATIONS<br>Current sort_buffer_size = 2 M<br>Current read_rnd_buffer_size = 256 K<br>No sort operations have been performed<br>Sort buffer seems to be fine</p>
+<p>JOINS<br>tuning-primer.sh: line 402: export: `2097152’: not a valid identifier<br>Current join_buffer_size = 132.00 K<br>You have had 0 queries where a join could not use an index properly<br>Your joins seem to be using indexes properly</p>
+<p>OPEN FILES LIMIT<br>Current open_files_limit = 1024 files<br>The open_files_limit should typically be set to at least 2x-3x<br>that of table_cache if you have heavy MyISAM usage.<br>Your open_files_limit value seems to be fine</p>
+<p>TABLE CACHE<br>Current table_open_cache = 400 tables<br>Current table_definition_cache = 400 tables<br>You have a total of 41 tables<br>You have 41 open tables.<br>The table_cache value seems to be fine</p>
+<p>TEMP TABLES<br>Current max_heap_table_size = 16 M<br>Current tmp_table_size = 16 M<br>Of 348 temp tables, 9% were created on disk<br>Created disk tmp tables ratio seems fine</p>
+<p>TABLE SCANS<br>Current read_buffer_size = 128 K<br>Current table scan ratio = 4 : 1<br>read_buffer_size seems to be fine</p>
+<p>TABLE LOCKING<br>Current Lock Wait ratio = 0 : 318<br>Your table locking seems to be fine</p>
+<ol start="10">
+<li>最后根据结果做相应的优化</li>
+</ol>
 
           
         
