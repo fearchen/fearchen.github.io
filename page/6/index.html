@@ -200,16 +200,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
@@ -252,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/系统&&容器docker管理工具【cockpit】/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/RHCA-RH442(性能调优)学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
@@ -271,7 +261,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/系统&&容器docker管理工具【cockpit】/" itemprop="url">系统&&容器docker管理工具【cockpit】</a></h1>
+                <a class="post-title-link" href="/2017/01/03/RHCA-RH442(性能调优)学习笔记/" itemprop="url">RHCA-RH442(性能调优)学习笔记</a></h1>
         
 
         <div class="post-meta">
@@ -306,8 +296,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Centos/" itemprop="url" rel="index">
-                    <span itemprop="name">Centos</span>
+                  <a href="/categories/RHCA/" itemprop="url" rel="index">
+                    <span itemprop="name">RHCA</span>
                   </a>
                 </span>
 
@@ -345,17 +335,93 @@
       
         
           
-            <ol>
-<li>安装软件包：<br> a. yum -y install cockpit<br> b. systemctl start cockpit<br> c. systemctl enable cockpit.socket<br> d. systemctl stop firewalld</li>
-<li><p>服务启动了就可以直接浏览器访问：<br> a. <a href="https://IP:9090/" target="_blank" rel="noopener">https://IP:9090/</a><br> b. root/系统密码</p>
-</li>
-<li><p>容器管理<br> a. “Start Docker”开始安装docker服务</p>
-</li>
+            <p>RHCA 442-1(1)</p>
+<ol>
+<li>Business Level Tuning &gt; Application Level Tuning &gt; Kernel Level Tuning(RH442)</li>
+<li>grep CPU /proc/cpuinfo</li>
+<li>lscpu<br> a. lscpu -p</li>
+<li>cat /proc/cpuinfo<br> a. cat /proc/meminfo<br>RHCA 442-1(2)</li>
+<li>dmesg(实时kernel信息)</li>
+<li>/var/log/dmesg(开机kernel信息写入)</li>
+<li>getconf -a</li>
+<li>x85info(yum install x86info -y)</li>
+<li>dmidecode<br> a. dmidecode -t 0</li>
+<li>cd /sys/class/dmi/id/</li>
+<li>lspci<br> a. lspci -v<br> b. lspci -vv<br> c. lspci -vvv</li>
+<li>lsusb<br> a. lsusb -v</li>
+<li>ethtool eth0</li>
+<li>powertop(yum install powertop -y)</li>
+<li>sosreport<br>RHCA 442-2(1)</li>
+<li>K=1000<br> a. Ki=1024</li>
+<li>vmstat<br> a. vmstat 1 5<br> b. dd if=/dev/zero of=/dev/null<br> c. buffer= buffer cache(文件描述数据)<br> d. cache= page cache(文件内容数据)<br> e. echo 3 &gt; /proc/sys/vm/drop_cahces<br> f. bi= block in<br> g. bo= block out</li>
+<li>iostat<br> a. iostat -x sda 1</li>
+<li>mpstat<br> a. mpstat 1<br> b. mpstat -p 0 1</li>
+<li>sar<br> a. yum install sysstat<br> b. cat /etc/cron.d/sysstat<br> c. LANG=C sar -q(CPU负载)<br> d. LANG=C sar -b(I/O状况)<pre><code>i. sar -b -s 17:00:00 -e 19:00:00
+</code></pre> e. LANG=C sar -p 0 (第一颗cpu状态)<br> f. LAMD=C sar -d(磁盘状态)<br> g. LANG=C sar -n DEV|EDEV(网络信息)<br> h. cd /var/log/sa/<br> i. cat /etc/sysconfig/sysstat</li>
+<li>awk<br> a. awk -F: ‘{print $1}’ /etc/passwd<br> b. df -P | awk ‘{print $1 “ is mount on “ $NF}’<br> c. awk -F: ‘BEGIN{print “User List:”} {print $1} END{print “Done.”}’ /etc/passwd<br> d. df -hP | awk ‘BEGIN{print “File System status:”}{print $1,$(NF-2)} END{print “Done.”}’<br> e. awk -F: ‘/^r/ {print $1}’ /etc/passwd<br> f. awk -F: ‘/^[a-z]<em>t:.</em>/ {print $1}’ /etc/passwd<br> g. sar -q | awk ‘/^[^a-z]+$/{print $1,$4,$5,$6}’ &gt; /tmp/cpudata</li>
+<li>gnuplot<br> a. yum install gnuplot -t<br> b. gnuplot<pre><code>i. set xdata tim
+ii. set timefmt &quot;%H:%M:%S&quot;
+iii. plot &quot;/tmp/cpudata&quot; using 1:2 with lines
+</code></pre></li>
 </ol>
-<ol start="4">
-<li><p>添加其他节点</p>
+<p>RHCA 442-2(2)</p>
+<ol>
+<li>Little’s Law</li>
+<li>L(lenth) = A(arrival time)*  W(wait time)</li>
+<li>W(wait time) = Q(queue time) +S(service time)</li>
+<li>S(service time) = St(sys time) + Ut(user time)</li>
+<li>time command<br> a. time updatedb<br> b. echo 3 &gt; /proc/sys/vm/drop_caches<br> c. time updatedb<br>RHCA 442-3(1-2)</li>
+<li>lsmod<br> a. ls /lib/modules/3.10.0-327.el7.x86_64/    (kernel模块)<br> b. ll /boot/vmlinuz-3.10.0-327.el7.x86_64    (kernel本身)</li>
+<li>modinfo<br> a. modinfo st<br> b. modinfo -p st<br> c. modinfo usb_storage<br> d. modinfo sx8</li>
+<li>modprobe<br> a. modprobe st</li>
+<li>rmmod<br> a. rmmod st</li>
+<li>/etc/modprobe.d/my.conf<br> a. options usb_storage delay_user = 3<br> b. options st buffer_kbs = 64<br> c. options sx8 max_queue = 15</li>
+<li>/sys/module/$(mname)/paraments/$(pname)<br> a. more /sys/module/usb_storage/parameters/delay_use</li>
+<li>more /etc/sysconfig/modules/st.modules (开机模块加载)</li>
+<li>I/O Schedulers<br> a. cfq,deadline,anticipatory,noop<br> b. cat /sys/block/sda/queue/scheduler  ([]中是当前电梯算法)<br> c. more /sys/block/sda/queue/nr_requests<br> d. more /sys/block/sda/queue/read_ahead_kb<br> e. echo cfq &gt; /sys/block/sda/queue/scheduler<br> f. more /sys/block/sda/queue/scheduler<br> g. ll /sys/block/sda/queue/iosched<br>RHCA 442-3(3)</li>
+<li>tuned<br> a. yum info tuned<br> b. yum install tuned -y<br> c. tuned-adm active<br> d. tuned-adm list<br> e. tuned-adm profile desktop<br> f. ll /usr/lib/tuned/<br> g. cp -a /usr/lib/tuned/desktop/* /etc/tuned/ex442/<br>RHCA 442-4(1)</li>
+<li>CPU Scheduling</li>
+<li>CFS Scheduler<br> a. virtual time</li>
+<li>chrt command<br> a. chrt -f 10 top<br> b. chrt -r 1 md5sum /dev/zero<br>RHCA 442-4(2)</li>
+<li>x86info -c</li>
+<li>valgrind -tool=cahcegrind command1</li>
+<li>perf stat -e cahce-misses command<br>RHCA 442-4(3-4)</li>
+<li>pam_limits<br> a. vi /etc/security/limits.conf<pre><code>i. user    hard        cpu        1
+</code></pre> b. ulimit -a<br> c. cgroup<pre><code>i. service cgconfig start
+ii. service cgred start
+iii. lssubsys -m
+iv. echo 0 &gt; /sys/devices/system/cpu/cpu1/online (下线cpu)
+v. mount -t tmpfs none /mnt/tmpfs (物理内存挂成分区)
+</code></pre>RHCA 442-5(1)</li>
+<li>strace<br> a. kernel space(system call)<br> b. strace updatedb<br> c. strace -e trace=network ping -c1 i<br> d. strace -e trace=file ls /<br> e. strace -p 1<br> f. strace -c updatedb</li>
+<li>ltrace<br> a. user space(library call [glibc])<br> b. ltrace updatedb<br> c. ltrace ls /</li>
+<li>systemtap<br> a. yum install kernel-debuginfo -y<pre><code>i. yum install systemtap
+ii. stap -c /usr/share/doc/systemtap-client-3.0/examples/profiling/topsys.stp
+</code></pre> b. stap -v abc.stap<br> c. staprun abc.ko<br> d. stapusr group<br> e. stapdev group<br>RHCA 442-5(2)</li>
+<li>Paging<br> a. pages，x86 normal page size is 4KiB<br> b. getconf PAGE_SIZE</li>
+<li>VSZ</li>
+<li>RSS </li>
+<li>TLB</li>
+<li>mount -t hugetlbfs none /muntpoint</li>
+<li>Tune per-BDI Flush Threads<br> a. vm.dirty_expire_centisecs<br> b. vm.dirty_writeback_centisecs</li>
+<li>Oou of Menory(OOM)</li>
+<li>Memory Overcommit<br> a. sysctl -p | grep  overcommit_memory<br> b. sysctl -p | grep  overcommit_ratio<br> c. grep Coomitted_AS /proc/meminfo</li>
+<li>SysV IPC<br> a. ipcs<br> b. ipcs -l<br> c. Tune Semaphores<br> d. Message queues<br> e. Shared memory<pre><code>i. kernel.shmmni
+ii. kernel.shmmax
+iii. kernel.shmall
+</code></pre>RHCA 442-6(1)</li>
+<li>File Systems<br> a. EXT3<br> b. EXT4<br> c. XFS<br> d. BTRFS</li>
+<li>External Journaling<br> a. mkfs.ext4 -O journal_dev -b 4096 /dev/vdb1<br> b. mkfs.ext4 -J device=/dev/vdb1 -b 4096 /dev/vda3<br> c. blkid<br>RHCA 442-6(2)</li>
+<li>yum install qperf</li>
+<li>sysctl net.ipv4.tcp_low_latency</li>
+<li>net.ipv4.tcp_mem/net.ipv4.udp_mem(单位pages)</li>
+<li>tc qdisc show</li>
+<li><p>Bonding mode<br> a. balance-rr: mode 0<br> b. actice-backup: mode 1<br> c. 802.3ad: mode 4(工作在2层，需要配交换机)<br> d. cat /proc/net/bonding/bond0 </p>
 </li>
-<li></li>
+<li><p>MTU(最大传输单元 default 1500bytes)<br> a. TCP protocol headers 52 (52/1500=3.5% overhead)<br> b. TDP protocol headers 28 (28/1500=1.9% overhead)<br> c. Jumbo Frames (MTU bigger that 1500 需要配置交换机)</p>
+<pre><code>i. Official maximum size is 9000 bytes (52/9000=0.58% overhead
+ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
+</code></pre></li>
 </ol>
 
           
@@ -571,7 +637,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MariaDB调整最大连接数－centos7.2/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MySQL Tuning Primer Script使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
@@ -590,7 +656,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/MariaDB调整最大连接数－centos7.2/" itemprop="url">MariaDB调整最大连接数－centos7.2</a></h1>
+                <a class="post-title-link" href="/2017/01/03/MySQL Tuning Primer Script使用/" itemprop="url">MySQL Tuning Primer Script使用（Mysql调优脚本）</a></h1>
         
 
         <div class="post-meta">
@@ -625,8 +691,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MariaDB/" itemprop="url" rel="index">
-                    <span itemprop="name">MariaDB</span>
+                  <a href="/categories/Mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql</span>
                   </a>
                 </span>
 
@@ -664,14 +730,49 @@
       
         
           
-            <p>首先查看mariadb数据库最大连接数，默认为151</p>
-<p>show variables like ‘max_connections’;</p>
-<p>配置/etc/my.cnf<br>[mysqld]新添加一行如下参数：<br>max_connections=1000<br>重启mariadb服务，再次查看mariadb数据库最大连接数，可以看到最大连接数是214，并非我们设置的1000。</p>
-<p>这是由于mariadb有默认打开文件数限制。可以通过配置/usr/lib/systemd/system/mariadb.service来调大打开文件数目。</p>
-<p>配置/usr/lib/systemd/system/mariadb.service<br>[Service]新添加两行如下参数：<br>LimitNOFILE=10000<br>LimitNPROC=10000</p>
-<p>重新加载系统服务，并重启mariadb服务<br>systemctl daemon-reload<br>systemctl restart mariadb.service</p>
-<p>再次查看mariadb数据库最大连接数，可以看到最大连接数已经是1000</p>
-<p>参考链接：<br><a href="http://blog.csdn.net/hnhuangyiyang/article/details/51132141" target="_blank" rel="noopener">http://blog.csdn.net/hnhuangyiyang/article/details/51132141</a></p>
+            <ol>
+<li>脚本站点：<a href="https://launchpad.net/mysql-tuning-primer" target="_blank" rel="noopener">https://launchpad.net/mysql-tuning-primer</a></li>
+<li>下载URL：<a href="https://launchpadlibrarian.net/78745738/tuning-primer.sh" target="_blank" rel="noopener">https://launchpadlibrarian.net/78745738/tuning-primer.sh</a></li>
+<li>安装mariadb：<br> a. yum install mariadb mariadb-server</li>
+<li>启动并设置开机启动：<br> a. systemctl start mariadb<br> b. systemctl enable mariadb</li>
+<li>初始化mariadb：<br> a. mysql_secure_installation</li>
+<li>测试登陆：<br> a. mysql -uroot -pdell_456</li>
+<li>将tuning-primer.sh拷贝到my.cnf的同级目录</li>
+<li>运行：<br>[root@localhost etc]# sh tuning-primer.sh </li>
+</ol>
+<p>Using login values from ~/.my.cnf</p>
+<ul>
+<li>INITIAL LOGIN ATTEMPT FAILED -<br>Testing for stored webmin passwords:<br>None Found<br>Could not auto detect login info!<br>Found potential sockets: /var/lib/mysql/mysql.sock //找到一个mysql.sock<br>Using: /var/lib/mysql/mysql.sock //使用这个.sock文件<br>Would you like to provide a different socket?: [y/N] N //是否使用其他的socket<br>Do you have your login handy ? [y/N] : y //是否手动输入用户名和密码<br>User: root<br>Password: dell_456</li>
+</ul>
+<p>Would you like me to create a ~/.my.cnf file for you? [y/N] : N /是不是要帮你再创建一个my.cnf</p>
+<ol start="9">
+<li>运行结果：<br>– MYSQL PERFORMANCE TUNING PRIMER –<ul>
+<li>By: Matthew Montgomery -</li>
+</ul>
+</li>
+</ol>
+<p>MySQL Version 5.5.52-MariaDB x86_64</p>
+<p>Uptime = 0 days 0 hrs 7 min 2 sec<br>Avg. qps = 0<br>Total Questions = 39<br>Threads Connected = 1</p>
+<p>Warning: Server has not been running for at least 48hrs.<br>It may not be safe to use these recommendations  //告诉服务运行还不超过48个小时，这样不安全</p>
+<p>To find out more information on how each of these<br>runtime variables effects performance visit:<br><a href="http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html</a><br>Visit <a href="http://www.mysql.com/products/enterprise/advisors.html" target="_blank" rel="noopener">http://www.mysql.com/products/enterprise/advisors.html</a><br>for info about MySQL’s Enterprise Monitoring and Advisory Service</p>
+<p>SLOW QUERIES<br>The slow query log is NOT enabled.<br>Current long_query_time = 10.000000 sec.<br>You have 0 out of 60 that take longer than 10.000000 sec. to complete<br>Your long_query_time seems to be fine</p>
+<p>BINARY UPDATE LOG<br>The binary update log is NOT enabled.<br>You will not be able to do point in time recovery<br>See <a href="http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html</a><br>//告诉binary log没有设置生存时间，会一直保存下来，只到主服务器重起，<br>//并且binlog的同步并没有激活，如果服务器崩溃binlog数据将丢失</p>
+<p>WORKER THREADS<br>Current thread_cache_size = 0<br>Current threads_cached = 0<br>Current threads_per_sec = 1<br>Historic threads_per_sec = 0<br>Your thread_cache_size is fine</p>
+<p>MAX CONNECTIONS<br>Current max_connections = 151<br>Current threads_connected = 1<br>Historic max_used_connections = 1<br>The number of used connections is 0% of the configured maximum.<br>You are using less than 10% of your configured max_connections.<br>Lowering max_connections could help to avoid an over-allocation of memory<br>See “MEMORY USAGE” section to make sure you are not over-allocating<br>//告诉目前已连接的最大连接和设置的最大连接的比率差不多是0％，<br>//建议我把最大连接设置小一点，可以节省一点内存</p>
+<p>INNODB STATUS<br>Current InnoDB index space = 0 bytes<br>Current InnoDB data space = 0 bytes<br>Current InnoDB buffer pool free = 96 %<br>Current innodb_buffer_pool_size = 128 M<br>Depending on how much space your innodb indexes take up it may be safe<br>to increase this value to up to 2 / 3 of total system memory</p>
+<p>MEMORY USAGE<br>Max Memory Ever Allocated : 274 M<br>Configured Max Per-thread Buffers : 419 M<br>Configured Max Global Buffers : 272 M<br>Configured Max Memory Limit : 691 M<br>Physical Memory : 3.68 G<br>Max memory limit seem to be within acceptable norms</p>
+<p>KEY BUFFER<br>Current MyISAM index space = 99 K<br>Current key_buffer_size = 128 M<br>Key cache miss rate is 1 : 2<br>Key buffer free ratio = 81 %<br>Your key_buffer_size seems to be fine</p>
+<p>QUERY CACHE<br>Query cache is supported but not enabled  //查询缓存是支持的，但是没有激活<br>Perhaps you should set the query_cache_size  //建议我设置一下query_cache_size的大小</p>
+<p>SORT OPERATIONS<br>Current sort_buffer_size = 2 M<br>Current read_rnd_buffer_size = 256 K<br>No sort operations have been performed<br>Sort buffer seems to be fine</p>
+<p>JOINS<br>tuning-primer.sh: line 402: export: `2097152’: not a valid identifier<br>Current join_buffer_size = 132.00 K<br>You have had 0 queries where a join could not use an index properly<br>Your joins seem to be using indexes properly</p>
+<p>OPEN FILES LIMIT<br>Current open_files_limit = 1024 files<br>The open_files_limit should typically be set to at least 2x-3x<br>that of table_cache if you have heavy MyISAM usage.<br>Your open_files_limit value seems to be fine</p>
+<p>TABLE CACHE<br>Current table_open_cache = 400 tables<br>Current table_definition_cache = 400 tables<br>You have a total of 41 tables<br>You have 41 open tables.<br>The table_cache value seems to be fine</p>
+<p>TEMP TABLES<br>Current max_heap_table_size = 16 M<br>Current tmp_table_size = 16 M<br>Of 348 temp tables, 9% were created on disk<br>Created disk tmp tables ratio seems fine</p>
+<p>TABLE SCANS<br>Current read_buffer_size = 128 K<br>Current table scan ratio = 4 : 1<br>read_buffer_size seems to be fine</p>
+<p>TABLE LOCKING<br>Current Lock Wait ratio = 0 : 318<br>Your table locking seems to be fine</p>
+<ol start="10">
+<li>最后根据结果做相应的优化</li>
+</ol>
 
           
         
@@ -720,7 +821,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/RHCA-RH442(性能调优)学习笔记/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/系统&&容器docker管理工具【cockpit】/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
@@ -739,7 +840,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/RHCA-RH442(性能调优)学习笔记/" itemprop="url">RHCA-RH442(性能调优)学习笔记</a></h1>
+                <a class="post-title-link" href="/2017/01/03/系统&&容器docker管理工具【cockpit】/" itemprop="url">系统&&容器docker管理工具【cockpit】</a></h1>
         
 
         <div class="post-meta">
@@ -774,8 +875,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/RHCA/" itemprop="url" rel="index">
-                    <span itemprop="name">RHCA</span>
+                  <a href="/categories/Centos/" itemprop="url" rel="index">
+                    <span itemprop="name">Centos</span>
                   </a>
                 </span>
 
@@ -813,93 +914,17 @@
       
         
           
-            <p>RHCA 442-1(1)</p>
-<ol>
-<li>Business Level Tuning &gt; Application Level Tuning &gt; Kernel Level Tuning(RH442)</li>
-<li>grep CPU /proc/cpuinfo</li>
-<li>lscpu<br> a. lscpu -p</li>
-<li>cat /proc/cpuinfo<br> a. cat /proc/meminfo<br>RHCA 442-1(2)</li>
-<li>dmesg(实时kernel信息)</li>
-<li>/var/log/dmesg(开机kernel信息写入)</li>
-<li>getconf -a</li>
-<li>x85info(yum install x86info -y)</li>
-<li>dmidecode<br> a. dmidecode -t 0</li>
-<li>cd /sys/class/dmi/id/</li>
-<li>lspci<br> a. lspci -v<br> b. lspci -vv<br> c. lspci -vvv</li>
-<li>lsusb<br> a. lsusb -v</li>
-<li>ethtool eth0</li>
-<li>powertop(yum install powertop -y)</li>
-<li>sosreport<br>RHCA 442-2(1)</li>
-<li>K=1000<br> a. Ki=1024</li>
-<li>vmstat<br> a. vmstat 1 5<br> b. dd if=/dev/zero of=/dev/null<br> c. buffer= buffer cache(文件描述数据)<br> d. cache= page cache(文件内容数据)<br> e. echo 3 &gt; /proc/sys/vm/drop_cahces<br> f. bi= block in<br> g. bo= block out</li>
-<li>iostat<br> a. iostat -x sda 1</li>
-<li>mpstat<br> a. mpstat 1<br> b. mpstat -p 0 1</li>
-<li>sar<br> a. yum install sysstat<br> b. cat /etc/cron.d/sysstat<br> c. LANG=C sar -q(CPU负载)<br> d. LANG=C sar -b(I/O状况)<pre><code>i. sar -b -s 17:00:00 -e 19:00:00
-</code></pre> e. LANG=C sar -p 0 (第一颗cpu状态)<br> f. LAMD=C sar -d(磁盘状态)<br> g. LANG=C sar -n DEV|EDEV(网络信息)<br> h. cd /var/log/sa/<br> i. cat /etc/sysconfig/sysstat</li>
-<li>awk<br> a. awk -F: ‘{print $1}’ /etc/passwd<br> b. df -P | awk ‘{print $1 “ is mount on “ $NF}’<br> c. awk -F: ‘BEGIN{print “User List:”} {print $1} END{print “Done.”}’ /etc/passwd<br> d. df -hP | awk ‘BEGIN{print “File System status:”}{print $1,$(NF-2)} END{print “Done.”}’<br> e. awk -F: ‘/^r/ {print $1}’ /etc/passwd<br> f. awk -F: ‘/^[a-z]<em>t:.</em>/ {print $1}’ /etc/passwd<br> g. sar -q | awk ‘/^[^a-z]+$/{print $1,$4,$5,$6}’ &gt; /tmp/cpudata</li>
-<li>gnuplot<br> a. yum install gnuplot -t<br> b. gnuplot<pre><code>i. set xdata tim
-ii. set timefmt &quot;%H:%M:%S&quot;
-iii. plot &quot;/tmp/cpudata&quot; using 1:2 with lines
-</code></pre></li>
-</ol>
-<p>RHCA 442-2(2)</p>
-<ol>
-<li>Little’s Law</li>
-<li>L(lenth) = A(arrival time)*  W(wait time)</li>
-<li>W(wait time) = Q(queue time) +S(service time)</li>
-<li>S(service time) = St(sys time) + Ut(user time)</li>
-<li>time command<br> a. time updatedb<br> b. echo 3 &gt; /proc/sys/vm/drop_caches<br> c. time updatedb<br>RHCA 442-3(1-2)</li>
-<li>lsmod<br> a. ls /lib/modules/3.10.0-327.el7.x86_64/    (kernel模块)<br> b. ll /boot/vmlinuz-3.10.0-327.el7.x86_64    (kernel本身)</li>
-<li>modinfo<br> a. modinfo st<br> b. modinfo -p st<br> c. modinfo usb_storage<br> d. modinfo sx8</li>
-<li>modprobe<br> a. modprobe st</li>
-<li>rmmod<br> a. rmmod st</li>
-<li>/etc/modprobe.d/my.conf<br> a. options usb_storage delay_user = 3<br> b. options st buffer_kbs = 64<br> c. options sx8 max_queue = 15</li>
-<li>/sys/module/$(mname)/paraments/$(pname)<br> a. more /sys/module/usb_storage/parameters/delay_use</li>
-<li>more /etc/sysconfig/modules/st.modules (开机模块加载)</li>
-<li>I/O Schedulers<br> a. cfq,deadline,anticipatory,noop<br> b. cat /sys/block/sda/queue/scheduler  ([]中是当前电梯算法)<br> c. more /sys/block/sda/queue/nr_requests<br> d. more /sys/block/sda/queue/read_ahead_kb<br> e. echo cfq &gt; /sys/block/sda/queue/scheduler<br> f. more /sys/block/sda/queue/scheduler<br> g. ll /sys/block/sda/queue/iosched<br>RHCA 442-3(3)</li>
-<li>tuned<br> a. yum info tuned<br> b. yum install tuned -y<br> c. tuned-adm active<br> d. tuned-adm list<br> e. tuned-adm profile desktop<br> f. ll /usr/lib/tuned/<br> g. cp -a /usr/lib/tuned/desktop/* /etc/tuned/ex442/<br>RHCA 442-4(1)</li>
-<li>CPU Scheduling</li>
-<li>CFS Scheduler<br> a. virtual time</li>
-<li>chrt command<br> a. chrt -f 10 top<br> b. chrt -r 1 md5sum /dev/zero<br>RHCA 442-4(2)</li>
-<li>x86info -c</li>
-<li>valgrind -tool=cahcegrind command1</li>
-<li>perf stat -e cahce-misses command<br>RHCA 442-4(3-4)</li>
-<li>pam_limits<br> a. vi /etc/security/limits.conf<pre><code>i. user    hard        cpu        1
-</code></pre> b. ulimit -a<br> c. cgroup<pre><code>i. service cgconfig start
-ii. service cgred start
-iii. lssubsys -m
-iv. echo 0 &gt; /sys/devices/system/cpu/cpu1/online (下线cpu)
-v. mount -t tmpfs none /mnt/tmpfs (物理内存挂成分区)
-</code></pre>RHCA 442-5(1)</li>
-<li>strace<br> a. kernel space(system call)<br> b. strace updatedb<br> c. strace -e trace=network ping -c1 i<br> d. strace -e trace=file ls /<br> e. strace -p 1<br> f. strace -c updatedb</li>
-<li>ltrace<br> a. user space(library call [glibc])<br> b. ltrace updatedb<br> c. ltrace ls /</li>
-<li>systemtap<br> a. yum install kernel-debuginfo -y<pre><code>i. yum install systemtap
-ii. stap -c /usr/share/doc/systemtap-client-3.0/examples/profiling/topsys.stp
-</code></pre> b. stap -v abc.stap<br> c. staprun abc.ko<br> d. stapusr group<br> e. stapdev group<br>RHCA 442-5(2)</li>
-<li>Paging<br> a. pages，x86 normal page size is 4KiB<br> b. getconf PAGE_SIZE</li>
-<li>VSZ</li>
-<li>RSS </li>
-<li>TLB</li>
-<li>mount -t hugetlbfs none /muntpoint</li>
-<li>Tune per-BDI Flush Threads<br> a. vm.dirty_expire_centisecs<br> b. vm.dirty_writeback_centisecs</li>
-<li>Oou of Menory(OOM)</li>
-<li>Memory Overcommit<br> a. sysctl -p | grep  overcommit_memory<br> b. sysctl -p | grep  overcommit_ratio<br> c. grep Coomitted_AS /proc/meminfo</li>
-<li>SysV IPC<br> a. ipcs<br> b. ipcs -l<br> c. Tune Semaphores<br> d. Message queues<br> e. Shared memory<pre><code>i. kernel.shmmni
-ii. kernel.shmmax
-iii. kernel.shmall
-</code></pre>RHCA 442-6(1)</li>
-<li>File Systems<br> a. EXT3<br> b. EXT4<br> c. XFS<br> d. BTRFS</li>
-<li>External Journaling<br> a. mkfs.ext4 -O journal_dev -b 4096 /dev/vdb1<br> b. mkfs.ext4 -J device=/dev/vdb1 -b 4096 /dev/vda3<br> c. blkid<br>RHCA 442-6(2)</li>
-<li>yum install qperf</li>
-<li>sysctl net.ipv4.tcp_low_latency</li>
-<li>net.ipv4.tcp_mem/net.ipv4.udp_mem(单位pages)</li>
-<li>tc qdisc show</li>
-<li><p>Bonding mode<br> a. balance-rr: mode 0<br> b. actice-backup: mode 1<br> c. 802.3ad: mode 4(工作在2层，需要配交换机)<br> d. cat /proc/net/bonding/bond0 </p>
+            <ol>
+<li>安装软件包：<br> a. yum -y install cockpit<br> b. systemctl start cockpit<br> c. systemctl enable cockpit.socket<br> d. systemctl stop firewalld</li>
+<li><p>服务启动了就可以直接浏览器访问：<br> a. <a href="https://IP:9090/" target="_blank" rel="noopener">https://IP:9090/</a><br> b. root/系统密码</p>
 </li>
-<li><p>MTU(最大传输单元 default 1500bytes)<br> a. TCP protocol headers 52 (52/1500=3.5% overhead)<br> b. TDP protocol headers 28 (28/1500=1.9% overhead)<br> c. Jumbo Frames (MTU bigger that 1500 需要配置交换机)</p>
-<pre><code>i. Official maximum size is 9000 bytes (52/9000=0.58% overhead
-ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
-</code></pre></li>
+<li><p>容器管理<br> a. “Start Docker”开始安装docker服务</p>
+</li>
+</ol>
+<ol start="4">
+<li><p>添加其他节点</p>
+</li>
+<li></li>
 </ol>
 
           
