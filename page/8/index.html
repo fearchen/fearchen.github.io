@@ -242,6 +242,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/NFS安装配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/05/NFS安装配置/" itemprop="url">NFS安装配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:39:44+08:00">
+                2016-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Centos/" itemprop="url" rel="index">
+                    <span itemprop="name">Centos</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Cetnos6.6安装NFS<br>service iptables stop//<br>vi /etc/selinux/conf disabled<br>chkconfig iptables off</p>
+<p>NFS Server:<br>1，yum install rpcbind nfs-utils<br>2，echo “/storage  *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; /etc/exports<br>3,/etc/init.d/rpcbind start<br>4,/etc/init.d/nfs start<br>5,showmount -e 10.161.4.106(查看挂载是否生效)<br>6,chkconfig rpcbind on<br>7,chkconfig nfs on</p>
+<p>NFS Client:<br>1，yum install rpcbind nfs-utils<br>2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)<br>3，mount -t nfs 10.161.4.106:/storage /storage<br>4, echo “mount -t nfs 110.161.4.106:/storage /storage” &gt;&gt; /etc/rc.local</p>
+<p>nfs服务端修改端口：（客户端不需要修改）<br>RQUOTAD_PORT=30001<br>LOCKD_TCPPORT=30002<br>LOCKD_UDPPORT=30003<br>MOUNTD_PORT=30004<br>STATD_PORT=30005<br>RDMA_PORT=30006</p>
+<p>iptables配置：（客户端不需要修改）<br>nfs服务器iptables添加允许规则<br>-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT<br>-A INPUT -p udp -m udp –dport 111 -j ACCEPT<br>-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT<br>-A INPUT -p udp -m udp –dport 2049 -j ACCEPT<br>-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT<br>-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/Centos网卡做bond0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -819,177 +965,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/mysql-5.7.10安装配置&主备/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/05/mysql-5.7.10安装配置&主备/" itemprop="url">Mysql-5.7.10安装配置&主备</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:34:39+08:00">
-                2016-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">Mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>官网下载：<a href="http://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.10.tar.gz" target="_blank" rel="noopener">http://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.10.tar.gz</a><br>上传到/root/backup/下解压<br>准备工作：<br>安装编译依赖包：yum -y install make gcc-c++ cmake bison-devel  ncurses-devel<br>防火墙开3306端口：</p>
-<p>检查当前系统有没有旧版本mysql，有就强制删：</p>
-<p>从MySQL 5.7.5开始Boost库是必需的，下载Boost库，最新稳定版：<br><a href="http://nchc.dl.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz" target="_blank" rel="noopener">http://nchc.dl.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz</a><br>上传到/root/backup/下解压并进入目录：<br>给权限： chmod -R 755 boost_1_59_0<br>编译并安装：<br>./bootstrap.sh</p>
-<p>./b2</p>
-<p>./b2 install</p>
-<p>编译安装：<br>给权限：chmod -R 755 mysql-5.6.28，进入目录<br>编译：<br>cmake -DCMAKE_INSTALL_PREFIX=/data/mysql -DMYSQL_UNIX_ADDR=/data/mysql/mysql.sock -DMYSQL_DATADIR=/data/mysql/data -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DWITH_EXTRA_CHARSETS:STRING=utf8,gbk -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MEMORY_STORAGE_ENGINE=1 -DENABLED_LOCAL_INFILE=1 -DMYSQL_USER=mysql -DMYSQL_TCP_PORT=3306</p>
-<p>####################################################<br>　　cmake参数说明：<br>　　-DCMAKE_INSTALL_PREFIX= 数据库程序安装路径;<br>　　-DMYSQL_DATADIR= 数据库文件存放路径（不配置的话会默认创建$PREFIX_DIR/data）<br>　　-DMYSQL_UNIX_ADDR= 默认位置是/var/lib/mysql/mysql.sock，如果指定其他路径，需要做一个软链接，或者在配置文件my.cnf中进行设置。<br>　　-DDEFAULT_CHARSET= 默认数据库编码<br>　　-DDEFAULT_COLLATION=默认数据库整理编码<br>　　-DWITH_EXTRA_CHARSETS= 扩展支持编码(all | utf8,gbk,gb2312 | none)<br>　　-DWITH_MYISAM_STORAGE_ENGINE= MYISAM引擎支持(1|0)<br>　　-DWITH_INNOBASE_STORAGE_ENGINE= innoDB引擎支持(1|0)<br>　　-DWITH_MEMORY_STORAGE_ENGINE= MEMORY引擎支持(1|0)<br>       -DENABLED_LOCAL_INFILE=指定是否允许本地执行LOAD DATA INFILE，默认OFF</p>
-<p>####################################################</p>
-<p>安装：<br>make -j <code>grep processor /proc/cpuinfo | wc -l</code>  #编译很消耗系统资源，小内存可能编译通不过</p>
-<p>make install</p>
-<p>注意：若第一次的配置错误，需要先删除当前mysql源码目录中的CMakeCache.txt，然后再重新进行cmake配置。</p>
-<p>配置PATH：<br>vi /etc/profile<br>末尾添加：<br>PATH=/data/mysql/bin:$PATH<br>export PATH</p>
-<p>保存使其立即生效：<br>source /etc/profile</p>
-<p>配置mysql：<br>做成系统服务：<br>cp /data/mysql/support-files/mysql.server /etc/init.d/mysqld<br>chkconfig mysqld on</p>
-<p>新建mysql用户和用户组<br>groupadd mysql<br>useradd -g mysql mysql<br>修改mysql安装目录权限为mysql:mysql<br>chown -R mysql:mysql /data/mysql</p>
-<p>创建mysql配置文件：<br>mv /etc/my.cnf /etc/my.cnf.bak<br>cp /data/mysql/support-files/my-default.cnf /etc/my.cnf</p>
-<p>先修改一些基本参数，后续在做调优：</p>
-<p>mysql初始化：<br>/data/mysql/bin/mysqld –initialize-insecure –user=mysql –basedir=/data/mysql –datadir=/data/mysql/data</p>
-<p>#######################################<br>–initialize-insecure：不生成随机密码</p>
-<p>#######################################</p>
-<p>启动mysql：<br>/etc/init.d/mysqld start</p>
-<p>注意：第一次启动会自动生成一个pid，把生成的pid路径写到my.cnf里</p>
-<p>进入mysql设置密码：<br>mysql -uroot<br>SET PASSWORD=PASSWORD(‘<strong><strong>‘);<br>设置允许root用户远程访问：<br>GRANT ALL PRIVILEGES ON _._ TO ‘root‘@’%’ IDENTIFIED BY ‘*</strong></strong>‘ WITH GRANT OPTION;<br>立即生效：<br>FLUSH PRIVILEGES;<br>退出：<br>quit</p>
-<p>后期调优：<br>新建两个log文件夹：<br>mkdir /data/mysql/log<br>mkdir /data/mysql/binlog<br>my.cnf配置文件里的日志输出到这两个文件夹下</p>
-<p>配置mysql主从：<br>在两台上都配置好binlog，<br>然后在db-master上运行“SHOW MASTER STATUS”即可看到master有状态</p>
-<p>在master新建一个专门同步的用户：</p>
-<p>记录下master上执行“SHOW MASTER STATUS”的值<br>然后在db-slave上运行change master<br>“CHANGE MASTER TO MASTER_HOST=’<strong>*</strong>‘, MASTER_USER=’sync’,MASTER_PASSWORD=’<strong>*</strong>‘,MASTER_LOG_FILE=’log.000001’,MASTER_LOG_POS=1289156;”</p>
-<p>然后再db-salve上运行“START SLAVE ”，启动slave</p>
-<p>然后再db-salve上运行“SHOW SLAVE STATUS”查看slave状态：</p>
-<p>这样就主从做完了</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1040,7 +1015,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

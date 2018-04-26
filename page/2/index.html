@@ -242,6 +242,233 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建-Rabbitmq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/OpenShift-构建-Rabbitmq/" itemprop="url">OpenShift-构建-Rabbitmq</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:18+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="准备Rabbitmq镜像"><a href="#准备Rabbitmq镜像" class="headerlink" title="准备Rabbitmq镜像"></a>准备Rabbitmq镜像</h2><h2 id="Dockfile"><a href="#Dockfile" class="headerlink" title="Dockfile"></a>Dockfile</h2><table>
+<thead>
+<tr>
+<th>FROM ubuntu:14.04 MAINTAINER Chen Fei \&lt;chenf\@inno-view.cn> LABEL io.k8s.description=”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.display-name=”Rabbitmq-server lastest” \ io.openshift.expose-services=”5672:rabbitmq” \ io.openshift.tags=”rabbitmq” EXPOSE 5672/tcp EXPOSE 25672/tcp USER root ADD root / RUN echo ‘deb <a href="http://www.rabbitmq.com/debian/" target="_blank" rel="noopener">http://www.rabbitmq.com/debian/</a> testing main’ \</th>
+<th>sudo tee /etc/apt/sources.list.d/rabbitmq.list RUN apt-get update RUN apt-get install -y wget RUN wget -O- <a href="https://www.rabbitmq.com/rabbitmq-release-signing-key.asc" target="_blank" rel="noopener">https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</a> \</th>
+<th>sudo apt-key add - RUN apt-get update RUN apt-get install -y rabbitmq-server RUN echo -n ‘LCQLSHVOPZFHRUXMMAPF’ > /var/lib/rabbitmq/.erlang.cookie RUN chown -R rabbitmq. /var/lib/rabbitmq RUN chmod 400 /var/lib/rabbitmq/.erlang.cookie ADD rabbitmq-env.conf /etc/rabbitmq/rabbitmq-env.conf ENTRYPOINT [“/usr/bin/container-entrypoint.sh”]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="生成镜像"><a href="#生成镜像" class="headerlink" title="生成镜像"></a>生成镜像</h2><table>
+<thead>
+<tr>
+<th>docker build -t rabbitmq .</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image1.png">./media/image1.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="上传OpenShift"><a href="#上传OpenShift" class="headerlink" title="上传OpenShift"></a>上传OpenShift</h2><h2 id="上传到Harbor"><a href="#上传到Harbor" class="headerlink" title="上传到Harbor"></a>上传到Harbor</h2><table>
+<thead>
+<tr>
+<th>docker tag rabbitmq dtr.ivops.cn:5443/openshift-chenf/rabbitmq</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker push dtr.ivops.cn:5443/openshift-chenf/rabbitmq</td>
+</tr>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="部署应用"><a href="#部署应用" class="headerlink" title="部署应用"></a>部署应用</h2><h2 id="创建rabbitmq用户"><a href="#创建rabbitmq用户" class="headerlink" title="创建rabbitmq用户"></a>创建rabbitmq用户</h2><table>
+<thead>
+<tr>
+<th>oc create serviceaccount rabbitmq</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oc adm policy add-scc-to-user anyuid -z rabbitmq</td>
+</tr>
+</tbody>
+</table>
+<h2 id="部署rabbitmq"><a href="#部署rabbitmq" class="headerlink" title="部署rabbitmq"></a>部署rabbitmq</h2><table>
+<thead>
+<tr>
+<th>oc create -f rabbitmq.yaml</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io/tolerate-unready-endpoints: “true” name: rabbitmq labels: app: rabbit spec: ports: - port: 5672 name: rabbit clusterIP: None selector: app: rabbit — apiVersion: apps/v1beta1 kind: StatefulSet metadata: name: rabbit spec: serviceName: “rabbitmq” replicas: 3 template: metadata: labels: app: rabbit annotations: pod.alpha.kubernetes.io/initialized: “true” spec: containers: - name: rabbit image: dtr.ivops.cn:5443/openshift-chenf/rabbitmq imagePullPolicy: IfNotPresent ports: - containerPort: 5672 name: rabbit - containerPort: 25672 name: bean readinessProbe: exec: command: - /usr/share/container-scripts/rabbitmq/readiness-probe.sh initialDelaySeconds: 15 timeoutSeconds: 5 env: - name: POD_NAMESPACE valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.namespace - name: RABBITMQ_USE_LONGNAME value: “true” - name: RABBITMQ_NODENAME value: “rabbit” nodeSelector: region: infra serviceAccount: rabbitmq securityContext: {} serviceAccountName: rabbitmq</td>
+</tr>
+<tr>
+<td><a href="./media/image3.png">./media/image3.png</a></td>
+</tr>
+<tr>
+<td><a href="./media/image4.png">./media/image4.png</a></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="集群状态"><a href="#集群状态" class="headerlink" title="集群状态"></a>集群状态</h2><table>
+<thead>
+<tr>
+<th><a href="./media/image5.png">./media/image5.png</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-对象定义文件示例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1178,373 +1405,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-Project权限管理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-Project权限管理/" itemprop="url">OpenShift-Project权限管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:16+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenShift</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>环境中有两个Project：Project1和Project2。测试需求如下：</p>
-<table>
-<thead>
-<tr>
-<th>普通用户 admin 作为管理员 普通用户 p1admin 作为 project1 管理员 普通用户 p1dev1 作为 project1 的开发人员，有修改权限 普通用户 p1test1 作为 project1 的测试人员，有查看权限</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>普通用户 p2admin 作为 project2 管理员 普通用户 p2dev1 作为 project2 的开发人员，有修改权限 普通用户 p2test1 作为 project2 的测试人员，有查看权限</td>
-</tr>
-</tbody>
-</table>
-<h2 id="超级管理员登陆"><a href="#超级管理员登陆" class="headerlink" title="超级管理员登陆"></a>超级管理员登陆</h2><table>
-<thead>
-<tr>
-<th>oc login -u system:admin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="创建各个用户"><a href="#创建各个用户" class="headerlink" title="创建各个用户"></a>创建各个用户</h2><table>
-<thead>
-<tr>
-<th>htpasswd -b /etc/origin/master/htpasswd admin admin htpasswd -b /etc/origin/master/htpasswd p1admin p1admin htpasswd -b /etc/origin/master/htpasswd p2admin p2admin htpasswd -b /etc/origin/master/htpasswd p1dev1 p1dev1 htpasswd -b /etc/origin/master/htpasswd p1test1 p1test1 htpasswd -b /etc/origin/master/htpasswd p2dev1 p2dev1 htpasswd -b /etc/origin/master/htpasswd p2test1 p2test1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>默认情况下，创建账户后，使用 oc login -u \&lt;账户> -p \&lt;口令> 登录后，该账户就可以创建 Project，创建 Project 后，就成为这个 Project 的管理员，具有 admin 角色</td>
-</tr>
-<tr>
-<td>如果是多 master 结构，需要在每一个 master 节点上创建同样的账户。</td>
-</tr>
-</tbody>
-</table>
-<h2 id="为admin账户授权管理员权限"><a href="#为admin账户授权管理员权限" class="headerlink" title="为admin账户授权管理员权限"></a>为admin账户授权管理员权限</h2><table>
-<thead>
-<tr>
-<th>oadm policy add-cluster-role-to-user admin admin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>如果授予 admin cluster-admin 角色，则 admin 为超级管理员。</td>
-</tr>
-<tr>
-<td>oadm policy add-cluster-role-to-user cluster-admin admin</td>
-</tr>
-<tr>
-<td>cluster-admin 和 admin 角色区别在于 cluster-admin 可以查看和修改 clusterPolicy，二者都可以管理集群中所有 Project</td>
-</tr>
-<tr>
-<td>常用的授权命令如下：</td>
-</tr>
-<tr>
-<td>（1）在当前 Project 下，列出能对指定资源执行指定操作的用户和组 oadm policy who-can verb resource</td>
-</tr>
-<tr>
-<td>（2）在当前 Project 下，把指定的角色和用户绑定起来 oadm policy add-role-to-user role username</td>
-</tr>
-<tr>
-<td>（3）在当前 Project 下，删除指定用户的指定角色 oadm policy remove-role-from-user role username</td>
-</tr>
-<tr>
-<td>（4）在当前 Project 下，在所有的角色中删除指定的用户 oadm policy remove-user username</td>
-</tr>
-<tr>
-<td>（5）在当前 Project 下，把指定的角色和组绑定起来 oadm policy add-role-to-group role groupname</td>
-</tr>
-<tr>
-<td>（6）在当前 Project 下，删除指定组的指定角色 oadm policy remove-role-from-group role groupname</td>
-</tr>
-<tr>
-<td>（7）在当前 Project 下，在所有的角色中删除指定的组 oadm policy remove-group groupname</td>
-</tr>
-<tr>
-<td>（8）在集群中所有 Project 下，把指定的角色和用户绑定起来 oadm policy add-cluster-role-to-user role username</td>
-</tr>
-<tr>
-<td>（8）在集群中所有 Project 下，把指定的角色和用户绑定起来 oadm policy add-cluster-role-to-user role username</td>
-</tr>
-<tr>
-<td>（10）在集群中所有 Project 下，把指定的角色和组绑定起来 oadm policy add-cluster-role-to-group role groupname</td>
-</tr>
-<tr>
-<td>（11）在集群中所有 Project 下，删除指定组的指定角色 oadm policy remove-cluster-role-from-group role groupname</td>
-</tr>
-</tbody>
-</table>
-<h2 id="创建各个Project"><a href="#创建各个Project" class="headerlink" title="创建各个Project"></a>创建各个Project</h2><table>
-<thead>
-<tr>
-<th>oc new-project project1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc new-project project2</td>
-</tr>
-<tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="为project1分配权限"><a href="#为project1分配权限" class="headerlink" title="为project1分配权限"></a>为project1分配权限</h2><table>
-<thead>
-<tr>
-<th>oc project project1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc policy add-role-to-user admin p1admin</td>
-</tr>
-<tr>
-<td>oc policy add-role-to-user edit p1dev1</td>
-</tr>
-<tr>
-<td>oc policy add-role-to-user view p1test1</td>
-</tr>
-</tbody>
-</table>
-<h2 id="为project2分配权限"><a href="#为project2分配权限" class="headerlink" title="为project2分配权限"></a>为project2分配权限</h2><table>
-<thead>
-<tr>
-<th>oc project project2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc policy add-role-to-user admin p2admin</td>
-</tr>
-<tr>
-<td>oc policy add-role-to-user edit p2dev1</td>
-</tr>
-<tr>
-<td>oc policy add-role-to-user view p2test1</td>
-</tr>
-</tbody>
-</table>
-<h2 id="一共有多少种-Role？"><a href="#一共有多少种-Role？" class="headerlink" title="一共有多少种 Role？"></a>一共有多少种 Role？</h2><table>
-<thead>
-<tr>
-<th>oc get clusterroles</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>NAME admin basic-user cluster-admin cluster-debugger cluster-reader cluster-status edit hawkular-metrics-admin management-infra-admin registry-admin registry-editor registry-viewer self-access-reviewer self-provisioner storage-admin sudoer system:auth-delegator system:basic-user system:build-controller system:build-strategy-custom system:build-strategy-docker system:build-strategy-jenkinspipeline system:build-strategy-source system:certificate-signing-controller system:controller:attachdetach-controller system:controller:certificate-controller system:controller:cronjob-controller system:controller:daemon-set-controller system:controller:deployment-controller system:controller:disruption-controller system:controller:endpoint-controller system:controller:generic-garbage-collector system:controller:horizontal-pod-autoscaler system:controller:job-controller system:controller:namespace-controller system:controller:node-controller system:controller:persistent-volume-binder system:controller:pod-garbage-collector system:controller:replicaset-controller system:controller:replication-controller system:controller:resourcequota-controller system:controller:route-controller system:controller:service-account-controller system:controller:service-controller system:controller:statefulset-controller system:controller:ttl-controller system:daemonset-controller system:deployer system:deployment-controller system:deploymentconfig-controller system:discovery system:disruption-controller system:endpoint-controller system:garbage-collector-controller system:gc-controller system:heapster system:hpa-controller system:image-auditor system:image-builder system:image-pruner system:image-puller system:image-pusher system:image-signer system:job-controller system:kube-aggregator system:kube-controller-manager system:kube-dns system:kube-scheduler system:master system:namespace-controller system:node system:node-admin system:node-bootstrapper system:node-problem-detector system:node-proxier system:node-reader system:oauth-token-deleter system:openshift:controller:build-config-change-controller system:openshift:controller:build-controller system:openshift:controller:cluster-quota-reconciliation-controller system:openshift:controller:deployer-controller system:openshift:controller:deployment-trigger-controller system:openshift:controller:deploymentconfig-controller system:openshift:controller:horizontal-pod-autoscaler system:openshift:controller:image-import-controller system:openshift:controller:image-trigger-controller system:openshift:controller:origin-namespace-controller system:openshift:controller:pv-recycler-controller system:openshift:controller:resourcequota-controller system:openshift:controller:sdn-controller system:openshift:controller:service-ingress-ip-controller system:openshift:controller:service-serving-cert-controller system:openshift:controller:serviceaccount-controller system:openshift:controller:serviceaccount-pull-secrets-controller system:openshift:controller:template-instance-controller system:openshift:controller:unidling-controller system:openshift:template-service-broker system:openshift:templateservicebroker-client system:persistent-volume-provisioner system:registry system:replicaset-controller system:replication-controller system:router system:sdn-manager system:sdn-reader system:statefulset-controller system:webhook view</td>
-</tr>
-</tbody>
-</table>
-<h2 id="查看-view-角色具体能操作哪些资源"><a href="#查看-view-角色具体能操作哪些资源" class="headerlink" title="查看 view 角色具体能操作哪些资源"></a>查看 view 角色具体能操作哪些资源</h2><table>
-<thead>
-<tr>
-<th>oc describe clusterrole view</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="查看-clusterPolicy-拥有的角色"><a href="#查看-clusterPolicy-拥有的角色" class="headerlink" title="查看 clusterPolicy 拥有的角色"></a>查看 clusterPolicy 拥有的角色</h2><table>
-<thead>
-<tr>
-<th>oc get clusterpolicy</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="查看-clusterPolicy-default-具体能操作哪些资源"><a href="#查看-clusterPolicy-default-具体能操作哪些资源" class="headerlink" title="查看 clusterPolicy default 具体能操作哪些资源"></a>查看 clusterPolicy default 具体能操作哪些资源</h2><table>
-<thead>
-<tr>
-<th>oc describe clusterPolicy default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="查看当前-指定-Project-下的角色和用户、组的绑定关系"><a href="#查看当前-指定-Project-下的角色和用户、组的绑定关系" class="headerlink" title="查看当前/指定 Project 下的角色和用户、组的绑定关系"></a>查看当前/指定 Project 下的角色和用户、组的绑定关系</h2><table>
-<thead>
-<tr>
-<th>oc get rolebinding</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="查看集群角色和用户、组的绑定关系"><a href="#查看集群角色和用户、组的绑定关系" class="headerlink" title="查看集群角色和用户、组的绑定关系"></a>查看集群角色和用户、组的绑定关系</h2><table>
-<thead>
-<tr>
-<th>oc get clusterrolebinding</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1595,7 +1455,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

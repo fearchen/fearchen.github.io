@@ -242,6 +242,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/26/Centos单机快速安装OpenShift3.9.0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/26/Centos单机快速安装OpenShift3.9.0/" itemprop="url">Centos quick install OpenShift3.9.0</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-26T16:32:10+08:00">
+                2018-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Cockpit"><a href="#Cockpit" class="headerlink" title="Cockpit"></a>Cockpit</h2><h3 id="1-deploy-Centos-minial-system"><a href="#1-deploy-Centos-minial-system" class="headerlink" title="1. deploy Centos minial system"></a>1. deploy Centos minial system</h3><h3 id="2-yum-update-y"><a href="#2-yum-update-y" class="headerlink" title="2. yum update -y"></a>2. yum update -y</h3><pre><code>a. reboot
+</code></pre><h3 id="3-yum-install-git-docker-net-tools"><a href="#3-yum-install-git-docker-net-tools" class="headerlink" title="3. yum install git docker net-tools"></a>3. yum install git docker net-tools</h3><h3 id="4-git-clone-https-github-com-gshipley-installcentos-git"><a href="#4-git-clone-https-github-com-gshipley-installcentos-git" class="headerlink" title="4. git clone https://github.com/gshipley/installcentos.git"></a>4. git clone <a href="https://github.com/gshipley/installcentos.git" target="_blank" rel="noopener">https://github.com/gshipley/installcentos.git</a></h3><pre><code>a. export DOMAIN=openshift.io
+b. export USERNAME=chenf
+c. export PASSWORD=123@abcd
+</code></pre><h3 id="5-cd-installcentos"><a href="#5-cd-installcentos" class="headerlink" title="5. cd installcentos"></a>5. cd installcentos</h3><pre><code>a. ./install-openshift.sh
+</code></pre><h3 id="6-DNS-Sercer"><a href="#6-DNS-Sercer" class="headerlink" title="6. DNS Sercer"></a>6. DNS Sercer</h3><pre><code>a. openshift.io 8443
+b. openshift.io 80
+c. openshift.io 443
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-核心组件和概念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1506,233 +1655,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建-Rabbitmq/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-构建-Rabbitmq/" itemprop="url">OpenShift-构建-Rabbitmq</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:18+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenShift</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="准备Rabbitmq镜像"><a href="#准备Rabbitmq镜像" class="headerlink" title="准备Rabbitmq镜像"></a>准备Rabbitmq镜像</h2><h2 id="Dockfile"><a href="#Dockfile" class="headerlink" title="Dockfile"></a>Dockfile</h2><table>
-<thead>
-<tr>
-<th>FROM ubuntu:14.04 MAINTAINER Chen Fei \&lt;chenf\@inno-view.cn> LABEL io.k8s.description=”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.display-name=”Rabbitmq-server lastest” \ io.openshift.expose-services=”5672:rabbitmq” \ io.openshift.tags=”rabbitmq” EXPOSE 5672/tcp EXPOSE 25672/tcp USER root ADD root / RUN echo ‘deb <a href="http://www.rabbitmq.com/debian/" target="_blank" rel="noopener">http://www.rabbitmq.com/debian/</a> testing main’ \</th>
-<th>sudo tee /etc/apt/sources.list.d/rabbitmq.list RUN apt-get update RUN apt-get install -y wget RUN wget -O- <a href="https://www.rabbitmq.com/rabbitmq-release-signing-key.asc" target="_blank" rel="noopener">https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</a> \</th>
-<th>sudo apt-key add - RUN apt-get update RUN apt-get install -y rabbitmq-server RUN echo -n ‘LCQLSHVOPZFHRUXMMAPF’ > /var/lib/rabbitmq/.erlang.cookie RUN chown -R rabbitmq. /var/lib/rabbitmq RUN chmod 400 /var/lib/rabbitmq/.erlang.cookie ADD rabbitmq-env.conf /etc/rabbitmq/rabbitmq-env.conf ENTRYPOINT [“/usr/bin/container-entrypoint.sh”]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="生成镜像"><a href="#生成镜像" class="headerlink" title="生成镜像"></a>生成镜像</h2><table>
-<thead>
-<tr>
-<th>docker build -t rabbitmq .</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="上传OpenShift"><a href="#上传OpenShift" class="headerlink" title="上传OpenShift"></a>上传OpenShift</h2><h2 id="上传到Harbor"><a href="#上传到Harbor" class="headerlink" title="上传到Harbor"></a>上传到Harbor</h2><table>
-<thead>
-<tr>
-<th>docker tag rabbitmq dtr.ivops.cn:5443/openshift-chenf/rabbitmq</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>docker push dtr.ivops.cn:5443/openshift-chenf/rabbitmq</td>
-</tr>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="部署应用"><a href="#部署应用" class="headerlink" title="部署应用"></a>部署应用</h2><h2 id="创建rabbitmq用户"><a href="#创建rabbitmq用户" class="headerlink" title="创建rabbitmq用户"></a>创建rabbitmq用户</h2><table>
-<thead>
-<tr>
-<th>oc create serviceaccount rabbitmq</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc adm policy add-scc-to-user anyuid -z rabbitmq</td>
-</tr>
-</tbody>
-</table>
-<h2 id="部署rabbitmq"><a href="#部署rabbitmq" class="headerlink" title="部署rabbitmq"></a>部署rabbitmq</h2><table>
-<thead>
-<tr>
-<th>oc create -f rabbitmq.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io/tolerate-unready-endpoints: “true” name: rabbitmq labels: app: rabbit spec: ports: - port: 5672 name: rabbit clusterIP: None selector: app: rabbit — apiVersion: apps/v1beta1 kind: StatefulSet metadata: name: rabbit spec: serviceName: “rabbitmq” replicas: 3 template: metadata: labels: app: rabbit annotations: pod.alpha.kubernetes.io/initialized: “true” spec: containers: - name: rabbit image: dtr.ivops.cn:5443/openshift-chenf/rabbitmq imagePullPolicy: IfNotPresent ports: - containerPort: 5672 name: rabbit - containerPort: 25672 name: bean readinessProbe: exec: command: - /usr/share/container-scripts/rabbitmq/readiness-probe.sh initialDelaySeconds: 15 timeoutSeconds: 5 env: - name: POD_NAMESPACE valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.namespace - name: RABBITMQ_USE_LONGNAME value: “true” - name: RABBITMQ_NODENAME value: “rabbit” nodeSelector: region: infra serviceAccount: rabbitmq securityContext: {} serviceAccountName: rabbitmq</td>
-</tr>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="集群状态"><a href="#集群状态" class="headerlink" title="集群状态"></a>集群状态</h2><table>
-<thead>
-<tr>
-<th><a href="./media/image5.png">./media/image5.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1783,7 +1705,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

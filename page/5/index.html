@@ -242,6 +242,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/25/Centos7.2部署kubernetes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/25/Centos7.2部署kubernetes/" itemprop="url">Centos7.2部署kubernetes</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-25T16:30:12+08:00">
+                2017-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>环境：<br> a. master：192.168.254.141<br> b. node01：192.168.254.142<br> c. node02：192.168.254.143<br> d. 配置hosts</li>
+<li>master节点安装：<br> a. systemctl stop firewalld &amp;&amp; systemctl disable firewalld<br> b. yum install kubernetes-master etcd -y</li>
+<li>node节点安装：<br> a. systemctl stop firewalld &amp;&amp; systemctl disable firewalld<br> b. yum install kubernetes-node flannel docker -y<br> c. systemctl enable docker &amp;&amp; systemctl start docker</li>
+<li>配置etc节点：<br> a. egrep -v “^#” /etc/etcd/etcd.conf<br>ETCD_NAME=default<br>ETCD_DATA_DIR=”/var/lib/etcd/default.etcd”<br>ETCD_LISTEN_CLIENT_URLS=”<a href="http://0.0.0.0:2379&quot;" target="_blank" rel="noopener">http://0.0.0.0:2379&quot;</a><br>ETCD_ADVERTISE_CLIENT_URLS=”<a href="http://192.168.254.141:2379&quot;" target="_blank" rel="noopener">http://192.168.254.141:2379&quot;</a><br> b. 启动etcd<pre><code>i. systemctl start etcd &amp;&amp; systemctl enable etcd
+</code></pre></li>
+<li>配置master节点：<br> a. egrep -v “^#” /etc/kubernetes/apiserver | grep -v “^$”<br>KUBE_API_ADDRESS=”–insecure-bind-address=0.0.0.0”<br>KUBE_ETCD_SERVERS=”–etcd-servers=<a href="http://192.168.254.141:2379&quot;" target="_blank" rel="noopener">http://192.168.254.141:2379&quot;</a><br>KUBE_SERVICE_ADDRESSES=”–service-cluster-ip-range=10.254.0.0/16”<br>KUBE_ADMISSION_CONTROL=”–admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ResourceQuota”<br>KUBE_API_ARGS=””<br> b. egrep -v “^#” /etc/kubernetes/controller-manager |grep -v “^$”<br>KUBE_CONTROLLER_MANAGER_ARGS=”–node-monitor-grace-period=10s –pod-eviction-timeout=10s”<br> c. egrep -v “^#” /etc/kubernetes/config | egrep -v “^$”<br>KUBE_LOGTOSTDERR=”–logtostderr=true”<br>KUBE_LOG_LEVEL=”–v=0”<br>KUBE_ALLOW_PRIV=”–allow-privileged=false”<br>KUBE_MASTER=”–master=<a href="http://192.168.254.141:8080&quot;" target="_blank" rel="noopener">http://192.168.254.141:8080&quot;</a><br> d. 启动服务：<pre><code>i. systemctl enable kube-apiserver kube-scheduler kube-controller-manager
+ii. systemctl start kube-apiserver kube-scheduler kube-controller-manager
+</code></pre></li>
+<li>配置node节点<br> a. egrep -v “^#” /etc/kubernetes/config | grep -v “^$”<br>KUBE_LOGTOSTDERR=”–logtostderr=true”<br>KUBE_LOG_LEVEL=”–v=0”<br>KUBE_ALLOW_PRIV=”–allow-privileged=false”<br>KUBE_MASTER=”–master=<a href="http://192.168.254.141:8080&quot;" target="_blank" rel="noopener">http://192.168.254.141:8080&quot;</a><br> b. egrep -v “^#” /etc/kubernetes/kubelet | grep -v “^$”<br>KUBELET_ADDRESS=”–address=127.0.0.1”<br>KUBELET_HOSTNAME=”–hostname-override=docker02”<br>KUBELET_API_SERVER=”–api-servers=<a href="http://192.168.254.141:8080&quot;" target="_blank" rel="noopener">http://192.168.254.141:8080&quot;</a><br>KUBELET_POD_INFRA_CONTAINER=”–pod-infra-container-image=registry.access.redhat.com/rhel7/pod-infrastructure:latest”<br>KUBELET_ARGS=”–pod-infra-container-image=kubernetes/pause”<br> c. 启动服务：<pre><code>i. systemctl enable kubelet kube-proxy
+ii. systemctl start kubelet kube-proxy
+</code></pre></li>
+<li>配置node节点flannel<br> a. 初始化flannel的etcd配置(etc节点操作)：<pre><code>i. etcdctl -C 127.0.0.1:2379 set /coreos.com/network/config &apos;{ &quot;Network&quot;: &quot;10.1.0.0/16&quot; }&apos;
+</code></pre> b. node节点上操作：<pre><code>i. egrep -v &quot;^#&quot; /etc/sysconfig/flanneld | grep -v &quot;^$&quot;
+</code></pre>FLANNEL_ETCD_ENDPOINTS=”<a href="http://192.168.254.141:2379&quot;" target="_blank" rel="noopener">http://192.168.254.141:2379&quot;</a><br>FLANNEL_ETCD_PREFIX=”/coreos.com/network”<br> c. 启动服务：<pre><code>i. systemctl enable flanneld
+ii. systemctl restart flanneld docker
+</code></pre></li>
+<li>测试：<br> a. kubectl get nodes</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/06/RHCA-RH413(服务器固化)学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -928,162 +1088,6 @@ ii. pam_tally2 --reset -u username
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Apache安全配置参考/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/Apache安全配置参考/" itemprop="url">Apache安全配置参考</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T13:29:02+08:00">
-                2017-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/安全配置参考/" itemprop="url" rel="index">
-                    <span itemprop="name">安全配置参考</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="date-2017-01-03-13-30-12"><a href="#date-2017-01-03-13-30-12" class="headerlink" title="date: 2017-01-03 13:30:12"></a>date: 2017-01-03 13:30:12</h2><p>0X01 账号<br>以专门的非root用户账号和组运行Apache。<br>操作： 根据需要为Apache创建用户、组。<br>参考配置操作：<br>修改httpd.conf配置文件，添加如下语句：<br>User apache<br>Group apachegroup<br>其中apache、apachegroup分别是为Apache创建的用户和组。<br>检测：检查httpd.conf配置文件，检查用户配置文件。<br>补充说明：</p>
-<ol>
-<li>根据不同用户，取不同的名称。</li>
-<li>为用户设置适当的家目录和shell。<br>0x02 授权<br>禁止Apache访问Web目录之外的任何文件。<br>操作：<br>编辑httpd.conf配置文件，<br><directory><br>Order Deny,Allow<br>Deny from all<br></directory><br>检测：访问服务器上不属于Web目录的一个文件，结果应无法显示。<br>判定：无法访问Web目录之外的文件。<br>补充说明：<br>设置可访问目录，<br>&lt;Directory /web&gt;<br>Order Allow,Deny<br>Allow from all<br><br>其中/web为网站根目录。<br>0x03 日志<br>设备应配置日志功能，对用户登录进行记录，记录内容包括用户登录使用的账号，登录是否成功，登录时间，以及远程登录时，用户使用的IP地址。<br>操作：<br>编辑httpd.conf配置文件，设置日志记录文件、记录内容、记录格式。<br>LogLevel notice<br>ErrorLog logs/error_log<br>LogFormat “%h %l %u %t \”%r\” %&gt;s %b \”%{Accept}i\” \”%{Referer}i\” \”%{User-Agent}i\”” combined<br>CustomLog logs/access_log combined<br>ErrorLog指令设置错误日志文件名和位置。错误日志是最重要的日志文件，Apache httpd将在这个文件中存放诊断信息和处理请求中出现的错误。若要将错误日志送到Syslog，则设置：ErrorLog syslog。<br>CustomLog指令设置访问日志的文件名和位置。访问日志中会记录服务器所处理的所有请求。<br>LogFormat设置日志格式。LogLevel用于调整记录在错误日志中的信息的详细程度，建议设置为notice。<br>检测：查看相关日志记录。<br>判定：查看logs目录中相关日志文件内容，记录完整。<br>0x04 其它<br>1 Apache错误页面重定向<br>操作： </li>
-<li>修改httpd.conf配置文件：<br>ErrorDocument 400 /custom400.html<br>ErrorDocument 401 /custom401.html<br>ErrorDocument 403 /custom403.html<br>ErrorDocument 404 /custom404.html<br>ErrorDocument 405 /custom405.html<br>ErrorDocument 500 /custom500.html<br>Customxxx.html为要设置的错误页面。</li>
-<li>重启Apache服务<br>检测方法：URL地址栏中输入<a href="http://ip/xxxxxxx~~~（一个不存在的页面）" target="_blank" rel="noopener">http://ip/xxxxxxx~~~（一个不存在的页面）</a><br>判定：指向指定错误页面。<br>2 禁止列目录<br>操作： </li>
-<li>编辑httpd.conf配置文件，<br><directory "="" web"=""><br>Options FollowSymLinks<br>AllowOverride None<br>Order allow,deny<br>Allow from all<br></directory><br>将Options Indexes FollowSymLinks中的Indexes 去掉，就可以禁止 Apache 显示该目录结构。Indexes 的作用就是当该目录下没有 index.html文件时，就显示目录结构。<br>2.设置Apache的默认页面，编辑%apache%\conf\httpd.conf配置文件，<br><ifmodule dir_module=""><br> DirectoryIndex index.html<br></ifmodule><br>其中index.html即为默认页面，可根据情况改为其它文件。</li>
-<li>重启Apache服务<br>检测：直接访问<a href="http://ip:8800/xxx（xxx为某一目录）" target="_blank" rel="noopener">http://ip:8800/xxx（xxx为某一目录）</a><br>判定：当WEB目录中没有默认首页如index.html文件时，不会列出目录内容。<br>3 拒绝服务<br>操作： </li>
-<li>编辑httpd.conf配置文件，<br>Timeout 10 KeepAlive On<br>KeepAliveTimeout 15<br>AcceptFilter http data<br>AcceptFilter https data</li>
-<li>重启Apache服务<br>检测方法：</li>
-<li>检查配置文件是否设置。<br>4 删除无用文件<br>操作： </li>
-<li>删除缺省HTML文件：<h1 id="rm-rf-usr-local-apache2-htdocs"><a href="#rm-rf-usr-local-apache2-htdocs" class="headerlink" title="rm -rf /usr/local/apache2/htdocs/*"></a>rm -rf /usr/local/apache2/htdocs/*</h1>删除缺省的CGI脚本：<h1 id="rm-–rf-usr-local-apache2-cgi-bin"><a href="#rm-–rf-usr-local-apache2-cgi-bin" class="headerlink" title="rm –rf /usr/local/apache2/cgi-bin/*"></a>rm –rf /usr/local/apache2/cgi-bin/*</h1>删除Apache说明文件：<h1 id="rm-–rf-usr-local-apache2-manual"><a href="#rm-–rf-usr-local-apache2-manual" class="headerlink" title="rm –rf /usr/local/apache2/manual"></a>rm –rf /usr/local/apache2/manual</h1>删除源代码文件：<h1 id="rm-rf-path-to-httpd-2-2-4"><a href="#rm-rf-path-to-httpd-2-2-4" class="headerlink" title="rm -rf /path/to/httpd-2.2.4*"></a>rm -rf /path/to/httpd-2.2.4*</h1>根据安装步骤不同和版本不同，某些目录或文件可能不存在或位置不同。<br>检测：检查对应目录。<br>5 隐藏版本信息<br>操作： </li>
-<li>编修改httpd.conf配置文件：<br>　　ServerSignature Off<br>　　ServerTokens Prod<br>检测：检查配置文件。<br>判定：存在ServerSignature Off</li>
-</ol>
-<p>参考链接：<a href="http://blog.csdn.net/qq_29277155/article/details/52915206" target="_blank" rel="noopener">http://blog.csdn.net/qq_29277155/article/details/52915206</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1134,7 +1138,7 @@ ii. pam_tally2 --reset -u username
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
