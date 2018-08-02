@@ -242,6 +242,955 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-对象定义文件示例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/OpenShift-对象定义文件示例/" itemprop="url">OpenShift-对象定义文件示例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:18+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Image-Stream"><a href="#Image-Stream" class="headerlink" title="Image Stream"></a>Image Stream</h2><h3 id="模版地址"><a href="#模版地址" class="headerlink" title="模版地址"></a>模版地址</h3><table>
+<thead>
+<tr>
+<th><a href="https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json" target="_blank" rel="noopener">https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="example"><a href="#example" class="headerlink" title="example"></a>example</h3><table>
+<thead>
+<tr>
+<th>{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443/ivops/mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443/ivops/mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Deployment-Config"><a href="#Deployment-Config" class="headerlink" title="Deployment Config"></a>Deployment Config</h2><h3 id="dc-json"><a href="#dc-json" class="headerlink" title="dc.json"></a>dc.json</h3><table>
+<thead>
+<tr>
+<th>{ “kind”: “DeploymentConfig”, “apiVersion”: “v1”, “metadata”: { “name”: “frontend” }, “spec”: { “strategy”: { “type”: “Recreate”, “resources”: {} }, “triggers”: [ { “type”: “ImageChange”, “imageChangeParams”: { “automatic”: true, “containerNames”: [ “helloworld” ], “from”: {}, “lastTriggeredImage”: “” } } ], “replicas”: 1, “selector”: { “name”: “frontend” }, “template”: { “metadata”: { “creationTimestamp”: null, “labels”: { “name”: “frontend” } }, “spec”: { “containers”: [ { “name”: “helloworld”, “image”: “openshift/openshift/origin-ruby-sample”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “/dev/termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } } } }</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-1"><a href="#example-1" class="headerlink" title="example"></a>example</h3><table>
+<thead>
+<tr>
+<th>kind: DeploymentConfig apiVersion: v1 metadata: name: tmsweb-deploy spec: replicas: 1 template: metadata: labels: name: tmsweb spec: containers: - image: dtr.ivops.cn:5443/ivops/nodejs6-alpine:v1.1.x imagePullPolicy: Always name: tmsweb-containers ports: - containerPort: 7200 protocol: TCP command: - /usr/bin/node args: - /opt/TenancyWeb/iv_web.js volumeMounts: - mountPath: /opt/TenancyWeb name: tmsweb-mount volumes: - name: tmsweb-mount persistentVolumeClaim: claimName: nfs-pvc-tmsweb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><p>Replication Controller</p>
+</li>
+<li><p>Routes</p>
+</li>
+</ol>
+<h3 id="route-json"><a href="#route-json" class="headerlink" title="route.json"></a>route.json</h3><table>
+<thead>
+<tr>
+<th>{ “kind”: “Route”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-route” }, “spec”: { “host”: “hello-openshift.v3.rhcloud.com”, “to”: { “kind”: “Service”, “name”: “hello-openshift” } } }</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><h3 id="service-json"><a href="#service-json" class="headerlink" title="service.json"></a>service.json</h3><table>
+<thead>
+<tr>
+<th>{ “kind”: “Service”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-openshift” }, “spec”: { “ports”: [ { “protocol”: “TCP”, “port”: 27017, “targetPort”: 8080, “nodePort”: 0 } ], “selector”: { “name”: “hello-openshift” }, “type”: “ClusterIP”, “sessionAffinity”: “None” } }</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-2"><a href="#example-2" class="headerlink" title="example"></a>example</h3><table>
+<thead>
+<tr>
+<th>apiVersion: v1 kind: Service metadata: annotations: openshift.io/generated-by: OpenShiftWebConsole labels: app: opsweb-deploy name: opsweb-deploy namespace: iv-ops spec: ports: - name: 7300-tcp port: 7300 protocol: TCP targetPort: 7300 selector: deploymentconfig: opsweb-deploy sessionAffinity: None type: ClusterIP status: loadBalancer: {}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><h3 id="pod-json"><a href="#pod-json" class="headerlink" title="pod.json"></a>pod.json</h3><table>
+<thead>
+<tr>
+<th>{ “kind”: “Pod”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-pod”, “labels”: { “name”: “hello-openshift” } }, “spec”: { “containers”: [ { “name”: “hello-openshift”, “image”: “openshift/hello-openshift”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “/dev/termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } }</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h2><h3 id="模版地址-1"><a href="#模版地址-1" class="headerlink" title="模版地址"></a>模版地址</h3><table>
+<thead>
+<tr>
+<th><a href="https://github.com/openshift/origin/tree/release-3.6/examples/quickstarts" target="_blank" rel="noopener">https://github.com/openshift/origin/tree/release-3.6/examples/quickstarts</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Persistent-Volume"><a href="#Persistent-Volume" class="headerlink" title="Persistent Volume"></a>Persistent Volume</h2><h3 id="example-3"><a href="#example-3" class="headerlink" title="example"></a>example</h3><table>
+<thead>
+<tr>
+<th>apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv-tmsweb spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: /mnt/nfs/tmsweb server: 10.10.31.161 readOnly: false</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Persistent-VolumeClain"><a href="#Persistent-VolumeClain" class="headerlink" title="Persistent VolumeClain"></a>Persistent VolumeClain</h2><h3 id="example-4"><a href="#example-4" class="headerlink" title="example"></a>example</h3><table>
+<thead>
+<tr>
+<th>apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc-tmsweb spec: accessModes: - ReadWriteMany volumeName: nfs-pv-tmsweb resources: requests: storage: 1Gi status: #后加的 accessModes: - ReadWriteMany phase: Bound</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-持续集成-Jenkins/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/OpenShift-持续集成-Jenkins/" itemprop="url">OpenShift-持续集成-Jenkins</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:18+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="部署Jenkins"><a href="#部署Jenkins" class="headerlink" title="部署Jenkins"></a>部署Jenkins</h2><table>
+<thead>
+<tr>
+<th>使用自带模版部署</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image1.png">./media/image1.png</a></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><p>准备Dockfile</p>
+</li>
+<li><p>生成Builder Image</p>
+</li>
+<li><p>上传OpenShift</p>
+</li>
+<li><p>根据源代码构建</p>
+</li>
+<li><p>生成Template</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-安全与配额/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/OpenShift-安全与配额/" itemprop="url">OpenShift-安全与配额</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:18+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h2><p>容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。</p>
+<p>容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全</p>
+<h2 id="用户认证："><a href="#用户认证：" class="headerlink" title="用户认证："></a>用户认证：</h2><p>openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时间内对系统进行访问。</p>
+<ul>
+<li><p>获取token：oc whoami -t</p>
+</li>
+<li><p>获取tokenAPI：/oauth/token/request</p>
+</li>
+</ul>
+<h2 id="身份验证-identity-provider"><a href="#身份验证-identity-provider" class="headerlink" title="身份验证 identity provider"></a>身份验证 identity provider</h2><p>openshift提供不同的适配器链接不同的用户信息管理系统：LDAP、Active<br>Directory、HTPasswd。</p>
+<p>openshift默认采用HTPasswd的文件存储用户信息。该文件存储位置在：/etc/origin/master/htpasswd</p>
+<p>使用htpasswd命令可以对用户数据库进行增删改查</p>
+<h2 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h2><ul>
+<li><p>查看provider来源：oc get identity</p>
+</li>
+<li><p>认证系统：authentication</p>
+</li>
+<li><p>授权系统：authorization</p>
+</li>
+<li><p>角色访问控制系统：RBAC （role based access control）</p>
+</li>
+</ul>
+<h2 id="权限cluster-local"><a href="#权限cluster-local" class="headerlink" title="权限cluster local"></a>权限cluster local</h2><ol>
+<li><p>role：角色，一组权限的集合，RBAC系统中，权限–>role–>用户或者组</p>
+</li>
+<li><p>rule：规则，rule三要素：角色role、资源resource、动作verb。</p>
+</li>
+<li><p>policy：策略，若干role组成的集合</p>
+</li>
+<li><p>role binding ，角色与用户或者组的绑定关系</p>
+</li>
+<li><p>policy binding，若干role组成的集合与用户或者组的绑定关系。</p>
+</li>
+</ol>
+<h2 id="权限操作"><a href="#权限操作" class="headerlink" title="权限操作"></a>权限操作</h2><ol>
+<li>授予用户查看当前项目权限：</li>
+</ol>
+<p>oc policy add-role-to-user view user2</p>
+<ol>
+<li>编辑权限：</li>
+</ol>
+<p>oc policy add-role-to-user edit user2</p>
+<p>删除：oc policy remove-role-from-user edit user2</p>
+<ol>
+<li>查看角色绑定关系：</li>
+</ol>
+<p>oc get rolebinding</p>
+<ol>
+<li>查看role的详细信息</li>
+</ol>
+<p>oc describe clusterrole admin</p>
+<ol>
+<li>创建组：</li>
+</ol>
+<p>oc adm groups new newgroups</p>
+<ol>
+<li>增加用户到组</li>
+</ol>
+<p>oc adm groups add-users newgroups user2</p>
+<ol>
+<li>绑定cluster-admin role到新建组</li>
+</ol>
+<p>oc adm policy add-cluster-role-to-group cluster-admin newgroups</p>
+<p>cluster-admin是系统管理员角色，这个角色可以在系统中对任意对象执行任意操作。</p>
+<h2 id="Service-Account"><a href="#Service-Account" class="headerlink" title="Service Account"></a>Service Account</h2><ul>
+<li><p>builder对象：用于S2I</p>
+</li>
+<li><p>default对象：用于运行容器</p>
+</li>
+<li><p>depolyer对象：用于部署容器</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>每个service account包含secret 和token</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image1.png">./media/image1.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="安全上下文SCC"><a href="#安全上下文SCC" class="headerlink" title="安全上下文SCC"></a>安全上下文SCC</h2><p>privileged权限最大，restricted权限最小，普通用户及其创建的项目，都属于restricted组。这个组不允许容器以root用户运行，如该要容器以root权限运行，可以把项目默认的default<br>service account加入到高权限的组中，</p>
+<p>比如加入到anyuid组中，因为anyuid组中的RUNASUSER属性值为：RUNASANY，命令如下：</p>
+<p>oc adm policy add-scc-to-user anyuid -z default -n projectname</p>
+<table>
+<thead>
+<tr>
+<th>查看当前用户的scc（Security content constraint）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./media/image2.png">./media/image2.png</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Quota额度配置"><a href="#Quota额度配置" class="headerlink" title="Quota额度配置"></a>Quota额度配置</h2><p>额度的控制通过资源额度对象resource quota管理（集群用clusterresourcequota），</p>
+<p>resource<br>quota是基于项目的，以项目为单位对资源进行额度管理，资源的额度对象分为两种：</p>
+<p>- 计算资源：compute resource</p>
+<ol>
+<li>计算资源：对CPU、内存资源的额度管理</li>
+</ol>
+<p>CPU：</p>
+<table>
+<thead>
+<tr>
+<th>limits.cpu: “40” #limits ：容器所能使用的cpu上限值。 limits.memory: 40Gi requests.cpu: “4” #requests：容器运行所需的cpu下限值。 requests.memory: 4Gi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>CPU资源的度量最小单位是Millicore，一个计算节点上CPU核数乘以1000，即为该节点CPU资源总量。</p>
+<p>例如：4Core=4000m</p>
+<p>注意：设置计算资源以后，用户部署容器的时候，必须显示的为每一个容器指定CPU和内存的requests及limits的值，否则容器无法部署。</p>
+<ol>
+<li>对象数量额度：pod、rc、rq、svc、cm、pvc、is、secrets</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>openshift.io/imagestreams: “400” persistentvolumeclaims: “400” pods: “40” replicationcontrollers: “40” resourcequotas: “40” secrets: “100” services: “100”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>cluster resource quota</li>
+</ol>
+<p>ClusterResourceQuota允许限制多个project，多个project可以通过annotation 或者<br>label<br>进行选择，比如某个用户下的所有project就可以通过：annotations：openshift.io/requester=<br>进行限制。项目管理员不能创建和修改ClusterResourceQuota，但是可以查看集群限额在当前项目的应用情况，通过以下命令查看：</p>
+<table>
+<thead>
+<tr>
+<th>oc describe AppliedClusterResourceQuota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Limit-Range-资源限制"><a href="#Limit-Range-资源限制" class="headerlink" title="Limit Range 资源限制"></a>Limit Range 资源限制</h2><p>资源限制是更具体的控制每个容器具体使用多少CPU和内存资源。</p>
+<p>可以通过两个层面进行定义：</p>
+<ul>
+<li><p>项目级别统一定义每个容器资源是用总量</p>
+</li>
+<li><p>容器级别单独定义某个容器资源是用总量</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-S2I构建过程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/OpenShift-S2I构建过程/" itemprop="url">OpenShift-S2I构建过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:17+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenShift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h2><p>OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：<a href="https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。</a></p>
+<p>如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。</p>
+<h2 id="编译和部署自己的应用程序"><a href="#编译和部署自己的应用程序" class="headerlink" title="编译和部署自己的应用程序"></a>编译和部署自己的应用程序</h2><p>docker生成镜像的过程，当我们创建自己的应用程序镜像的时候，一般来说有两种途径：</p>
+<ol>
+<li>通过Dockerfile来创建：</li>
+</ol>
+<p>传统做法是自己编写Dockerfile，使用基础镜像，copy源代码、RUN命令来安装依赖包、shell命令来编译程序、CMD名字指定可运行程序，最后使用<br>docker build 生成镜像。</p>
+<ol>
+<li>通过docker run和docker commit来创建</li>
+</ol>
+<p>还有一种比较小众的做法。是docker run<br>运行基础镜像，然后使用交互式shell下载源代码、安装依赖包最后使用docker<br>commit提交容器生成镜像。</p>
+<h2 id="理解s2i-历程中的三个镜像"><a href="#理解s2i-历程中的三个镜像" class="headerlink" title="理解s2i 历程中的三个镜像"></a>理解s2i 历程中的三个镜像</h2><p>要了解 s2i的过程我们先来理解三个阶段的三个镜像：</p>
+<ol>
+<li>基础镜像 base image：</li>
+</ol>
+<p>是我们在docker hub下载的某个语言的官方镜像，比如python<br>2.7、PHP3.5，这些镜像只包含语言的编译环境，没有做任何加工。</p>
+<ol>
+<li>编译镜像 builder image：</li>
+</ol>
+<p>这个镜像是我们在基础镜像的基础上，经过加工以后，可以自动编译代码，并自动完成部署运行的镜像，这个镜像是通过dockerfile生成，继承自上面的base<br>image。制作过程参考：<a href="https://github.com/openshift/source-to-image/" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/</a></p>
+<ol>
+<li>运行时镜像 runtime image：</li>
+</ol>
+<p>这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builder<br>image; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builder<br>image，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit<br>出一个新的image ，称为 runtime image</p>
+<p>OpenShift由builder image到runtime image的过程如下图：</p>
+<p><img src="media/8f8b18e64ff2a6a042e7ab47873f2af4.tiff" alt=""></p>
+<h2 id="自定义s2i脚本"><a href="#自定义s2i脚本" class="headerlink" title="自定义s2i脚本"></a>自定义s2i脚本</h2><p>openshift官方已经提供了各种语言的 builder image，(当然这些builder<br>image中已经注入了写好的s2i脚本，一般保存在/usr/libexec/s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：</p>
+<p>有以下三种方式可以使用自定义s2i脚本来替换默认脚本：</p>
+<ol>
+<li><p>在代码中包含s2i脚本：在代码仓库的跟目录创建文件夹<br>.s2i/bin，把脚本放到这个目录中，当编译时会自动调用这个脚本，值得注意的是，早期版本使用的是<br>.sti/bin文件夹，后期版本使用的是.s2i/bin。</p>
+</li>
+<li><p>指定网络上的s2i脚本地址：通过设置bc的bc.spec.strategy.sourceStrategy.scripts项目来指定s2i脚本地址，系统会自动去该地址下载脚本。</p>
+</li>
+<li><p>如果使用s2i工具创建，可以通过三种方式设置脚本位置</p>
+</li>
+</ol>
+<h2 id="s2i配置文件信息"><a href="#s2i配置文件信息" class="headerlink" title="s2i配置文件信息"></a>s2i配置文件信息</h2><p>主要包含四个文件，分别为：</p>
+<ol>
+<li><p>assemble 用于对源码编译以及安装配置的脚本</p>
+</li>
+<li><p>run 启动应用镜像时执行的脚本</p>
+</li>
+<li><p>save-artifacts<br>用于保存一些编译中复用的内容，这样下次编译可以直接使用这些文件，从而加快编译安装等速度</p>
+</li>
+<li><p>usage 打印生成镜像的帮助信息</p>
+</li>
+</ol>
+<p>这四个文件都需要用户自行定义，s2i会通过三种方式寻找这些文件，分别为：</p>
+<ul>
+<li><p>源码中.s2i/bin下</p>
+</li>
+<li><p>-scripts-url 参数指定的位置</p>
+</li>
+<li><p>镜像中label：io.openshift.s2i.scripts-url指定的位置</p>
+</li>
+</ul>
+<p>推荐使用第一种方式，这样方便管理和持续集成，其他两种url都支持以下三种形式：</p>
+<p>image://path_to_scripts_dir 在镜像内的绝对路径</p>
+<p>file://path_to_scripts_dir 在主机上的绝对或者相对路径</p>
+<p>http(s)://path_to_scripts_dir 网络上的文件</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-Project权限管理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -596,2848 +1545,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-运维管理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-运维管理/" itemprop="url">OpenShift-运维管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenShift</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Cockpit介绍"><a href="#Cockpit介绍" class="headerlink" title="Cockpit介绍"></a>Cockpit介绍</h2><p>Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。</p>
-<p>项目URL：<a href="https://github.com/cockpit-project" target="_blank" rel="noopener">https://github.com/cockpit-project</a></p>
-<h2 id="Cockpit部署"><a href="#Cockpit部署" class="headerlink" title="Cockpit部署"></a>Cockpit部署</h2><ul>
-<li>所有节点执行</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>yum install cockpit cockpit-docker cockpit-kubernetes -y</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>systemctl start cockpit &amp;&amp; systemctl enable cockpit</td>
-</tr>
-<tr>
-<td>vim /etc/sysconfig/iptables</td>
-</tr>
-<tr>
-<td>A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT</td>
-</tr>
-<tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
-</tr>
-<tr>
-<td>systemctl restart iptables</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>登陆</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>登陆<a href="https://master.example.com:9090/" target="_blank" rel="noopener">https://master.example.com:9090/</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>用户名密码即服务器用户名密码</td>
-</tr>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="Cockpit集群运维"><a href="#Cockpit集群运维" class="headerlink" title="Cockpit集群运维"></a>Cockpit集群运维</h2><table>
-<thead>
-<tr>
-<th>在集群选项中可以添加OpenShift集群</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-<tr>
-<td>各信息在浏览器中直观展现</td>
-</tr>
-<tr>
-<td>节点</td>
-</tr>
-<tr>
-<td><a href="./media/image5.png">./media/image5.png</a></td>
-</tr>
-<tr>
-<td>拓扑</td>
-</tr>
-<tr>
-<td><a href="./media/image6.png">./media/image6.png</a></td>
-</tr>
-<tr>
-<td>持久化卷</td>
-</tr>
-<tr>
-<td><a href="./media/image7.png">./media/image7.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="OpenShift集群扩容"><a href="#OpenShift集群扩容" class="headerlink" title="OpenShift集群扩容"></a>OpenShift集群扩容</h2><p>根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120<br>000。</p>
-<p>目前集群扩容的方式有：</p>
-<ul>
-<li>半自动扩容：</li>
-</ul>
-<blockquote>
-<p>  OpenShift默认提供了扩容的Ansible<br>  Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。</p>
-</blockquote>
-<ul>
-<li>全自动扩容：</li>
-</ul>
-<blockquote>
-<p>  自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible<br>  Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。</p>
-</blockquote>
-<h3 id="Ansible-Playbook"><a href="#Ansible-Playbook" class="headerlink" title="Ansible Playbook"></a>Ansible Playbook</h3><p>通过Ansible<br>Playboko进行扩容需要编辑Ansible的Inventory，/etc/ansible/hosts文件，在相应角色下添加新节点的域名以及配置信息</p>
-<table>
-<thead>
-<tr>
-<th># host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="主节点扩容Playbook"><a href="#主节点扩容Playbook" class="headerlink" title="主节点扩容Playbook"></a>主节点扩容Playbook</h3><table>
-<thead>
-<tr>
-<th>ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-master/scaleup.yml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="计算节点扩容Playbook"><a href="#计算节点扩容Playbook" class="headerlink" title="计算节点扩容Playbook"></a>计算节点扩容Playbook</h3><table>
-<thead>
-<tr>
-<th>ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="OpenShift集群缩容"><a href="#OpenShift集群缩容" class="headerlink" title="OpenShift集群缩容"></a>OpenShift集群缩容</h2><p>缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。</p>
-<h3 id="禁止参与调度"><a href="#禁止参与调度" class="headerlink" title="禁止参与调度"></a>禁止参与调度</h3><table>
-<thead>
-<tr>
-<th>控制一个计算节点是否参与到集群的调度运行应用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc adm manage-node master.example.com –schedulable=false</td>
-</tr>
-<tr>
-<td><a href="./media/image8.png">./media/image8.png</a></td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-性能监控/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-性能监控/" itemprop="url">OpenShift-性能监控</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenShift</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。</p>
-<blockquote>
-<p>  项目URL：<a href="https://github.com/openshift/origin-metrics" target="_blank" rel="noopener">https://github.com/openshift/origin-metrics</a></p>
-</blockquote>
-<p>主要通过以下组件实现：</p>
-<ul>
-<li>Heapster</li>
-</ul>
-<blockquote>
-<p>  Heapster通过Master<br>  API收集系统级别的信息，如CPU、内存、网络，然后将这些信息发送到Hawkular</p>
-</blockquote>
-<blockquote>
-<p>  <a href="https://github.com/kubernetes/heapster" target="_blank" rel="noopener">https://github.com/kubernetes/heapster</a></p>
-</blockquote>
-<ul>
-<li>Hawkular Metrics</li>
-</ul>
-<blockquote>
-<p>  Hawkular Metrics是来此Hawkular项目的监控存储引擎。它提供了通过json<br>  REST接口来创建、访问和管理历史存储指标的方法。</p>
-</blockquote>
-<blockquote>
-<p>  <a href="https://github.com/hawkular/hawkular-metrics" target="_blank" rel="noopener">https://github.com/hawkular/hawkular-metrics</a></p>
-</blockquote>
-<ul>
-<li>Cassandra</li>
-</ul>
-<blockquote>
-<p>  Cassandra是Hawkular的分布式数据库</p>
-</blockquote>
-<p><a href="http://cassandra.apache.org/" target="_blank" rel="noopener">http://cassandra.apache.org/</a></p>
-<ul>
-<li>Hawkular OpenShift Agent</li>
-</ul>
-<blockquote>
-<p>  Hawkular OpenShift<br>  Agent是一个代理组件，用来收集来此pod的应用程序级别的数据。前提是pod公开自己希望被收集的信息。</p>
-</blockquote>
-<p><img src="media/6e089fd62397d30c1533bb14d818b607.jpg" alt=""></p>
-<p>OpenShift的监控采集方案的组件Heapster、Hawkular<br>Metrics、Canssandra数据库都是以容器的形式提供，并默认提供了可快速部署的Temaplate。</p>
-<h2 id="启用集群监控"><a href="#启用集群监控" class="headerlink" title="启用集群监控"></a>启用集群监控</h2><p>版本1.4之前OpenShift<br>Origin提供template的方式，供用户安装Metrics组件，从版本1.5开始到当前环境的3.6版本，OpenShift<br>Origin开始已Ansible Playbook的方式安装Metris组件。</p>
-<p>Playbook URL：./openshift-ansible/playbooks/common/openshift-cluster/<br>openshift_metrics.yml</p>
-<table>
-<thead>
-<tr>
-<th>由于部署需要联网下载docker 镜像，网络原因导致失败，提前下载。</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>在infra-node上下载以下镜像，并保证infrra-node物理内存>4G</td>
-</tr>
-<tr>
-<td>docker pull docker.io/openshift/origin-metrics-heapster:latest docker pull docker.io/openshift/origin-metrics-hawkular-metrics:latest docker pull docker.io/openshift/origin-metrics-heapster:lates</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>开始部署Metric组件</td>
-</tr>
-<tr>
-<td>ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml \ -e openshift_metrics_install_metrics=True \ -e openshift_metrics_hawkular_hostname=hawkular-metrics.example.com</td>
-</tr>
-<tr>
-<td>因为测试使用临时存储，若要持久化存储： ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml \ -e openshift_metrics_install_metrics=True \ -e openshift_metrics_hawkular_hostname=hawkular-metrics.example.com \ -e openshift_metrics_cassandra_storage_type=pv</td>
-</tr>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-<tr>
-<td>oc project openshift-infra</td>
-</tr>
-<tr>
-<td>oc get po</td>
-</tr>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="使用集群监控"><a href="#使用集群监控" class="headerlink" title="使用集群监控"></a>使用集群监控</h2><table>
-<thead>
-<tr>
-<th>部署完成后，在OpenShift的Web控制台，进入某一个Pod的详情页面，单机Metrics页签，可以看到当前Pod的CPU，内存及网络的使用情况，如下图</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><img src="media/723b74430b2819fc8b4f872e804a4d8f.png" alt=""></p>
-<h2 id="集群监控容量规划"><a href="#集群监控容量规划" class="headerlink" title="集群监控容量规划"></a>集群监控容量规划</h2><p>OpenShift<br>Origin监控存储使用的是Cassandra数据库。默认设置，监控数据存储七天，七天后，Cassandra开始清除旧数据。已删除的Pod和Project的监控数据不会自动清除，只要超过7天才会被删除</p>
-<table>
-<thead>
-<tr>
-<th>Pod运行累计数据表</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>1000Pod</td>
-<td>10000Pod</td>
-</tr>
-<tr>
-<td>24小时Cassandra数据占用</td>
-<td>2.5GB</td>
-<td>11.4GB</td>
-</tr>
-<tr>
-<td>7天Cassandra数据占用</td>
-<td>20GB</td>
-<td>90GB</td>
-</tr>
-</tbody>
-</table>
-<h2 id="监控组件配置"><a href="#监控组件配置" class="headerlink" title="监控组件配置"></a>监控组件配置</h2><p>在实际环境中，强烈建议为Cassandra数据库配置后端持久化存储，并且规划好容量。此外根据集群以及应用规模，可以调整Hawkular<br>Metrics及Cassandra数据库的实例数量，保证性能及相应速度。</p>
-<p>详细关于监控的配置项，参考官方文档：<a href="https://docs.openshift.org/3.6/install_config/cluster_metrics.html" target="_blank" rel="noopener">https://docs.openshift.org/3.6/install_config/cluster_metrics.html</a></p>
-<h2 id="监控接口"><a href="#监控接口" class="headerlink" title="监控接口"></a>监控接口</h2><p>OpenShift的监控信息最终都存放在Hawkular<br>Metrics后端的Cassandra数据库中。可以访问Hawkular<br>Metrics的RESTful接口获取其中的信息，着对需要将OpenShift的监控和企业现有监控对接有很大帮助。</p>
-<p>Heapster已配置通过API访问，并且需要cluster-reader或cluster-admin权限。</p>
-<table>
-<thead>
-<tr>
-<th>示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>curl -H “Authorization: Bearer \$(oc whoami -t)” \ -X GET https://\${KUBERNETES_MASTER}/api/v1/proxy/namespaces/openshift-infra/services/https:heapster:/validate</td>
-</tr>
-</tbody>
-</table>
-<p>更多API接口信息，参考Heapster项目：</p>
-<p><a href="https://github.com/kubernetes/heapster/" target="_blank" rel="noopener">https://github.com/kubernetes/heapster/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-日志管理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-日志管理/" itemprop="url">OpenShift-日志管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenShift</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="简介"><a href="#简介" class="headerlink" title="简介 "></a>简介 </h2><p>OpenShift平台的日志聚合和管理是在EFK方案的基础上实现的。EFK主要汇集来自Host和App的运行日志，包括多个容器和已删除的Pods。</p>
-<p>EFK Stack是在EFK上修改的版本，由以下部分组成：</p>
-<ul>
-<li><p>Elasticsearch：存储所有日志的额对象存储</p>
-</li>
-<li><p>Fluentd：从节点收集日志并推送给ES</p>
-</li>
-<li><p>Kibana：ES的Web UI</p>
-</li>
-<li><p>Curator：从ES删除旧日志</p>
-</li>
-</ul>
-<h2 id="部署EFK-Stack"><a href="#部署EFK-Stack" class="headerlink" title="部署EFK Stack"></a>部署EFK Stack</h2><p>EFK Stack使用Ansible Playbook部署日志管理组件。</p>
-<p>origin-logging-elasticsearch服务至少需要有物理内存8G的Node节点</p>
-<table>
-<thead>
-<tr>
-<th>由于网络原因，提前下载images</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>docker pull docker.io/openshift/origin-logging-fluentd:latest</td>
-</tr>
-<tr>
-<td>docker pull openshift/origin-logging-curator:latest</td>
-</tr>
-<tr>
-<td>docker pull openshift/origin-logging-kibana:latest</td>
-</tr>
-<tr>
-<td>docker pull openshift/origin-logging-elasticsearch:latest</td>
-</tr>
-<tr>
-<td>ansible-playbook /root/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml</td>
-</tr>
-<tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
-</tr>
-<tr>
-<td>验证服务正常</td>
-</tr>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="访问Kibana"><a href="#访问Kibana" class="headerlink" title="访问Kibana"></a>访问Kibana</h2><p>通过Route创建的URL进行访问：<a href="https://kibana.router.default.svc.cluster.local/" target="_blank" rel="noopener">https://kibana.router.default.svc.cluster.local/</a></p>
-<p>（配置好DNS或者Hosts）</p>
-<table>
-<thead>
-<tr>
-<th><a href="./media/image3.png">./media/image3.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="日志管理操作"><a href="#日志管理操作" class="headerlink" title="日志管理操作"></a>日志管理操作</h2><ol>
-<li>允许集群成员查看集群日志</li>
-</ol>
-<blockquote>
-<p>  默认情况下，只有集群管理员才能访问日志管理，若要允许普通成员访问则需要开启配置</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>oc project logging</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc edit configmap/logging-elasticsearch</td>
-</tr>
-<tr>
-<td>openshift.operations.allow_cluster_reader 配置为true</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-<tr>
-<td>或者在部署前修改playbbok</td>
-</tr>
-<tr>
-<td>vim /root/openshift-ansible/roles/openshift_logging/defaults/main.yml</td>
-</tr>
-<tr>
-<td>openshift_logging_es_allows_cluster_reader配置true</td>
-</tr>
-<tr>
-<td><a href="./media/image5.png">./media/image5.png</a></td>
-</tr>
-</tbody>
-</table>
-<ol>
-<li>Fluentd</li>
-</ol>
-<blockquote>
-<p>  Fluentd使用Systemd Journal作为日志源，默认情况下，Fluentd分别从/ var / log /<br>  messages和<br>  /var/log/containers/\&lt;container>.log中读取系统日志和容器日志。您可以改为使用systemd日志作为日志源。有三个库存参数可用：</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>概述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>openshift_logging_use_journal</td>
-<td>缺省值为空，它配置Fluentd以检查Docker正在使用哪个日志驱动程序。如果Docker正在使用–log-driver=journald，Fluentd将从systemd日志中读取数据，否则，它会假定docker正在使用json-file日志驱动程序并从/ var / log文件源读取数据。您可以将openshift_logging_use_journal选项指定 为true或false明确指出要使用哪个日志源。使用systemd日志需要docker-1.10或更高版本，并且必须配置Docker以使用–log-driver=journald。</td>
-</tr>
-<tr>
-<td>openshift_logging_journal_read_from_head</td>
-<td>如果此设置为false，Fluentd将从日志末尾开始读取，忽略历史日志。如果这个设置是true，Fluentd开始从日志的开头读取日志。</td>
-</tr>
-</tbody>
-</table>
-<ol>
-<li>修改kibana URL</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>/etc/origin/master/master-config.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>… assetConfig: … loggingPublicURL: “<a href="https://kibana.example.com&quot;" target="_blank" rel="noopener">https://kibana.example.com&quot;</a> …</td>
-</tr>
-<tr>
-<td>必须为https</td>
-</tr>
-<tr>
-<td>oc scale dc/logging-kibana –replicas=2</td>
-</tr>
-</tbody>
-</table>
-<ol start="2">
-<li>Curator配置</li>
-</ol>
-<blockquote>
-<p>  Curator允许管理员配置按计划自动执行的预定Elasticsearch维护操作。它计划每天根据其配置执行操作。每个Elasticsearch群集只推荐一个Curator<br>  pod，配置参数</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>变量名</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>\$PROJECT_NAME</td>
-<td>项目的实际名称，例如myapp-devel。对于OpenShift Origin 操作 日志，请使用该名称.operations作为项目名称。</td>
-</tr>
-<tr>
-<td>\$ACTION</td>
-<td>目前只delete允许采取行动。</td>
-</tr>
-<tr>
-<td>\$UNIT</td>
-<td>其中一个days，weeks或months。</td>
-</tr>
-<tr>
-<td>\$VALUE</td>
-<td>单位数的整数。</td>
-</tr>
-<tr>
-<td>.defaults</td>
-<td>使用.defaults的\$PROJECT_NAME设置为未指定的项目的默认值。</td>
-</tr>
-<tr>
-<td>runhour</td>
-<td>（数量）以24小时格式运行策展人作业的一天中的小时。用于.defaults。</td>
-</tr>
-<tr>
-<td>runminute</td>
-<td>（数字）运行策展人作业的小时数。用于.defaults。</td>
-</tr>
-<tr>
-<td>例如，要将Curator配置为：</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>删除比<strong>myapp-dev</strong>项目早的索引1 day</p>
-<ul>
-<li><p>删除<strong>myapp-qe</strong>项目中早于的索引1 week</p>
-<ul>
-<li><p>删除<strong>操作</strong>日志比8 weeks</p>
-<ul>
-<li><p>删除30 days旧的所有其他项目索引</p>
-</li>
-<li><p>每天午夜运行策展人工作</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>使用： MYAPP-dev的： 删除： 天数：1 MYAPP - 即： 删除： 周：1 .operations： 删除： 周：8 .defaults： 删除： 天数：30 runhour: 0 runminute：0</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>创建curator配置</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>编辑提供的ConfigMap</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>oc edit configmap/logging-curator</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>代替提供的ConfigMap：</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>create /path/to/mycuratorconfig.yaml oc create configmap logging-curator -o yaml \ –from-file=config.yaml=/path/to/mycuratorconfig.yaml \</td>
-<td>\ oc replace -f -</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>完成更改后，重新部署</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>oc rollout latest dc/logging-curator oc rollout latest dc/logging-curator-ops</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-企业应用-3.6.1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-企业应用-3.6.1/" itemprop="url">OpenShift-企业应用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenShift/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenShift</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Ansible部署"><a href="#Ansible部署" class="headerlink" title="Ansible部署"></a>Ansible部署</h2><p><strong>为区分各角色，部署结构如下：</strong></p>
-<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><table>
-<thead>
-<tr>
-<th>主机名</th>
-<th>角色</th>
-<th>IP地址</th>
-<th>操作系统</th>
-<th>硬件配置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>master.example.com</td>
-<td>master</td>
-<td>10.10.31.161</td>
-<td>7.4 mini</td>
-<td>4C2G+30G</td>
-</tr>
-<tr>
-<td>node1.example.com</td>
-<td>node</td>
-<td>10.10.31.162</td>
-<td>7.4 mini</td>
-<td>4C2G+30G</td>
-</tr>
-<tr>
-<td>node2.example.com</td>
-<td>node</td>
-<td>10.10.31.163</td>
-<td>7.4 mini</td>
-<td>4C2G+30G</td>
-</tr>
-<tr>
-<td>infra-node1.example.com</td>
-<td>node</td>
-<td>10.10.31.164</td>
-<td>7.4 mini</td>
-<td>4C2G+30G</td>
-</tr>
-<tr>
-<td>infra-node2.example.com</td>
-<td>node</td>
-<td>10.10.31.165</td>
-<td>7.4 mini</td>
-<td>4C2G+30G</td>
-</tr>
-</tbody>
-</table>
-<h3 id="准备工作，所有主机执行"><a href="#准备工作，所有主机执行" class="headerlink" title="准备工作，所有主机执行"></a>准备工作，所有主机执行</h3><table>
-<thead>
-<tr>
-<th>配置主机名</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>hostnamectl set-hostname master.example.com hostnamectl set-hostname node1.example.com hostnamectl set-hostname node2.example.com hostnamectl set-hostname infra-node1.example.com hostnamectl set-hostname infra-node2.example.com</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>若无DNS Server，则配置Hosts</td>
-</tr>
-<tr>
-<td>10.10.31.161 master.example.com 10.10.31.162 node1.example.com 10.10.31.163 node2.example.com 10.10.31.164 infra-node1.example.com 10.10.31.165 infra-node2.example.com</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>确认网络正常</td>
-</tr>
-<tr>
-<td>nmcli con show nmcli con up ens160 nmcli con mod ens160 connection.autoconnect yes systemctl restart NetworkManager systemctl status NetworkManager systemctl is-enabled NetworkManager</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>安装基础软件包</td>
-</tr>
-<tr>
-<td>yum install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct -y</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>升级系统</td>
-</tr>
-<tr>
-<td>yum update -y</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>安装Docker</td>
-</tr>
-<tr>
-<td>yum install docker -y</td>
-</tr>
-<tr>
-<td>docker version</td>
-</tr>
-<tr>
-<td>配置docker后端存储</td>
-</tr>
-<tr>
-<td>cat \&lt;\<eof \=""> /etc/sysconfig/docker-storage-setup DEVS=/dev/sdb EOF</eof></td>
-</tr>
-<tr>
-<td>docker-storage-setup</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>添加中科大源</td>
-</tr>
-<tr>
-<td>vim /etc/docker/daemon.json</td>
-</tr>
-<tr>
-<td>{ “registry-mirrors”: [“<a href="https://docker.mirrors.ustc.edu.cn/&quot;]" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn/&quot;]</a> }</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>systemctl enable docker &amp;&amp; systemctl start docker</td>
-</tr>
-</tbody>
-</table>
-<h3 id="配置Ansible，Master执行"><a href="#配置Ansible，Master执行" class="headerlink" title="配置Ansible，Master执行"></a>配置Ansible，Master执行</h3><p>由于网络原因，提前修改repo源和导入docker images</p>
-<table>
-<thead>
-<tr>
-<th>配置EPEL</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>yum -y install \ <a href="https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" target="_blank" rel="noopener">https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</a></td>
-</tr>
-<tr>
-<td>不启用EPEL，后续手动指定</td>
-</tr>
-<tr>
-<td>sed -i -e “s/\^enabled=1/enabled=0/“ /etc/yum.repos.d/epel.repo</td>
-</tr>
-<tr>
-<td>安装Ansible</td>
-</tr>
-<tr>
-<td>yum -y –enablerepo=epel install ansible pyOpenSSL</td>
-</tr>
-<tr>
-<td>拉取最新openshift-ansible版本</td>
-</tr>
-<tr>
-<td>cd ~ git clone -b release-3.6 <a href="https://github.com/openshift/openshift-ansible.git" target="_blank" rel="noopener">https://github.com/openshift/openshift-ansible.git</a> cd openshift-ansible</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>修改ansible playbook中的repo源</td>
-</tr>
-<tr>
-<td>vim openshift-ansible/roles/openshift_repos/templates/CentOS-OpenShift-Origin36.repo.j2</td>
-</tr>
-<tr>
-<td>baseurl=<a href="http://mirrors.ustc.edu.cn/centos/7.4.1708/paas/x86_64/openshift-origin36/" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/centos/7.4.1708/paas/x86_64/openshift-origin36/</a></td>
-</tr>
-<tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
-</tr>
-<tr>
-<td>提前pull好docker images</td>
-</tr>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>配置各主机互信</td>
-</tr>
-<tr>
-<td>ssh-keygen -f /root/.ssh/id_rsa -N ‘’</td>
-</tr>
-<tr>
-<td>for host in master.example.com \ etcd.example.com \ node2.example.com \ node1.example.com \ infra-node1.example.com \ infra-node2.example.com; do ssh-copy-id -i ~/.ssh/id_rsa.pub \$host; done</td>
-</tr>
-</tbody>
-</table>
-<h3 id="执行部署"><a href="#执行部署" class="headerlink" title="执行部署"></a>执行部署</h3><ul>
-<li>准备Ansible Host</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>mv -f /etc/ansible/hosts /etc/ansible/hosts.old</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>vi /etc/ansible/hosts</td>
-</tr>
-<tr>
-<td># Create an OSEv3 group that contains the masters and nodes groups [OSEv3:children] masters nodes etcd # Set variables common for all OSEv3 hosts [OSEv3:vars] # SSH user, this user should allow ssh based auth without requiring a password ansible_ssh_user=root # If ansible_ssh_user is not root, ansible_become must be set to true #ansible_become=true openshift_deployment_type=origin # uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider openshift_master_identity_providers=[{‘name’: ‘htpasswd_auth’, ‘login’: ‘true’, ‘challenge’: ‘true’, ‘kind’: ‘HTPasswdPasswordIdentityProvider’, ‘filename’: ‘/etc/origin/master/htpasswd’}] #Disable disk and memory checks openshift_disable_check=disk_availability,memory_availability # host group for masters [masters] master.example.com # host group for etcd [etcd] etcd.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}”</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>运行</td>
-</tr>
-<tr>
-<td>ansible-playbook ~/openshift-ansible/playbooks/byo/config.yml</td>
-</tr>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><ul>
-<li><p>Master上验证</p>
-</li>
-<li><p>确认集群状态</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-<tr>
-<td>oc get nodes</td>
-</tr>
-<tr>
-<td><a href="./media/image5.png">./media/image5.png</a></td>
-</tr>
-<tr>
-<td>oc get all</td>
-</tr>
-<tr>
-<td><a href="./media/image6.png">./media/image6.png</a></td>
-</tr>
-<tr>
-<td>验证etcd</td>
-</tr>
-<tr>
-<td>yum install etcd -y</td>
-</tr>
-<tr>
-<td>etcdctl -C \ <a href="https://etcd.example.com:2379" target="_blank" rel="noopener">https://etcd.example.com:2379</a> \ –ca-file=/etc/origin/master/master.etcd-ca.crt \ –cert-file=/etc/origin/master/master.etcd-client.crt \ –key-file=/etc/origin/master/master.etcd-client.key cluster-health</td>
-</tr>
-<tr>
-<td>etcdctl -C \ <a href="https://etcd.example.com:2379" target="_blank" rel="noopener">https://etcd.example.com:2379</a> \ –ca-file=/etc/origin/master/master.etcd-ca.crt \ –cert-file=/etc/origin/master/master.etcd-client.crt \ –key-file=/etc/origin/master/master.etcd-client.key member list</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="登陆"><a href="#登陆" class="headerlink" title="登陆"></a>登陆</h3><table>
-<thead>
-<tr>
-<th>创建用户</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>htpasswd -b /etc/origin/master/htpasswd dev dev</td>
-</tr>
-<tr>
-<td>给dev用户admin权限</td>
-</tr>
-<tr>
-<td>oc login -u system:admin</td>
-</tr>
-<tr>
-<td>oc adm policy add-cluster-role-to-user cluster-admin dev</td>
-</tr>
-<tr>
-<td>浏览器登录</td>
-</tr>
-<tr>
-<td><a href="https://master.example.com:8443" target="_blank" rel="noopener">https://master.example.com:8443</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="本地DNS-Server"><a href="#本地DNS-Server" class="headerlink" title="本地DNS Server"></a>本地DNS Server</h2><ul>
-<li><p>在建立openshift集群时，是直接修改各节点的/etc/hosts文件，要访问Router映射出的域名，是加上静态的域名解析。当节点数量很多或者后续执行节点扩容时，都需要修改大量/etc/hosts/文件，繁琐又不智能。</p>
-</li>
-<li><p>这里选择在本地搭建一个DNS服务器，并选择将DNS Server部署在Master节点上。</p>
-</li>
-<li><p>在部署过程中已经安装好dnsmasp服务，不用安装，只需要添加配置文件即可</p>
-</li>
-</ul>
-<h3 id="添加dnsmasp配置"><a href="#添加dnsmasp配置" class="headerlink" title="添加dnsmasp配置"></a>添加dnsmasp配置</h3><table>
-<thead>
-<tr>
-<th>vim /etc/dnsmasq.d/local.conf</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>address=/master.example.com/10.10.31.161 address=/<a href="http://www.ivops-rabbitmq.com/10.10.31.164" target="_blank" rel="noopener">www.ivops-rabbitmq.com/10.10.31.164</a> address=/registry-console-default.router.default.svc.cluster.local/10.10.31.164 address=/agtweb.mas.ivops/10.10.31.164 address=/agtweb2.mas.ivops/10.10.31.164</td>
-</tr>
-<tr>
-<td><a href="./media/image7.png">./media/image7.png</a></td>
-</tr>
-<tr>
-<td>systemctl restart dnsmasq.service</td>
-</tr>
-<tr>
-<td>systemctl status dnsmasq.service</td>
-</tr>
-</tbody>
-</table>
-<h3 id="配置iptables"><a href="#配置iptables" class="headerlink" title="配置iptables"></a>配置iptables</h3><table>
-<thead>
-<tr>
-<th>sed -i ‘/.*–dport 22 -j ACCEPT.*/a\-A INPUT -p tcp -m state –state NEW -m tcp –dport 53 -j ACCEPT’ /etc/sysconfig/iptables</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>sed -i ‘/.*–dport 22 -j ACCEPT.*/a\-A INPUT -p udp -m state –state NEW -m udp –dport 53 -j ACCEPT’ /etc/sysconfig/iptables</td>
-</tr>
-<tr>
-<td>systemctl restart iptables</td>
-</tr>
-<tr>
-<td>systemctl status iptables</td>
-</tr>
-</tbody>
-</table>
-<h3 id="本地验证"><a href="#本地验证" class="headerlink" title="本地验证"></a>本地验证</h3><table>
-<thead>
-<tr>
-<th><a href="./media/image8.png">./media/image8.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ping master.example.com -c 2</td>
-</tr>
-<tr>
-<td>ping agtweb.mas.ivops -c 2</td>
-</tr>
-<tr>
-<td><a href="./media/image9.png">./media/image9.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="持久化存储-NFS"><a href="#持久化存储-NFS" class="headerlink" title="持久化存储-NFS"></a>持久化存储-NFS</h2><h3 id="使用NFS为后端存储"><a href="#使用NFS为后端存储" class="headerlink" title="使用NFS为后端存储"></a>使用NFS为后端存储</h3><ul>
-<li>创建NFS共享目录</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>mount /dev/sdc1 /mnt/nfs/</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>yum install nfs-utils rpcbind -y</td>
-</tr>
-<tr>
-<td>chown nfsnobody:nfsnobody /mnt/nfs/ -R</td>
-</tr>
-<tr>
-<td>echo “/mnt/nfs *(rw,sync,all_squash)” >> /etc/exports</td>
-</tr>
-<tr>
-<td>systemctl start rpcbind &amp;&amp; systemctl enable rpcbind</td>
-</tr>
-<tr>
-<td>systemctl status rpcbind</td>
-</tr>
-<tr>
-<td>exportfs -r</td>
-</tr>
-<tr>
-<td>systemctl start nfs-server &amp;&amp; systemctl enable nfs-server</td>
-</tr>
-<tr>
-<td>systemctl status nfs-server</td>
-</tr>
-<tr>
-<td>showmount -e 127.0.0.1</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>测试挂载</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>mkdir /mnt/nfsmount</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>touch /mnt/nfs/test</td>
-</tr>
-<tr>
-<td>mount 10.10.31.161:/mnt/nfs /mnt/nfsmount</td>
-</tr>
-<tr>
-<td>ls /mnt/nfsmount/</td>
-</tr>
-<tr>
-<td>rm -rf /mnt/nfsmount/test</td>
-</tr>
-<tr>
-<td>df -h</td>
-</tr>
-<tr>
-<td>umount /mnt/nfsmount/</td>
-</tr>
-</tbody>
-</table>
-<h3 id="创建Persistent-Volume"><a href="#创建Persistent-Volume" class="headerlink" title="创建Persistent Volume"></a>创建Persistent Volume</h3><ul>
-<li>创建pv 的yaml文件</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vi nfs-pv.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: /mnt/nfs server: 10.10.31.161 readOnly: false</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>创建pv卷</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc create -f nfs-pv.yaml -n my-project</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>查看pv卷状态</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc get pv</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="创建Persistent-Volume-Claim"><a href="#创建Persistent-Volume-Claim" class="headerlink" title="创建Persistent Volume Claim"></a>创建Persistent Volume Claim</h3><ul>
-<li>创建pvc的yaml文件</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vim nfs-pvc.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc spec: accessModes: - ReadWriteMany volumeName: nfs-pv resources: requests: storage: 1Gi</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>创建pvc</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc create -f nfs-pvc.yaml -n my-project</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>查看pvc状态</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc get pvc</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="配置SELinux权限"><a href="#配置SELinux权限" class="headerlink" title="配置SELinux权限"></a>配置SELinux权限</h3><ul>
-<li>开启NFS卷写入权限</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>setsebool -P virt_use_nfs on</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="创建应用"><a href="#创建应用" class="headerlink" title="创建应用"></a>创建应用</h3><ul>
-<li>创建pod的yaml文件</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vi nfs-nginx.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Pod metadata: name: nginx-nfs-pod labels: name: nginx-nfs-pod spec: containers: - name: nginx-nfs-pod image: fedora/nginx ports: - name: web containerPort: 80 volumeMounts: - name: nfsvol mountPath: /usr/share/nginx/html securityContext: supplementalGroups: [100003] privileged: false volumes: - name: nfsvol persistentVolumeClaim: claimName: nfs-pvc</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>创建pod</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc create -f nfs-nginx.yaml -n my-project</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>查看pod状态</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc get pod –n my-project</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc describe pod nginx-nfs-pod</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>在Web Console上可以看到已经挂载</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><a href="./media/image10.png">./media/image10.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image11.png">./media/image11.png</a></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>查看底层docker状态</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><a href="./media/image12.png">./media/image12.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>docker inspect 289c36f63273</td>
-</tr>
-<tr>
-<td><a href="./media/image13.png">./media/image13.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="持久化存储-GlusterFS"><a href="#持久化存储-GlusterFS" class="headerlink" title="持久化存储-GlusterFS"></a>持久化存储-GlusterFS</h2><ol>
-<li><p>使用GlusterFS为后端存储-Static</p>
-<ol>
-<li>部署GlusterFS集群</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>环境准备</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>主机名</th>
-<th>IP地址</th>
-<th>操作系统</th>
-<th>硬件配置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>gluster1</td>
-<td>10.10.31.166</td>
-<td>7.4 mini</td>
-<td>4C2G+50G</td>
-</tr>
-<tr>
-<td>gluster2</td>
-<td>10.10.31.167</td>
-<td>7.4 mini</td>
-<td>4C2G+50G</td>
-</tr>
-<tr>
-<td>gluster3</td>
-<td>10.10.31.168</td>
-<td>7.4 mini</td>
-<td>4C2G+50G</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>准备工作</li>
-</ul>
-<blockquote>
-<p>  配置hostname</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>vi /etc/hosts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>hostnamectl set-name glsuter1</td>
-</tr>
-<tr>
-<td>hostnamectl set-name glsuter2</td>
-</tr>
-<tr>
-<td>hostnamectl set-name glsuter3</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>  关闭SELinux</p>
-</blockquote>
-<ul>
-<li><p>开始安装，所有机器相同操作</p>
-<ul>
-<li>安装软件仓库</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>yum install centos-release-gluster</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>格式化数据盘</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>mkfs.xfs -i size=512 /dev/sdb</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>mkdir -p /bricks/brick1</td>
-</tr>
-<tr>
-<td>vi /etc/fstab</td>
-</tr>
-<tr>
-<td>/dev/sdb /bricks/brick1 xfs defaults 1 2</td>
-</tr>
-<tr>
-<td>mount -a &amp;&amp; mount</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>安装GlusterFS</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>yum –enablerepo=centos-gluster*-test install glusterfs-server</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>systemctl start glusterd &amp;&amp; systemctl enable glusterd</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>配置trusted pool</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>gluster1执行</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>gluster peer probe gluster2</td>
-</tr>
-<tr>
-<td>gluster peer probe gluster3</td>
-</tr>
-<tr>
-<td>gluster peer status</td>
-</tr>
-<tr>
-<td><a href="./media/image14.png">./media/image14.png</a></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>配置存储卷</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>mkdir /bricks/brick1/gv0</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>可以在任意一个节点执行：</td>
-</tr>
-<tr>
-<td>gluster volume create gv0 replica 2 gluster1:/bricks/brick1/gv0 gluster2:/bricks/brick1/gv0</td>
-</tr>
-<tr>
-<td>gluster volume start gv0</td>
-</tr>
-<tr>
-<td>gluster volume info</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>测试挂载</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>mount -t glusterfs gluster1:/gv0 /mnt</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GlusterFS 五种卷： Distributed：分布式卷，文件通过 hash 算法随机分布到由 bricks 组成的卷上。 Replicated: 复制式卷，类似 RAID 1，replica 数必须等于 volume 中 brick 所包含的存储服务器数，可用性高。 Striped: 条带式卷，类似 RAID 0，stripe 数必须等于 volume 中 brick 所包含的存储服务器数，文件被分成数据块，以 Round Robin 的方式存储在 bricks 中，并发粒度是数据块，大文件性能好。 Distributed Striped: 分布式的条带卷，volume中 brick 所包含的存储服务器数必须是 stripe 的倍数（>=2倍），兼顾分布式和条带式的功能。 Distributed Replicated: 分布式的复制卷，volume 中 brick 所包含的存储服务器数必须是 replica 的倍数（>=2倍），兼顾分布式和复制式的功能。</td>
-</tr>
-</tbody>
-</table>
-<h4 id="GlusterFS持久化存储"><a href="#GlusterFS持久化存储" class="headerlink" title="GlusterFS持久化存储"></a>GlusterFS持久化存储</h4><ul>
-<li>在OpenShift集群所有主机上安装</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>yum install glusterfs-fuse</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>OpenShift所有主机配置Hosts</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vi /etc/hosts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>10.10.31.166 gluster1 10.10.31.167 gluster2 10.10.31.168 gluster3</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>创建Gluster Endpoints</p>
-<ul>
-<li>先创建Service</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vi gluster-service.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Service metadata: name: gluster-cluster spec: ports: - port: 1</td>
-</tr>
-<tr>
-<td>oc create -f gluster-service.yaml -n s2i-project</td>
-</tr>
-<tr>
-<td>oc get svc</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>创建Endpoint</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vi gluster-endpoints.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Endpoints metadata: name: gluster-cluster subsets: - addresses: - ip: 10.10.31.166 ports: - port: 1 protocol: TCP - addresses: - ip: 10.10.31.167 ports: - port: 1 protocol: TCP - addresses: - ip: 10.10.31.168 ports: - port: 1 protocol: TCP</td>
-</tr>
-<tr>
-<td>oc create -f gluster-endpoints.yaml -n s2i-project</td>
-</tr>
-<tr>
-<td>oc get endpoint</td>
-</tr>
-</tbody>
-</table>
-<h4 id="创建Persistent-Volume-1"><a href="#创建Persistent-Volume-1" class="headerlink" title="创建Persistent Volume"></a>创建Persistent Volume</h4><table>
-<thead>
-<tr>
-<th>vi gluster-pv.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: PersistentVolume metadata: name: gluster-pv spec: capacity: storage: 1Gi accessModes: - ReadWriteMany glusterfs: endpoints: gluster-cluster path: /gv0 readOnly: false persistentVolumeReclaimPolicy: Retain</td>
-</tr>
-<tr>
-<td>oc create -f gluster-pv.yaml -n s2i-project</td>
-</tr>
-<tr>
-<td>oc get pv</td>
-</tr>
-</tbody>
-</table>
-<h4 id="创建Persistent-Volume-Claim-1"><a href="#创建Persistent-Volume-Claim-1" class="headerlink" title="创建Persistent Volume Claim"></a>创建Persistent Volume Claim</h4><table>
-<thead>
-<tr>
-<th>vi gluster-claim.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: PersistentVolumeClaim metadata: name: gluster-claim spec: accessModes: - ReadWriteMany resources: requests: storage: 1Gi</td>
-</tr>
-<tr>
-<td>oc create -f gluster-claim.yaml -n s2i-project</td>
-</tr>
-<tr>
-<td>oc get pvc</td>
-</tr>
-</tbody>
-</table>
-<h4 id="配置SELinux权限-1"><a href="#配置SELinux权限-1" class="headerlink" title="配置SELinux权限"></a>配置SELinux权限</h4><table>
-<thead>
-<tr>
-<th>setsebool -P virt_sandbox_use_fusefs on</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="创建应用-1"><a href="#创建应用-1" class="headerlink" title="创建应用"></a>创建应用</h4><ul>
-<li>由于使用的nginx镜像需要特殊权限运行，配置SCC</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc adm policy add-scc-to-user privileged myuser</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>创建Pod</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vim gluster-pod1.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Pod metadata: name: gluster-pod1 labels: name: gluster-pod1 spec: containers: - name: gluster-pod1 image: nginx ports: - name: web containerPort: 80 securityContext: privileged: true volumeMounts: - name: gluster-vol1 mountPath: /usr/share/nginx/html readOnly: false volumes: - name: gluster-vol1 persistentVolumeClaim: claimName: gluster-claim</td>
-</tr>
-<tr>
-<td>oc create -f gluster-pod1.yaml -n s2i-project</td>
-</tr>
-<tr>
-<td>oc get pod</td>
-</tr>
-<tr>
-<td><a href="./media/image15.png">./media/image15.png</a></td>
-</tr>
-<tr>
-<td><a href="./media/image16.png">./media/image16.png</a></td>
-</tr>
-</tbody>
-</table>
-<ol>
-<li><p>使用GlusterFS为后端存储-Dynamic</p>
-<ol>
-<li>新部署GlusterFS，使用Heketi管理</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>环境准备</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>主机名</th>
-<th>IP地址</th>
-<th>操作系统</th>
-<th>硬件配置</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>gluster1</td>
-<td>10.10.31.166</td>
-<td>7.4 mini</td>
-<td>4C2G+50G</td>
-</tr>
-<tr>
-<td>gluster2</td>
-<td>10.10.31.167</td>
-<td>7.4 mini</td>
-<td>4C2G+50G</td>
-</tr>
-<tr>
-<td>gluster3</td>
-<td>10.10.31.168</td>
-<td>7.4 mini</td>
-<td>4C2G+50G</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>准备工作</li>
-</ul>
-<blockquote>
-<p>  配置hostname</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>vi /etc/hosts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>10.10.31.166 gluster1 10.10.31.167 gluster2 10.10.31.168 gluster3</td>
-</tr>
-<tr>
-<td>hostnamectl set-hostname glsuter1</td>
-</tr>
-<tr>
-<td>hostnamectl set-hostname glsuter2</td>
-</tr>
-<tr>
-<td>hostnamectl set-hostname glsuter3</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>  关闭SELinux</p>
-</blockquote>
-<ul>
-<li><p>开始安装，所有机器相同操作</p>
-<ul>
-<li>安装软件仓库</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>yum install centos-release-gluster -y</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>安装GlusterFS</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>yum install glusterfs-server -y</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>systemctl start glusterd &amp;&amp; systemctl enable glusterd</td>
-</tr>
-<tr>
-<td>systemctl status glusterd</td>
-</tr>
-</tbody>
-</table>
-<h4 id="安装Heketi"><a href="#安装Heketi" class="headerlink" title="安装Heketi"></a>安装Heketi</h4><ul>
-<li><p>Heketi用于管理GlusterFS的REST API</p>
-</li>
-<li><p>在GlusterFS其中一台虚拟机上安装，这里选择gluster3</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>yum install heketi heketi-client -y</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Heketi使用SSH来配置GlusterFS的所有节点。创建SSH密钥对，将公钥拷贝到所有3个节点上</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>ssh-keygen -f /etc/heketi/heketi_key -t rsa -N ‘’</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ssh-copy-id -i /etc/heketi/heketi_key.pub root\@gluster1 ssh-copy-id -i /etc/heketi/heketi_key.pub root\@gluster2 ssh-copy-id -i /etc/heketi/heketi_key.pub root\@gluster3</td>
-</tr>
-<tr>
-<td>chown heketi:heketi /etc/heketi/heketi_key*</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>配置heketi使用SSH</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vim /etc/heketi/heketi.json</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>“executor”: “ssh”, “_sshexec_comment”: “SSH username and private key file information”, “sshexec”: { “keyfile”: “/etc/heketi/heketi_key”, “user”: “root”, “port”: “22”, “fstab”: “/etc/fstab” },</td>
-</tr>
-<tr>
-<td><a href="./media/image17.png">./media/image17.png</a></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>启动服务</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>systemctl restart heketi</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>systemctl enable heketi</td>
-</tr>
-<tr>
-<td>systemctl status heketi</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>测试服务状态</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>curl <a href="http://gluster3:8080/hello" target="_blank" rel="noopener">http://gluster3:8080/hello</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image18.png">./media/image18.png</a></td>
-</tr>
-</tbody>
-</table>
-<h4 id="配置Topology"><a href="#配置Topology" class="headerlink" title="配置Topology"></a>配置Topology</h4><ul>
-<li>配置环境变量</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>export HEKETI_CLI_SERVER=<a href="http://gluster3:8080" target="_blank" rel="noopener">http://gluster3:8080</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>准备json文件</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vim topology.json</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>{ “clusters”: [ { “nodes”: [ { “node”: { “hostnames”: { “manage”: [ “gluster1” ], “storage”: [ “10.10.31.166” ] }, “zone”: 1 }, “devices”: [ “/dev/sdb” ] }, { “node”: { “hostnames”: { “manage”: [ “gluster2” ], “storage”: [ “10.10.31.167” ] }, “zone”: 1 }, “devices”: [ “/dev/sdb” ] }, { “node”: { “hostnames”: { “manage”: [ “gluster3” ], “storage”: [ “10.10.31.168” ] }, “zone”: 1 }, “devices”: [ “/dev/sdb” ] } ] } ] }</td>
-</tr>
-<tr>
-<td>该文件格式，是告诉heketi要创建一个3节点的集群，其中每个节点包含的配置有FQDN，IP地址以及至少一个将用作GlusterFS块的备用块设备。</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>运行</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>heketi-cli topology load –json=topology.json</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>验证</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>gluster peer status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>创建一个数据卷</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>heketi-cli volume create –size=20</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image19.png">./media/image19.png</a></td>
-</tr>
-<tr>
-<td>gluster volume info</td>
-</tr>
-<tr>
-<td><a href="./media/image20.png">./media/image20.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="将Gluster与OpenShift集成"><a href="#将Gluster与OpenShift集成" class="headerlink" title="将Gluster与OpenShift集成"></a>将Gluster与OpenShift集成</h3><p>集成OpenShift，需要一个动态的Kubernetes Storage Provisioner和一个StorageClass。<br>Provisioner在OpenShift中开箱即用。 实际上关键的是如何将存储挂载到容器上。<br>StorageClass是OpenShift中的用户可以用来实现的PersistentVolumeClaims的实体，它反过来能够触发一个Provisioner实现实际的配置，并将结果表示为Kubernetes<br>PersistentVolume（PV）。</p>
-<h4 id="先创建一个测试项目，在OpenShift-Master上执行"><a href="#先创建一个测试项目，在OpenShift-Master上执行" class="headerlink" title="先创建一个测试项目，在OpenShift Master上执行"></a>先创建一个测试项目，在OpenShift Master上执行</h4><table>
-<thead>
-<tr>
-<th>oc new-project gluster-storage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="创建StorageClass"><a href="#创建StorageClass" class="headerlink" title="创建StorageClass"></a>创建StorageClass</h4><table>
-<thead>
-<tr>
-<th>vi glusterfs-storageclass1.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>kind: StorageClass apiVersion: storage.k8s.io/v1 metadata: name: gluster-dyn annotations: storageclass.kubernetes.io/is-default-class: “true” provisioner: kubernetes.io/glusterfs parameters: resturl: “<a href="http://gluster3:8080&quot;" target="_blank" rel="noopener">http://gluster3:8080&quot;</a> restauthenabled: “false”</td>
-</tr>
-<tr>
-<td>oc create -f glusterfs-storageclass1.yaml</td>
-</tr>
-<tr>
-<td>oc get sc</td>
-</tr>
-<tr>
-<td><a href="./media/image21.png">./media/image21.png</a></td>
-</tr>
-<tr>
-<td>我们的provisioner是kubernetes.io/glusterfs，将它指向我们的heketi实例。 我们将类命名为“gluster-dyn”， 同时使其成为所有没有显示指定StorageClass的PersistentVolumeClaim的默认StorageClass。</td>
-</tr>
-</tbody>
-</table>
-<h4 id="创建Persistent-Volume-Claim-2"><a href="#创建Persistent-Volume-Claim-2" class="headerlink" title="创建Persistent Volume Claim"></a>创建Persistent Volume Claim</h4><table>
-<thead>
-<tr>
-<th>#新建这个PVC只为测试</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>vi glusterfs-pvc-storageclass.yaml</td>
-</tr>
-<tr>
-<td>apiVersion: v1 kind: PersistentVolumeClaim metadata: name: gluster-dyn-pvc spec: accessModes: - ReadWriteMany resources: requests: storage: 10Gi storageClassName: gluster-dyn</td>
-</tr>
-<tr>
-<td>oc create -f glusterfs-pvc-storageclass.yaml</td>
-</tr>
-<tr>
-<td>oc get pvc</td>
-</tr>
-<tr>
-<td><a href="./media/image22.png">./media/image22.png</a></td>
-</tr>
-</tbody>
-</table>
-<h4 id="验证GlusterFS-Volume"><a href="#验证GlusterFS-Volume" class="headerlink" title="验证GlusterFS Volume"></a>验证GlusterFS Volume</h4><p>回到GlusterFS集群中，查看volume状态</p>
-<table>
-<thead>
-<tr>
-<th>gluster volume info</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>可以看到当前glusterfs里存在两个Volume， 第一个Volume是上面用heketi-cli volume create创建的测试Volume， 第二个Volume是StorageClass通过PVC创建的Volume</td>
-</tr>
-<tr>
-<td><a href="./media/image23.png">./media/image23.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td><a href="./media/image24.png">./media/image24.png</a></td>
-</tr>
-</tbody>
-</table>
-<h4 id="Web-Console"><a href="#Web-Console" class="headerlink" title="Web Console"></a>Web Console</h4><table>
-<thead>
-<tr>
-<th><a href="./media/image25.png">./media/image25.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image26.png">./media/image26.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="创建应用-2"><a href="#创建应用-2" class="headerlink" title="创建应用"></a>创建应用</h3><ul>
-<li>创建pod的yaml文件</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vi nginx-pod-gluster.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Pod metadata: name: gluster-pod1-gluster labels: name: gluster-pod1-gluster spec: containers: - name: gluster-pod1-gluster image: nginx ports: - name: web containerPort: 80 securityContext: privileged: true volumeMounts: - name: gluster-vol1-gluster mountPath: /usr/share/nginx/html volumes: - name: gluster-vol1-gluster persistentVolumeClaim: claimName: gluster-dyn-pvc</td>
-</tr>
-<tr>
-<td>oc create -f nginx-pod-gluster.yaml</td>
-</tr>
-<tr>
-<td>oc get pod –o wide</td>
-</tr>
-<tr>
-<td><a href="./media/image27.png">./media/image27.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td><a href="./media/image28.png">./media/image28.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>测试应用</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><a href="./media/image29.png">./media/image29.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="深入了解Pod"><a href="#深入了解Pod" class="headerlink" title="深入了解Pod"></a>深入了解Pod</h2><h3 id="Pod的定义"><a href="#Pod的定义" class="headerlink" title="Pod的定义"></a>Pod的定义</h3><p>Pod是Kubernetes下的概念，pod的容器的载体，所有容器都是在pod中被管理，一个或多个容器放在pod里作为一个单元方便管理。</p>
-<table>
-<thead>
-<tr>
-<th>下面是一个完整的yaml格式定义的文件,注意格式，子集包含关系，不要有tab，要用空格。</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 //版本 kind: pod //类型，pod metadata: //元数据 name: String //元数据，pod的名字 namespace: String //元数据，pod的命名空间 labels: //元数据，标签列表 - name: String //元数据，标签的名字 annotations: //元数据,自定义注解列表 - name: String //元数据,自定义注解名字 spec: //pod中容器的详细定义 containers: //pod中的容器列表，可以有多个容器 - name: String image: String //容器中的镜像 imagesPullPolicy: [Always\</td>
-<td>Never\</td>
-<td>IfNotPresent]//获取镜像的策略 command: [String] //容器的启动命令列表（不配置的话使用镜像内部的命令） args: [String] //启动参数列表 workingDir: String //容器的工作目录 volumeMounts: //挂载到到容器内部的存储卷设置 - name: String mountPath: String readOnly: boolean ports: //容器需要暴露的端口号列表 - name: String containerPort: int //容器要暴露的端口 hostPort: int //容器所在主机监听的端口（容器暴露端口映射到宿主机的端口） protocol: String env: //容器运行前要设置的环境列表 - name: String value: String resources: //资源限制 limits: cpu: Srting memory: String requeste: cpu: String memory: String livenessProbe: //pod内容器健康检查的设置 exec: command: [String] httpGet: //通过httpget检查健康 path: String port: number host: String scheme: Srtring httpHeaders: - name: Stirng value: String tcpSocket: //通过tcpSocket检查健康 port: number initialDelaySeconds: 0//首次检查时间 timeoutSeconds: 0 //检查超时时间 periodSeconds: 0 //检查间隔时间 successThreshold: 0 failureThreshold: 0 securityContext: //安全配置 privileged: falae restartPolicy: [Always\</td>
-<td>Never\</td>
-<td>OnFailure]//重启策略 nodeSelector: object //节点选择 imagePullSecrets: - name: String hostNetwork: false //是否使用主机网络模式，默认否 volumes: //在该pod上定义共享存储卷 - name: String meptyDir: {} hostPath: path: string secret: //类型为secret的存储卷 secretName: String item: - key: String path: String configMap: //类型为configMap的存储卷 name: String items: - key: String path: String</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Pod的配置管理"><a href="#Pod的配置管理" class="headerlink" title="Pod的配置管理"></a>Pod的配置管理</h3><ul>
-<li><p>应用部署的最佳实践，就是将应用所需的配置信息与程序进行分离。</p>
-</li>
-<li><p>OpenShift提供一种集群配置管理方案：ConfigMap，就是将一些环境变量或者配置文件定义为configmap，放在OpenShift中，可以让其他pod调用。</p>
-</li>
-<li><p>ConfigMap有以下典型用法</p>
-<ul>
-<li><p>生成为容器内的环境变量</p>
-</li>
-<li><p>设置容器启动命令的启动参数</p>
-</li>
-<li><p>以volume的形式挂载为容器内部的文件或目录</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>使用示例：</p>
-<table>
-<thead>
-<tr>
-<th>定义一个ConfigMap配置文件</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>vi cm-appvars.yaml</td>
-</tr>
-<tr>
-<td>apiVersion: v1 kind: ConfigMap metadata: name: cm-appvars data: apploglevel: info appdatadir: /var/date</td>
-</tr>
-<tr>
-<td>oc create -f cm-appvars.yaml</td>
-</tr>
-<tr>
-<td></td>
-</tr>
-<tr>
-<td>使用ConfigMap</td>
-</tr>
-<tr>
-<td>apiVersion: v1 kind: Pod metadata: name: cm-test-pod spec: containers: - name: cm-test image: busybux env: - name: APPLOGLEVEL vlaueFrom: configMapKeyRef: name: cm-appvars //要和之前创建的ConfigMap的name对应 key: apploglevel - name: APPDATADIR vlaueFrom: configMapKeyRef: name: cm-appvars //要和之前创建的ConfigMap的name对应 key: appdatadir</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Pod生命周期和重启策略"><a href="#Pod生命周期和重启策略" class="headerlink" title="Pod生命周期和重启策略"></a>Pod生命周期和重启策略</h3><ul>
-<li>Pod一共有四种状态</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>状态值</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Pending</td>
-<td>APIserver已经创建该server,但pod内有一个或多个容器的镜像还未创建，可能在下载中。</td>
-</tr>
-<tr>
-<td>Running</td>
-<td>APIserver已经创建该server,但pod内有一个或多个容器的镜像还未创建，可能在下载中。</td>
-</tr>
-<tr>
-<td>Failed</td>
-<td>Pod内所有容器都已退出，其中至少有一个容器退出失败</td>
-</tr>
-<tr>
-<td>Unknown</td>
-<td>由于某种原因无法获取Pod的状态比如网络不通。</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Pod的重启策略应用于Pod内的所有容器，由Pod所在Node节点上的Kubelet进行判断和重启操作。重启策略有以下三种:</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>重启策略</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Always</td>
-<td>容器失效时，即重启</td>
-</tr>
-<tr>
-<td>OnFailure</td>
-<td>容器终止运行，且退出码不为0 时重启</td>
-</tr>
-<tr>
-<td>Never</td>
-<td>永不重启</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Pod调度机制"><a href="#Pod调度机制" class="headerlink" title="Pod调度机制"></a>Pod调度机制</h3><p>在OpenShift系统中，pod在大部分场景下都只是容器的载体而已，通常需要通过Deployment,DaemonSet,Job等对象来完成Pod的调度与自动控制功能。</p>
-<ul>
-<li><p>RC,Deployment: 全自动调度</p>
-<ul>
-<li>RC的主要功能之一就是自动部署一个容器应用的多份副本，以及持续监控，保持集群内有一定数量的副本数量（配置文件指定了副本数量）</li>
-</ul>
-</li>
-<li><p>DaemonSet: 特定场景调度</p>
-<ul>
-<li>DaemonSet,用于管理在集群中每个Node上只运行一份Pod的副本实例，比如在每节点上都运行有且只有一个fluentd</li>
-</ul>
-</li>
-</ul>
-<h3 id="Pod扩容和缩容"><a href="#Pod扩容和缩容" class="headerlink" title="Pod扩容和缩容"></a>Pod扩容和缩容</h3><ul>
-<li><p>通过scale来完成扩容或缩容</p>
-</li>
-<li><p>动态扩容缩容（HPA）</p>
-</li>
-</ul>
-<h2 id="深入了解Service"><a href="#深入了解Service" class="headerlink" title="深入了解Service"></a>深入了解Service</h2><p>由于Pod的IP会变化，提供某些功能的POD如果IP发生变化，会导致其他Pod无法发现这些功能，因此<br>引入了Service的功能。</p>
-<h3 id="Service的定义"><a href="#Service的定义" class="headerlink" title="Service的定义"></a>Service的定义</h3><table>
-<thead>
-<tr>
-<th>{ “kind”: “Service”, “apiVersion”: “v1”, “metadata”: { “name”: “my-service” }, “spec”: { “selector”: { “app”: “MyApp” }, “ports”: [ “protocol”: “TCP”, “port”: 80, “targetPort”: 9376 } ] } }</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>该Service 对应的Pod集合：带有label app=Myapp，对外暴露端口9376</td>
-</tr>
-<tr>
-<td>Service 能将任意的流入Port 重定向到targetPort,默认情况下，targetPort和Port为相同值，不同的Pod 可以对应不同的端口号（例如，在你应用的下一个版本中会使用不同的端口号，但是并不应用之前版本的使用）</td>
-</tr>
-<tr>
-<td>Service 支持UDP和TCP，默认是TCP</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Service虚拟IP和服务代理"><a href="#Service虚拟IP和服务代理" class="headerlink" title="Service虚拟IP和服务代理"></a>Service虚拟IP和服务代理</h3><ul>
-<li><p>K8s集群内每个节点都会运行kube-proxy，负责实现服务的虚拟机IP（不是externalName）</p>
-</li>
-<li><p>Kube-proxy监控k8s<br>master节点来发现Service、Endpointd的增加和删除，对于Service，在本地打开一个随机端口作为代理端口，任何访问改代理端口的连接都会被指向Service对象的Pod集合，最终指向哪个Pod取决于Service的SessionAffinity，最后，他会配置iptables，捕获流向Service 的Cluster<br>IP 和Port的连接，并重定向到这个代理端口。</p>
-</li>
-</ul>
-<h2 id="网络连通性"><a href="#网络连通性" class="headerlink" title="网络连通性"></a>网络连通性</h2><h3 id="网络实现"><a href="#网络实现" class="headerlink" title="网络实现"></a>网络实现</h3><ul>
-<li>查看各节点分配到的子网，每个节点默认都会被分配到一个子网，在计算节点上运行的Pod的ip将来源于此网段</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc get hostsubnets</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image30.png">./media/image30.png</a></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>通过配置文件可以修改默认子网段</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vim /etc/origin/master/master-config.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image31.png">./media/image31.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><ul>
-<li><p>OpenShift Web Console 不支持 https 安全验证，在Deploy Image是使用Image<br>Name部署是提示证书验证失败</p>
-<ul>
-<li>第一种方式：用命令行加参数</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc new-app –insecure-registry dtr.ivops.cn:5443/ivops/nginx-alpine:v1.1.x –name=nginx-alpine-test</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>第二种方式：使用Image Stream方式</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>vi ivops-mariadb.json</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443/ivops/mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443/ivops/mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }</td>
-</tr>
-<tr>
-<td>oc create -f ivops-mariadb.json -n s2i-project</td>
-</tr>
-<tr>
-<td><a href="./media/image32.png">./media/image32.png</a></td>
-</tr>
-<tr>
-<td>创建template，为以后快捷创建</td>
-</tr>
-<tr>
-<td>oc export dc,svc,route -o json –as-template=ivops-mariadb > ivops-mariadb.template</td>
-</tr>
-<tr>
-<td>把 “image”: “dtr.ivops.cn:5443/ivops/mariadb”, 改为 “image”: “” 这样做的目的是，根据 template 创建应用后，自动发布，不用再手工点击 Deploy。</td>
-</tr>
-<tr>
-<td>oc create -f ivops-mariadb.template -n openshift</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Deployer Image镜像需要以Root启动，导致启动失败</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oadm policy add-scc-to-user anyuid -z default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>参考链接：<a href="https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/" target="_blank" rel="noopener">https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/</a></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>若没有DNS Server解析Route的地址，需配置本地Host</p>
-<ul>
-<li>手动添加解析将“Route URL”指向Router服务所在的IP地址</li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><a href="./media/image33.png">./media/image33.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image34.png">./media/image34.png</a></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>创建PVC的容量小于等于PV的容量</p>
-</li>
-<li><p>Registry-console控制台用户登陆，配置权限给用户dev</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>oc adm policy add-cluster-role-to-user cluster-admin dev</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image35.png">./media/image35.png</a></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>修改资源预留配额</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><a href="./media/image36.jpeg">./media/image36.jpeg</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>~   ../../../../Library/Containers/com.tencent.xinWeChat/Data/Library/Application%20Support/com.tencent.xinWeChat/2.0b4.0.9/28af29c3fcfa1b71d38c69c1e52a17f1/Message/MessageTemp/9e20f478899dc29eb19741386f9343c8/Image/931514879804_.pic_hd.jp</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3483,7 +1595,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

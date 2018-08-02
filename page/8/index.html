@@ -242,6 +242,659 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/RHCA-RH442(性能调优)学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/03/RHCA-RH442(性能调优)学习笔记/" itemprop="url">RHCA-RH442(性能调优)学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">
+                2017-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RHCA/" itemprop="url" rel="index">
+                    <span itemprop="name">RHCA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>RHCA 442-1(1)</p>
+<ol>
+<li>Business Level Tuning &gt; Application Level Tuning &gt; Kernel Level Tuning(RH442)</li>
+<li>grep CPU /proc/cpuinfo</li>
+<li>lscpu<br> a. lscpu -p</li>
+<li>cat /proc/cpuinfo<br> a. cat /proc/meminfo<br>RHCA 442-1(2)</li>
+<li>dmesg(实时kernel信息)</li>
+<li>/var/log/dmesg(开机kernel信息写入)</li>
+<li>getconf -a</li>
+<li>x85info(yum install x86info -y)</li>
+<li>dmidecode<br> a. dmidecode -t 0</li>
+<li>cd /sys/class/dmi/id/</li>
+<li>lspci<br> a. lspci -v<br> b. lspci -vv<br> c. lspci -vvv</li>
+<li>lsusb<br> a. lsusb -v</li>
+<li>ethtool eth0</li>
+<li>powertop(yum install powertop -y)</li>
+<li>sosreport<br>RHCA 442-2(1)</li>
+<li>K=1000<br> a. Ki=1024</li>
+<li>vmstat<br> a. vmstat 1 5<br> b. dd if=/dev/zero of=/dev/null<br> c. buffer= buffer cache(文件描述数据)<br> d. cache= page cache(文件内容数据)<br> e. echo 3 &gt; /proc/sys/vm/drop_cahces<br> f. bi= block in<br> g. bo= block out</li>
+<li>iostat<br> a. iostat -x sda 1</li>
+<li>mpstat<br> a. mpstat 1<br> b. mpstat -p 0 1</li>
+<li>sar<br> a. yum install sysstat<br> b. cat /etc/cron.d/sysstat<br> c. LANG=C sar -q(CPU负载)<br> d. LANG=C sar -b(I/O状况)<pre><code>i. sar -b -s 17:00:00 -e 19:00:00
+</code></pre> e. LANG=C sar -p 0 (第一颗cpu状态)<br> f. LAMD=C sar -d(磁盘状态)<br> g. LANG=C sar -n DEV|EDEV(网络信息)<br> h. cd /var/log/sa/<br> i. cat /etc/sysconfig/sysstat</li>
+<li>awk<br> a. awk -F: ‘{print $1}’ /etc/passwd<br> b. df -P | awk ‘{print $1 “ is mount on “ $NF}’<br> c. awk -F: ‘BEGIN{print “User List:”} {print $1} END{print “Done.”}’ /etc/passwd<br> d. df -hP | awk ‘BEGIN{print “File System status:”}{print $1,$(NF-2)} END{print “Done.”}’<br> e. awk -F: ‘/^r/ {print $1}’ /etc/passwd<br> f. awk -F: ‘/^[a-z]<em>t:.</em>/ {print $1}’ /etc/passwd<br> g. sar -q | awk ‘/^[^a-z]+$/{print $1,$4,$5,$6}’ &gt; /tmp/cpudata</li>
+<li>gnuplot<br> a. yum install gnuplot -t<br> b. gnuplot<pre><code>i. set xdata tim
+ii. set timefmt &quot;%H:%M:%S&quot;
+iii. plot &quot;/tmp/cpudata&quot; using 1:2 with lines
+</code></pre></li>
+</ol>
+<p>RHCA 442-2(2)</p>
+<ol>
+<li>Little’s Law</li>
+<li>L(lenth) = A(arrival time)*  W(wait time)</li>
+<li>W(wait time) = Q(queue time) +S(service time)</li>
+<li>S(service time) = St(sys time) + Ut(user time)</li>
+<li>time command<br> a. time updatedb<br> b. echo 3 &gt; /proc/sys/vm/drop_caches<br> c. time updatedb<br>RHCA 442-3(1-2)</li>
+<li>lsmod<br> a. ls /lib/modules/3.10.0-327.el7.x86_64/    (kernel模块)<br> b. ll /boot/vmlinuz-3.10.0-327.el7.x86_64    (kernel本身)</li>
+<li>modinfo<br> a. modinfo st<br> b. modinfo -p st<br> c. modinfo usb_storage<br> d. modinfo sx8</li>
+<li>modprobe<br> a. modprobe st</li>
+<li>rmmod<br> a. rmmod st</li>
+<li>/etc/modprobe.d/my.conf<br> a. options usb_storage delay_user = 3<br> b. options st buffer_kbs = 64<br> c. options sx8 max_queue = 15</li>
+<li>/sys/module/$(mname)/paraments/$(pname)<br> a. more /sys/module/usb_storage/parameters/delay_use</li>
+<li>more /etc/sysconfig/modules/st.modules (开机模块加载)</li>
+<li>I/O Schedulers<br> a. cfq,deadline,anticipatory,noop<br> b. cat /sys/block/sda/queue/scheduler  ([]中是当前电梯算法)<br> c. more /sys/block/sda/queue/nr_requests<br> d. more /sys/block/sda/queue/read_ahead_kb<br> e. echo cfq &gt; /sys/block/sda/queue/scheduler<br> f. more /sys/block/sda/queue/scheduler<br> g. ll /sys/block/sda/queue/iosched<br>RHCA 442-3(3)</li>
+<li>tuned<br> a. yum info tuned<br> b. yum install tuned -y<br> c. tuned-adm active<br> d. tuned-adm list<br> e. tuned-adm profile desktop<br> f. ll /usr/lib/tuned/<br> g. cp -a /usr/lib/tuned/desktop/* /etc/tuned/ex442/<br>RHCA 442-4(1)</li>
+<li>CPU Scheduling</li>
+<li>CFS Scheduler<br> a. virtual time</li>
+<li>chrt command<br> a. chrt -f 10 top<br> b. chrt -r 1 md5sum /dev/zero<br>RHCA 442-4(2)</li>
+<li>x86info -c</li>
+<li>valgrind -tool=cahcegrind command1</li>
+<li>perf stat -e cahce-misses command<br>RHCA 442-4(3-4)</li>
+<li>pam_limits<br> a. vi /etc/security/limits.conf<pre><code>i. user    hard        cpu        1
+</code></pre> b. ulimit -a<br> c. cgroup<pre><code>i. service cgconfig start
+ii. service cgred start
+iii. lssubsys -m
+iv. echo 0 &gt; /sys/devices/system/cpu/cpu1/online (下线cpu)
+v. mount -t tmpfs none /mnt/tmpfs (物理内存挂成分区)
+</code></pre>RHCA 442-5(1)</li>
+<li>strace<br> a. kernel space(system call)<br> b. strace updatedb<br> c. strace -e trace=network ping -c1 i<br> d. strace -e trace=file ls /<br> e. strace -p 1<br> f. strace -c updatedb</li>
+<li>ltrace<br> a. user space(library call [glibc])<br> b. ltrace updatedb<br> c. ltrace ls /</li>
+<li>systemtap<br> a. yum install kernel-debuginfo -y<pre><code>i. yum install systemtap
+ii. stap -c /usr/share/doc/systemtap-client-3.0/examples/profiling/topsys.stp
+</code></pre> b. stap -v abc.stap<br> c. staprun abc.ko<br> d. stapusr group<br> e. stapdev group<br>RHCA 442-5(2)</li>
+<li>Paging<br> a. pages，x86 normal page size is 4KiB<br> b. getconf PAGE_SIZE</li>
+<li>VSZ</li>
+<li>RSS </li>
+<li>TLB</li>
+<li>mount -t hugetlbfs none /muntpoint</li>
+<li>Tune per-BDI Flush Threads<br> a. vm.dirty_expire_centisecs<br> b. vm.dirty_writeback_centisecs</li>
+<li>Oou of Menory(OOM)</li>
+<li>Memory Overcommit<br> a. sysctl -p | grep  overcommit_memory<br> b. sysctl -p | grep  overcommit_ratio<br> c. grep Coomitted_AS /proc/meminfo</li>
+<li>SysV IPC<br> a. ipcs<br> b. ipcs -l<br> c. Tune Semaphores<br> d. Message queues<br> e. Shared memory<pre><code>i. kernel.shmmni
+ii. kernel.shmmax
+iii. kernel.shmall
+</code></pre>RHCA 442-6(1)</li>
+<li>File Systems<br> a. EXT3<br> b. EXT4<br> c. XFS<br> d. BTRFS</li>
+<li>External Journaling<br> a. mkfs.ext4 -O journal_dev -b 4096 /dev/vdb1<br> b. mkfs.ext4 -J device=/dev/vdb1 -b 4096 /dev/vda3<br> c. blkid<br>RHCA 442-6(2)</li>
+<li>yum install qperf</li>
+<li>sysctl net.ipv4.tcp_low_latency</li>
+<li>net.ipv4.tcp_mem/net.ipv4.udp_mem(单位pages)</li>
+<li>tc qdisc show</li>
+<li><p>Bonding mode<br> a. balance-rr: mode 0<br> b. actice-backup: mode 1<br> c. 802.3ad: mode 4(工作在2层，需要配交换机)<br> d. cat /proc/net/bonding/bond0 </p>
+</li>
+<li><p>MTU(最大传输单元 default 1500bytes)<br> a. TCP protocol headers 52 (52/1500=3.5% overhead)<br> b. TDP protocol headers 28 (28/1500=1.9% overhead)<br> c. Jumbo Frames (MTU bigger that 1500 需要配置交换机)</p>
+<pre><code>i. Official maximum size is 9000 bytes (52/9000=0.58% overhead
+ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
+</code></pre></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/08/22/Markdown基本语法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/22/Markdown基本语法/" itemprop="url">Markdown基本语法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-22T14:59:52+08:00">
+                2016-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/Centos6.4部署puppet3.8.4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/05/Centos6.4部署puppet3.8.4/" itemprop="url">Centos6.4部署puppet3.8.4</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:41:55+08:00">
+                2016-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dev-Ops/" itemprop="url" rel="index">
+                    <span itemprop="name">Dev Ops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>关闭ipatbles和selinux<br>puppet官网下载puppetyum源<br>url：<a href="http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm" target="_blank" rel="noopener">http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm</a><br>上传至puppet服务器并安装</p>
+<p>yum安装puppet-server<br>yum install puppet-server<br>启动puppet<br>chkconfig puppetmaster on<br>chkconfig puppet on<br>/etc/init.d/puppetmaster start<br>/etc/init.d/puppet start<br>在puppet-server上查看证书<br>puppet cert list –all</p>
+<p>使用apache+passenger运行puppet-server<br>yum install httpd httpd-devel ruby-devel mod_ssl make gcc gcc-c++ curl-devel openssl-devel zlib-devel<br>安装rack和passenger<br>gem install rack</p>
+<p>gem install passenger</p>
+<p>编译passenger<br>passenger-install-apache2-module</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/HAproxy编译安装与配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/05/HAproxy编译安装与配置/" itemprop="url">HAproxy编译安装与配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:41:32+08:00">
+                2016-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Centos/" itemprop="url" rel="index">
+                    <span itemprop="name">Centos</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>安装haproxy<br>从官网下载最新稳定版的haproxy-1.6.2.tar.gz，url：<a href="http://www.haproxy.org/download/1.6/src/haproxy-1.6.2.tar.gz" target="_blank" rel="noopener">http://www.haproxy.org/download/1.6/src/haproxy-1.6.2.tar.gz</a><br>放置/root/backup目录下，解压并进入目录<br>安装编译依赖包前注释掉yum禁止更新内核选项：/etc/yum.conf</p>
+<p>安装依赖包：<br>yum install gcc -y<br>make TARGET=linux26 PREFIX=/app/haproxy</p>
+<p>make install PREFIX=/app/haproxy</p>
+<p>验证安装完成</p>
+<p>启动命令：<br>/app/haproxy/sbin/haproxy -D -f /app/haproxy/haproxy.cfg -p /var/run/haproxy.pid</p>
+<p>配置文件：</p>
+<p>#访问<strong>***</strong>.com强制转到https://<strong><strong>*</strong></strong>.com<br>    acl is_pan hdr_beg(host) ＊＊＊＊＊<br>    redirect prefix https://<strong><em>**</em></strong> if is_pan</p>
+<pre><code>acl is_cbs hdr_beg(host) ＊＊＊＊＊
+redirect prefix https://******** if is_cbs
+`&lt;/pre&gt;
+
+#通过正则acl转发https协议
+
+    acl is_pans req.ssl_sni *******
+    use_backend pans if is_pans
+
+&lt;pre&gt;`acl is_cbss req.ssl_sni ********
+use_backend cbss if is_cbss
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/NFS安装配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -375,601 +1028,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/Centos网卡做bond0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/05/Centos网卡做bond0/" itemprop="url">Centos网卡做bond0</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:38:56+08:00">
-                2016-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Centos/" itemprop="url" rel="index">
-                    <span itemprop="name">Centos</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>mode=0：平衡负载模式，有自动备援，但需要”Switch”支援及设定。</p>
-<p>mode=1：自动备援模式，其中一条线若断线，其他线路将会自动备援。</p>
-<p>系统启动时加载bonding模块：<br>添加一个bind配置文件：<br>vi /etc/modprobe.d/bonding.conf<br>alias bond0 bonding</p>
-<p>网卡配置文件：</p>
-<p>ifcfg-bond0：</p>
-<p>DEVICE=bond0<br>BOOTPROTO=none<br>ONBOOT=yes<br>IPADDR=10.3.8.4<br>NETMASK=255.255.0.0<br>GATEWAY=10.3.1.254<br>USERCTL=no<br>BONDING_OPTS=”mode=0 miimon=100”</p>
-<p>ifcfg-em1：</p>
-<p>DEVICE=em1<br>MASTER=bond0<br>SLAVE=yes<br>USERCTL=no<br>ONBOOT=yes<br>BOOTPROTO=none</p>
-<p>ifcfg-em2：</p>
-<p>DEVICE=em2<br>MASTER=bond0<br>SLAVE=yes<br>USERCTL=no<br>ONBOOT=yes<br>BOOTPROTO=none</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/zabbix监控mysql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/05/zabbix监控mysql/" itemprop="url">Zabbix监控mysql</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:38:19+08:00">
-                2016-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Zabbix/" itemprop="url" rel="index">
-                    <span itemprop="name">Zabbix</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在mysql中建立zabbix用户<br>GRANTUSAGEON_._TO‘zabbix‘@’localhost’IDENTIFIED BY’<strong>*</strong>‘;<br>FLUSHPRIVILEGES;</p>
-<p>/etc/zabbix/.my.cnf以提供Zabbix Agent访问数据库，内容类似如下：</p>
-<h1 id="Zabbix-Agent"><a href="#Zabbix-Agent" class="headerlink" title="Zabbix Agent"></a>Zabbix Agent</h1><p>[mysql]<br>host     = localhost<br>user     = zabbix<br>password = <strong>***</strong></p>
-<p>#（要修改）<br>socket   = /var/run/mysqld/mysqld.sock<br>[mysqladmin]<br>host     = localhost<br>user     = zabbix<br>password = <strong>**</strong></p>
-<p>#（要修改）<br>socket   = /var/run/mysqld/mysqld.sock</p>
-<p>保存此文件然后修改/etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf，这个文件用于制定Zabbix Agent如何获取MySQL数据，我们需要将所有的/var/lib/zabbix修改为当前.my.cnf文件的路径/etc/zabbix。设置完成之后保存并重启</p>
-<p>zabbix只对/usr/bin和/usr/sbin下的环境变量识别，所以如果编译安装的mysql就要在/usr/bin/下建立软连接<br>ln -s /data/mysql/bin/mysql  /usr/bin/mysql<br>ln -s /data/mysql/bin/mysqladmin  /usr/bin/mysqladmin</p>
-<p>参考链接：<a href="http://www.kaijia.me/2014/01/use-zabbix-monitor-mysql-server/" target="_blank" rel="noopener">http://www.kaijia.me/2014/01/use-zabbix-monitor-mysql-server/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/zabbix添加php-fpm监控/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/05/zabbix添加php-fpm监控/" itemprop="url">Zabbix添加php-fpm监控</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:37:23+08:00">
-                2016-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Zabbix/" itemprop="url" rel="index">
-                    <span itemprop="name">Zabbix</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在配置文件中添加php-fpm /usr/local/landhightech/nginx/conf/conf.d/default.conf<br>在 php-fpm配置文件 /usr/local/landhightech/etc/php-fpm.d/<a href="http://www.conf" target="_blank" rel="noopener">www.conf</a> 中添加pm.status_path = /phpfpmstatus<br>把脚本”monitor_phpfpm_status“放到/etc/zabbix/scripts下，chmod 777<br>添加变量内容到/etc/zabbix/zabbix_agentd.conf<br>UserParameter=phpfpm.status.pool,/etc/zabbix/scripts/monitor_phpfpm_status pool<br>UserParameter=phpfpm.status.process.manager,/etc/zabbix/scripts/monitor_phpfpm_status process_manager<br>UserParameter=phpfpm.status.start.since,/etc/zabbix/scripts/monitor_phpfpm_status start_since<br>UserParameter=phpfpm.status.accepted.conn,/etc/zabbix/scripts/monitor_phpfpm_status accepted_conn<br>UserParameter=phpfpm.status.listen.queue,/etc/zabbix/scripts/monitor_phpfpm_status listen_queue<br>UserParameter=phpfpm.status.max.listen.queue,/etc/zabbix/scripts/monitor_phpfpm_status max_listen_queue<br>UserParameter=phpfpm.status.listen.queue.len,/etc/zabbix/scripts/monitor_phpfpm_status listen_queue_len<br>UserParameter=phpfpm.status.idle.processes,/etc/zabbix/scripts/monitor_phpfpm_status idle_processes<br>UserParameter=phpfpm.status.active.processes,/etc/zabbix/scripts/monitor_phpfpm_status active_processes<br>UserParameter=phpfpm.status.total.processes,/etc/zabbix/scripts/monitor_phpfpm_status total_processes<br>UserParameter=phpfpm.status.max.active.processes,/etc/zabbix/scripts/monitor_phpfpm_status max_active_processes<br>UserParameter=phpfpm.status.max.children.reached,/etc/zabbix/scripts/monitor_phpfpm_status max_children_reached<br>    5. 重启zabbix客户端<br>    6.成功</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2016/03/05/Centos6.5部署zabbix2.4.7过程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/05/Centos6.5部署zabbix2.4.7过程/" itemprop="url">Centos6.5部署zabbix2.4.7过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:36:13+08:00">
-                2016-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Zabbix/" itemprop="url" rel="index">
-                    <span itemprop="name">Zabbix</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>首先配置zabbix服务器能通外网<br>关闭iptables和selinux<br>安装zabbix存储库包<br>rpm -ivh <a href="http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm" target="_blank" rel="noopener">http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm</a><br>安装zabbix<br>yum install zabbix-server-mysql zabbix-web-mysql<br>安装mysql<br>yum install mysql-server -y<br>安装ntp<br>yum install ntp -y<br>ntpdate time.nist.gov<br>设置开机启动<br>chkconfig ntpd on<br>chkconfig httpd on<br>chkconfig mysqld on<br>chkconfig zabbix-server on<br>启动服务<br>/etc/init.d/ntpd start<br>/etc/init.d/httpd start<br>/etc/init.d/mysqld start<br>/etc/init.d/zabbix-server start<br>创建zabbix数据库<br>mysql -uroot -p<br>create database zabbix character set utf8 collate utf8_bin;<br>设置mysql访问权限，只允许本机访问<br>grant all privileges on zabbix.* to zabbix@localhost identified by ‘zabbix’;<br>flush privileges;<br>quit；<br>导入数据表结构<br>cd /usr/share/doc/zabbix-server-mysql-2.4.7/create<br>mysql -uzabbix -pzabbix zabbix &lt; schema.sql<br>mysql -uzabbix -pzabbix zabbix &lt; images.sql<br>mysql -uzabbix -pzabbix zabbix &lt; data.sql<br>编辑zabbix配置文件指向数据库<br>vi /etc/zabbix/zabbix_server.conf<br>DBHost=localhost<br>DBName=zabbix<br>DBUser=zabbix<br>DBPassword=zabbix</p>
-<p>修改httpd下的zabbix配置文件<br>vi  /etc/httpd/conf.d/zabbix.conf<br>php_value max_execution_time 300<br>php_value memory_limit 128M<br>php_value post_max_size 16M<br>php_value upload_max_filesize 2M<br>php_value max_input_time 300<br>php_value date.timezone Asia/Shanghai<br>service httpd restart</p>
-<p>添加iptables规则<br>-A INPUT -p tcp -m tcp –dport 10050 -j ACCEPT<br>-A INPUT -p udp -m udp –dport 10050 -j ACCEPT<br>-A INPUT -p tcp -m tcp –dport 10051 -j ACCEPT<br>-A INPUT -p udp -m udp –dport 10051 -j ACCEPT</p>
-<p>进入web安装向导<br>http://服务器IP/zabbix</p>
-<p>完成</p>
-<p>完成后登陆<br>登陆链接：<a href="http://192.168.10.222/zabbix/index.php" target="_blank" rel="noopener">http://192.168.10.222/zabbix/index.php</a><br>默认账号Admin，密码zabbix</p>
-<p>修改中文语言</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1015,7 +1078,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -242,6 +242,705 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/06/RHCA-RH413(服务器固化)学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/06/RHCA-RH413(服务器固化)学习笔记/" itemprop="url">RHCA-RH413(服务器固化)学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-06T16:30:12+08:00">
+                2017-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RHCA/" itemprop="url" rel="index">
+                    <span itemprop="name">RHCA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>413-1-operating system update:</p>
+<ol>
+<li>CVES and Red Hat Errata<br> a. Red Hat Security Advisory(RHSA)<br> b. Red Hat Bug Fix Advisory(RHBA)<br> c. Red Hat Enhancement Advisory(RHEA)</li>
+<li>Check update informaton<br> a. yum updateinfo<br> b. yum updateinfo –security<br> c. yum updateinfo –security list</li>
+<li>Apply certain type of update<br> a. yum update –security<br> b. yum update –bugfix </li>
+<li>BugTraq</li>
+<li>Package Integrity Check<br> a. rpm –import gpa-key-file<br> b. rpm K rpm-file<br> c. rpm -qa | grep gpg-pubkey<br> d. rpm -e gpg-pubkey-keyed<br> e. gpgcheck=1 in /etc/yum.conf0<br> f. gpgkey=/path/to/file<br> g. rpm -qpl rpm-file<br> h. rpm -qp –scripts rpm-file<br> i. rpm -qp –tiggers rpm-file<br>413-2-ecryption:</li>
+<li>Linux Unified Key Setup(LUKS)<br> a. cryptsetup luksFormat /dev/vg/lv<br> b. cryptsetup luksOpen /dev/vg/lv name<br> c. mkfs.ext4 /dev/mapper/name<br> d. mkdir /secure<br> e. mount /dev/mapper/name /secure<br> f. umount /secure<br> g. cryptserup liksClose name </li>
+<li>Persistently Mount Encrypted Volume<br> a. dd if=/dev/urandom of=/path/to/password/file bs=4096 count=1<br> b. chmod 600 /path/to/password/file<br> c. cryptsetup luksAddKey /dev/vg/lv /path/to/password/file<br> d. /etc/crypttab<pre><code>i. name  /dev/vg/lv  /path/to/password/file
+</code></pre> e. /etc/fstab<pre><code>i. /dev/mapper/name  /secure  ext4  defauls 0 0
+</code></pre></li>
+<li>File System Defauls Mount Options<br> a. dev,exec,suid,rw…<br> b. nodev<br> c. noexec<br> d. nosuid<br> e. ro</li>
+<li>Manae Superblock Mount Options<br> a. tune2fs -l /dev/vda1<br> b. tune2fs -o ^acl /dev/vda1<br> c. tune2fs -o acl /dev/vda1</li>
+<li>File System Attributes<br> a. chattr +a file(append only只读)<br> b. chattr +i file(Immutable免疫)<br> c. chattr +j file(Journal)<br> d. chattr +S file(Synchronous立即同步磁盘)<br> e. lsattr file</li>
+<li>Review Specia Permissions<br> a. SUID on executables<br> b. SGID on executables<br> c. SGID on directories<br> d. Sticky Bit on directories(or files)</li>
+<li>Search special files<br> a. find /bin -type f -perm -4000(SUID文件)<br> b. find /usr/bin -type f -perm -2000（SGID文件）<br> c. find /var -perm -1000<br> d. find /usr/bin -perm /7000（所有带特殊位文件</li>
+<li>Default File Permissions<br> a. umask<br> b. Default user mask is 002<pre><code>i. file will be:777-002-111=664
+ii. directory will be:777-002=775
+</code></pre> c. Default root mask is 022<pre><code>i. file will be:777-002-111=644
+ii. directory will be:777-022=755
+</code></pre> d. Global change<pre><code>i. /etc/profile
+ii. /etc/bashrc
+</code></pre> e. Individual change<pre><code>i. ~/.bash_profile
+ii. ~/.bashrc
+</code></pre></li>
+<li>ACLs<br> a. setfacl -m … dir<br> b. setfacl -m d:… dir<br> c. serfacl -x … dir </li>
+<li>Intrusion Detection<br>a. AIDE<pre><code>i. yum install aide
+ii. vim /etc/aide.conf
+iii. aide --init;
+iv. mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+v. aide --check
+</code></pre>413-3-password policy</li>
+<li>chage passwd<br> a. chage -m 3 -M 90 -W 7 -l 356 username<br> b. chage -l username<br> c. chage -d 0 username<br> d. defaults passwd defined in /etc/login.defs<pre><code>i. PASS_MAX_DAYS 60
+ii. PASS_MIN_DAYS 3
+</code></pre></li>
+<li><p>PAM<br> a. ls /lib64/security/<br> b. ls /etc/pam.d/</p>
+<pre><code>i. more system-auth
+ii. more passwd-auth
+</code></pre><p> c. pam_cracklib.so</p>
+<pre><code>i. minlen
+ii. lcredit,ucredit,dcredit,ocredit
+iii. minclass
+iv. vi /etc/pam.d/system-auth
+v. vi /etc/pam.d/passwd-auth
+</code></pre><p> d. pam_tally2.so</p>
+<pre><code>i. pam_tally2
+ii. pam_tally2 --reset -u username
+</code></pre></li>
+<li><p>/etc/security/limits.conf<br> a. more /etc/security/limits.d/90-nproc.conf<br> b. ulimit -a<br>413-4-ipa server</p>
+</li>
+<li>IPA project(Identity,Policy,Audit)<br> a. LDAP<br> b. MIT Kerberos KDC<br> c. Dogtag project<br> d. NTP service<br> e. DNS service</li>
+<li>Install IPA Server<br> a. chkconfig NetworkManager off<br> b. service NEtworkManager stop<br> c. config static ipaddr<br> d. chkconfig network on<br> e. service network restart<br> f. yum install ipa-server<br> g. ipa-server-install –help<br> h. ipa-sever-install –hostname=server1.example.com -n example.com -r EXAMPLE.COM -p redhat123 -a redhat123 -idstart=5000 -idmax=7000 -N -U<br> i. service sshd restart<br> j. kinit admin<br> k. klist<br> l. firefox<br> m.  <a href="http://server.example.com" target="_blank" rel="noopener">http://server.example.com</a><br> n. configure browser for SSO</li>
+<li>Install IPA Client<br> a. yum install ipa-client<br> b. ipa-client-install –domian=example.com –server=server.example.com –realm=EXAMPLE.COM -p admin -w redhat123 –mkhomedir -N -U<br> c. kinit username<br> d. ssh username@server1</li>
+<li>Uninstall IPA Client<br> a. ipa-client-install –uninstall<br> b. rm -rf /etc/ipa/ca.crt<br> c. reboot<br>413-5(1)-log srver and client:</li>
+<li>vi /etc/rsyslog.conf</li>
+<li>vi /etc/rsyslog.d/filter.conf<br> a. :fromhost, isequal, “desktop1.example.com” /var/log/desktop1.log<br> b. :fromhost, isequal, “desktop1.example.com” ~<br>413-5(2)-log srver and client:</li>
+<li>vi /etc/rsyslog.d/ssl.conf<br>413-6-audit file access:</li>
+<li>auditd</li>
+<li>/vat/log/audit/audit.log</li>
+<li>ausearch -i -a 28708</li>
+<li>auditctl</li>
+<li>vi /etc/audit/audit.rules</li>
+<li>/etc/init.d/auditd restart</li>
+<li>pam_tty_audit.so</li>
+<li>vi /etc/pam.d/system-auth<br> a. session required pam_tty_audit.so enable=root</li>
+<li>vi /etc/pam.d/passwd-auth<br> a. session required pam_tty_audit.so enable=root</li>
+<li>/etc/init.d/auditd restart</li>
+<li>aureport –tty<br>413-7- firewall:</li>
+<li>iptables<br> a. setup<br> b. iptables -L -v -n</li>
+<li>/etc/sysconfig/iptables-config<br> a. IPTABLES_MODULES=”nf_conntrack_ftp”<br> b. /etc/init.d/iptables restart</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Tomcat安全配置参考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/03/Tomcat安全配置参考/" itemprop="url">Tomcat安全配置参考</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T13:32:33+08:00">
+                2017-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安全配置参考/" itemprop="url" rel="index">
+                    <span itemprop="name">安全配置参考</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>0x01 基本配置<br>1 删除默认目录<br>     安装完tomcat后，删除$CATALINA_HOME/webapps下默认的所有目录文件  rm -rf /srv/apache-tomcat/webapps/*<br>2 隐藏tomcat版本信息<br>修改$CATALINA_HOME/conf/server.xml,在Connector节点添加server字段，示例如下</p>
+<p><connector port="8080" protocol="HTTP/1.1" connectiontimeout="20000" redirectport="8443"><br>               server=”WVS1.1”<br>    <!-- A "Connector" using the shared thread pool--><br>3 自定义错误页面<br>修改tomcat/ conf/web.xml,自定义40x、50x等容错页面，防止信息泄露。<br>(1)配置tomcat/conf/web.xml文件:<br>在最后一行之前加入以下内容：</connector></p>
+<p><error-page> </error-page></p>
+<p><error-code>404</error-code></p>
+<p><location>/noFile.htm</location><br><br>……………</p>
+<p><error-page></error-page></p>
+<p><exception-type>java.lang.NullPointerException</exception-type></p>
+<p><location>/ error.jsp</location><br><br>       第一个<error-page></error-page>之间的配置实现了将404未找到jsp网页的错误导向noFile.htm页面，也可以用类似方法添加其多的错误代码导向页面，如403,500等。<br>          第二个<error-page></error-page>之间的配置实现了当jsp网页出现java.lang.NullPointerException导常时，转向error.jsp错误页面，还需要在第个jsp网页中加入以下内容:<br>&lt;%@ page errorPage=”/error.jsp” %&gt;<br>典型的error.jsp错误页面的程序写法如下:<br>&lt;%@ page contentType=”text/html;charset=GB2312”%&gt;<br>&lt;%@ page isErrorPage=”true”%&gt;</p>
+<p><html></html></p>
+<p><head><title>错误页面</title></head></p>
+<p><body>出错了：</body></p> 错误信息: &lt;%= exception.getMessage() %&gt;<br><br>Stack Trace is : <pre><font color="red">&lt;%<br>java.io.CharArrayWriter cw = new java.io.CharArrayWriter();<br>java.io.PrintWriter pw = new java.io.PrintWriter(cw,true);<br>exception.printStackTrace(pw);<br>out.println(cw.toString());<br>%&gt;</font></pre><br><br><br>当出现NullPointerException异常时tomcat会把网页导入到error.jsp，且会打印出出错信息。<br>(2)重新启动tomcat服务<br>4 更改tomcat服务器默认端口<br>1、参考配置操作<br>（1）修改tomcat/conf/server.xml配置文件，更改默认管理端口到8800<br> &lt;Connector<br>port=”8888”  maxHttpHeaderSize=”8192” maxThreads=”150”<br>minSpareThreads=”25” maxSpareThreads=”75”、<br>enableLookups=”false” redirectPort=”8443” acceptCount=”100”<br> connectionTimeout=”300” disableUploadTimeout=”true” /&gt;<br>（2）重启tomcat服务<br> 2、补充操作说明<br>② 备注事项，登陆<a href="http://127.0.0.1:8888" target="_blank" rel="noopener">http://127.0.0.1:8888</a>  ，进行验证配置。<br>0X02 安全配置<br>1 用户权限<br>      在服务器设备权限配置范围内，根据我们的业务需要，配置其所需的最小权限。同时应删除或锁定与设备运行、维护等工作无关的账号。例如admin, 666等。还有使用单独的账号允许，不能使用与系统账号一样的账号密码。<br>1、Tomcat 4.x和5.x版本用户角色分为：role1，tomcat，admin，manager四种。<br>role1：具有读权限；<br>tomcat：具有读和运行权限；<br>admin：具有读、运行和写权限；<br>manager：具有远程管理权限。<br>Tomcat 6.0.18版本只有admin和manager两种用户角色，且admin用户具有manager管理权限。<br>2、Tomcat 4.1.37和5.5.27版本及以后发行的版本默认除admin用户外其他用户都不具有manager管理权限。<br>① 建议配置<br>编辑tomcat/conf/tomcat-user.xml配置文件，修改用户角色权限 ，例如<p></p>
+<p><tomcat-users><br><!--
+  <role rolename="tomcat"/>
+  <role rolename="role1"/>
+  <user username="tomcat" password="tomcat" roles="tomcat"/>
+  <user username="both" password="tomcat" roles="tomcat,role1"/>
+  <user username="role1" password="tomcat" roles="role1"/>
+--><br></tomcat-users><br>② 登陆<a href="http://ip:8080/manager/html页面，使用tomcat账号进行本地登录，进行验证配置。" target="_blank" rel="noopener">http://ip:8080/manager/html页面，使用tomcat账号进行本地登录，进行验证配置。</a><br>2 口令安全要求<br>     对于采用静态口令认证技术的设备，口令长度至少8位，并包括数字、小写字母、大写字母和特殊符号4类中至少2类。<br>① 建议配置<br> 在tomcat/conf/tomcat-user.xml配置文件中设置密码</p>
+<p><user username="”root”" password="”root123456”" roles="”admin”"><br>② 备注事项<br>      检查tomcat/conf/tomcat-user.xml配置文件中的帐号口令是否符合移动通过配置口令复杂度要求。<br>（1）人工检查配置文件中帐号口令是否符合；<br>（2）使用tomcat弱口令扫描工具定期对Tomcat Web服务器进行远程扫描，检查是否存在弱口令帐号。<br>3 禁止列目录（高版本默认已禁止）<br>① 建议配置<br>(1) 编辑tomcat/conf/web.xml配置文件， 注意原文件和下面的区别。</user></p>
+<p><init-param><br>       <param-name>listings</param-name><br>        <param-value>false</param-value><br>    </init-param><br> (2)重新启动tomcat服务<br>② 备注事项<br>当WEB目录中没有默认首页如index.html,index.jsp等文件时，不会列出目录内容，直接访问<a href="http://ip:8800/webadd" target="_blank" rel="noopener">http://ip:8800/webadd</a><br>4 定时账户自动登出<br>       对于类似web具备字符交互界面的设备，应支持定时账户自动登出。登出后用户需再次登录才能进入系统。<br>① 建议配置<br>编辑tomcat/conf/server.xml配置文件，修改为30秒</p>
+<p>&lt;Connector<br>port=”8080”  maxHttpHeaderSize=”8192” maxThreads=”150”<br>minSpareThreads=”25” maxSpareThreads=”75”、<br>enableLookups=”false” redirectPort=”8443” acceptCount=”100”<br> connectionTimeout=”6000” disableUploadTimeout=”true” /&gt;<br>② 备注事项<br>     登陆tomcat默认页面<a href="http://ip:8080/manager/html" target="_blank" rel="noopener">http://ip:8080/manager/html</a> ，使用管理账号登陆，10分钟无操作或者关闭浏览器自动退出。<br>5 启用cookie的HttpOnly属性<br>修改$CATALINA_HOME/conf/context.xml，添加<context usehttponly="true"><br>配置cookie的secure属性，在web.xml中sesion-config节点配置cooker-config，此配置只允许cookie在加密方式下传输。</context></p>
+<pre><code>&lt;session-config&gt;
+    &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+</code></pre><p><cookie-config><br>                              <secure> true</secure><br>                          </cookie-config><br>    <br>6 AJP端口管理<br>         AJP是为 Tomcat 与 HTTP 服务器之间通信而定制的协议，能提供较高的通信速度和效率。如果tomcat前端放的是apache的时候，会使用到AJP这个连接器。前端如果是由nginx做的反向代理的话可以不使用此连接器，因此需要注销掉该连接器。<br>0x03 其他事项<br>1 日志记录<br>      应配置日志功能，对用户登录进行记录，记录内容包括用户登录使用的账号，登录是否成功，登录时间，以及远程登录时，用户使用的IP地址。<br>① 建议配置<br>编辑server.xml配置文件，在<host>标签中增加记录日志功能<br>将以下内容的注释标记&lt; ! –    – &gt;取消</host></p>
+<p><valve classname="”org.apache.catalina.valves.AccessLogValve”" directory="”logs”" prefix="”localhost_access_log.”" suffix="”.txt”" pattern="”common”" reslovehosts="”false”/"><br>② 备注事项<br>classname:This MUST be set to<br> org.apache.catalina.valves.AccessLogValve touse the default access log valve. &amp;&lt;60<br>Directory:日志文件放置的目录，在tomcat下面有个logs文件夹，那里面是专门放置日志文件的，也可以修改为其他路径；<br>Prefix: 这个是日志文件的名称前缀，日志名称为localhost_access_log.2008-10-22.txt，前面的前缀就是这个localhost_access_log<br>Suffix: 文件后缀名<br>Pattern: common方式时，将记录访问源IP、本地服务器IP、记录日志服务器IP、访问方式、发送字节数、本地接收端口、访问URL地址等相关信息在日志文件中<br>resolveHosts:值为true时，tomcat会将这个服务器IP地址通过DNS转换为主机名，如果是false，就直接写服务器IP地址<br>2 HTTPS加密协议<br>① 建议配置<br>(1)使用JDK自带的keytool工具生成一个证书<br>JAVA_HOME/bin/keytool  -genkey –alias tomcat –keyalg  RSA<br>-keystore /path/to/my/keystore<br>(2)修改tomcat/conf/server.xml配置文件，更改为使用https方式，增加如下行：<br>Connector classname=”org.apache.catalina.http.HttpConnector”<br>port=”8443”  minProcessors=”5”  maxprocessors=”100”<br>enableLookups=”true”  acceptCount=”10”  debug=”0”<br>scheme=”https” secure=”true” &gt;<br>Factory classname=”org.apache.catalina.SSLServerSocketFactory”<br>clientAuth=”false”<br>keystoreFile=”/path/to/my/keystore”  keystorePass=”runway”<br>protocol=”TLS”/&gt;<br>/Connector&gt;<br>其中keystorePass的值为生成keystore时输入的密码<br>(3)重新启动tomcat服务<br>② 备注事项<br>     使用https方式登陆tomcat服务器页面，如果登陆成功，证明配置成功；如果登陆失败，证明配置失败。</valve></p>
+<p>参考链接：<a href="http://blog.csdn.net/qq_29277155/article/details/52821229" target="_blank" rel="noopener">http://blog.csdn.net/qq_29277155/article/details/52821229</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Nginx安全配置参考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/03/Nginx安全配置参考/" itemprop="url">Nginx安全配置参考</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T13:30:12+08:00">
+                2017-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安全配置参考/" itemprop="url" rel="index">
+                    <span itemprop="name">安全配置参考</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>0X01 日志审计<br>① 参考配置操作<br>(1)编辑 nginx.conf 配置文件<br>将 error_log 前的“#”去掉，记录错误日志<br>将 access_log 前的“#”去掉，记录访问日志<br>(2)设置 access_log，修改配置文件如下：<br>log_format formatname ‘$remote_addr - $remote_user [$time_local] ‘<br>‘ “$request” $status $body_bytes_sent “$http_referer” ‘<br>‘ “$http_user_agent” “$http_x_forwarded_for”‘; access_log<br>logs/access.log formantname;      #formatname 是设置配置文件格式的名称<br>②  备注事项<br>查看 nginx.conf 配置文件中，error_log、access_log 前的“#”是否去掉<br>0x02 服务<br>1  限制 IP 访问<br>对网站或敏感目录的访问 IP 进行限制<br>① 参考配置操作<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>location / {<br>deny 192.168.1.1; #拒绝 IP<br>allow 192.168.1.0/24; #允许 IP<br>allow 10.1.1.0/16; #允许 IP<br>deny all; #拒绝其他所有 IP<br>(2)重新启动 nginx 服务<br>② 备注事项<br>根据应用场景，设置合适的 IP 地址，检查配置文件  #more /usr/local/nginx/conf/nginx.conf 中的 server 项<br>2  控制超时时间<br>控制超时时间，提高服务器性能，降低客户端的等待时间<br>① 建议配置<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>client_body_timeout 10; #设置客户端请求主体读取超时时间<br>client_header_timeout 10; #设置客户端请求头读取超时时间<br>keepalive_timeout 5 5; #第一个参数指定客户端连接保持活动的超时时间，第二个参数是可选的，它指定了消息头保持活动的有效时间<br>send_timeout 10; #指定响应客户端的超时时间<br>(2)重新启动 nginx 服务<br>② 备注事项<br>需要根据应用场景的需要选择合适的参数值。<br>1 、符合性判定依据<br>超时后，服务器返回相应的消息。<br>2 、参考检测方法<br>检查配置文件   #more /usr/local/nginx/conf/nginx.conf<br>3  下载限制并发和速度<br>限制客户端下载速度，保证服务器负载正常<br>① 建议配置<br>例如网站存放路径为/usr/local/nsfocus/ ，服务器名称为：down.nsfocus.com<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>limit_zone one $binary_remote_addr 10m;<br>server<br>{<br>listen 80;<br>server_name down.nsfocus.com;<br>index index.html index.htm index.PHP;<br>oot /usr/local/nsfocus;</p>
+<p>#Zone limit;<br>location / {<br>limit_conn one 1;<br>limit_rate 20k;<br>}<br>………<br>}<br>(2)重新启动 nginx 服务<br>下载时，不会超过设计的并发连接数和速度限制，同时检查 nginx.conf 文件中的配置<br>0x03 其他事项<br>1  卸载不需要的模块<br>卸载不需要的 nginx 模块, 最大限度地将 nginx 加载的模块最小化<br>① 建议配置<br>(1)检查需要禁用的模块<br>在编译 nginx 服务器时，使用下面的命令查看哪些模块应该启用，哪些模应<br>该禁用：</p>
+<h1 id="configure-–help-less"><a href="#configure-–help-less" class="headerlink" title="./configure –help | less"></a>./configure –help | less</h1><p>一旦处选了要禁用的模块，需要与相关人员沟通确认，并经过测试不影响业<br>务运行。<br>(2)例如，要禁用 autoindex 和 SSI 模块，命令如下：</p>
+<h1 id="configure-–without-http-autoindex-module-–without-http-ssi-module"><a href="#configure-–without-http-autoindex-module-–without-http-ssi-module" class="headerlink" title="./configure –without-http_autoindex_module –without-http_ssi_module"></a>./configure –without-http_autoindex_module –without-http_ssi_module</h1><h1 id="make"><a href="#make" class="headerlink" title="make"></a>make</h1><h1 id="make-install"><a href="#make-install" class="headerlink" title="make install"></a>make install</h1><p>② 备注事项<br>Nginx 不包含不必要的模块或者输入 ./configure –help | less 进行检查<br>2  防盗链设置<br>防止其他网站盗链本网站资源<br>① 建议配置<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>location ~<em> ^.+.(gif|jpg|png|swf|flv|rar|zip)$ {<br>valid_referers none blocked server_names </em>.nsfocus.com<br><a href="http://localhost" target="_blank" rel="noopener">http://localhost</a> baidu.com;<br>if ($invalid_referer) {<br>rewrite ^/ [img]<a href="http://www.nsfocus.com/images/default/logo.gif[/img]" target="_blank" rel="noopener">http://www.nsfocus.com/images/default/logo.gif[/img]</a>;</p>
+<h1 id="return-403"><a href="#return-403" class="headerlink" title="return 403;"></a>return 403;</h1><p>}<br>}<br>根据应用场景，设置合适的域名<br>(2)重新启动 nginx 服务<br>② 备注事项<br>从非法网站访问所保护的资源，出现设置的页面。同时检查配置文件  #more /usr/local/nginx/conf/nginx.conf<br>3  自定义错误信息<br>1)修改 src/http/ngx_http_special_response.c，自己定制错误信息</p>
+<h2 id="messages-with-just-a-carriage-return"><a href="#messages-with-just-a-carriage-return" class="headerlink" title="messages with just a carriage return."></a>messages with just a carriage return.</h2><p>static char ngx_http_error_400_page[] = CRLF;<br>static char ngx_http_error_404_page[] = CRLF;<br>static char ngx_http_error_413_page[] = CRLF;<br>static char ngx_http_error_502_page[] = CRLF;<br>static char ngx_http_error_504_page[] = CRLF;<br>常见错误：<br>400 bad request<br>404 NOT FOUND<br>413 Request Entity Too Large<br>502 Bad Gateway<br>504 Gateway Time-out<br>(2)重新启动 nginx 服务<br>② 备注事项<br>URL 地址栏中输入 <a href="http://ip:8800/manager12345，访问出错时，返回自定义的错误页面" target="_blank" rel="noopener">http://ip:8800/manager12345，访问出错时，返回自定义的错误页面</a><br>4  隐藏 nginx 服务信息头<br>① 建议配置<br>修改 nginx解压路径/src/http/ngx_http_header_filter_module.c文件的第48<br>和 49 行内容，自定义头信息：<br>static char ngx_http_server_string[] = “Server:XXXXX.com” CRLF;<br>static char ngx_http_server_full_string[] = “Server:XXXXX.com” CRLF;<br>添加如下代码到 nginx.conf 配置文件，禁止错误页面中显示 nginx 版本号：<br>server_tokens off<br>② 备注事项<br>服务信息头显示设置的内容，检查 http 服务信息头内容<br>5  补丁更新<br>安装系统补丁，修补漏洞<br>1 、参考配置操作<br>手动安装补丁或安装最新版本软件，所安装的补丁，应首先在经过测试验证；安装前，要做好数据备份。<br>2查看版本和编译器信息</p>
+<p>参考链接：<a href="http://blog.csdn.net/qq_29277155/article/details/52819635" target="_blank" rel="noopener">http://blog.csdn.net/qq_29277155/article/details/52819635</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Centos安全配置参考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/03/Centos安全配置参考/" itemprop="url">Centos安全配置参考</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T13:30:12+08:00">
+                2017-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安全配置参考/" itemprop="url" rel="index">
+                    <span itemprop="name">安全配置参考</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>0x01 系统安全记录文件</p>
+<p>#more  /var/log/secure<br>统计访问IP及次数。</p>
+<p>#grep  -oP ‘(\d+.){3}\d+’ /var/log/secure |sort |uniq -c<br>0x02 启动和登录安全性<br>1．用户口令<br> 修改改密码长度/etc/login.defs</p>
+<p> #vi  /etc/login.defs<br> PASS_MIN_LEN 8<br>2．注释掉不需要的用户和用户组<br>vi  /etc/passwd<br> vi  /etc/group<br>3．口令文件<br>chattr命令给下面的文件加上不可更改属性，从而防止非授权用户获得权限。</p>
+<p>#chattr +i /etc/passwd</p>
+<p> #chattr +i /etc/shadow</p>
+<p> #chattr +i /etc/group</p>
+<p> #chattr +i /etc/gshadow<br>4．禁止CtrlAltDelete重新启动机器命令<br>     修改/etc/inittab文件，将ca::ctrlaltdel:/sbin/shutdown -t3 -r now”一行注释掉。然后重新设置/etc/rc.d/init.d/目录下所有文件的许可权限，运行如下命令：</p>
+<p>#chmod -R 700 /etc/rc.d/init.d/*<br>这样便仅有root可以读、写或执行上述所有脚本文件。<br>5．限制su命令<br> 当不想任何人能够su作为root，可以编辑/etc/pam.d/su文件，增加如下两行：<br>auth    sufficient       /lib/security/pam_rootok.so      debug<br> auth    required        /lib/security/pam_wheel.so        group=isd<br>这时，仅isd组的用户可以su作为root。此后，如果希望用户admin能够su作为root，可以运行如下命令：</p>
+<p>#usermod -G10 admin<br>6 . 更改SSH端口<br>  最好改为10000以上，别人扫描到端口的机率也会下降,不允许使用低版本的SSH协议<br>vi /etc/ssh/ssd_config<br>将#protocol2,1<br>改为protocol2<br>将PORT改为1000以上端口<br>vi /etc/ssh/sshd_config<br> Port 10000<br>同时，创建一个普通登录用户，并取消直接root登录<br>useradd ‘username’<br> passwd ‘username’<br> vi /etc/ssh/sshd_config<br> PermitRootLogin  no<br>＃取消root直接远程登录<br>7 . 关闭那些不需要的服务<br>记住少开一个服务，就少一个危险。以下仅列出需要启动的服务，未列出的服务一律关闭：</p>
+<p>#setup<br>acpid<br>anacron<br>cpuspeed<br>crond<br>irqbalance\仅当服务器CPU为S.M.P架构或支持双核心、HT技术时，才需开启，否则关闭。<br>microcode_ctl<br> network<br> random<br> sendmail<br> sshd<br> syslog<br> yum-updatesd<br>8 . 启用iptables防火墙<br>对增加系统安全有许多好处。设置好防火墙的规则，例如只允许内网IP访问，禁止对外发送。<br>/etc/init.d/iptables start<br>0x03 限制网络访问<br>1．NFS访问<br> 使用NFS网络文件系统服务，应该确保/etc/exports具有最严格的访问权限设置，也就是意味着不要使用任何通配符、不允许root写权限并且只能安装为只读文件系统。编辑文件/etc/exports并加入如下两行。<br>/dir/to/export      host1.mydomain.com(ro，root_squash)<br> /dir/to/export      host2.mydomain.com(ro，root_squash)<br> /dir/to/export是想输出的目录，host.mydomain.com是登录这个目录的机器名，ro意味着mount成只读系统，root_squash禁止root写入该目录。为了使改动生效，运行如下命令。</p>
+<p>#/usr/sbin/exportfs-a<br> 2．TCP_WRAPPERS设置<br> 默认情况下，多数Linux系统允许所有的请求，而用TCP_WRAPPERS增强系统安全性是举手之劳，可以修改/etc/hosts.deny和/etc/hosts.allow来增加访问限制。例如，将/etc/hosts.deny设为”ALL:ALL”可以默认拒绝所有访问，然后在/etc/hosts.allow文件中添加允许的访问。<br> 例如，”sshd:192.168.10.10/255.255.255.0  gate.openarch.com”表示<br> 允许IP地址192.168.10.10和主机名gate.openarch.com允许通过SSH连接。<br>3．登录终端设置<br>/etc/securetty文件指定了允许root登录的tty设备，由/bin/login程序读取，其格式是一个被允许的名字列表，可以编辑/etc/securetty且注释掉如下的行。<br>tty1</p>
+<p> #tty2</p>
+<p> #tty3</p>
+<p> #tty4</p>
+<p> #tty5</p>
+<p> #tty6<br>这时，root仅可在tty1终端登录。</p>
+<p>0x04 防止攻击<br>1．阻止ping<br>如果没人能ping通系统，安全性自然增加了，为此，我们可以在/etc/rc.d/rc.local文件中增加如下一行<br>echo 1 &gt;/proc/sys/net/ipv4/icmp_echo_ignore_all<br> 2．防止IP欺骗<br> 编辑host.conf文件并增加如下几行来防止IP欺骗攻击。<br>order bind，hosts 解析顺序<br>multi on       允许多面网络（多网卡开启）<br>nospoof  on  拒绝IP欺骗<br>3．防止DoS攻击<br> 对系统所有的用户设置资源限制可以防止DoS类型攻击，如最大进程数和内存使用数量等。<br> 例如，可以在/etc/security/limits.conf中添加如下几行：</p>
+<ul>
+<li>hard    core    0<ul>
+<li>hard     rss     5000</li>
+<li>hard     nproc  20<br>然后必须编辑/etc/pam.d/login文件检查下面一行是否存在。<br>session    required       /lib/security/pam_limits.so<br>core 0 表示禁止创建core文件，<br>nproc 20 把最多的进程数限制到20</li>
+<li>表示登录到系统的所有用户<br>rss 5000 表示除了root之外，其它用户最多只能用5M内存。这样可以更好的控制系统中用户对进程、core文件和内存的使用情况。</li>
+</ul>
+</li>
+</ul>
+<p>参考链接：<a href="http://blog.csdn.net/qq_29277155/article/details/52497113" target="_blank" rel="noopener">http://blog.csdn.net/qq_29277155/article/details/52497113</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Apache安全配置参考/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -385,661 +1084,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/linux漏洞扫描工具【lynis】/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/linux漏洞扫描工具【lynis】/" itemprop="url">Linux漏洞扫描工具【lynis】</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">
-                2017-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Centos/" itemprop="url" rel="index">
-                    <span itemprop="name">Centos</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>Lynis是针对Unix/Linux的安全检查工具，可以发现潜在的安全威胁。这个工具覆盖可疑文件监测、漏洞、恶意程序扫描、配置错误等。<br>A. 检查项举例：<br>B. 系统允许的登陆操作<br>C. 失效的SSL证书<br>D. 不需要密码的账户<br>E. 未授权的文件<br>F. 配置错误 </li>
-<li>安装epel：<br> a. rpm -ivh <a href="https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" target="_blank" rel="noopener">https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</a></li>
-<li>安装lynis：<br> a. yum –enablerepo=epel -y install lynis</li>
-<li>扫描系统：<br> a. lynis audit system</li>
-</ol>
-<ol start="5">
-<li>查看分析日志：<br> a. 分析日志保存在：/var/log/lynis.log<br> b. 分析报告保存在：/var/log/lynis-report.dat<br> c. 需要查看的是分析报告：<br> d. 搜索 “warning” “suggestion”找到建议内容<br>grep -E “^warning|^suggestion” /var/log/lynis-report.dat</li>
-</ol>
-<p>根据上面的建议，可以针对性的修复系统漏洞</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MariaDB调整最大连接数－centos7.2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/MariaDB调整最大连接数－centos7.2/" itemprop="url">MariaDB调整最大连接数－centos7.2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">
-                2017-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MariaDB/" itemprop="url" rel="index">
-                    <span itemprop="name">MariaDB</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>首先查看mariadb数据库最大连接数，默认为151</p>
-<p>show variables like ‘max_connections’;</p>
-<p>配置/etc/my.cnf<br>[mysqld]新添加一行如下参数：<br>max_connections=1000<br>重启mariadb服务，再次查看mariadb数据库最大连接数，可以看到最大连接数是214，并非我们设置的1000。</p>
-<p>这是由于mariadb有默认打开文件数限制。可以通过配置/usr/lib/systemd/system/mariadb.service来调大打开文件数目。</p>
-<p>配置/usr/lib/systemd/system/mariadb.service<br>[Service]新添加两行如下参数：<br>LimitNOFILE=10000<br>LimitNPROC=10000</p>
-<p>重新加载系统服务，并重启mariadb服务<br>systemctl daemon-reload<br>systemctl restart mariadb.service</p>
-<p>再次查看mariadb数据库最大连接数，可以看到最大连接数已经是1000</p>
-<p>参考链接：<br><a href="http://blog.csdn.net/hnhuangyiyang/article/details/51132141" target="_blank" rel="noopener">http://blog.csdn.net/hnhuangyiyang/article/details/51132141</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MySQL Tuning Primer Script使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/MySQL Tuning Primer Script使用/" itemprop="url">MySQL Tuning Primer Script使用（Mysql调优脚本）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">
-                2017-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">Mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>脚本站点：<a href="https://launchpad.net/mysql-tuning-primer" target="_blank" rel="noopener">https://launchpad.net/mysql-tuning-primer</a></li>
-<li>下载URL：<a href="https://launchpadlibrarian.net/78745738/tuning-primer.sh" target="_blank" rel="noopener">https://launchpadlibrarian.net/78745738/tuning-primer.sh</a></li>
-<li>安装mariadb：<br> a. yum install mariadb mariadb-server</li>
-<li>启动并设置开机启动：<br> a. systemctl start mariadb<br> b. systemctl enable mariadb</li>
-<li>初始化mariadb：<br> a. mysql_secure_installation</li>
-<li>测试登陆：<br> a. mysql -uroot -pdell_456</li>
-<li>将tuning-primer.sh拷贝到my.cnf的同级目录</li>
-<li>运行：<br>[root@localhost etc]# sh tuning-primer.sh </li>
-</ol>
-<p>Using login values from ~/.my.cnf</p>
-<ul>
-<li>INITIAL LOGIN ATTEMPT FAILED -<br>Testing for stored webmin passwords:<br>None Found<br>Could not auto detect login info!<br>Found potential sockets: /var/lib/mysql/mysql.sock //找到一个mysql.sock<br>Using: /var/lib/mysql/mysql.sock //使用这个.sock文件<br>Would you like to provide a different socket?: [y/N] N //是否使用其他的socket<br>Do you have your login handy ? [y/N] : y //是否手动输入用户名和密码<br>User: root<br>Password: dell_456</li>
-</ul>
-<p>Would you like me to create a ~/.my.cnf file for you? [y/N] : N /是不是要帮你再创建一个my.cnf</p>
-<ol start="9">
-<li>运行结果：<br>– MYSQL PERFORMANCE TUNING PRIMER –<ul>
-<li>By: Matthew Montgomery -</li>
-</ul>
-</li>
-</ol>
-<p>MySQL Version 5.5.52-MariaDB x86_64</p>
-<p>Uptime = 0 days 0 hrs 7 min 2 sec<br>Avg. qps = 0<br>Total Questions = 39<br>Threads Connected = 1</p>
-<p>Warning: Server has not been running for at least 48hrs.<br>It may not be safe to use these recommendations  //告诉服务运行还不超过48个小时，这样不安全</p>
-<p>To find out more information on how each of these<br>runtime variables effects performance visit:<br><a href="http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html</a><br>Visit <a href="http://www.mysql.com/products/enterprise/advisors.html" target="_blank" rel="noopener">http://www.mysql.com/products/enterprise/advisors.html</a><br>for info about MySQL’s Enterprise Monitoring and Advisory Service</p>
-<p>SLOW QUERIES<br>The slow query log is NOT enabled.<br>Current long_query_time = 10.000000 sec.<br>You have 0 out of 60 that take longer than 10.000000 sec. to complete<br>Your long_query_time seems to be fine</p>
-<p>BINARY UPDATE LOG<br>The binary update log is NOT enabled.<br>You will not be able to do point in time recovery<br>See <a href="http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/point-in-time-recovery.html</a><br>//告诉binary log没有设置生存时间，会一直保存下来，只到主服务器重起，<br>//并且binlog的同步并没有激活，如果服务器崩溃binlog数据将丢失</p>
-<p>WORKER THREADS<br>Current thread_cache_size = 0<br>Current threads_cached = 0<br>Current threads_per_sec = 1<br>Historic threads_per_sec = 0<br>Your thread_cache_size is fine</p>
-<p>MAX CONNECTIONS<br>Current max_connections = 151<br>Current threads_connected = 1<br>Historic max_used_connections = 1<br>The number of used connections is 0% of the configured maximum.<br>You are using less than 10% of your configured max_connections.<br>Lowering max_connections could help to avoid an over-allocation of memory<br>See “MEMORY USAGE” section to make sure you are not over-allocating<br>//告诉目前已连接的最大连接和设置的最大连接的比率差不多是0％，<br>//建议我把最大连接设置小一点，可以节省一点内存</p>
-<p>INNODB STATUS<br>Current InnoDB index space = 0 bytes<br>Current InnoDB data space = 0 bytes<br>Current InnoDB buffer pool free = 96 %<br>Current innodb_buffer_pool_size = 128 M<br>Depending on how much space your innodb indexes take up it may be safe<br>to increase this value to up to 2 / 3 of total system memory</p>
-<p>MEMORY USAGE<br>Max Memory Ever Allocated : 274 M<br>Configured Max Per-thread Buffers : 419 M<br>Configured Max Global Buffers : 272 M<br>Configured Max Memory Limit : 691 M<br>Physical Memory : 3.68 G<br>Max memory limit seem to be within acceptable norms</p>
-<p>KEY BUFFER<br>Current MyISAM index space = 99 K<br>Current key_buffer_size = 128 M<br>Key cache miss rate is 1 : 2<br>Key buffer free ratio = 81 %<br>Your key_buffer_size seems to be fine</p>
-<p>QUERY CACHE<br>Query cache is supported but not enabled  //查询缓存是支持的，但是没有激活<br>Perhaps you should set the query_cache_size  //建议我设置一下query_cache_size的大小</p>
-<p>SORT OPERATIONS<br>Current sort_buffer_size = 2 M<br>Current read_rnd_buffer_size = 256 K<br>No sort operations have been performed<br>Sort buffer seems to be fine</p>
-<p>JOINS<br>tuning-primer.sh: line 402: export: `2097152’: not a valid identifier<br>Current join_buffer_size = 132.00 K<br>You have had 0 queries where a join could not use an index properly<br>Your joins seem to be using indexes properly</p>
-<p>OPEN FILES LIMIT<br>Current open_files_limit = 1024 files<br>The open_files_limit should typically be set to at least 2x-3x<br>that of table_cache if you have heavy MyISAM usage.<br>Your open_files_limit value seems to be fine</p>
-<p>TABLE CACHE<br>Current table_open_cache = 400 tables<br>Current table_definition_cache = 400 tables<br>You have a total of 41 tables<br>You have 41 open tables.<br>The table_cache value seems to be fine</p>
-<p>TEMP TABLES<br>Current max_heap_table_size = 16 M<br>Current tmp_table_size = 16 M<br>Of 348 temp tables, 9% were created on disk<br>Created disk tmp tables ratio seems fine</p>
-<p>TABLE SCANS<br>Current read_buffer_size = 128 K<br>Current table scan ratio = 4 : 1<br>read_buffer_size seems to be fine</p>
-<p>TABLE LOCKING<br>Current Lock Wait ratio = 0 : 318<br>Your table locking seems to be fine</p>
-<ol start="10">
-<li>最后根据结果做相应的优化</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/windows下部署hexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/windows下部署hexo/" itemprop="url">Windows下部署hexo</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">
-                2017-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>node官网下载安装包并安装，<br> a. URL：<a href="https://nodejs.org/dist/v6.9.2/node-v6.9.2-x64.msi" target="_blank" rel="noopener">https://nodejs.org/dist/v6.9.2/node-v6.9.2-x64.msi</a></li>
-<li>下载git客户端并安装(安装github desktop更好)，<br> a. URL：<a href="https://git-scm.com/download/win" target="_blank" rel="noopener">https://git-scm.com/download/win</a></li>
-<li>打开git命令行，<br> a. 安装hexo：<pre><code>npm install hexo-cli -g
-</code></pre> b. 初始化站点：<br>hexo init hexo.blog<br>cd hexo.blog<pre><code>npm install
-</code></pre></li>
-<li>执行”hexo server”就可以测试是否安装成功</li>
-<li>访问<a href="http://localhost:4000/测试成功" target="_blank" rel="noopener">http://localhost:4000/测试成功</a></li>
-<li>部署hexo到github</li>
-<li>在github上创建一个repository<br> a. 名称为fearchen/fearchen.github.io</li>
-<li><p>在hexo.blog下的_config.yml下配置部署路径，注：冒号后面有空格</p>
-</li>
-<li><p>安装git插件：npm install hexo-deployer-git –save</p>
-</li>
-<li>然后在hexo.blog目录下执行”hexo deploy”</li>
-<li>部署成功，<a href="https://fearchen.github.io/就能访问了">https://fearchen.github.io/就能访问了</a></li>
-<li>hexo new “MyBlog” 新建一篇文章</li>
-<li>hexo generate生成静态页面</li>
-<li>hexo deploy重新部署</li>
-<li>把写好的MarkDown文章放到source目录下的_post文件夹</li>
-<li>然后部署<br>a. hexo clean<br>b. hexo deploy -g</li>
-<li>就能在hexo上看到了</li>
-<li>相关配置需修改themes\maupassant下“_config.yml”配置文件</li>
-<li>修改hexo主题，<a href="https://www.haomwei.com/technology/maupassant-hexo.html" target="_blank" rel="noopener">https://www.haomwei.com/technology/maupassant-hexo.html</a><br>a. git clone <a href="https://github.com/tufu9441/maupassant-hexo.git" target="_blank" rel="noopener">https://github.com/tufu9441/maupassant-hexo.git</a> themes/maupassant<br>b. npm install hexo-renderer-jade –save<br>c. npm install hexo-renderer-sass –save<br>d. 编辑Hexo目录下的 _config.yml，将theme的值改为maupassant<br>e. hexo deploy -g</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1085,7 +1134,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
