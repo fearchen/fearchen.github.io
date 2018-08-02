@@ -284,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/MariaDB调整最大连接数－centos7.2/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/linux漏洞扫描工具【lynis】/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
@@ -303,8 +303,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/MariaDB调整最大连接数－centos7.2/" itemprop="url">
-                  MariaDB调整最大连接数－centos7.2
+                <a class="post-title-link" href="/2017/01/03/linux漏洞扫描工具【lynis】/" itemprop="url">
+                  Linux漏洞扫描工具【lynis】
                 </a>
               
             
@@ -330,7 +330,7 @@
                 
               
 
-              <time title="创建时间：2017-01-03 09:30:12 / 修改时间：09:41:18" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">2017-01-03</time>
+              <time title="创建时间：2017-01-03 09:30:12 / 修改时间：13:43:51" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">2017-01-03</time>
             
 
             
@@ -352,7 +352,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MariaDB/" itemprop="url" rel="index"><span itemprop="name">MariaDB</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Centos/" itemprop="url" rel="index"><span itemprop="name">Centos</span></a></span>
 
                 
                 
@@ -388,14 +388,16 @@
       
         
           
-            <p>首先查看mariadb数据库最大连接数，默认为151</p>
-<p>show variables like ‘max_connections’;</p>
-<p>配置/etc/my.cnf<br>[mysqld]新添加一行如下参数：<br>max_connections=1000<br>重启mariadb服务，再次查看mariadb数据库最大连接数，可以看到最大连接数是214，并非我们设置的1000。</p>
-<p>这是由于mariadb有默认打开文件数限制。可以通过配置/usr/lib/systemd/system/mariadb.service来调大打开文件数目。</p>
-<p>配置/usr/lib/systemd/system/mariadb.service<br>[Service]新添加两行如下参数：<br>LimitNOFILE=10000<br>LimitNPROC=10000</p>
-<p>重新加载系统服务，并重启mariadb服务<br>systemctl daemon-reload<br>systemctl restart mariadb.service</p>
-<p>再次查看mariadb数据库最大连接数，可以看到最大连接数已经是1000</p>
-<p>参考链接：<br><a href="http://blog.csdn.net/hnhuangyiyang/article/details/51132141" target="_blank" rel="noopener">http://blog.csdn.net/hnhuangyiyang/article/details/51132141</a></p>
+            <ol>
+<li>Lynis是针对Unix/Linux的安全检查工具，可以发现潜在的安全威胁。这个工具覆盖可疑文件监测、漏洞、恶意程序扫描、配置错误等。<br>A. 检查项举例：<br>B. 系统允许的登陆操作<br>C. 失效的SSL证书<br>D. 不需要密码的账户<br>E. 未授权的文件<br>F. 配置错误 </li>
+<li>安装epel：<br> a. rpm -ivh <a href="https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" target="_blank" rel="noopener">https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</a></li>
+<li>安装lynis：<br> a. yum –enablerepo=epel -y install lynis</li>
+<li>扫描系统：<br> a. lynis audit system</li>
+</ol>
+<ol start="5">
+<li>查看分析日志：<br> a. 分析日志保存在：/var/log/lynis.log<br> b. 分析报告保存在：/var/log/lynis-report.dat<br> c. 需要查看的是分析报告：<br> d. 搜索 “warning” “suggestion”找到建议内容<br>grep -E “^warning|^suggestion” /var/log/lynis-report.dat</li>
+</ol>
+<p>根据上面的建议，可以针对性的修复系统漏洞</p>
 
           
         
