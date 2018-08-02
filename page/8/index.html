@@ -2,6 +2,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
   
 
 
@@ -9,8 +18,11 @@
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
 <meta name="theme-color" content="#222">
+
+
+
 
 
 
@@ -50,25 +62,19 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="rm -rf /*" />
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
 
 
 
@@ -78,8 +84,35 @@
 
 
 
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: ,
+    lazyload: ,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
 
-<meta name="description" content="把我的过程记录下来，以免以后忘了">
+
+  
+
+
+
+
+  <meta name="description" content="把我的过程记录下来，以免以后忘了">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fearchen&#39;s Blog">
 <meta property="og:url" content="http://fearchen.github.io/page/8/index.html">
@@ -92,29 +125,6 @@
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
 
 
 
@@ -122,7 +132,11 @@
 
 
 
-
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
 
   <title>Fearchen's Blog</title>
   
@@ -133,6 +147,34 @@
 
 
 
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
 
 </head>
 
@@ -153,19 +195,21 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Fearchen's Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
       
         <p class="site-subtitle">把我的过程记录下来，以免以后忘了</p>
       
+    
   </div>
 
   <div class="site-nav-toggle">
-    <button>
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -173,45 +217,42 @@
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
+
+<nav class="site-nav">
   
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            About
-          </a>
-        </li>
-      
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">关于</a>
+  </li>
 
       
+      
     </ul>
+  
+
+  
+    
+
   
 
   
@@ -219,12 +260,20 @@
 
 
 
- </div>
+  
+
+
+
+</div>
     </header>
+
+    
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
@@ -237,16 +286,18 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/RHCA-RH442(性能调优)学习笔记/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/系统&&容器docker管理工具【cockpit】/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -261,23 +312,34 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/RHCA-RH442(性能调优)学习笔记/" itemprop="url">RHCA-RH442(性能调优)学习笔记</a></h1>
+                <a class="post-title-link" href="/2017/01/03/系统&&容器docker管理工具【cockpit】/" itemprop="url">
+                  系统&&容器docker管理工具【cockpit】
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">
-                2017-01-03
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2017-01-03 09:30:12" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">2017-01-03</time>
             
 
             
@@ -292,14 +354,10 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/RHCA/" itemprop="url" rel="index">
-                    <span itemprop="name">RHCA</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Centos/" itemprop="url" rel="index"><span itemprop="name">Centos</span></a></span>
 
                 
                 
@@ -335,99 +393,26 @@
       
         
           
-            <p>RHCA 442-1(1)</p>
-<ol>
-<li>Business Level Tuning &gt; Application Level Tuning &gt; Kernel Level Tuning(RH442)</li>
-<li>grep CPU /proc/cpuinfo</li>
-<li>lscpu<br> a. lscpu -p</li>
-<li>cat /proc/cpuinfo<br> a. cat /proc/meminfo<br>RHCA 442-1(2)</li>
-<li>dmesg(实时kernel信息)</li>
-<li>/var/log/dmesg(开机kernel信息写入)</li>
-<li>getconf -a</li>
-<li>x85info(yum install x86info -y)</li>
-<li>dmidecode<br> a. dmidecode -t 0</li>
-<li>cd /sys/class/dmi/id/</li>
-<li>lspci<br> a. lspci -v<br> b. lspci -vv<br> c. lspci -vvv</li>
-<li>lsusb<br> a. lsusb -v</li>
-<li>ethtool eth0</li>
-<li>powertop(yum install powertop -y)</li>
-<li>sosreport<br>RHCA 442-2(1)</li>
-<li>K=1000<br> a. Ki=1024</li>
-<li>vmstat<br> a. vmstat 1 5<br> b. dd if=/dev/zero of=/dev/null<br> c. buffer= buffer cache(文件描述数据)<br> d. cache= page cache(文件内容数据)<br> e. echo 3 &gt; /proc/sys/vm/drop_cahces<br> f. bi= block in<br> g. bo= block out</li>
-<li>iostat<br> a. iostat -x sda 1</li>
-<li>mpstat<br> a. mpstat 1<br> b. mpstat -p 0 1</li>
-<li>sar<br> a. yum install sysstat<br> b. cat /etc/cron.d/sysstat<br> c. LANG=C sar -q(CPU负载)<br> d. LANG=C sar -b(I/O状况)<pre><code>i. sar -b -s 17:00:00 -e 19:00:00
-</code></pre> e. LANG=C sar -p 0 (第一颗cpu状态)<br> f. LAMD=C sar -d(磁盘状态)<br> g. LANG=C sar -n DEV|EDEV(网络信息)<br> h. cd /var/log/sa/<br> i. cat /etc/sysconfig/sysstat</li>
-<li>awk<br> a. awk -F: ‘{print $1}’ /etc/passwd<br> b. df -P | awk ‘{print $1 “ is mount on “ $NF}’<br> c. awk -F: ‘BEGIN{print “User List:”} {print $1} END{print “Done.”}’ /etc/passwd<br> d. df -hP | awk ‘BEGIN{print “File System status:”}{print $1,$(NF-2)} END{print “Done.”}’<br> e. awk -F: ‘/^r/ {print $1}’ /etc/passwd<br> f. awk -F: ‘/^[a-z]<em>t:.</em>/ {print $1}’ /etc/passwd<br> g. sar -q | awk ‘/^[^a-z]+$/{print $1,$4,$5,$6}’ &gt; /tmp/cpudata</li>
-<li>gnuplot<br> a. yum install gnuplot -t<br> b. gnuplot<pre><code>i. set xdata tim
-ii. set timefmt &quot;%H:%M:%S&quot;
-iii. plot &quot;/tmp/cpudata&quot; using 1:2 with lines
-</code></pre></li>
-</ol>
-<p>RHCA 442-2(2)</p>
-<ol>
-<li>Little’s Law</li>
-<li>L(lenth) = A(arrival time)*  W(wait time)</li>
-<li>W(wait time) = Q(queue time) +S(service time)</li>
-<li>S(service time) = St(sys time) + Ut(user time)</li>
-<li>time command<br> a. time updatedb<br> b. echo 3 &gt; /proc/sys/vm/drop_caches<br> c. time updatedb<br>RHCA 442-3(1-2)</li>
-<li>lsmod<br> a. ls /lib/modules/3.10.0-327.el7.x86_64/    (kernel模块)<br> b. ll /boot/vmlinuz-3.10.0-327.el7.x86_64    (kernel本身)</li>
-<li>modinfo<br> a. modinfo st<br> b. modinfo -p st<br> c. modinfo usb_storage<br> d. modinfo sx8</li>
-<li>modprobe<br> a. modprobe st</li>
-<li>rmmod<br> a. rmmod st</li>
-<li>/etc/modprobe.d/my.conf<br> a. options usb_storage delay_user = 3<br> b. options st buffer_kbs = 64<br> c. options sx8 max_queue = 15</li>
-<li>/sys/module/$(mname)/paraments/$(pname)<br> a. more /sys/module/usb_storage/parameters/delay_use</li>
-<li>more /etc/sysconfig/modules/st.modules (开机模块加载)</li>
-<li>I/O Schedulers<br> a. cfq,deadline,anticipatory,noop<br> b. cat /sys/block/sda/queue/scheduler  ([]中是当前电梯算法)<br> c. more /sys/block/sda/queue/nr_requests<br> d. more /sys/block/sda/queue/read_ahead_kb<br> e. echo cfq &gt; /sys/block/sda/queue/scheduler<br> f. more /sys/block/sda/queue/scheduler<br> g. ll /sys/block/sda/queue/iosched<br>RHCA 442-3(3)</li>
-<li>tuned<br> a. yum info tuned<br> b. yum install tuned -y<br> c. tuned-adm active<br> d. tuned-adm list<br> e. tuned-adm profile desktop<br> f. ll /usr/lib/tuned/<br> g. cp -a /usr/lib/tuned/desktop/* /etc/tuned/ex442/<br>RHCA 442-4(1)</li>
-<li>CPU Scheduling</li>
-<li>CFS Scheduler<br> a. virtual time</li>
-<li>chrt command<br> a. chrt -f 10 top<br> b. chrt -r 1 md5sum /dev/zero<br>RHCA 442-4(2)</li>
-<li>x86info -c</li>
-<li>valgrind -tool=cahcegrind command1</li>
-<li>perf stat -e cahce-misses command<br>RHCA 442-4(3-4)</li>
-<li>pam_limits<br> a. vi /etc/security/limits.conf<pre><code>i. user    hard        cpu        1
-</code></pre> b. ulimit -a<br> c. cgroup<pre><code>i. service cgconfig start
-ii. service cgred start
-iii. lssubsys -m
-iv. echo 0 &gt; /sys/devices/system/cpu/cpu1/online (下线cpu)
-v. mount -t tmpfs none /mnt/tmpfs (物理内存挂成分区)
-</code></pre>RHCA 442-5(1)</li>
-<li>strace<br> a. kernel space(system call)<br> b. strace updatedb<br> c. strace -e trace=network ping -c1 i<br> d. strace -e trace=file ls /<br> e. strace -p 1<br> f. strace -c updatedb</li>
-<li>ltrace<br> a. user space(library call [glibc])<br> b. ltrace updatedb<br> c. ltrace ls /</li>
-<li>systemtap<br> a. yum install kernel-debuginfo -y<pre><code>i. yum install systemtap
-ii. stap -c /usr/share/doc/systemtap-client-3.0/examples/profiling/topsys.stp
-</code></pre> b. stap -v abc.stap<br> c. staprun abc.ko<br> d. stapusr group<br> e. stapdev group<br>RHCA 442-5(2)</li>
-<li>Paging<br> a. pages，x86 normal page size is 4KiB<br> b. getconf PAGE_SIZE</li>
-<li>VSZ</li>
-<li>RSS </li>
-<li>TLB</li>
-<li>mount -t hugetlbfs none /muntpoint</li>
-<li>Tune per-BDI Flush Threads<br> a. vm.dirty_expire_centisecs<br> b. vm.dirty_writeback_centisecs</li>
-<li>Oou of Menory(OOM)</li>
-<li>Memory Overcommit<br> a. sysctl -p | grep  overcommit_memory<br> b. sysctl -p | grep  overcommit_ratio<br> c. grep Coomitted_AS /proc/meminfo</li>
-<li>SysV IPC<br> a. ipcs<br> b. ipcs -l<br> c. Tune Semaphores<br> d. Message queues<br> e. Shared memory<pre><code>i. kernel.shmmni
-ii. kernel.shmmax
-iii. kernel.shmall
-</code></pre>RHCA 442-6(1)</li>
-<li>File Systems<br> a. EXT3<br> b. EXT4<br> c. XFS<br> d. BTRFS</li>
-<li>External Journaling<br> a. mkfs.ext4 -O journal_dev -b 4096 /dev/vdb1<br> b. mkfs.ext4 -J device=/dev/vdb1 -b 4096 /dev/vda3<br> c. blkid<br>RHCA 442-6(2)</li>
-<li>yum install qperf</li>
-<li>sysctl net.ipv4.tcp_low_latency</li>
-<li>net.ipv4.tcp_mem/net.ipv4.udp_mem(单位pages)</li>
-<li>tc qdisc show</li>
-<li><p>Bonding mode<br> a. balance-rr: mode 0<br> b. actice-backup: mode 1<br> c. 802.3ad: mode 4(工作在2层，需要配交换机)<br> d. cat /proc/net/bonding/bond0 </p>
+            <ol>
+<li>安装软件包：<br> a. yum -y install cockpit<br> b. systemctl start cockpit<br> c. systemctl enable cockpit.socket<br> d. systemctl stop firewalld</li>
+<li><p>服务启动了就可以直接浏览器访问：<br> a. <a href="https://IP:9090/" target="_blank" rel="noopener">https://IP:9090/</a><br> b. root/系统密码</p>
 </li>
-<li><p>MTU(最大传输单元 default 1500bytes)<br> a. TCP protocol headers 52 (52/1500=3.5% overhead)<br> b. TDP protocol headers 28 (28/1500=1.9% overhead)<br> c. Jumbo Frames (MTU bigger that 1500 需要配置交换机)</p>
-<pre><code>i. Official maximum size is 9000 bytes (52/9000=0.58% overhead
-ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
-</code></pre></li>
+<li><p>容器管理<br> a. “Start Docker”开始安装docker服务</p>
+</li>
+</ol>
+<ol start="4">
+<li><p>添加其他节点</p>
+</li>
+<li></li>
 </ol>
 
           
         
       
     </div>
+
+    
+
     
     
     
@@ -466,6 +451,8 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -475,7 +462,7 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -490,23 +477,34 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/08/22/Markdown基本语法/" itemprop="url">Markdown基本语法</a></h1>
+                <a class="post-title-link" href="/2016/08/22/Markdown基本语法/" itemprop="url">
+                  Markdown基本语法
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-22T14:59:52+08:00">
-                2016-08-22
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2016-08-22 14:59:52" itemprop="dateCreated datePublished" datetime="2016-08-22T14:59:52+08:00">2016-08-22</time>
             
 
             
@@ -547,6 +545,9 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
         
       
     </div>
+
+    
+
     
     
     
@@ -585,6 +586,8 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -594,7 +597,7 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -609,23 +612,34 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/05/Centos6.4部署puppet3.8.4/" itemprop="url">Centos6.4部署puppet3.8.4</a></h1>
+                <a class="post-title-link" href="/2016/03/05/Centos6.4部署puppet3.8.4/" itemprop="url">
+                  Centos6.4部署puppet3.8.4
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:41:55+08:00">
-                2016-03-05
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2016-03-05 13:41:55" itemprop="dateCreated datePublished" datetime="2016-03-05T13:41:55+08:00">2016-03-05</time>
             
 
             
@@ -640,14 +654,10 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dev-Ops/" itemprop="url" rel="index">
-                    <span itemprop="name">Dev Ops</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Dev-Ops/" itemprop="url" rel="index"><span itemprop="name">Dev Ops</span></a></span>
 
                 
                 
@@ -693,6 +703,9 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
         
       
     </div>
+
+    
+
     
     
     
@@ -731,6 +744,8 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -740,7 +755,7 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -755,23 +770,34 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/05/HAproxy编译安装与配置/" itemprop="url">HAproxy编译安装与配置</a></h1>
+                <a class="post-title-link" href="/2016/03/05/HAproxy编译安装与配置/" itemprop="url">
+                  HAproxy编译安装与配置
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:41:32+08:00">
-                2016-03-05
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2016-03-05 13:41:32" itemprop="dateCreated datePublished" datetime="2016-03-05T13:41:32+08:00">2016-03-05</time>
             
 
             
@@ -786,14 +812,10 @@ ii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Centos/" itemprop="url" rel="index">
-                    <span itemprop="name">Centos</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Centos/" itemprop="url" rel="index"><span itemprop="name">Centos</span></a></span>
 
                 
                 
@@ -852,6 +874,9 @@ use_backend cbss if is_cbss
         
       
     </div>
+
+    
+
     
     
     
@@ -890,6 +915,8 @@ use_backend cbss if is_cbss
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -899,7 +926,7 @@ use_backend cbss if is_cbss
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -914,23 +941,34 @@ use_backend cbss if is_cbss
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/05/NFS安装配置/" itemprop="url">NFS安装配置</a></h1>
+                <a class="post-title-link" href="/2016/03/05/NFS安装配置/" itemprop="url">
+                  NFS安装配置
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T13:39:44+08:00">
-                2016-03-05
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2016-03-05 13:39:44" itemprop="dateCreated datePublished" datetime="2016-03-05T13:39:44+08:00">2016-03-05</time>
             
 
             
@@ -945,14 +983,10 @@ use_backend cbss if is_cbss
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Centos/" itemprop="url" rel="index">
-                    <span itemprop="name">Centos</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Centos/" itemprop="url" rel="index"><span itemprop="name">Centos</span></a></span>
 
                 
                 
@@ -998,6 +1032,9 @@ use_backend cbss if is_cbss
         
       
     </div>
+
+    
+
     
     
     
@@ -1032,15 +1069,12 @@ use_backend cbss if is_cbss
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
 
           </div>
-          
-
-
           
 
         </div>
@@ -1071,42 +1105,7 @@ use_backend cbss if is_cbss
               <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
           </div>
 
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">68</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">15</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">40</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
+          
 
           
 
@@ -1118,6 +1117,9 @@ use_backend cbss if is_cbss
           
           
 
+          
+            
+          
           
 
         </div>
@@ -1138,29 +1140,30 @@ use_backend cbss if is_cbss
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
+  <span class="with-love" id="animate">
+    <i class="fa fa-"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+
+  
 
   
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
 
 
 
 
         
+
 
 
 
@@ -1180,7 +1183,10 @@ use_backend cbss if is_cbss
     
 
     
+	
+    
 
+    
   </div>
 
   
@@ -1199,13 +1205,19 @@ use_backend cbss if is_cbss
 
 
 
+
+
+
   
 
 
 
 
+
   
   
+
+
 
 
 
@@ -1218,16 +1230,6 @@ use_backend cbss if is_cbss
   
   
     <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
@@ -1259,35 +1261,21 @@ use_backend cbss if is_cbss
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
 
 
 
   
+  
 
+  
 
   
 
 
-
-
-	
-
-
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
 
 
 
@@ -1295,11 +1283,7 @@ use_backend cbss if is_cbss
 
 
 
-
-
   
-
-
 
 
 
@@ -1323,6 +1307,12 @@ use_backend cbss if is_cbss
   
 
   
+
+  
+  
+
+  
+
   
 
   
