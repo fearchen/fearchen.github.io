@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-CN">
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -84,9 +84,9 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Mist',
     version: '6.3.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -181,7 +181,7 @@
     
   
 
-  <div class="container sidebar-position-left 
+  <div class="container sidebar-position-right 
   page-home">
     <div class="headband"></div>
 
@@ -234,6 +234,14 @@
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
   </li>
 
       
@@ -707,6 +715,174 @@ ii. pam_tally2 --reset -u username
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Nginx安全配置参考/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chen Fei">
+      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fearchen's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/03/Nginx安全配置参考/" itemprop="url">
+                  Nginx安全配置参考
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-01-03 13:30:12 / 修改时间：13:29:48" itemprop="dateCreated datePublished" datetime="2017-01-03T13:30:12+08:00">2017-01-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/安全配置参考/" itemprop="url" rel="index"><span itemprop="name">安全配置参考</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>0X01 日志审计<br>① 参考配置操作<br>(1)编辑 nginx.conf 配置文件<br>将 error_log 前的“#”去掉，记录错误日志<br>将 access_log 前的“#”去掉，记录访问日志<br>(2)设置 access_log，修改配置文件如下：<br>log_format formatname ‘$remote_addr - $remote_user [$time_local] ‘<br>‘ “$request” $status $body_bytes_sent “$http_referer” ‘<br>‘ “$http_user_agent” “$http_x_forwarded_for”‘; access_log<br>logs/access.log formantname;      #formatname 是设置配置文件格式的名称<br>②  备注事项<br>查看 nginx.conf 配置文件中，error_log、access_log 前的“#”是否去掉<br>0x02 服务<br>1  限制 IP 访问<br>对网站或敏感目录的访问 IP 进行限制<br>① 参考配置操作<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>location / {<br>deny 192.168.1.1; #拒绝 IP<br>allow 192.168.1.0/24; #允许 IP<br>allow 10.1.1.0/16; #允许 IP<br>deny all; #拒绝其他所有 IP<br>(2)重新启动 nginx 服务<br>② 备注事项<br>根据应用场景，设置合适的 IP 地址，检查配置文件  #more /usr/local/nginx/conf/nginx.conf 中的 server 项<br>2  控制超时时间<br>控制超时时间，提高服务器性能，降低客户端的等待时间<br>① 建议配置<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>client_body_timeout 10; #设置客户端请求主体读取超时时间<br>client_header_timeout 10; #设置客户端请求头读取超时时间<br>keepalive_timeout 5 5; #第一个参数指定客户端连接保持活动的超时时间，第二个参数是可选的，它指定了消息头保持活动的有效时间<br>send_timeout 10; #指定响应客户端的超时时间<br>(2)重新启动 nginx 服务<br>② 备注事项<br>需要根据应用场景的需要选择合适的参数值。<br>1 、符合性判定依据<br>超时后，服务器返回相应的消息。<br>2 、参考检测方法<br>检查配置文件   #more /usr/local/nginx/conf/nginx.conf<br>3  下载限制并发和速度<br>限制客户端下载速度，保证服务器负载正常<br>① 建议配置<br>例如网站存放路径为/usr/local/nsfocus/ ，服务器名称为：down.nsfocus.com<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>limit_zone one $binary_remote_addr 10m;<br>server<br>{<br>listen 80;<br>server_name down.nsfocus.com;<br>index index.html index.htm index.PHP;<br>oot /usr/local/nsfocus;</p>
+<p>#Zone limit;<br>location / {<br>limit_conn one 1;<br>limit_rate 20k;<br>}<br>………<br>}<br>(2)重新启动 nginx 服务<br>下载时，不会超过设计的并发连接数和速度限制，同时检查 nginx.conf 文件中的配置<br>0x03 其他事项<br>1  卸载不需要的模块<br>卸载不需要的 nginx 模块, 最大限度地将 nginx 加载的模块最小化<br>① 建议配置<br>(1)检查需要禁用的模块<br>在编译 nginx 服务器时，使用下面的命令查看哪些模块应该启用，哪些模应<br>该禁用：</p>
+<h1 id="configure-–help-less"><a href="#configure-–help-less" class="headerlink" title="./configure –help | less"></a>./configure –help | less</h1><p>一旦处选了要禁用的模块，需要与相关人员沟通确认，并经过测试不影响业<br>务运行。<br>(2)例如，要禁用 autoindex 和 SSI 模块，命令如下：</p>
+<h1 id="configure-–without-http-autoindex-module-–without-http-ssi-module"><a href="#configure-–without-http-autoindex-module-–without-http-ssi-module" class="headerlink" title="./configure –without-http_autoindex_module –without-http_ssi_module"></a>./configure –without-http_autoindex_module –without-http_ssi_module</h1><h1 id="make"><a href="#make" class="headerlink" title="make"></a>make</h1><h1 id="make-install"><a href="#make-install" class="headerlink" title="make install"></a>make install</h1><p>② 备注事项<br>Nginx 不包含不必要的模块或者输入 ./configure –help | less 进行检查<br>2  防盗链设置<br>防止其他网站盗链本网站资源<br>① 建议配置<br>(1)修改配置文件</p>
+<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>location ~<em> ^.+.(gif|jpg|png|swf|flv|rar|zip)$ {<br>valid_referers none blocked server_names </em>.nsfocus.com<br><a href="http://localhost" target="_blank" rel="noopener">http://localhost</a> baidu.com;<br>if ($invalid_referer) {<br>rewrite ^/ [img]<a href="http://www.nsfocus.com/images/default/logo.gif[/img]" target="_blank" rel="noopener">http://www.nsfocus.com/images/default/logo.gif[/img]</a>;</p>
+<h1 id="return-403"><a href="#return-403" class="headerlink" title="return 403;"></a>return 403;</h1><p>}<br>}<br>根据应用场景，设置合适的域名<br>(2)重新启动 nginx 服务<br>② 备注事项<br>从非法网站访问所保护的资源，出现设置的页面。同时检查配置文件  #more /usr/local/nginx/conf/nginx.conf<br>3  自定义错误信息<br>1)修改 src/http/ngx_http_special_response.c，自己定制错误信息</p>
+<h2 id="messages-with-just-a-carriage-return"><a href="#messages-with-just-a-carriage-return" class="headerlink" title="messages with just a carriage return."></a>messages with just a carriage return.</h2><p>static char ngx_http_error_400_page[] = CRLF;<br>static char ngx_http_error_404_page[] = CRLF;<br>static char ngx_http_error_413_page[] = CRLF;<br>static char ngx_http_error_502_page[] = CRLF;<br>static char ngx_http_error_504_page[] = CRLF;<br>常见错误：<br>400 bad request<br>404 NOT FOUND<br>413 Request Entity Too Large<br>502 Bad Gateway<br>504 Gateway Time-out<br>(2)重新启动 nginx 服务<br>② 备注事项<br>URL 地址栏中输入 <a href="http://ip:8800/manager12345，访问出错时，返回自定义的错误页面" target="_blank" rel="noopener">http://ip:8800/manager12345，访问出错时，返回自定义的错误页面</a><br>4  隐藏 nginx 服务信息头<br>① 建议配置<br>修改 nginx解压路径/src/http/ngx_http_header_filter_module.c文件的第48<br>和 49 行内容，自定义头信息：<br>static char ngx_http_server_string[] = “Server:XXXXX.com” CRLF;<br>static char ngx_http_server_full_string[] = “Server:XXXXX.com” CRLF;<br>添加如下代码到 nginx.conf 配置文件，禁止错误页面中显示 nginx 版本号：<br>server_tokens off<br>② 备注事项<br>服务信息头显示设置的内容，检查 http 服务信息头内容<br>5  补丁更新<br>安装系统补丁，修补漏洞<br>1 、参考配置操作<br>手动安装补丁或安装最新版本软件，所安装的补丁，应首先在经过测试验证；安装前，要做好数据备份。<br>2查看版本和编译器信息</p>
+<p>参考链接：<a href="http://blog.csdn.net/qq_29277155/article/details/52819635" target="_blank" rel="noopener">http://blog.csdn.net/qq_29277155/article/details/52819635</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Centos安全配置参考/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -850,174 +1026,6 @@ ii. pam_tally2 --reset -u username
 </li>
 </ul>
 <p>参考链接：<a href="http://blog.csdn.net/qq_29277155/article/details/52497113" target="_blank" rel="noopener">http://blog.csdn.net/qq_29277155/article/details/52497113</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/Nginx安全配置参考/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/Nginx安全配置参考/" itemprop="url">
-                  Nginx安全配置参考
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-01-03 13:30:12 / 修改时间：13:29:48" itemprop="dateCreated datePublished" datetime="2017-01-03T13:30:12+08:00">2017-01-03</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/安全配置参考/" itemprop="url" rel="index"><span itemprop="name">安全配置参考</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>0X01 日志审计<br>① 参考配置操作<br>(1)编辑 nginx.conf 配置文件<br>将 error_log 前的“#”去掉，记录错误日志<br>将 access_log 前的“#”去掉，记录访问日志<br>(2)设置 access_log，修改配置文件如下：<br>log_format formatname ‘$remote_addr - $remote_user [$time_local] ‘<br>‘ “$request” $status $body_bytes_sent “$http_referer” ‘<br>‘ “$http_user_agent” “$http_x_forwarded_for”‘; access_log<br>logs/access.log formantname;      #formatname 是设置配置文件格式的名称<br>②  备注事项<br>查看 nginx.conf 配置文件中，error_log、access_log 前的“#”是否去掉<br>0x02 服务<br>1  限制 IP 访问<br>对网站或敏感目录的访问 IP 进行限制<br>① 参考配置操作<br>(1)修改配置文件</p>
-<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>location / {<br>deny 192.168.1.1; #拒绝 IP<br>allow 192.168.1.0/24; #允许 IP<br>allow 10.1.1.0/16; #允许 IP<br>deny all; #拒绝其他所有 IP<br>(2)重新启动 nginx 服务<br>② 备注事项<br>根据应用场景，设置合适的 IP 地址，检查配置文件  #more /usr/local/nginx/conf/nginx.conf 中的 server 项<br>2  控制超时时间<br>控制超时时间，提高服务器性能，降低客户端的等待时间<br>① 建议配置<br>(1)修改配置文件</p>
-<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>client_body_timeout 10; #设置客户端请求主体读取超时时间<br>client_header_timeout 10; #设置客户端请求头读取超时时间<br>keepalive_timeout 5 5; #第一个参数指定客户端连接保持活动的超时时间，第二个参数是可选的，它指定了消息头保持活动的有效时间<br>send_timeout 10; #指定响应客户端的超时时间<br>(2)重新启动 nginx 服务<br>② 备注事项<br>需要根据应用场景的需要选择合适的参数值。<br>1 、符合性判定依据<br>超时后，服务器返回相应的消息。<br>2 、参考检测方法<br>检查配置文件   #more /usr/local/nginx/conf/nginx.conf<br>3  下载限制并发和速度<br>限制客户端下载速度，保证服务器负载正常<br>① 建议配置<br>例如网站存放路径为/usr/local/nsfocus/ ，服务器名称为：down.nsfocus.com<br>(1)修改配置文件</p>
-<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>limit_zone one $binary_remote_addr 10m;<br>server<br>{<br>listen 80;<br>server_name down.nsfocus.com;<br>index index.html index.htm index.PHP;<br>oot /usr/local/nsfocus;</p>
-<p>#Zone limit;<br>location / {<br>limit_conn one 1;<br>limit_rate 20k;<br>}<br>………<br>}<br>(2)重新启动 nginx 服务<br>下载时，不会超过设计的并发连接数和速度限制，同时检查 nginx.conf 文件中的配置<br>0x03 其他事项<br>1  卸载不需要的模块<br>卸载不需要的 nginx 模块, 最大限度地将 nginx 加载的模块最小化<br>① 建议配置<br>(1)检查需要禁用的模块<br>在编译 nginx 服务器时，使用下面的命令查看哪些模块应该启用，哪些模应<br>该禁用：</p>
-<h1 id="configure-–help-less"><a href="#configure-–help-less" class="headerlink" title="./configure –help | less"></a>./configure –help | less</h1><p>一旦处选了要禁用的模块，需要与相关人员沟通确认，并经过测试不影响业<br>务运行。<br>(2)例如，要禁用 autoindex 和 SSI 模块，命令如下：</p>
-<h1 id="configure-–without-http-autoindex-module-–without-http-ssi-module"><a href="#configure-–without-http-autoindex-module-–without-http-ssi-module" class="headerlink" title="./configure –without-http_autoindex_module –without-http_ssi_module"></a>./configure –without-http_autoindex_module –without-http_ssi_module</h1><h1 id="make"><a href="#make" class="headerlink" title="make"></a>make</h1><h1 id="make-install"><a href="#make-install" class="headerlink" title="make install"></a>make install</h1><p>② 备注事项<br>Nginx 不包含不必要的模块或者输入 ./configure –help | less 进行检查<br>2  防盗链设置<br>防止其他网站盗链本网站资源<br>① 建议配置<br>(1)修改配置文件</p>
-<p>#vi /usr/local/nginx/conf/nginx.conf<br>具体设置如下：<br>location ~<em> ^.+.(gif|jpg|png|swf|flv|rar|zip)$ {<br>valid_referers none blocked server_names </em>.nsfocus.com<br><a href="http://localhost" target="_blank" rel="noopener">http://localhost</a> baidu.com;<br>if ($invalid_referer) {<br>rewrite ^/ [img]<a href="http://www.nsfocus.com/images/default/logo.gif[/img]" target="_blank" rel="noopener">http://www.nsfocus.com/images/default/logo.gif[/img]</a>;</p>
-<h1 id="return-403"><a href="#return-403" class="headerlink" title="return 403;"></a>return 403;</h1><p>}<br>}<br>根据应用场景，设置合适的域名<br>(2)重新启动 nginx 服务<br>② 备注事项<br>从非法网站访问所保护的资源，出现设置的页面。同时检查配置文件  #more /usr/local/nginx/conf/nginx.conf<br>3  自定义错误信息<br>1)修改 src/http/ngx_http_special_response.c，自己定制错误信息</p>
-<h2 id="messages-with-just-a-carriage-return"><a href="#messages-with-just-a-carriage-return" class="headerlink" title="messages with just a carriage return."></a>messages with just a carriage return.</h2><p>static char ngx_http_error_400_page[] = CRLF;<br>static char ngx_http_error_404_page[] = CRLF;<br>static char ngx_http_error_413_page[] = CRLF;<br>static char ngx_http_error_502_page[] = CRLF;<br>static char ngx_http_error_504_page[] = CRLF;<br>常见错误：<br>400 bad request<br>404 NOT FOUND<br>413 Request Entity Too Large<br>502 Bad Gateway<br>504 Gateway Time-out<br>(2)重新启动 nginx 服务<br>② 备注事项<br>URL 地址栏中输入 <a href="http://ip:8800/manager12345，访问出错时，返回自定义的错误页面" target="_blank" rel="noopener">http://ip:8800/manager12345，访问出错时，返回自定义的错误页面</a><br>4  隐藏 nginx 服务信息头<br>① 建议配置<br>修改 nginx解压路径/src/http/ngx_http_header_filter_module.c文件的第48<br>和 49 行内容，自定义头信息：<br>static char ngx_http_server_string[] = “Server:XXXXX.com” CRLF;<br>static char ngx_http_server_full_string[] = “Server:XXXXX.com” CRLF;<br>添加如下代码到 nginx.conf 配置文件，禁止错误页面中显示 nginx 版本号：<br>server_tokens off<br>② 备注事项<br>服务信息头显示设置的内容，检查 http 服务信息头内容<br>5  补丁更新<br>安装系统补丁，修补漏洞<br>1 、参考配置操作<br>手动安装补丁或安装最新版本软件，所安装的补丁，应首先在经过测试验证；安装前，要做好数据备份。<br>2查看版本和编译器信息</p>
-<p>参考链接：<a href="http://blog.csdn.net/qq_29277155/article/details/52819635" target="_blank" rel="noopener">http://blog.csdn.net/qq_29277155/article/details/52819635</a></p>
 
           
         
@@ -1485,7 +1493,7 @@ ii. pam_tally2 --reset -u username
 
 
 
-  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.3.0</div>
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
 
 
 
