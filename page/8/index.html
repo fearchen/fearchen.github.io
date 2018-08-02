@@ -284,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/linux漏洞扫描工具【lynis】/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/系统&&容器docker管理工具【cockpit】/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
@@ -303,8 +303,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/linux漏洞扫描工具【lynis】/" itemprop="url">
-                  Linux漏洞扫描工具【lynis】
+                <a class="post-title-link" href="/2017/01/03/系统&&容器docker管理工具【cockpit】/" itemprop="url">
+                  系统&&容器docker管理工具【cockpit】
                 </a>
               
             
@@ -330,7 +330,7 @@
                 
               
 
-              <time title="创建时间：2017-01-03 09:30:12 / 修改时间：13:43:51" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">2017-01-03</time>
+              <time title="创建时间：2017-01-03 09:30:12 / 修改时间：13:47:11" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">2017-01-03</time>
             
 
             
@@ -389,15 +389,17 @@
         
           
             <ol>
-<li>Lynis是针对Unix/Linux的安全检查工具，可以发现潜在的安全威胁。这个工具覆盖可疑文件监测、漏洞、恶意程序扫描、配置错误等。<br>A. 检查项举例：<br>B. 系统允许的登陆操作<br>C. 失效的SSL证书<br>D. 不需要密码的账户<br>E. 未授权的文件<br>F. 配置错误 </li>
-<li>安装epel：<br> a. rpm -ivh <a href="https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" target="_blank" rel="noopener">https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</a></li>
-<li>安装lynis：<br> a. yum –enablerepo=epel -y install lynis</li>
-<li>扫描系统：<br> a. lynis audit system</li>
+<li>安装软件包：<br> a. yum -y install cockpit<br> b. systemctl start cockpit<br> c. systemctl enable cockpit.socket<br> d. systemctl stop firewalld</li>
+<li><p>服务启动了就可以直接浏览器访问：<br> a. <a href="https://IP:9090/" target="_blank" rel="noopener">https://IP:9090/</a><br> b. root/系统密码</p>
+</li>
+<li><p>容器管理<br> a. “Start Docker”开始安装docker服务</p>
+</li>
 </ol>
-<ol start="5">
-<li>查看分析日志：<br> a. 分析日志保存在：/var/log/lynis.log<br> b. 分析报告保存在：/var/log/lynis-report.dat<br> c. 需要查看的是分析报告：<br> d. 搜索 “warning” “suggestion”找到建议内容<br>grep -E “^warning|^suggestion” /var/log/lynis-report.dat</li>
+<ol start="4">
+<li><p>添加其他节点</p>
+</li>
+<li></li>
 </ol>
-<p>根据上面的建议，可以针对性的修复系统漏洞</p>
 
           
         
