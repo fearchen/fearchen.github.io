@@ -742,7 +742,7 @@
 <blockquote>
 <p>  Hawkular OpenShift<br>  Agent是一个代理组件，用来收集来此pod的应用程序级别的数据。前提是pod公开自己希望被收集的信息。</p>
 </blockquote>
-<p><img src="media/6e089fd62397d30c1533bb14d818b607.jpg" alt=""></p>
+<p><img src="/2018/04/25/OpenShift-性能监控/media/6e089fd62397d30c1533bb14d818b607.jpg" alt=""></p>
 <p>OpenShift的监控采集方案的组件Heapster、Hawkular<br>Metrics、Canssandra数据库都是以容器的形式提供，并默认提供了可快速部署的Temaplate。</p>
 <h2 id="启用集群监控"><a href="#启用集群监控" class="headerlink" title="启用集群监控"></a>启用集群监控</h2><p>版本1.4之前OpenShift<br>Origin提供template的方式，供用户安装Metrics组件，从版本1.5开始到当前环境的3.6版本，OpenShift<br>Origin开始已Ansible Playbook的方式安装Metris组件。</p>
 <p>Playbook URL：./openshift-ansible/playbooks/common/openshift-cluster/<br>openshift_metrics.yml</p>
@@ -797,7 +797,7 @@
 </tr>
 </tbody>
 </table>
-<p><img src="media/723b74430b2819fc8b4f872e804a4d8f.png" alt=""></p>
+<p><img src="/2018/04/25/OpenShift-性能监控/media/723b74430b2819fc8b4f872e804a4d8f.png" alt=""></p>
 <h2 id="集群监控容量规划"><a href="#集群监控容量规划" class="headerlink" title="集群监控容量规划"></a>集群监控容量规划</h2><p>OpenShift<br>Origin监控存储使用的是Cassandra数据库。默认设置，监控数据存储七天，七天后，Cassandra开始清除旧数据。已删除的Pod和Project的监控数据不会自动清除，只要超过7天才会被删除</p>
 <table>
 <thead>

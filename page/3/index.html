@@ -1217,7 +1217,7 @@
 </ol>
 <p>这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builder<br>image; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builder<br>image，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit<br>出一个新的image ，称为 runtime image</p>
 <p>OpenShift由builder image到runtime image的过程如下图：</p>
-<p><img src="media/8f8b18e64ff2a6a042e7ab47873f2af4.tiff" alt=""></p>
+<p><img src="/2018/04/25/OpenShift-S2I构建过程/media/8f8b18e64ff2a6a042e7ab47873f2af4.tiff" alt=""></p>
 <h2 id="自定义s2i脚本"><a href="#自定义s2i脚本" class="headerlink" title="自定义s2i脚本"></a>自定义s2i脚本</h2><p>openshift官方已经提供了各种语言的 builder image，(当然这些builder<br>image中已经注入了写好的s2i脚本，一般保存在/usr/libexec/s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：</p>
 <p>有以下三种方式可以使用自定义s2i脚本来替换默认脚本：</p>
 <ol>
