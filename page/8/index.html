@@ -292,7 +292,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/windows下部署hexo/">
+    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2017/01/03/系统&&容器docker管理工具【cockpit】/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chen Fei">
@@ -311,8 +311,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/03/windows下部署hexo/" itemprop="url">
-                  Windows下部署hexo
+                <a class="post-title-link" href="/2017/01/03/系统&&容器docker管理工具【cockpit】/" itemprop="url">
+                  系统&&容器docker管理工具【cockpit】
                 </a>
               
             
@@ -338,7 +338,7 @@
                 
               
 
-              <time title="创建时间：2017-01-03 09:30:12 / 修改时间：13:40:47" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">2017-01-03</time>
+              <time title="创建时间：2017-01-03 09:30:12 / 修改时间：13:47:11" itemprop="dateCreated datePublished" datetime="2017-01-03T09:30:12+08:00">2017-01-03</time>
             
 
             
@@ -360,7 +360,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Centos/" itemprop="url" rel="index"><span itemprop="name">Centos</span></a></span>
 
                 
                 
@@ -397,29 +397,16 @@
         
           
             <ol>
-<li>node官网下载安装包并安装，<br> a. URL：<a href="https://nodejs.org/dist/v6.9.2/node-v6.9.2-x64.msi" target="_blank" rel="noopener">https://nodejs.org/dist/v6.9.2/node-v6.9.2-x64.msi</a></li>
-<li>下载git客户端并安装(安装github desktop更好)，<br> a. URL：<a href="https://git-scm.com/download/win" target="_blank" rel="noopener">https://git-scm.com/download/win</a></li>
-<li>打开git命令行，<br> a. 安装hexo：<pre><code>npm install hexo-cli -g
-</code></pre> b. 初始化站点：<br>hexo init hexo.blog<br>cd hexo.blog<pre><code>npm install
-</code></pre></li>
-<li>执行”hexo server”就可以测试是否安装成功</li>
-<li>访问<a href="http://localhost:4000/测试成功" target="_blank" rel="noopener">http://localhost:4000/测试成功</a></li>
-<li>部署hexo到github</li>
-<li>在github上创建一个repository<br> a. 名称为fearchen/fearchen.github.io</li>
-<li><p>在hexo.blog下的_config.yml下配置部署路径，注：冒号后面有空格</p>
+<li>安装软件包：<br> a. yum -y install cockpit<br> b. systemctl start cockpit<br> c. systemctl enable cockpit.socket<br> d. systemctl stop firewalld</li>
+<li><p>服务启动了就可以直接浏览器访问：<br> a. <a href="https://IP:9090/" target="_blank" rel="noopener">https://IP:9090/</a><br> b. root/系统密码</p>
 </li>
-<li><p>安装git插件：npm install hexo-deployer-git –save</p>
+<li><p>容器管理<br> a. “Start Docker”开始安装docker服务</p>
 </li>
-<li>然后在hexo.blog目录下执行”hexo deploy”</li>
-<li>部署成功，<a href="https://fearchen.github.io/就能访问了">https://fearchen.github.io/就能访问了</a></li>
-<li>hexo new “MyBlog” 新建一篇文章</li>
-<li>hexo generate生成静态页面</li>
-<li>hexo deploy重新部署</li>
-<li>把写好的MarkDown文章放到source目录下的_post文件夹</li>
-<li>然后部署<br>a. hexo clean<br>b. hexo deploy -g</li>
-<li>就能在hexo上看到了</li>
-<li>相关配置需修改themes\maupassant下“_config.yml”配置文件</li>
-<li>修改hexo主题，<a href="https://www.haomwei.com/technology/maupassant-hexo.html" target="_blank" rel="noopener">https://www.haomwei.com/technology/maupassant-hexo.html</a><br>a. git clone <a href="https://github.com/tufu9441/maupassant-hexo.git" target="_blank" rel="noopener">https://github.com/tufu9441/maupassant-hexo.git</a> themes/maupassant<br>b. npm install hexo-renderer-jade –save<br>c. npm install hexo-renderer-sass –save<br>d. 编辑Hexo目录下的 _config.yml，将theme的值改为maupassant<br>e. hexo deploy -g</li>
+</ol>
+<ol start="4">
+<li><p>添加其他节点</p>
+</li>
+<li></li>
 </ol>
 
           
@@ -1352,7 +1339,7 @@ use_backend cbss if is_cbss
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
