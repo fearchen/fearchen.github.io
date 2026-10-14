@@ -1,396 +1,532 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="OpenShift,Kubernetes,Docker,Linux,RHCA">
+    
+    
+    <meta name="author" content="Chen Fei">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
 
+                // Try immediately
+                if (addBodyClass()) return;
 
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
-
-
-
-
-
-
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '6.3.0',
-    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="Ansible部署为区分各角色，部署结构如下： 环境配置   主机名 角色 IP地址 操作系统 硬件配置     master.example.com master 10.10.31.161 7.4 mini 4C2G+30G   node1.example.com node 10.10.31.162 7.4 mini 4C2G+30G   node2.example.com node 10.10">
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://fearchen.github.io/2018/04/25/openshift-企业应用-3.6.1/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenShift-企业应用">
-<meta property="og:url" content="http://fearchen.github.io/2018/04/25/OpenShift-企业应用-3.6.1/index.html">
+<meta property="og:url" content="https://fearchen.github.io/2018/04/25/OpenShift-%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8-3.6.1/index.html">
 <meta property="og:site_name" content="Fearchen&#39;s Blog">
-<meta property="og:description" content="Ansible部署为区分各角色，部署结构如下： 环境配置   主机名 角色 IP地址 操作系统 硬件配置     master.example.com master 10.10.31.161 7.4 mini 4C2G+30G   node1.example.com node 10.10.31.162 7.4 mini 4C2G+30G   node2.example.com node 10.10">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-25T02:04:37.000Z">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fearchen.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2018-04-25T01:51:07.000Z">
+<meta property="article:modified_time" content="2018-04-25T01:51:07.000Z">
+<meta property="article:author" content="Chen Fei">
+<meta property="article:tag" content="OpenShift,Kubernetes,Docker,Linux,RHCA">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenShift-企业应用">
-<meta name="twitter:description" content="Ansible部署为区分各角色，部署结构如下： 环境配置   主机名 角色 IP地址 操作系统 硬件配置     master.example.com master 10.10.31.161 7.4 mini 4C2G+30G   node1.example.com node 10.10.31.162 7.4 mini 4C2G+30G   node2.example.com node 10.10">
-
-
-
-
-
-
-  <link rel="canonical" href="http://fearchen.github.io/2018/04/25/OpenShift-企业应用-3.6.1/"/>
-
-
-
-<script type="text/javascript" id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>OpenShift-企业应用 | Fearchen's Blog</title>
-  
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
+<meta name="twitter:image" content="https://fearchen.github.io/images/redefine-og.webp">
     
-  
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            OpenShift-企业应用 | Fearchen&#39;s Blog
+        
+    </title>
 
-  <div class="container sidebar-position-right page-post-detail">
-    <div class="headband"></div>
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+
+    <!--- Inject Part-->
     
 
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Fearchen's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
     
-      
-        <p class="site-subtitle">把我的过程记录下来，以免以后忘了</p>
-      
-    
-  </div>
+<link rel="stylesheet" href="/css/style.css">
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fearchen.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Fearchen's Blog","subtitle":{"text":["Linux · 容器 · 云计算 运维笔记","Kubernetes & OpenShift"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":[{"icon":"fa-brands fa-github","url":null},{"icon":"fa-brands fa-twitter","url":null},{"icon":"fa-solid fa-at","url":"you@example.com"},{"icon":"fa-brands fa-telegram","url":null},{"icon":"/images/custom-icon.svg","url":null}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"归档":{"path":"/archives","icon":"fa-regular fa-archive"},"分类":{"path":"/categories","icon":"fa-regular fa-folder"},"标签":{"path":"/tags","icon":"fa-regular fa-tags"},"关于":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart fa-beat\" style=\"--fa-animation-duration: 0.5s; color: #f54545\"></i>","start":"2022/8/17 11:45:14","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2022/8/17 11:45:14","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.i18n = {"search":"站内搜索您需要的内容...","toc":"目录","prev":"上一页","next":"下一页","prev_posts":"上一篇","next_posts":"下一篇","page":"第 %d 页","recent_posts":"最新文章","share":"分享","powered_by":"由 %s 驱动","theme":"主题","rss_feed":"RSS Feed","category":"分类","categories":"分类","tag":"标签","tags":"标签","post":"文章","posts":"文章","tagcloud":"标签云","comment":"评论","comments":"评论","top":"置顶","sticky":"置顶","go-back-home":"回到首页","masonry_loading":"照片加载中...","image_viewer":"图片查看器","close":"关闭","exif":{"title":"EXIF","cards":{"camera":"相机","lens":"镜头","exposure":"曝光","other":"其他"},"fields":{"make":"品牌","model":"机型","date_taken":"拍摄时间","lens_model":"镜头","focal_length":"焦距","focus_mode":"对焦模式","shutter":"快门","aperture":"光圈","iso":"感光度","exposure_program":"曝光程序","exposure_compensation":"曝光补偿","metering_mode":"测光模式","flash":"闪光灯","white_balance":"白平衡","latitude":"纬度","longitude":"经度","altitude":"海拔"},"status":{"loading":"加载中...","no_exif":"无 EXIF 信息","library_missing":"EXIF 库未加载","image_source_missing":"图片地址不可用","unavailable":"EXIF 不可用（可能被 CORS 阻止或缺少元数据）","flag_unavailable":"EXIF 不可用"}},"home":"首页","archive":"归档","archives":"归档","about":"关于","links":"链接","link":"链接","friends":"友情链接","friend":"友情链接","timeline":"时间轴","shuoshuo":"说说","bookmarks":"书签","site_uv":"访问人数","site_pv":"总访问量","read_more":"阅读全文","wordcount":"字","min2read":"分钟","changelog":"更新日志","status":"状态","runtime":"博客已运行","days":"天","hours":"小时","minutes":"分钟","seconds":"秒","optimized_by":"并由 Evan 进行优化","rights":"版权所有","site_posts":"共撰写了 %s 篇文章","site_wordcount":"共 %s 字","copyright":{"title":"标题","author":"作者","link":"链接","create_time":"创建于","update_time":"更新于","license_title":"版权声明","license_content":"本文章采用 %s 进行许可。","all_rights_reserved":"版权所有 &#169 %s，禁止转载。","public_domain":"本文为公有领域作品，可自由转载、引用。"},"ago":{"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"},"create_time":"创建","update_time":"更新","expired":"这篇文章最后更新于 %s 天前，内容可能已经过时。"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
 </div>
 
+<main class="page-container" id="swup">
 
+	
 
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-    <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-    <a href="/about/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
-  </li>
-
-      
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-          <div id="content" class="content">
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
             
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-企业应用-3.6.1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">OpenShift-企业应用
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
+            <a class="logo-title" href="/">
                 
-              
-
-              <time title="创建时间：2018-04-25 09:51:07 / 修改时间：10:04:37" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:07+08:00">2018-04-25</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenShift/" itemprop="url" rel="index"><span itemprop="name">OpenShift</span></a></span>
-
+                Fearchen&#39;s Blog
                 
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </a>
         </div>
-      </header>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">40</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">68</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">OpenShift-企业应用</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Chen Fei</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2018-04-25 09:51:07</span>
+        <span class="mobile">2018-04-25 09:51:07</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2018-04-25 09:51:07</span>
+            <span class="mobile">2018-04-25 09:51:07</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
     
 
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
 
-      
-      
+				</div>
+			</div>
+		</div>
+		
 
-      
-        <h2 id="Ansible部署"><a href="#Ansible部署" class="headerlink" title="Ansible部署"></a>Ansible部署</h2><p><strong>为区分各角色，部署结构如下：</strong></p>
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h2 id="Ansible部署"><a href="#Ansible部署" class="headerlink" title="Ansible部署"></a>Ansible部署</h2><p><strong>为区分各角色，部署结构如下：</strong></p>
 <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><table>
 <thead>
 <tr>
@@ -401,8 +537,7 @@
 <th>硬件配置</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>master.example.com</td>
 <td>master</td>
 <td>10.10.31.161</td>
@@ -437,16 +572,14 @@
 <td>7.4 mini</td>
 <td>4C2G+30G</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="准备工作，所有主机执行"><a href="#准备工作，所有主机执行" class="headerlink" title="准备工作，所有主机执行"></a>准备工作，所有主机执行</h3><table>
 <thead>
 <tr>
 <th>配置主机名</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>hostnamectl set-hostname master.example.com hostnamectl set-hostname node1.example.com hostnamectl set-hostname node2.example.com hostnamectl set-hostname infra-node1.example.com hostnamectl set-hostname infra-node2.example.com</td>
 </tr>
 <tr>
@@ -501,7 +634,7 @@
 <td>配置docker后端存储</td>
 </tr>
 <tr>
-<td>cat \&lt;\<eof \=""> /etc/sysconfig/docker-storage-setup DEVS=/dev/sdb EOF</eof></td>
+<td>cat &lt;\ &#x2F;etc&#x2F;sysconfig&#x2F;docker-storage-setup DEVS&#x3D;&#x2F;dev&#x2F;sdb EOF</td>
 </tr>
 <tr>
 <td>docker-storage-setup</td>
@@ -513,10 +646,10 @@
 <td>添加中科大源</td>
 </tr>
 <tr>
-<td>vim /etc/docker/daemon.json</td>
+<td>vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</td>
 </tr>
 <tr>
-<td>{ “registry-mirrors”: [“<a href="https://docker.mirrors.ustc.edu.cn/&quot;]" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn/&quot;]</a> }</td>
+<td>{ “registry-mirrors”: [“<a class="link"   target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/%22]" >https://docker.mirrors.ustc.edu.cn/&quot;]<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> }</td>
 </tr>
 <tr>
 <td></td>
@@ -524,8 +657,7 @@
 <tr>
 <td>systemctl enable docker &amp;&amp; systemctl start docker</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="配置Ansible，Master执行"><a href="#配置Ansible，Master执行" class="headerlink" title="配置Ansible，Master执行"></a>配置Ansible，Master执行</h3><p>由于网络原因，提前修改repo源和导入docker images</p>
 <table>
 <thead>
@@ -533,27 +665,26 @@
 <th>配置EPEL</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>yum -y install \ <a href="https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" target="_blank" rel="noopener">https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</a></td>
+<tbody><tr>
+<td>yum -y install \ <a class="link"   target="_blank" rel="noopener" href="https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" >https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
 </tr>
 <tr>
 <td>不启用EPEL，后续手动指定</td>
 </tr>
 <tr>
-<td>sed -i -e “s/\^enabled=1/enabled=0/“ /etc/yum.repos.d/epel.repo</td>
+<td>sed -i -e “s&#x2F;^enabled&#x3D;1&#x2F;enabled&#x3D;0&#x2F;“ &#x2F;etc&#x2F;yum.repos.d&#x2F;epel.repo</td>
 </tr>
 <tr>
 <td>安装Ansible</td>
 </tr>
 <tr>
-<td>yum -y –enablerepo=epel install ansible pyOpenSSL</td>
+<td>yum -y –enablerepo&#x3D;epel install ansible pyOpenSSL</td>
 </tr>
 <tr>
 <td>拉取最新openshift-ansible版本</td>
 </tr>
 <tr>
-<td>cd ~ git clone -b release-3.6 <a href="https://github.com/openshift/openshift-ansible.git" target="_blank" rel="noopener">https://github.com/openshift/openshift-ansible.git</a> cd openshift-ansible</td>
+<td>cd ~ git clone -b release-3.6 <a class="link"   target="_blank" rel="noopener" href="https://github.com/openshift/openshift-ansible.git" >https://github.com/openshift/openshift-ansible.git<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> cd openshift-ansible</td>
 </tr>
 <tr>
 <td></td>
@@ -562,19 +693,19 @@
 <td>修改ansible playbook中的repo源</td>
 </tr>
 <tr>
-<td>vim openshift-ansible/roles/openshift_repos/templates/CentOS-OpenShift-Origin36.repo.j2</td>
+<td>vim openshift-ansible&#x2F;roles&#x2F;openshift_repos&#x2F;templates&#x2F;CentOS-OpenShift-Origin36.repo.j2</td>
 </tr>
 <tr>
-<td>baseurl=<a href="http://mirrors.ustc.edu.cn/centos/7.4.1708/paas/x86_64/openshift-origin36/" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/centos/7.4.1708/paas/x86_64/openshift-origin36/</a></td>
+<td>baseurl&#x3D;<a class="link"   target="_blank" rel="noopener" href="http://mirrors.ustc.edu.cn/centos/7.4.1708/paas/x86_64/openshift-origin36/" >http://mirrors.ustc.edu.cn/centos/7.4.1708/paas/x86_64/openshift-origin36/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
 </tr>
 <tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image1.png&gt;</td>
 </tr>
 <tr>
 <td>提前pull好docker images</td>
 </tr>
 <tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image2.png&gt;</td>
 </tr>
 <tr>
 <td></td>
@@ -583,28 +714,26 @@
 <td>配置各主机互信</td>
 </tr>
 <tr>
-<td>ssh-keygen -f /root/.ssh/id_rsa -N ‘’</td>
+<td>ssh-keygen -f &#x2F;root&#x2F;.ssh&#x2F;id_rsa -N ‘’</td>
 </tr>
 <tr>
-<td>for host in master.example.com \ etcd.example.com \ node2.example.com \ node1.example.com \ infra-node1.example.com \ infra-node2.example.com; do ssh-copy-id -i ~/.ssh/id_rsa.pub \$host; done</td>
+<td>for host in master.example.com \ etcd.example.com \ node2.example.com \ node1.example.com \ infra-node1.example.com \ infra-node2.example.com; do ssh-copy-id -i ~&#x2F;.ssh&#x2F;id_rsa.pub $host; done</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="执行部署"><a href="#执行部署" class="headerlink" title="执行部署"></a>执行部署</h3><ul>
 <li>准备Ansible Host</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>mv -f /etc/ansible/hosts /etc/ansible/hosts.old</th>
+<th>mv -f &#x2F;etc&#x2F;ansible&#x2F;hosts &#x2F;etc&#x2F;ansible&#x2F;hosts.old</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>vi /etc/ansible/hosts</td>
+<tbody><tr>
+<td>vi &#x2F;etc&#x2F;ansible&#x2F;hosts</td>
 </tr>
 <tr>
-<td># Create an OSEv3 group that contains the masters and nodes groups [OSEv3:children] masters nodes etcd # Set variables common for all OSEv3 hosts [OSEv3:vars] # SSH user, this user should allow ssh based auth without requiring a password ansible_ssh_user=root # If ansible_ssh_user is not root, ansible_become must be set to true #ansible_become=true openshift_deployment_type=origin # uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider openshift_master_identity_providers=[{‘name’: ‘htpasswd_auth’, ‘login’: ‘true’, ‘challenge’: ‘true’, ‘kind’: ‘HTPasswdPasswordIdentityProvider’, ‘filename’: ‘/etc/origin/master/htpasswd’}] #Disable disk and memory checks openshift_disable_check=disk_availability,memory_availability # host group for masters [masters] master.example.com # host group for etcd [etcd] etcd.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels=”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels=”{‘region’: ‘infra’, ‘zone’: ‘default’}”</td>
+<td># Create an OSEv3 group that contains the masters and nodes groups [OSEv3:children] masters nodes etcd # Set variables common for all OSEv3 hosts [OSEv3:vars] # SSH user, this user should allow ssh based auth without requiring a password ansible_ssh_user&#x3D;root # If ansible_ssh_user is not root, ansible_become must be set to true #ansible_become&#x3D;true openshift_deployment_type&#x3D;origin # uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider openshift_master_identity_providers&#x3D;[{‘name’: ‘htpasswd_auth’, ‘login’: ‘true’, ‘challenge’: ‘true’, ‘kind’: ‘HTPasswdPasswordIdentityProvider’, ‘filename’: ‘&#x2F;etc&#x2F;origin&#x2F;master&#x2F;htpasswd’}] #Disable disk and memory checks openshift_disable_check&#x3D;disk_availability,memory_availability # host group for masters [masters] master.example.com # host group for etcd [etcd] etcd.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}”</td>
 </tr>
 <tr>
 <td></td>
@@ -613,18 +742,15 @@
 <td>运行</td>
 </tr>
 <tr>
-<td>ansible-playbook ~/openshift-ansible/playbooks/byo/config.yml</td>
+<td>ansible-playbook ~&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;config.yml</td>
 </tr>
 <tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image3.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><ul>
-<li><p>Master上验证</p>
-</li>
-<li><p>确认集群状态</p>
-</li>
+<li>Master上验证</li>
+<li>确认集群状态</li>
 </ul>
 <table>
 <thead>
@@ -632,21 +758,20 @@
 <th>oc status</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image4.png&gt;</td>
 </tr>
 <tr>
 <td>oc get nodes</td>
 </tr>
 <tr>
-<td><a href="./media/image5.png">./media/image5.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image5.png&gt;</td>
 </tr>
 <tr>
 <td>oc get all</td>
 </tr>
 <tr>
-<td><a href="./media/image6.png">./media/image6.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image6.png&gt;</td>
 </tr>
 <tr>
 <td>验证etcd</td>
@@ -655,25 +780,23 @@
 <td>yum install etcd -y</td>
 </tr>
 <tr>
-<td>etcdctl -C \ <a href="https://etcd.example.com:2379" target="_blank" rel="noopener">https://etcd.example.com:2379</a> \ –ca-file=/etc/origin/master/master.etcd-ca.crt \ –cert-file=/etc/origin/master/master.etcd-client.crt \ –key-file=/etc/origin/master/master.etcd-client.key cluster-health</td>
+<td>etcdctl -C \ <a class="link"   target="_blank" rel="noopener" href="https://etcd.example.com:2379/" >https://etcd.example.com:2379<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> \ –ca-file&#x3D;&#x2F;etc&#x2F;origin&#x2F;master&#x2F;master.etcd-ca.crt \ –cert-file&#x3D;&#x2F;etc&#x2F;origin&#x2F;master&#x2F;master.etcd-client.crt \ –key-file&#x3D;&#x2F;etc&#x2F;origin&#x2F;master&#x2F;master.etcd-client.key cluster-health</td>
 </tr>
 <tr>
-<td>etcdctl -C \ <a href="https://etcd.example.com:2379" target="_blank" rel="noopener">https://etcd.example.com:2379</a> \ –ca-file=/etc/origin/master/master.etcd-ca.crt \ –cert-file=/etc/origin/master/master.etcd-client.crt \ –key-file=/etc/origin/master/master.etcd-client.key member list</td>
+<td>etcdctl -C \ <a class="link"   target="_blank" rel="noopener" href="https://etcd.example.com:2379/" >https://etcd.example.com:2379<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> \ –ca-file&#x3D;&#x2F;etc&#x2F;origin&#x2F;master&#x2F;master.etcd-ca.crt \ –cert-file&#x3D;&#x2F;etc&#x2F;origin&#x2F;master&#x2F;master.etcd-client.crt \ –key-file&#x3D;&#x2F;etc&#x2F;origin&#x2F;master&#x2F;master.etcd-client.key member list</td>
 </tr>
 <tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="登陆"><a href="#登陆" class="headerlink" title="登陆"></a>登陆</h3><table>
 <thead>
 <tr>
 <th>创建用户</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>htpasswd -b /etc/origin/master/htpasswd dev dev</td>
+<tbody><tr>
+<td>htpasswd -b &#x2F;etc&#x2F;origin&#x2F;master&#x2F;htpasswd dev dev</td>
 </tr>
 <tr>
 <td>给dev用户admin权限</td>
@@ -688,30 +811,25 @@
 <td>浏览器登录</td>
 </tr>
 <tr>
-<td><a href="https://master.example.com:8443" target="_blank" rel="noopener">https://master.example.com:8443</a></td>
+<td><a class="link"   target="_blank" rel="noopener" href="https://master.example.com:8443/" >https://master.example.com:8443<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="本地DNS-Server"><a href="#本地DNS-Server" class="headerlink" title="本地DNS Server"></a>本地DNS Server</h2><ul>
-<li><p>在建立openshift集群时，是直接修改各节点的/etc/hosts文件，要访问Router映射出的域名，是加上静态的域名解析。当节点数量很多或者后续执行节点扩容时，都需要修改大量/etc/hosts/文件，繁琐又不智能。</p>
-</li>
-<li><p>这里选择在本地搭建一个DNS服务器，并选择将DNS Server部署在Master节点上。</p>
-</li>
-<li><p>在部署过程中已经安装好dnsmasp服务，不用安装，只需要添加配置文件即可</p>
-</li>
+<li>在建立openshift集群时，是直接修改各节点的&#x2F;etc&#x2F;hosts文件，要访问Router映射出的域名，是加上静态的域名解析。当节点数量很多或者后续执行节点扩容时，都需要修改大量&#x2F;etc&#x2F;hosts&#x2F;文件，繁琐又不智能。</li>
+<li>这里选择在本地搭建一个DNS服务器，并选择将DNS Server部署在Master节点上。</li>
+<li>在部署过程中已经安装好dnsmasp服务，不用安装，只需要添加配置文件即可</li>
 </ul>
 <h3 id="添加dnsmasp配置"><a href="#添加dnsmasp配置" class="headerlink" title="添加dnsmasp配置"></a>添加dnsmasp配置</h3><table>
 <thead>
 <tr>
-<th>vim /etc/dnsmasq.d/local.conf</th>
+<th>vim &#x2F;etc&#x2F;dnsmasq.d&#x2F;local.conf</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>address=/master.example.com/10.10.31.161 address=/<a href="http://www.ivops-rabbitmq.com/10.10.31.164" target="_blank" rel="noopener">www.ivops-rabbitmq.com/10.10.31.164</a> address=/registry-console-default.router.default.svc.cluster.local/10.10.31.164 address=/agtweb.mas.ivops/10.10.31.164 address=/agtweb2.mas.ivops/10.10.31.164</td>
+<tbody><tr>
+<td>address&#x3D;&#x2F;master.example.com&#x2F;10.10.31.161 address&#x3D;&#x2F;<a class="link"   target="_blank" rel="noopener" href="http://www.ivops-rabbitmq.com/10.10.31.164" >www.ivops-rabbitmq.com/10.10.31.164<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> address&#x3D;&#x2F;registry-console-default.router.default.svc.cluster.local&#x2F;10.10.31.164 address&#x3D;&#x2F;agtweb.mas.ivops&#x2F;10.10.31.164 address&#x3D;&#x2F;agtweb2.mas.ivops&#x2F;10.10.31.164</td>
 </tr>
 <tr>
-<td><a href="./media/image7.png">./media/image7.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image7.png&gt;</td>
 </tr>
 <tr>
 <td>systemctl restart dnsmasq.service</td>
@@ -719,17 +837,15 @@
 <tr>
 <td>systemctl status dnsmasq.service</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="配置iptables"><a href="#配置iptables" class="headerlink" title="配置iptables"></a>配置iptables</h3><table>
 <thead>
 <tr>
-<th>sed -i ‘/.*–dport 22 -j ACCEPT.*/a\-A INPUT -p tcp -m state –state NEW -m tcp –dport 53 -j ACCEPT’ /etc/sysconfig/iptables</th>
+<th>sed -i ‘&#x2F;.*–dport 22 -j ACCEPT.*&#x2F;a-A INPUT -p tcp -m state –state NEW -m tcp –dport 53 -j ACCEPT’ &#x2F;etc&#x2F;sysconfig&#x2F;iptables</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>sed -i ‘/.*–dport 22 -j ACCEPT.*/a\-A INPUT -p udp -m state –state NEW -m udp –dport 53 -j ACCEPT’ /etc/sysconfig/iptables</td>
+<tbody><tr>
+<td>sed -i ‘&#x2F;.*–dport 22 -j ACCEPT.*&#x2F;a-A INPUT -p udp -m state –state NEW -m udp –dport 53 -j ACCEPT’ &#x2F;etc&#x2F;sysconfig&#x2F;iptables</td>
 </tr>
 <tr>
 <td>systemctl restart iptables</td>
@@ -737,44 +853,40 @@
 <tr>
 <td>systemctl status iptables</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="本地验证"><a href="#本地验证" class="headerlink" title="本地验证"></a>本地验证</h3><table>
 <thead>
 <tr>
-<th><a href="./media/image8.png">./media/image8.png</a></th>
+<th>&lt;.&#x2F;media&#x2F;image8.png&gt;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>ping master.example.com -c 2</td>
 </tr>
 <tr>
 <td>ping agtweb.mas.ivops -c 2</td>
 </tr>
 <tr>
-<td><a href="./media/image9.png">./media/image9.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image9.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="持久化存储-NFS"><a href="#持久化存储-NFS" class="headerlink" title="持久化存储-NFS"></a>持久化存储-NFS</h2><h3 id="使用NFS为后端存储"><a href="#使用NFS为后端存储" class="headerlink" title="使用NFS为后端存储"></a>使用NFS为后端存储</h3><ul>
 <li>创建NFS共享目录</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>mount /dev/sdc1 /mnt/nfs/</th>
+<th>mount &#x2F;dev&#x2F;sdc1 &#x2F;mnt&#x2F;nfs&#x2F;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>yum install nfs-utils rpcbind -y</td>
 </tr>
 <tr>
-<td>chown nfsnobody:nfsnobody /mnt/nfs/ -R</td>
+<td>chown nfsnobody:nfsnobody &#x2F;mnt&#x2F;nfs&#x2F; -R</td>
 </tr>
 <tr>
-<td>echo “/mnt/nfs *(rw,sync,all_squash)” >> /etc/exports</td>
+<td>echo “&#x2F;mnt&#x2F;nfs *(rw,sync,all_squash)” &gt;&gt; &#x2F;etc&#x2F;exports</td>
 </tr>
 <tr>
 <td>systemctl start rpcbind &amp;&amp; systemctl enable rpcbind</td>
@@ -794,38 +906,35 @@
 <tr>
 <td>showmount -e 127.0.0.1</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>测试挂载</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>mkdir /mnt/nfsmount</th>
+<th>mkdir &#x2F;mnt&#x2F;nfsmount</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>touch /mnt/nfs/test</td>
+<tbody><tr>
+<td>touch &#x2F;mnt&#x2F;nfs&#x2F;test</td>
 </tr>
 <tr>
-<td>mount 10.10.31.161:/mnt/nfs /mnt/nfsmount</td>
+<td>mount 10.10.31.161:&#x2F;mnt&#x2F;nfs &#x2F;mnt&#x2F;nfsmount</td>
 </tr>
 <tr>
-<td>ls /mnt/nfsmount/</td>
+<td>ls &#x2F;mnt&#x2F;nfsmount&#x2F;</td>
 </tr>
 <tr>
-<td>rm -rf /mnt/nfsmount/test</td>
+<td>rm -rf &#x2F;mnt&#x2F;nfsmount&#x2F;test</td>
 </tr>
 <tr>
 <td>df -h</td>
 </tr>
 <tr>
-<td>umount /mnt/nfsmount/</td>
+<td>umount &#x2F;mnt&#x2F;nfsmount&#x2F;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="创建Persistent-Volume"><a href="#创建Persistent-Volume" class="headerlink" title="创建Persistent Volume"></a>创建Persistent Volume</h3><ul>
 <li>创建pv 的yaml文件</li>
 </ul>
@@ -835,12 +944,10 @@
 <th>vi nfs-pv.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: /mnt/nfs server: 10.10.31.161 readOnly: false</td>
+<tbody><tr>
+<td>apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: &#x2F;mnt&#x2F;nfs server: 10.10.31.161 readOnly: false</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>创建pv卷</li>
 </ul>
@@ -850,12 +957,10 @@
 <th>oc create -f nfs-pv.yaml -n my-project</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>查看pv卷状态</li>
 </ul>
@@ -865,12 +970,10 @@
 <th>oc get pv</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="创建Persistent-Volume-Claim"><a href="#创建Persistent-Volume-Claim" class="headerlink" title="创建Persistent Volume Claim"></a>创建Persistent Volume Claim</h3><ul>
 <li>创建pvc的yaml文件</li>
 </ul>
@@ -880,12 +983,10 @@
 <th>vim nfs-pvc.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc spec: accessModes: - ReadWriteMany volumeName: nfs-pv resources: requests: storage: 1Gi</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>创建pvc</li>
 </ul>
@@ -895,12 +996,10 @@
 <th>oc create -f nfs-pvc.yaml -n my-project</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>查看pvc状态</li>
 </ul>
@@ -910,12 +1009,10 @@
 <th>oc get pvc</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="配置SELinux权限"><a href="#配置SELinux权限" class="headerlink" title="配置SELinux权限"></a>配置SELinux权限</h3><ul>
 <li>开启NFS卷写入权限</li>
 </ul>
@@ -925,12 +1022,10 @@
 <th>setsebool -P virt_use_nfs on</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="创建应用"><a href="#创建应用" class="headerlink" title="创建应用"></a>创建应用</h3><ul>
 <li>创建pod的yaml文件</li>
 </ul>
@@ -940,12 +1035,10 @@
 <th>vi nfs-nginx.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Pod metadata: name: nginx-nfs-pod labels: name: nginx-nfs-pod spec: containers: - name: nginx-nfs-pod image: fedora/nginx ports: - name: web containerPort: 80 volumeMounts: - name: nfsvol mountPath: /usr/share/nginx/html securityContext: supplementalGroups: [100003] privileged: false volumes: - name: nfsvol persistentVolumeClaim: claimName: nfs-pvc</td>
+<tbody><tr>
+<td>apiVersion: v1 kind: Pod metadata: name: nginx-nfs-pod labels: name: nginx-nfs-pod spec: containers: - name: nginx-nfs-pod image: fedora&#x2F;nginx ports: - name: web containerPort: 80 volumeMounts: - name: nfsvol mountPath: &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html securityContext: supplementalGroups: [100003] privileged: false volumes: - name: nfsvol persistentVolumeClaim: claimName: nfs-pvc</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>创建pod</li>
 </ul>
@@ -955,12 +1048,10 @@
 <th>oc create -f nfs-nginx.yaml -n my-project</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>查看pod状态</li>
 </ul>
@@ -970,45 +1061,39 @@
 <th>oc get pod –n my-project</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>oc describe pod nginx-nfs-pod</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>在Web Console上可以看到已经挂载</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th><a href="./media/image10.png">./media/image10.png</a></th>
+<th>&lt;.&#x2F;media&#x2F;image10.png&gt;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image11.png">./media/image11.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image11.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>查看底层docker状态</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th><a href="./media/image12.png">./media/image12.png</a></th>
+<th>&lt;.&#x2F;media&#x2F;image12.png&gt;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>docker inspect 289c36f63273</td>
 </tr>
 <tr>
-<td><a href="./media/image13.png">./media/image13.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image13.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="持久化存储-GlusterFS"><a href="#持久化存储-GlusterFS" class="headerlink" title="持久化存储-GlusterFS"></a>持久化存储-GlusterFS</h2><ol>
 <li><p>使用GlusterFS为后端存储-Static</p>
 <ol>
@@ -1028,8 +1113,7 @@
 <th>硬件配置</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>gluster1</td>
 <td>10.10.31.166</td>
 <td>7.4 mini</td>
@@ -1047,22 +1131,20 @@
 <td>7.4 mini</td>
 <td>4C2G+50G</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>准备工作</li>
 </ul>
 <blockquote>
-<p>  配置hostname</p>
+<p>配置hostname</p>
 </blockquote>
 <table>
 <thead>
 <tr>
-<th>vi /etc/hosts</th>
+<th>vi &#x2F;etc&#x2F;hosts</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>hostnamectl set-name glsuter1</td>
 </tr>
 <tr>
@@ -1071,10 +1153,9 @@
 <tr>
 <td>hostnamectl set-name glsuter3</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <blockquote>
-<p>  关闭SELinux</p>
+<p>关闭SELinux</p>
 </blockquote>
 <ul>
 <li><p>开始安装，所有机器相同操作</p>
@@ -1089,51 +1170,45 @@
 <th>yum install centos-release-gluster</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>格式化数据盘</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>mkfs.xfs -i size=512 /dev/sdb</th>
+<th>mkfs.xfs -i size&#x3D;512 &#x2F;dev&#x2F;sdb</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>mkdir -p /bricks/brick1</td>
+<tbody><tr>
+<td>mkdir -p &#x2F;bricks&#x2F;brick1</td>
 </tr>
 <tr>
-<td>vi /etc/fstab</td>
+<td>vi &#x2F;etc&#x2F;fstab</td>
 </tr>
 <tr>
-<td>/dev/sdb /bricks/brick1 xfs defaults 1 2</td>
+<td>&#x2F;dev&#x2F;sdb &#x2F;bricks&#x2F;brick1 xfs defaults 1 2</td>
 </tr>
 <tr>
 <td>mount -a &amp;&amp; mount</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>安装GlusterFS</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>yum –enablerepo=centos-gluster*-test install glusterfs-server</th>
+<th>yum –enablerepo&#x3D;centos-gluster*-test install glusterfs-server</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>systemctl start glusterd &amp;&amp; systemctl enable glusterd</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>配置trusted pool</li>
 </ul>
@@ -1143,8 +1218,7 @@
 <th>gluster1执行</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>gluster peer probe gluster2</td>
 </tr>
 <tr>
@@ -1154,25 +1228,23 @@
 <td>gluster peer status</td>
 </tr>
 <tr>
-<td><a href="./media/image14.png">./media/image14.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image14.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>配置存储卷</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>mkdir /bricks/brick1/gv0</th>
+<th>mkdir &#x2F;bricks&#x2F;brick1&#x2F;gv0</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>可以在任意一个节点执行：</td>
 </tr>
 <tr>
-<td>gluster volume create gv0 replica 2 gluster1:/bricks/brick1/gv0 gluster2:/bricks/brick1/gv0</td>
+<td>gluster volume create gv0 replica 2 gluster1:&#x2F;bricks&#x2F;brick1&#x2F;gv0 gluster2:&#x2F;bricks&#x2F;brick1&#x2F;gv0</td>
 </tr>
 <tr>
 <td>gluster volume start gv0</td>
@@ -1180,23 +1252,20 @@
 <tr>
 <td>gluster volume info</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>测试挂载</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>mount -t glusterfs gluster1:/gv0 /mnt</th>
+<th>mount -t glusterfs gluster1:&#x2F;gv0 &#x2F;mnt</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>GlusterFS 五种卷： Distributed：分布式卷，文件通过 hash 算法随机分布到由 bricks 组成的卷上。 Replicated: 复制式卷，类似 RAID 1，replica 数必须等于 volume 中 brick 所包含的存储服务器数，可用性高。 Striped: 条带式卷，类似 RAID 0，stripe 数必须等于 volume 中 brick 所包含的存储服务器数，文件被分成数据块，以 Round Robin 的方式存储在 bricks 中，并发粒度是数据块，大文件性能好。 Distributed Striped: 分布式的条带卷，volume中 brick 所包含的存储服务器数必须是 stripe 的倍数（>=2倍），兼顾分布式和条带式的功能。 Distributed Replicated: 分布式的复制卷，volume 中 brick 所包含的存储服务器数必须是 replica 的倍数（>=2倍），兼顾分布式和复制式的功能。</td>
+<tbody><tr>
+<td>GlusterFS 五种卷： Distributed：分布式卷，文件通过 hash 算法随机分布到由 bricks 组成的卷上。 Replicated: 复制式卷，类似 RAID 1，replica 数必须等于 volume 中 brick 所包含的存储服务器数，可用性高。 Striped: 条带式卷，类似 RAID 0，stripe 数必须等于 volume 中 brick 所包含的存储服务器数，文件被分成数据块，以 Round Robin 的方式存储在 bricks 中，并发粒度是数据块，大文件性能好。 Distributed Striped: 分布式的条带卷，volume中 brick 所包含的存储服务器数必须是 stripe 的倍数（&gt;&#x3D;2倍），兼顾分布式和条带式的功能。 Distributed Replicated: 分布式的复制卷，volume 中 brick 所包含的存储服务器数必须是 replica 的倍数（&gt;&#x3D;2倍），兼顾分布式和复制式的功能。</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="GlusterFS持久化存储"><a href="#GlusterFS持久化存储" class="headerlink" title="GlusterFS持久化存储"></a>GlusterFS持久化存储</h4><ul>
 <li>在OpenShift集群所有主机上安装</li>
 </ul>
@@ -1206,27 +1275,23 @@
 <th>yum install glusterfs-fuse</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>OpenShift所有主机配置Hosts</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>vi /etc/hosts</th>
+<th>vi &#x2F;etc&#x2F;hosts</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>10.10.31.166 gluster1 10.10.31.167 gluster2 10.10.31.168 gluster3</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li><p>创建Gluster Endpoints</p>
 <ul>
@@ -1240,8 +1305,7 @@
 <th>vi gluster-service.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>apiVersion: v1 kind: Service metadata: name: gluster-cluster spec: ports: - port: 1</td>
 </tr>
 <tr>
@@ -1250,8 +1314,7 @@
 <tr>
 <td>oc get svc</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>创建Endpoint</li>
 </ul>
@@ -1261,8 +1324,7 @@
 <th>vi gluster-endpoints.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>apiVersion: v1 kind: Endpoints metadata: name: gluster-cluster subsets: - addresses: - ip: 10.10.31.166 ports: - port: 1 protocol: TCP - addresses: - ip: 10.10.31.167 ports: - port: 1 protocol: TCP - addresses: - ip: 10.10.31.168 ports: - port: 1 protocol: TCP</td>
 </tr>
 <tr>
@@ -1271,17 +1333,15 @@
 <tr>
 <td>oc get endpoint</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="创建Persistent-Volume-1"><a href="#创建Persistent-Volume-1" class="headerlink" title="创建Persistent Volume"></a>创建Persistent Volume</h4><table>
 <thead>
 <tr>
 <th>vi gluster-pv.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: PersistentVolume metadata: name: gluster-pv spec: capacity: storage: 1Gi accessModes: - ReadWriteMany glusterfs: endpoints: gluster-cluster path: /gv0 readOnly: false persistentVolumeReclaimPolicy: Retain</td>
+<tbody><tr>
+<td>apiVersion: v1 kind: PersistentVolume metadata: name: gluster-pv spec: capacity: storage: 1Gi accessModes: - ReadWriteMany glusterfs: endpoints: gluster-cluster path: &#x2F;gv0 readOnly: false persistentVolumeReclaimPolicy: Retain</td>
 </tr>
 <tr>
 <td>oc create -f gluster-pv.yaml -n s2i-project</td>
@@ -1289,16 +1349,14 @@
 <tr>
 <td>oc get pv</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="创建Persistent-Volume-Claim-1"><a href="#创建Persistent-Volume-Claim-1" class="headerlink" title="创建Persistent Volume Claim"></a>创建Persistent Volume Claim</h4><table>
 <thead>
 <tr>
 <th>vi gluster-claim.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>apiVersion: v1 kind: PersistentVolumeClaim metadata: name: gluster-claim spec: accessModes: - ReadWriteMany resources: requests: storage: 1Gi</td>
 </tr>
 <tr>
@@ -1307,20 +1365,17 @@
 <tr>
 <td>oc get pvc</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="配置SELinux权限-1"><a href="#配置SELinux权限-1" class="headerlink" title="配置SELinux权限"></a>配置SELinux权限</h4><table>
 <thead>
 <tr>
 <th>setsebool -P virt_sandbox_use_fusefs on</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="创建应用-1"><a href="#创建应用-1" class="headerlink" title="创建应用"></a>创建应用</h4><ul>
 <li>由于使用的nginx镜像需要特殊权限运行，配置SCC</li>
 </ul>
@@ -1330,12 +1385,10 @@
 <th>oc adm policy add-scc-to-user privileged myuser</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>创建Pod</li>
 </ul>
@@ -1345,9 +1398,8 @@
 <th>vim gluster-pod1.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Pod metadata: name: gluster-pod1 labels: name: gluster-pod1 spec: containers: - name: gluster-pod1 image: nginx ports: - name: web containerPort: 80 securityContext: privileged: true volumeMounts: - name: gluster-vol1 mountPath: /usr/share/nginx/html readOnly: false volumes: - name: gluster-vol1 persistentVolumeClaim: claimName: gluster-claim</td>
+<tbody><tr>
+<td>apiVersion: v1 kind: Pod metadata: name: gluster-pod1 labels: name: gluster-pod1 spec: containers: - name: gluster-pod1 image: nginx ports: - name: web containerPort: 80 securityContext: privileged: true volumeMounts: - name: gluster-vol1 mountPath: &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html readOnly: false volumes: - name: gluster-vol1 persistentVolumeClaim: claimName: gluster-claim</td>
 </tr>
 <tr>
 <td>oc create -f gluster-pod1.yaml -n s2i-project</td>
@@ -1356,13 +1408,12 @@
 <td>oc get pod</td>
 </tr>
 <tr>
-<td><a href="./media/image15.png">./media/image15.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image15.png&gt;</td>
 </tr>
 <tr>
-<td><a href="./media/image16.png">./media/image16.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image16.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ol>
 <li><p>使用GlusterFS为后端存储-Dynamic</p>
 <ol>
@@ -1382,8 +1433,7 @@
 <th>硬件配置</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>gluster1</td>
 <td>10.10.31.166</td>
 <td>7.4 mini</td>
@@ -1401,22 +1451,20 @@
 <td>7.4 mini</td>
 <td>4C2G+50G</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>准备工作</li>
 </ul>
 <blockquote>
-<p>  配置hostname</p>
+<p>配置hostname</p>
 </blockquote>
 <table>
 <thead>
 <tr>
-<th>vi /etc/hosts</th>
+<th>vi &#x2F;etc&#x2F;hosts</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>10.10.31.166 gluster1 10.10.31.167 gluster2 10.10.31.168 gluster3</td>
 </tr>
 <tr>
@@ -1428,10 +1476,9 @@
 <tr>
 <td>hostnamectl set-hostname glsuter3</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <blockquote>
-<p>  关闭SELinux</p>
+<p>关闭SELinux</p>
 </blockquote>
 <ul>
 <li><p>开始安装，所有机器相同操作</p>
@@ -1446,12 +1493,10 @@
 <th>yum install centos-release-gluster -y</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>安装GlusterFS</li>
 </ul>
@@ -1461,20 +1506,16 @@
 <th>yum install glusterfs-server -y</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>systemctl start glusterd &amp;&amp; systemctl enable glusterd</td>
 </tr>
 <tr>
 <td>systemctl status glusterd</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="安装Heketi"><a href="#安装Heketi" class="headerlink" title="安装Heketi"></a>安装Heketi</h4><ul>
-<li><p>Heketi用于管理GlusterFS的REST API</p>
-</li>
-<li><p>在GlusterFS其中一台虚拟机上安装，这里选择gluster3</p>
-</li>
+<li>Heketi用于管理GlusterFS的REST API</li>
+<li>在GlusterFS其中一台虚拟机上安装，这里选择gluster3</li>
 </ul>
 <table>
 <thead>
@@ -1482,48 +1523,42 @@
 <th>yum install heketi heketi-client -y</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>Heketi使用SSH来配置GlusterFS的所有节点。创建SSH密钥对，将公钥拷贝到所有3个节点上</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>ssh-keygen -f /etc/heketi/heketi_key -t rsa -N ‘’</th>
+<th>ssh-keygen -f &#x2F;etc&#x2F;heketi&#x2F;heketi_key -t rsa -N ‘’</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>ssh-copy-id -i /etc/heketi/heketi_key.pub root\@gluster1 ssh-copy-id -i /etc/heketi/heketi_key.pub root\@gluster2 ssh-copy-id -i /etc/heketi/heketi_key.pub root\@gluster3</td>
+<tbody><tr>
+<td>ssh-copy-id -i &#x2F;etc&#x2F;heketi&#x2F;heketi_key.pub root@gluster1 ssh-copy-id -i &#x2F;etc&#x2F;heketi&#x2F;heketi_key.pub root@gluster2 ssh-copy-id -i &#x2F;etc&#x2F;heketi&#x2F;heketi_key.pub root@gluster3</td>
 </tr>
 <tr>
-<td>chown heketi:heketi /etc/heketi/heketi_key*</td>
+<td>chown heketi:heketi &#x2F;etc&#x2F;heketi&#x2F;heketi_key*</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>配置heketi使用SSH</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>vim /etc/heketi/heketi.json</th>
+<th>vim &#x2F;etc&#x2F;heketi&#x2F;heketi.json</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>“executor”: “ssh”, “_sshexec_comment”: “SSH username and private key file information”, “sshexec”: { “keyfile”: “/etc/heketi/heketi_key”, “user”: “root”, “port”: “22”, “fstab”: “/etc/fstab” },</td>
+<tbody><tr>
+<td>“executor”: “ssh”, “_sshexec_comment”: “SSH username and private key file information”, “sshexec”: { “keyfile”: “&#x2F;etc&#x2F;heketi&#x2F;heketi_key”, “user”: “root”, “port”: “22”, “fstab”: “&#x2F;etc&#x2F;fstab” },</td>
 </tr>
 <tr>
-<td><a href="./media/image17.png">./media/image17.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image17.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>启动服务</li>
 </ul>
@@ -1533,45 +1568,39 @@
 <th>systemctl restart heketi</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>systemctl enable heketi</td>
 </tr>
 <tr>
 <td>systemctl status heketi</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>测试服务状态</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>curl <a href="http://gluster3:8080/hello" target="_blank" rel="noopener">http://gluster3:8080/hello</a></th>
+<th>curl <a class="link"   target="_blank" rel="noopener" href="http://gluster3:8080/hello" >http://gluster3:8080/hello<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image18.png">./media/image18.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image18.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="配置Topology"><a href="#配置Topology" class="headerlink" title="配置Topology"></a>配置Topology</h4><ul>
 <li>配置环境变量</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>export HEKETI_CLI_SERVER=<a href="http://gluster3:8080" target="_blank" rel="noopener">http://gluster3:8080</a></th>
+<th>export HEKETI_CLI_SERVER&#x3D;<a class="link"   target="_blank" rel="noopener" href="http://gluster3:8080/" >http://gluster3:8080<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>准备json文件</li>
 </ul>
@@ -1581,30 +1610,26 @@
 <th>vim topology.json</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>{ “clusters”: [ { “nodes”: [ { “node”: { “hostnames”: { “manage”: [ “gluster1” ], “storage”: [ “10.10.31.166” ] }, “zone”: 1 }, “devices”: [ “/dev/sdb” ] }, { “node”: { “hostnames”: { “manage”: [ “gluster2” ], “storage”: [ “10.10.31.167” ] }, “zone”: 1 }, “devices”: [ “/dev/sdb” ] }, { “node”: { “hostnames”: { “manage”: [ “gluster3” ], “storage”: [ “10.10.31.168” ] }, “zone”: 1 }, “devices”: [ “/dev/sdb” ] } ] } ] }</td>
+<tbody><tr>
+<td>{ “clusters”: [ { “nodes”: [ { “node”: { “hostnames”: { “manage”: [ “gluster1” ], “storage”: [ “10.10.31.166” ] }, “zone”: 1 }, “devices”: [ “&#x2F;dev&#x2F;sdb” ] }, { “node”: { “hostnames”: { “manage”: [ “gluster2” ], “storage”: [ “10.10.31.167” ] }, “zone”: 1 }, “devices”: [ “&#x2F;dev&#x2F;sdb” ] }, { “node”: { “hostnames”: { “manage”: [ “gluster3” ], “storage”: [ “10.10.31.168” ] }, “zone”: 1 }, “devices”: [ “&#x2F;dev&#x2F;sdb” ] } ] } ] }</td>
 </tr>
 <tr>
 <td>该文件格式，是告诉heketi要创建一个3节点的集群，其中每个节点包含的配置有FQDN，IP地址以及至少一个将用作GlusterFS块的备用块设备。</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>运行</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>heketi-cli topology load –json=topology.json</th>
+<th>heketi-cli topology load –json&#x3D;topology.json</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>验证</li>
 </ul>
@@ -1614,33 +1639,29 @@
 <th>gluster peer status</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>创建一个数据卷</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>heketi-cli volume create –size=20</th>
+<th>heketi-cli volume create –size&#x3D;20</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image19.png">./media/image19.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image19.png&gt;</td>
 </tr>
 <tr>
 <td>gluster volume info</td>
 </tr>
 <tr>
-<td><a href="./media/image20.png">./media/image20.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image20.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="将Gluster与OpenShift集成"><a href="#将Gluster与OpenShift集成" class="headerlink" title="将Gluster与OpenShift集成"></a>将Gluster与OpenShift集成</h3><p>集成OpenShift，需要一个动态的Kubernetes Storage Provisioner和一个StorageClass。<br>Provisioner在OpenShift中开箱即用。 实际上关键的是如何将存储挂载到容器上。<br>StorageClass是OpenShift中的用户可以用来实现的PersistentVolumeClaims的实体，它反过来能够触发一个Provisioner实现实际的配置，并将结果表示为Kubernetes<br>PersistentVolume（PV）。</p>
 <h4 id="先创建一个测试项目，在OpenShift-Master上执行"><a href="#先创建一个测试项目，在OpenShift-Master上执行" class="headerlink" title="先创建一个测试项目，在OpenShift Master上执行"></a>先创建一个测试项目，在OpenShift Master上执行</h4><table>
 <thead>
@@ -1648,21 +1669,18 @@
 <th>oc new-project gluster-storage</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="创建StorageClass"><a href="#创建StorageClass" class="headerlink" title="创建StorageClass"></a>创建StorageClass</h4><table>
 <thead>
 <tr>
 <th>vi glusterfs-storageclass1.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>kind: StorageClass apiVersion: storage.k8s.io/v1 metadata: name: gluster-dyn annotations: storageclass.kubernetes.io/is-default-class: “true” provisioner: kubernetes.io/glusterfs parameters: resturl: “<a href="http://gluster3:8080&quot;" target="_blank" rel="noopener">http://gluster3:8080&quot;</a> restauthenabled: “false”</td>
+<tbody><tr>
+<td>kind: StorageClass apiVersion: storage.k8s.io&#x2F;v1 metadata: name: gluster-dyn annotations: storageclass.kubernetes.io&#x2F;is-default-class: “true” provisioner: kubernetes.io&#x2F;glusterfs parameters: resturl: “<a class="link"   target="_blank" rel="noopener" href="http://gluster3:8080" ">http://gluster3:8080&quot;<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> restauthenabled: “false”</td>
 </tr>
 <tr>
 <td>oc create -f glusterfs-storageclass1.yaml</td>
@@ -1671,21 +1689,19 @@
 <td>oc get sc</td>
 </tr>
 <tr>
-<td><a href="./media/image21.png">./media/image21.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image21.png&gt;</td>
 </tr>
 <tr>
-<td>我们的provisioner是kubernetes.io/glusterfs，将它指向我们的heketi实例。 我们将类命名为“gluster-dyn”， 同时使其成为所有没有显示指定StorageClass的PersistentVolumeClaim的默认StorageClass。</td>
+<td>我们的provisioner是kubernetes.io&#x2F;glusterfs，将它指向我们的heketi实例。 我们将类命名为“gluster-dyn”， 同时使其成为所有没有显示指定StorageClass的PersistentVolumeClaim的默认StorageClass。</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="创建Persistent-Volume-Claim-2"><a href="#创建Persistent-Volume-Claim-2" class="headerlink" title="创建Persistent Volume Claim"></a>创建Persistent Volume Claim</h4><table>
 <thead>
 <tr>
 <th>#新建这个PVC只为测试</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>vi glusterfs-pvc-storageclass.yaml</td>
 </tr>
 <tr>
@@ -1698,10 +1714,9 @@
 <td>oc get pvc</td>
 </tr>
 <tr>
-<td><a href="./media/image22.png">./media/image22.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image22.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="验证GlusterFS-Volume"><a href="#验证GlusterFS-Volume" class="headerlink" title="验证GlusterFS Volume"></a>验证GlusterFS Volume</h4><p>回到GlusterFS集群中，查看volume状态</p>
 <table>
 <thead>
@@ -1709,33 +1724,29 @@
 <th>gluster volume info</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>可以看到当前glusterfs里存在两个Volume， 第一个Volume是上面用heketi-cli volume create创建的测试Volume， 第二个Volume是StorageClass通过PVC创建的Volume</td>
 </tr>
 <tr>
-<td><a href="./media/image23.png">./media/image23.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image23.png&gt;</td>
 </tr>
 <tr>
 <td></td>
 </tr>
 <tr>
-<td><a href="./media/image24.png">./media/image24.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image24.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h4 id="Web-Console"><a href="#Web-Console" class="headerlink" title="Web Console"></a>Web Console</h4><table>
 <thead>
 <tr>
-<th><a href="./media/image25.png">./media/image25.png</a></th>
+<th>&lt;.&#x2F;media&#x2F;image25.png&gt;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image26.png">./media/image26.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image26.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="创建应用-2"><a href="#创建应用-2" class="headerlink" title="创建应用"></a>创建应用</h3><ul>
 <li>创建pod的yaml文件</li>
 </ul>
@@ -1745,9 +1756,8 @@
 <th>vi nginx-pod-gluster.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Pod metadata: name: gluster-pod1-gluster labels: name: gluster-pod1-gluster spec: containers: - name: gluster-pod1-gluster image: nginx ports: - name: web containerPort: 80 securityContext: privileged: true volumeMounts: - name: gluster-vol1-gluster mountPath: /usr/share/nginx/html volumes: - name: gluster-vol1-gluster persistentVolumeClaim: claimName: gluster-dyn-pvc</td>
+<tbody><tr>
+<td>apiVersion: v1 kind: Pod metadata: name: gluster-pod1-gluster labels: name: gluster-pod1-gluster spec: containers: - name: gluster-pod1-gluster image: nginx ports: - name: web containerPort: 80 securityContext: privileged: true volumeMounts: - name: gluster-vol1-gluster mountPath: &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html volumes: - name: gluster-vol1-gluster persistentVolumeClaim: claimName: gluster-dyn-pvc</td>
 </tr>
 <tr>
 <td>oc create -f nginx-pod-gluster.yaml</td>
@@ -1756,34 +1766,31 @@
 <td>oc get pod –o wide</td>
 </tr>
 <tr>
-<td><a href="./media/image27.png">./media/image27.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image27.png&gt;</td>
 </tr>
 <tr>
 <td></td>
 </tr>
 <tr>
-<td><a href="./media/image28.png">./media/image28.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image28.png&gt;</td>
 </tr>
 <tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>测试应用</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th><a href="./media/image29.png">./media/image29.png</a></th>
+<th>&lt;.&#x2F;media&#x2F;image29.png&gt;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="深入了解Pod"><a href="#深入了解Pod" class="headerlink" title="深入了解Pod"></a>深入了解Pod</h2><h3 id="Pod的定义"><a href="#Pod的定义" class="headerlink" title="Pod的定义"></a>Pod的定义</h3><p>Pod是Kubernetes下的概念，pod的容器的载体，所有容器都是在pod中被管理，一个或多个容器放在pod里作为一个单元方便管理。</p>
 <table>
 <thead>
@@ -1791,16 +1798,10 @@
 <th>下面是一个完整的yaml格式定义的文件,注意格式，子集包含关系，不要有tab，要用空格。</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 //版本 kind: pod //类型，pod metadata: //元数据 name: String //元数据，pod的名字 namespace: String //元数据，pod的命名空间 labels: //元数据，标签列表 - name: String //元数据，标签的名字 annotations: //元数据,自定义注解列表 - name: String //元数据,自定义注解名字 spec: //pod中容器的详细定义 containers: //pod中的容器列表，可以有多个容器 - name: String image: String //容器中的镜像 imagesPullPolicy: [Always\</td>
-<td>Never\</td>
-<td>IfNotPresent]//获取镜像的策略 command: [String] //容器的启动命令列表（不配置的话使用镜像内部的命令） args: [String] //启动参数列表 workingDir: String //容器的工作目录 volumeMounts: //挂载到到容器内部的存储卷设置 - name: String mountPath: String readOnly: boolean ports: //容器需要暴露的端口号列表 - name: String containerPort: int //容器要暴露的端口 hostPort: int //容器所在主机监听的端口（容器暴露端口映射到宿主机的端口） protocol: String env: //容器运行前要设置的环境列表 - name: String value: String resources: //资源限制 limits: cpu: Srting memory: String requeste: cpu: String memory: String livenessProbe: //pod内容器健康检查的设置 exec: command: [String] httpGet: //通过httpget检查健康 path: String port: number host: String scheme: Srtring httpHeaders: - name: Stirng value: String tcpSocket: //通过tcpSocket检查健康 port: number initialDelaySeconds: 0//首次检查时间 timeoutSeconds: 0 //检查超时时间 periodSeconds: 0 //检查间隔时间 successThreshold: 0 failureThreshold: 0 securityContext: //安全配置 privileged: falae restartPolicy: [Always\</td>
-<td>Never\</td>
-<td>OnFailure]//重启策略 nodeSelector: object //节点选择 imagePullSecrets: - name: String hostNetwork: false //是否使用主机网络模式，默认否 volumes: //在该pod上定义共享存储卷 - name: String meptyDir: {} hostPath: path: string secret: //类型为secret的存储卷 secretName: String item: - key: String path: String configMap: //类型为configMap的存储卷 name: String items: - key: String path: String</td>
+<tbody><tr>
+<td>apiVersion: v1 &#x2F;&#x2F;版本 kind: pod &#x2F;&#x2F;类型，pod metadata: &#x2F;&#x2F;元数据 name: String &#x2F;&#x2F;元数据，pod的名字 namespace: String &#x2F;&#x2F;元数据，pod的命名空间 labels: &#x2F;&#x2F;元数据，标签列表 - name: String &#x2F;&#x2F;元数据，标签的名字 annotations: &#x2F;&#x2F;元数据,自定义注解列表 - name: String &#x2F;&#x2F;元数据,自定义注解名字 spec: &#x2F;&#x2F;pod中容器的详细定义 containers: &#x2F;&#x2F;pod中的容器列表，可以有多个容器 - name: String image: String &#x2F;&#x2F;容器中的镜像 imagesPullPolicy: [Always\</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="Pod的配置管理"><a href="#Pod的配置管理" class="headerlink" title="Pod的配置管理"></a>Pod的配置管理</h3><ul>
 <li><p>应用部署的最佳实践，就是将应用所需的配置信息与程序进行分离。</p>
 </li>
@@ -1808,12 +1809,9 @@
 </li>
 <li><p>ConfigMap有以下典型用法</p>
 <ul>
-<li><p>生成为容器内的环境变量</p>
-</li>
-<li><p>设置容器启动命令的启动参数</p>
-</li>
-<li><p>以volume的形式挂载为容器内部的文件或目录</p>
-</li>
+<li>生成为容器内的环境变量</li>
+<li>设置容器启动命令的启动参数</li>
+<li>以volume的形式挂载为容器内部的文件或目录</li>
 </ul>
 </li>
 </ul>
@@ -1824,12 +1822,11 @@
 <th>定义一个ConfigMap配置文件</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>vi cm-appvars.yaml</td>
 </tr>
 <tr>
-<td>apiVersion: v1 kind: ConfigMap metadata: name: cm-appvars data: apploglevel: info appdatadir: /var/date</td>
+<td>apiVersion: v1 kind: ConfigMap metadata: name: cm-appvars data: apploglevel: info appdatadir: &#x2F;var&#x2F;date</td>
 </tr>
 <tr>
 <td>oc create -f cm-appvars.yaml</td>
@@ -1841,10 +1838,9 @@
 <td>使用ConfigMap</td>
 </tr>
 <tr>
-<td>apiVersion: v1 kind: Pod metadata: name: cm-test-pod spec: containers: - name: cm-test image: busybux env: - name: APPLOGLEVEL vlaueFrom: configMapKeyRef: name: cm-appvars //要和之前创建的ConfigMap的name对应 key: apploglevel - name: APPDATADIR vlaueFrom: configMapKeyRef: name: cm-appvars //要和之前创建的ConfigMap的name对应 key: appdatadir</td>
+<td>apiVersion: v1 kind: Pod metadata: name: cm-test-pod spec: containers: - name: cm-test image: busybux env: - name: APPLOGLEVEL vlaueFrom: configMapKeyRef: name: cm-appvars &#x2F;&#x2F;要和之前创建的ConfigMap的name对应 key: apploglevel - name: APPDATADIR vlaueFrom: configMapKeyRef: name: cm-appvars &#x2F;&#x2F;要和之前创建的ConfigMap的name对应 key: appdatadir</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="Pod生命周期和重启策略"><a href="#Pod生命周期和重启策略" class="headerlink" title="Pod生命周期和重启策略"></a>Pod生命周期和重启策略</h3><ul>
 <li>Pod一共有四种状态</li>
 </ul>
@@ -1855,8 +1851,7 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Pending</td>
 <td>APIserver已经创建该server,但pod内有一个或多个容器的镜像还未创建，可能在下载中。</td>
 </tr>
@@ -1872,8 +1867,7 @@
 <td>Unknown</td>
 <td>由于某种原因无法获取Pod的状态比如网络不通。</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>Pod的重启策略应用于Pod内的所有容器，由Pod所在Node节点上的Kubelet进行判断和重启操作。重启策略有以下三种:</li>
 </ul>
@@ -1884,8 +1878,7 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Always</td>
 <td>容器失效时，即重启</td>
 </tr>
@@ -1897,8 +1890,7 @@
 <td>Never</td>
 <td>永不重启</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="Pod调度机制"><a href="#Pod调度机制" class="headerlink" title="Pod调度机制"></a>Pod调度机制</h3><p>在OpenShift系统中，pod在大部分场景下都只是容器的载体而已，通常需要通过Deployment,DaemonSet,Job等对象来完成Pod的调度与自动控制功能。</p>
 <ul>
 <li><p>RC,Deployment: 全自动调度</p>
@@ -1913,10 +1905,8 @@
 </li>
 </ul>
 <h3 id="Pod扩容和缩容"><a href="#Pod扩容和缩容" class="headerlink" title="Pod扩容和缩容"></a>Pod扩容和缩容</h3><ul>
-<li><p>通过scale来完成扩容或缩容</p>
-</li>
-<li><p>动态扩容缩容（HPA）</p>
-</li>
+<li>通过scale来完成扩容或缩容</li>
+<li>动态扩容缩容（HPA）</li>
 </ul>
 <h2 id="深入了解Service"><a href="#深入了解Service" class="headerlink" title="深入了解Service"></a>深入了解Service</h2><p>由于Pod的IP会变化，提供某些功能的POD如果IP发生变化，会导致其他Pod无法发现这些功能，因此<br>引入了Service的功能。</p>
 <h3 id="Service的定义"><a href="#Service的定义" class="headerlink" title="Service的定义"></a>Service的定义</h3><table>
@@ -1925,9 +1915,8 @@
 <th>{ “kind”: “Service”, “apiVersion”: “v1”, “metadata”: { “name”: “my-service” }, “spec”: { “selector”: { “app”: “MyApp” }, “ports”: [ “protocol”: “TCP”, “port”: 80, “targetPort”: 9376 } ] } }</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>该Service 对应的Pod集合：带有label app=Myapp，对外暴露端口9376</td>
+<tbody><tr>
+<td>该Service 对应的Pod集合：带有label app&#x3D;Myapp，对外暴露端口9376</td>
 </tr>
 <tr>
 <td>Service 能将任意的流入Port 重定向到targetPort,默认情况下，targetPort和Port为相同值，不同的Pod 可以对应不同的端口号（例如，在你应用的下一个版本中会使用不同的端口号，但是并不应用之前版本的使用）</td>
@@ -1935,13 +1924,10 @@
 <tr>
 <td>Service 支持UDP和TCP，默认是TCP</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="Service虚拟IP和服务代理"><a href="#Service虚拟IP和服务代理" class="headerlink" title="Service虚拟IP和服务代理"></a>Service虚拟IP和服务代理</h3><ul>
-<li><p>K8s集群内每个节点都会运行kube-proxy，负责实现服务的虚拟机IP（不是externalName）</p>
-</li>
-<li><p>Kube-proxy监控k8s<br>master节点来发现Service、Endpointd的增加和删除，对于Service，在本地打开一个随机端口作为代理端口，任何访问改代理端口的连接都会被指向Service对象的Pod集合，最终指向哪个Pod取决于Service的SessionAffinity，最后，他会配置iptables，捕获流向Service 的Cluster<br>IP 和Port的连接，并重定向到这个代理端口。</p>
-</li>
+<li>K8s集群内每个节点都会运行kube-proxy，负责实现服务的虚拟机IP（不是externalName）</li>
+<li>Kube-proxy监控k8s<br>master节点来发现Service、Endpointd的增加和删除，对于Service，在本地打开一个随机端口作为代理端口，任何访问改代理端口的连接都会被指向Service对象的Pod集合，最终指向哪个Pod取决于Service的SessionAffinity，最后，他会配置iptables，捕获流向Service 的Cluster<br>IP 和Port的连接，并重定向到这个代理端口。</li>
 </ul>
 <h2 id="网络连通性"><a href="#网络连通性" class="headerlink" title="网络连通性"></a>网络连通性</h2><h3 id="网络实现"><a href="#网络实现" class="headerlink" title="网络实现"></a>网络实现</h3><ul>
 <li>查看各节点分配到的子网，每个节点默认都会被分配到一个子网，在计算节点上运行的Pod的ip将来源于此网段</li>
@@ -1952,27 +1938,23 @@
 <th>oc get hostsubnets</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image30.png">./media/image30.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image30.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>通过配置文件可以修改默认子网段</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>vim /etc/origin/master/master-config.yaml</th>
+<th>vim &#x2F;etc&#x2F;origin&#x2F;master&#x2F;master-config.yaml</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image31.png">./media/image31.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image31.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><ul>
 <li><p>OpenShift Web Console 不支持 https 安全验证，在Deploy Image是使用Image<br>Name部署是提示证书验证失败</p>
 <ul>
@@ -1983,15 +1965,13 @@
 <table>
 <thead>
 <tr>
-<th>oc new-app –insecure-registry dtr.ivops.cn:5443/ivops/nginx-alpine:v1.1.x –name=nginx-alpine-test</th>
+<th>oc new-app –insecure-registry dtr.ivops.cn:5443&#x2F;ivops&#x2F;nginx-alpine:v1.1.x –name&#x3D;nginx-alpine-test</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>第二种方式：使用Image Stream方式</li>
 </ul>
@@ -2001,30 +1981,28 @@
 <th>vi ivops-mariadb.json</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443/ivops/mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443/ivops/mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }</td>
+<tbody><tr>
+<td>{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }</td>
 </tr>
 <tr>
 <td>oc create -f ivops-mariadb.json -n s2i-project</td>
 </tr>
 <tr>
-<td><a href="./media/image32.png">./media/image32.png</a></td>
+<td>&lt;.&#x2F;media&#x2F;image32.png&gt;</td>
 </tr>
 <tr>
 <td>创建template，为以后快捷创建</td>
 </tr>
 <tr>
-<td>oc export dc,svc,route -o json –as-template=ivops-mariadb > ivops-mariadb.template</td>
+<td>oc export dc,svc,route -o json –as-template&#x3D;ivops-mariadb &gt; ivops-mariadb.template</td>
 </tr>
 <tr>
-<td>把 “image”: “dtr.ivops.cn:5443/ivops/mariadb”, 改为 “image”: “” 这样做的目的是，根据 template 创建应用后，自动发布，不用再手工点击 Deploy。</td>
+<td>把 “image”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb”, 改为 “image”: “” 这样做的目的是，根据 template 创建应用后，自动发布，不用再手工点击 Deploy。</td>
 </tr>
 <tr>
 <td>oc create -f ivops-mariadb.template -n openshift</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>Deployer Image镜像需要以Root启动，导致启动失败</li>
 </ul>
@@ -2034,12 +2012,10 @@
 <th>oadm policy add-scc-to-user anyuid -z default</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td>参考链接：<a href="https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/" target="_blank" rel="noopener">https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/</a></td>
+<tbody><tr>
+<td>参考链接：<a class="link"   target="_blank" rel="noopener" href="https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/" >https://blog.openshift.com/getting-any-docker-image-running-in-your-own-openshift-cluster/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li><p>若没有DNS Server解析Route的地址，需配置本地Host</p>
 <ul>
@@ -2050,20 +2026,16 @@
 <table>
 <thead>
 <tr>
-<th><a href="./media/image33.png">./media/image33.png</a></th>
+<th>&lt;.&#x2F;media&#x2F;image33.png&gt;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image34.png">./media/image34.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image34.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
-<li><p>创建PVC的容量小于等于PV的容量</p>
-</li>
-<li><p>Registry-console控制台用户登陆，配置权限给用户dev</p>
-</li>
+<li>创建PVC的容量小于等于PV的容量</li>
+<li>Registry-console控制台用户登陆，配置权限给用户dev</li>
 </ul>
 <table>
 <thead>
@@ -2071,465 +2043,431 @@
 <th>oc adm policy add-cluster-role-to-user cluster-admin dev</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a href="./media/image35.png">./media/image35.png</a></td>
+<tbody><tr>
+<td>&lt;.&#x2F;media&#x2F;image35.png&gt;</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>修改资源预留配额</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th><a href="./media/image36.jpeg">./media/image36.jpeg</a></th>
+<th>&lt;.&#x2F;media&#x2F;image36.jpeg&gt;</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td></td>
 </tr>
-</tbody>
-</table>
-<p>~   ../../../../Library/Containers/com.tencent.xinWeChat/Data/Library/Application%20Support/com.tencent.xinWeChat/2.0b4.0.9/28af29c3fcfa1b71d38c69c1e52a17f1/Message/MessageTemp/9e20f478899dc29eb19741386f9343c8/Image/931514879804_.pic_hd.jp</p>
+</tbody></table>
+<p>~ ..&#x2F;..&#x2F;..&#x2F;..&#x2F;Library&#x2F;Containers&#x2F;com.tencent.xinWeChat&#x2F;Data&#x2F;Library&#x2F;Application%20Support&#x2F;com.tencent.xinWeChat&#x2F;2.0b4.0.9&#x2F;28af29c3fcfa1b71d38c69c1e52a17f1&#x2F;Message&#x2F;MessageTemp&#x2F;9e20f478899dc29eb19741386f9343c8&#x2F;Image&#x2F;931514879804_.pic_hd.jp</p>
 
-      
-    </div>
+		</div>
 
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/04/25/OpenShift-架构了解与实践/" rel="next" title="OpenShift架构了解与实践">
-                <i class="fa fa-chevron-left"></i> OpenShift架构了解与实践
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/25/OpenShift-日志管理/" rel="prev" title="OpenShift-日志管理">
-                OpenShift-日志管理 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-
-
-
-        </div>
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> OpenShift-企业应用</li>
+        <li><strong>作者:</strong> Chen Fei</li>
+        <li><strong>创建于
+                :</strong> 2018-04-25 09:51:07</li>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
+            <li>
+                <strong>更新于
+                    :</strong> 2018-04-25 09:51:07
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://fearchen.github.io/2018/04/25/OpenShift-企业应用-3.6.1/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
 
-  <aside id="sidebar" class="sidebar">
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2018/04/25/OpenShift-Project%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">OpenShift-Project权限管理</span>
+						<span class="post-nav-item">上一篇</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">OpenShift-性能监控</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
     
-    <div class="sidebar-inner">
 
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        
             
-              <p class="site-author-name" itemprop="name">Chen Fei</p>
-              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
-          </div>
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.js';
 
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">68</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
+      (function() {
+        const startPath = location.pathname;
+        const startTime = Date.now();
+        const retryDelay = 200;
+        const retryLimit = 5000;
 
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">15</span>
-                    <span class="site-state-item-name">分类</span>
-                  
-                </div>
-              
+        const runWaline = () => {
+          if (location.pathname !== startPath) {
+            return;
+          }
 
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">40</span>
-                    <span class="site-state-item-name">标签</span>
-                  
-                </div>
-              
-            </nav>
-          
+          const container = document.getElementById('waline');
+          if (!container) {
+            if (Date.now() - startTime < retryLimit) {
+              setTimeout(runWaline, retryDelay);
+            }
+            return;
+          }
 
-          
+          if (window.redefineWalineInstance?.destroy) {
+            window.redefineWalineInstance.destroy();
+          }
 
-          
+          container.innerHTML = '';
+          window.redefineWalineInstance = init({
+            el: '#waline',
+            serverURL: 'https://example.example.com',
+            path: location.pathname,
+            dark: 'body[class~="dark-mode"]',
+            reaction: false,
+            requiredMeta: ['nick', 'mail'],
+            emoji: [],
+                      lang: 'zh-CN',
+          });
+        };
 
-          
-          
+        runWaline();
+      })();
+    </script>
 
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible部署"><span class="nav-number">1.</span> <span class="nav-text">Ansible部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">1.1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作，所有主机执行"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作，所有主机执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Ansible，Master执行"><span class="nav-number">1.3.</span> <span class="nav-text">配置Ansible，Master执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行部署"><span class="nav-number">1.4.</span> <span class="nav-text">执行部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证安装"><span class="nav-number">1.5.</span> <span class="nav-text">验证安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登陆"><span class="nav-number">1.6.</span> <span class="nav-text">登陆</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地DNS-Server"><span class="nav-number">2.</span> <span class="nav-text">本地DNS Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加dnsmasp配置"><span class="nav-number">2.1.</span> <span class="nav-text">添加dnsmasp配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置iptables"><span class="nav-number">2.2.</span> <span class="nav-text">配置iptables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地验证"><span class="nav-number">2.3.</span> <span class="nav-text">本地验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化存储-NFS"><span class="nav-number">3.</span> <span class="nav-text">持久化存储-NFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用NFS为后端存储"><span class="nav-number">3.1.</span> <span class="nav-text">使用NFS为后端存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Persistent-Volume"><span class="nav-number">3.2.</span> <span class="nav-text">创建Persistent Volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Persistent-Volume-Claim"><span class="nav-number">3.3.</span> <span class="nav-text">创建Persistent Volume Claim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置SELinux权限"><span class="nav-number">3.4.</span> <span class="nav-text">配置SELinux权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建应用"><span class="nav-number">3.5.</span> <span class="nav-text">创建应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化存储-GlusterFS"><span class="nav-number">4.</span> <span class="nav-text">持久化存储-GlusterFS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GlusterFS持久化存储"><span class="nav-number">4.0.1.</span> <span class="nav-text">GlusterFS持久化存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Persistent-Volume-1"><span class="nav-number">4.0.2.</span> <span class="nav-text">创建Persistent Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Persistent-Volume-Claim-1"><span class="nav-number">4.0.3.</span> <span class="nav-text">创建Persistent Volume Claim</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置SELinux权限-1"><span class="nav-number">4.0.4.</span> <span class="nav-text">配置SELinux权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建应用-1"><span class="nav-number">4.0.5.</span> <span class="nav-text">创建应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Heketi"><span class="nav-number">4.0.6.</span> <span class="nav-text">安装Heketi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Topology"><span class="nav-number">4.0.7.</span> <span class="nav-text">配置Topology</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将Gluster与OpenShift集成"><span class="nav-number">4.1.</span> <span class="nav-text">将Gluster与OpenShift集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#先创建一个测试项目，在OpenShift-Master上执行"><span class="nav-number">4.1.1.</span> <span class="nav-text">先创建一个测试项目，在OpenShift Master上执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建StorageClass"><span class="nav-number">4.1.2.</span> <span class="nav-text">创建StorageClass</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Persistent-Volume-Claim-2"><span class="nav-number">4.1.3.</span> <span class="nav-text">创建Persistent Volume Claim</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证GlusterFS-Volume"><span class="nav-number">4.1.4.</span> <span class="nav-text">验证GlusterFS Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Web-Console"><span class="nav-number">4.1.5.</span> <span class="nav-text">Web Console</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建应用-2"><span class="nav-number">4.2.</span> <span class="nav-text">创建应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入了解Pod"><span class="nav-number">5.</span> <span class="nav-text">深入了解Pod</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod的定义"><span class="nav-number">5.1.</span> <span class="nav-text">Pod的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod的配置管理"><span class="nav-number">5.2.</span> <span class="nav-text">Pod的配置管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod生命周期和重启策略"><span class="nav-number">5.3.</span> <span class="nav-text">Pod生命周期和重启策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod调度机制"><span class="nav-number">5.4.</span> <span class="nav-text">Pod调度机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod扩容和缩容"><span class="nav-number">5.5.</span> <span class="nav-text">Pod扩容和缩容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入了解Service"><span class="nav-number">6.</span> <span class="nav-text">深入了解Service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Service的定义"><span class="nav-number">6.1.</span> <span class="nav-text">Service的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service虚拟IP和服务代理"><span class="nav-number">6.2.</span> <span class="nav-text">Service虚拟IP和服务代理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络连通性"><span class="nav-number">7.</span> <span class="nav-text">网络连通性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络实现"><span class="nav-number">7.1.</span> <span class="nav-text">网络实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意点"><span class="nav-number">8.</span> <span class="nav-text">注意点</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
 
 
         
-      </div>
-    </main>
+    
+</div>
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
+		</div>
+		
+	</div>
 
-  
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">OpenShift-企业应用</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible%E9%83%A8%E7%BD%B2"><span class="nav-text">Ansible部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%EF%BC%8C%E6%89%80%E6%9C%89%E4%B8%BB%E6%9C%BA%E6%89%A7%E8%A1%8C"><span class="nav-text">准备工作，所有主机执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEAnsible%EF%BC%8CMaster%E6%89%A7%E8%A1%8C"><span class="nav-text">配置Ansible，Master执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E9%83%A8%E7%BD%B2"><span class="nav-text">执行部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85"><span class="nav-text">验证安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E9%99%86"><span class="nav-text">登陆</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0DNS-Server"><span class="nav-text">本地DNS Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0dnsmasp%E9%85%8D%E7%BD%AE"><span class="nav-text">添加dnsmasp配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEiptables"><span class="nav-text">配置iptables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E9%AA%8C%E8%AF%81"><span class="nav-text">本地验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8-NFS"><span class="nav-text">持久化存储-NFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8NFS%E4%B8%BA%E5%90%8E%E7%AB%AF%E5%AD%98%E5%82%A8"><span class="nav-text">使用NFS为后端存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAPersistent-Volume"><span class="nav-text">创建Persistent Volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAPersistent-Volume-Claim"><span class="nav-text">创建Persistent Volume Claim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AESELinux%E6%9D%83%E9%99%90"><span class="nav-text">配置SELinux权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8"><span class="nav-text">创建应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8-GlusterFS"><span class="nav-text">持久化存储-GlusterFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86Gluster%E4%B8%8EOpenShift%E9%9B%86%E6%88%90"><span class="nav-text">将Gluster与OpenShift集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8-2"><span class="nav-text">创建应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3Pod"><span class="nav-text">深入了解Pod</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">Pod的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod%E7%9A%84%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-text">Pod的配置管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5"><span class="nav-text">Pod生命周期和重启策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod%E8%B0%83%E5%BA%A6%E6%9C%BA%E5%88%B6"><span class="nav-text">Pod调度机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod%E6%89%A9%E5%AE%B9%E5%92%8C%E7%BC%A9%E5%AE%B9"><span class="nav-text">Pod扩容和缩容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3Service"><span class="nav-text">深入了解Service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Service%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">Service的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service%E8%99%9A%E6%8B%9FIP%E5%92%8C%E6%9C%8D%E5%8A%A1%E4%BB%A3%E7%90%86"><span class="nav-text">Service虚拟IP和服务代理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BF%9E%E9%80%9A%E6%80%A7"><span class="nav-text">网络连通性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%9E%E7%8E%B0"><span class="nav-text">网络实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-text">注意点</span></a></li></ol>
 
-  
+	</div>
+</div>
+	</div>
+	
+</div>
+
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Chen Fei</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 68 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="图片查看器">
+	<button class="image-viewer-close" type="button" aria-label="关闭">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="上一页">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="关闭">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="下一页">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
 </div>
 
 
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
 	
-    
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
 
-    
-  </div>
+</main>
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    window.swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
 </script>
 
 
 
 
+	
+<script src="/js/build/main.js" type="module"></script>
 
 
 
+    
+<script src="/js/build/libs/odometer.min.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
 
 
 
@@ -2538,31 +2476,22 @@
 
 
   
+<script src="/js/build/libs/Typed.min.js"></script>
 
 
 
 
 
-  
 
-  
 
-  
 
-  
 
-  
-  
 
-  
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
 
-  
 
-  
 
-  
-
-  
-
+	
 </body>
+
 </html>

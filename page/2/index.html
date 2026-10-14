@@ -1,2221 +1,1433 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="OpenShift,Kubernetes,Docker,Linux,RHCA">
+    
+    
+    <meta name="author" content="Chen Fei">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
 
+                // Try immediately
+                if (addBodyClass()) return;
 
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
-
-
-
-
-
-
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '6.3.0',
-    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="把我的过程记录下来，以免以后忘了">
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://fearchen.github.io/page/2/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fearchen&#39;s Blog">
-<meta property="og:url" content="http://fearchen.github.io/page/2/index.html">
+<meta property="og:url" content="https://fearchen.github.io/page/2/index.html">
 <meta property="og:site_name" content="Fearchen&#39;s Blog">
-<meta property="og:description" content="把我的过程记录下来，以免以后忘了">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fearchen.github.io/images/redefine-og.webp">
+<meta property="article:author" content="Chen Fei">
+<meta property="article:tag" content="OpenShift,Kubernetes,Docker,Linux,RHCA">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fearchen&#39;s Blog">
-<meta name="twitter:description" content="把我的过程记录下来，以免以后忘了">
-
-
-
-
-
-
-  <link rel="canonical" href="http://fearchen.github.io/page/2/"/>
-
-
-
-<script type="text/javascript" id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>Fearchen's Blog</title>
-  
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
+<meta name="twitter:image" content="https://fearchen.github.io/images/redefine-og.webp">
     
-  
-
-  <div class="container sidebar-position-right 
-  page-home">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
     
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Fearchen's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
     
-      
-        <p class="site-subtitle">把我的过程记录下来，以免以后忘了</p>
-      
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
+    <title>
         
+            Fearchen&#39;s Blog - Linux · 容器 · 云计算 运维笔记
         
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
         
-          
-          <li class="menu-item menu-item-home">
-    <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-    <a href="/about/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
-  </li>
+<link rel="stylesheet" href="/css/build/tailwind.css">
 
-      
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-          <div id="content" class="content">
-            
-  <section id="posts" class="posts-expand">
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-核心组件和概念/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-核心组件和概念/" itemprop="url">
-                  OpenShift-核心组件和概念
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-04-25 09:51:19 / 修改时间：10:04:00" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:19+08:00">2018-04-25</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenShift/" itemprop="url" rel="index"><span itemprop="name">OpenShift</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Master节点介绍"><a href="#Master节点介绍" class="headerlink" title="Master节点介绍"></a>Master节点介绍</h2><p>master 节点上运行着众多集群的服务组建：</p>
-<ol>
-<li><p>api server ：提供集群的web console以及restful api 服务。</p>
-</li>
-<li><p>data<br>store：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。</p>
-</li>
-<li><p>scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点</p>
-</li>
-<li><p>replication<br>controller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。</p>
-</li>
-</ol>
-<h2 id="Node节点介绍"><a href="#Node节点介绍" class="headerlink" title="Node节点介绍"></a>Node节点介绍</h2><ol>
-<li><p>主要负责介绍master节点指令，运行和维护docker容器</p>
-</li>
-<li><p>master节点本身也是一个node节点，一般人为的关闭了容器运行功能。</p>
-</li>
-<li><p>通过oc get nodes 可以查看系统中的node节点信息。</p>
-</li>
-</ol>
-<h2 id="Project"><a href="#Project" class="headerlink" title="Project"></a>Project</h2><ol>
-<li><p>namespace：在k8s中使用命名空间概念来隔离资源。</p>
-</li>
-<li><p>project：在openshift中，引入了project概念。</p>
-</li>
-</ol>
-<h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><ol>
-<li><p>pod是一种特殊的容器，oc get pods 可以查看pod</p>
-</li>
-<li><p>可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。</p>
-</li>
-<li><p>查看pod日志：oc logs</p>
-</li>
-<li><p>进入容器内部：oc rsh</p>
-</li>
-</ol>
-<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><ol>
-<li><p>service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。</p>
-</li>
-<li><p>service起到了代理的作用，在相互依赖的容器之间实现了解耦。</p>
-</li>
-<li><p>oc get svc 查看servie</p>
-</li>
-<li><p>service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。</p>
-</li>
-<li><p>除了IP地址访问service，还可以通过域名访问service。</p>
-</li>
-<li><p>master内置DNS服务器，负责解析这个域名</p>
-</li>
-</ol>
-<h2 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h2><ol>
-<li>负责将集群外部的请求转发到集群的容器。</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-S2i-Nginx/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-构建自动化-S2i-Nginx/" itemprop="url">
-                  OpenShift-构建自动化-Nginx
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-04-25 09:51:19 / 修改时间：10:03:46" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:19+08:00">2018-04-25</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenShift/" itemprop="url" rel="index"><span itemprop="name">OpenShift</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="创建S2I项目"><a href="#创建S2I项目" class="headerlink" title="创建S2I项目"></a>创建S2I项目</h2><table>
-<thead>
-<tr>
-<th>s2i create nginx-centos7-s2i nginx-centos7</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="准备S2I脚本"><a href="#准备S2I脚本" class="headerlink" title="准备S2I脚本"></a>准备S2I脚本</h2><h2 id="assemble"><a href="#assemble" class="headerlink" title="assemble"></a>assemble</h2><table>
-<thead>
-<tr>
-<th>#!/bin/bash -e # # S2I assemble script for the ‘nginx-centos7’ image. # The ‘assemble’ script builds your application source so that it is ready to run. # # For more information refer to the documentation: # <a href="https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md</a> # if [[ “\$1” == “-h” ]]; then # If the ‘nginx-centos7’ assemble script is executed with ‘-h’ flag, # print the usage. exec /usr/libexec/s2i/usage fi # Restore artifacts from the previous build (if they exist). # We set them here just for show, but you will need to set this up with your logic # according to the application directory that you chose. #if [ “\$(ls /tmp/artifacts/ 2>/dev/null)” ]; then # echo “—> Restoring build artifacts…” # mv /tmp/artifacts/* \<your directory="" here\=""> #fi # Override the default nginx index.html file. # This is what we consider in this example ‘installing the application’ # here you can go ahead an replace this with the actual building of python modules, # bundle install, and anything else you need. echo “—> Building and installing application from source…” if [ -f /tmp/src/nginx.conf ]; then mv /tmp/src/nginx.conf /etc/nginx/nginx.conf fi if [ “\$(ls -A /tmp/src)” ]; then mv /tmp/src/* /usr/share/nginx/html/ fi</your></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><table>
-<thead>
-<tr>
-<th>#!/bin/bash -e # The run script executes the server that runs your application. # # For more information see the documentation: # <a href="https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md</a> # # We will turn off daemonizing for the nginx process so that the container # doesn’t exit after the process runs. exec /usr/sbin/nginx -g “daemon off;”</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="save-artifacts"><a href="#save-artifacts" class="headerlink" title="save-artifacts"></a>save-artifacts</h2><table>
-<thead>
-<tr>
-<th>#!/bin/sh -e # # S2I save-artifacts script for the ‘nginx-centos7’ image. # The save-artifacts script streams a tar archive to standard output. # The archive contains the files and folders you want to re-use in the next build. # # For more information see the documentation: # <a href="https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md</a> # #tar cf - \<your files="" here\=""></your></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="usage"><a href="#usage" class="headerlink" title="usage"></a>usage</h2><table>
-<thead>
-<tr>
-<th>#!/bin/bash -e cat \&lt;\&lt;EOF This is the nginx-centos7 S2I image: To use it, install S2I: <a href="https://github.com/openshift/source-to-image" target="_blank" rel="noopener">https://github.com/openshift/source-to-image</a> Sample invocation: s2i build test/test-app nginx-centos7 nginx-centos7-app You can then run the resulting image via: docker run -d -p 8080:8080 nginx-centos7-app and see the test via <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> EOF</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="准备Dockfile"><a href="#准备Dockfile" class="headerlink" title="准备Dockfile"></a>准备Dockfile</h2><table>
-<thead>
-<tr>
-<th># nginx-centos7 # Here you can use whatever base image is relevant for your application. FROM centos:centos7 # Here you can specify the maintainer for the image that you’re building LABEL maintainer=”Chen Fei \&lt;chenf\@inno-view.cn>“ # Export an environment variable that provides information about the application version. # Replace this with the version for your application. ENV NGINX_VERSION=1.6.3 # Set the labels that are used for OpenShift to describe the builder image. LABEL io.k8s.description=”Nginx Webserver” \ io.k8s.display-name=”Nginx 1.6.3” \ io.openshift.expose-services=”8080:http” \ io.openshift.tags=”builder,webserver,html,nginx” \ # this label tells s2i where to find its mandatory scripts # (run, assemble, save-artifacts) io.openshift.s2i.scripts-url=”image:///usr/libexec/s2i” # Install the nginx web server package and clean the yum cache RUN yum install -y epel-release &amp;&amp; \ yum install -y –setopt=tsflags=nodocs nginx &amp;&amp; \ yum clean all # Change the default port for nginx # Required if you plan on running images as a non-root user). RUN sed -i ‘s/80/8080/‘ /etc/nginx/nginx.conf RUN sed -i ‘s/user nginx;//‘ /etc/nginx/nginx.conf # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way COPY ./s2i/bin/ /usr/libexec/s2i RUN chown -R 1001:1001 /usr/share/nginx RUN chown -R 1001:1001 /var/log/nginx RUN chown -R 1001:1001 /var/lib/nginx RUN touch /run/nginx.pid RUN chown -R 1001:1001 /run/nginx.pid RUN chown -R 1001:1001 /etc/nginx USER 1001 # Set the default port for applications built using this image EXPOSE 8080 # Modify the usage script in your application dir to inform the user how to run # this image. CMD [“/usr/libexec/s2i/usage”]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="生成Builder-Image"><a href="#生成Builder-Image" class="headerlink" title="生成Builder Image"></a>生成Builder Image</h2><table>
-<thead>
-<tr>
-<th>docker build -t nginx-centos7 .</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="上传OpenShift"><a href="#上传OpenShift" class="headerlink" title="上传OpenShift"></a>上传OpenShift</h2><h2 id="上传到Harbor"><a href="#上传到Harbor" class="headerlink" title="上传到Harbor"></a>上传到Harbor</h2><table>
-<thead>
-<tr>
-<th>docker tag nginx-centos7:latest dtr.ivops.cn:5443/openshift-chenf/nginx-centos7:latest</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>docker push dtr.ivops.cn:5443/openshift-chenf/nginx-centos7:latest</td>
-</tr>
-</tbody>
-</table>
-<h2 id="创建Image-Stream"><a href="#创建Image-Stream" class="headerlink" title="创建Image Stream"></a>创建Image Stream</h2><table>
-<thead>
-<tr>
-<th>oc import-image dtr.ivops.cn:5443/openshift-chenf/nginx-centos7 -n openshift –confirm –insecure</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>添加Builder tags</td>
-</tr>
-<tr>
-<td>oc edit is nginx-centos7 -n openshift</td>
-</tr>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="根据源代码构建"><a href="#根据源代码构建" class="headerlink" title="根据源代码构建"></a>根据源代码构建</h2><table>
-<thead>
-<tr>
-<th><a href="./media/image5.png">./media/image5.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Builds:</td>
-</tr>
-<tr>
-<td><a href="./media/image6.png">./media/image6.png</a></td>
-</tr>
-<tr>
-<td>完成</td>
-</tr>
-<tr>
-<td><a href="./media/image7.png">./media/image7.png</a></td>
-</tr>
-<tr>
-<td>验证应用</td>
-</tr>
-<tr>
-<td><a href="./media/image8.png">./media/image8.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="代码更新"><a href="#代码更新" class="headerlink" title="代码更新"></a>代码更新</h2><table>
-<thead>
-<tr>
-<th>代码侧有版本更新，重新构建</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image9.png">./media/image9.png</a></td>
-</tr>
-<tr>
-<td><a href="./media/image10.png">./media/image10.png</a></td>
-</tr>
-<tr>
-<td><a href="./media/image11.png">./media/image11.png</a></td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-NodeJS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-构建自动化-NodeJS/" itemprop="url">
-                  OpenShift-构建自动化-NodeJS
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-04-25 09:51:19 / 修改时间：10:03:28" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:19+08:00">2018-04-25</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenShift/" itemprop="url" rel="index"><span itemprop="name">OpenShift</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>准备S2I脚本</p>
-</li>
-<li><p>准备Dockfile</p>
-</li>
-<li><p>生成Builder Image</p>
-</li>
-<li><p>上传OpenShift</p>
-</li>
-<li><p>根据源代码构建</p>
-</li>
-<li><p>生成Template</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/" itemprop="url">
-                  OpenShift构建自动化-Tomcat8
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-04-25 09:51:19 / 修改时间：10:03:13" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:19+08:00">2018-04-25</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenShift/" itemprop="url" rel="index"><span itemprop="name">OpenShift</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="应用容器化方式"><a href="#应用容器化方式" class="headerlink" title="应用容器化方式"></a>应用容器化方式</h2><ul>
-<li>应用容器化，常见的方法有以下三种：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>举例</th>
-<th>类别</th>
-<th>适用场景</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>本地构建</td>
-<td>工程师编写Dockerfile，并手工在一台或多台主机上手工执行Docker Build命令构建应用镜像</td>
-<td>人工</td>
-<td>开发测试</td>
-<td>简单</td>
-</tr>
-<tr>
-<td>CI构建</td>
-<td>Jenkins集群在CI流程中调用Maven执行构建，Maven 通过插件按指定的Dockerfile生成应用的镜像。</td>
-<td>自动化</td>
-<td>传统持续集成</td>
-<td>常规CI方案</td>
-</tr>
-<tr>
-<td>Source 2 Image</td>
-<td>OpenShift在隔离的容器环境中进行应用的构建编译并生成应用的容器镜像</td>
-<td>自动化</td>
-<td>容器及微服务场景下的持续集成</td>
-<td>基于容器集群的CI方案</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>每个开发团队均需要编写Dockerfile</p>
-</li>
-<li><p>重复多次执行时间和人力成本陡增</p>
-</li>
-<li><p>每个开发团队均需要编写Dockerfile</p>
-</li>
-<li><p>微服务多语言多版本混合构建时无隔离</p>
-</li>
-<li><p>构建资源池不可动态扩展</p>
-</li>
-<li><p>资源利用率较低</p>
-</li>
-<li><p>开发团队通过容器镜像精确定义构建环境</p>
-</li>
-<li><p>基于容器的构建环境，提供更好的隔离性</p>
-</li>
-<li><p>满足多语言多版本微服务混合构建的场景</p>
-</li>
-<li><p>构建资源池可动态扩展，更灵活</p>
-</li>
-<li><p>构建与应用运行共享资源池降低运维工作量</p>
-</li>
-<li><p>资源按需投入及回收，利用率高</p>
-</li>
-<li><p>第一种本地构建最常见，也比较简单，但效率太低。</p>
-</li>
-<li><p>第二种方式是通过CI构建。这种方式则是比较传统的方法。需要指出的：CI/CD的实现，与容器并无必然的联系。在容器火之前，很多客户也基于Jenkins和虚拟机实现了CD/CD。只是容器轻量级的优势，更容易实现CI/CD。在红帽Openshift中，我们可以通过CI构建实现容器镜像。这种构建方式，实际上是在openshift中部署Jenkins<br>Slave Pod,在Slave Pod实现构建。红帽提供四种Jenkins Slave<br>Pod的镜像（根据应用开发语言的不同），有基于maven的，有基于nodejs的、基于.net的、也有基础镜像（使用者基于基础镜像进行构建）。</p>
-</li>
-<li><p>第三种方式是通过S2I的方式构建应用镜像。这种方式有第二种方式构建的优点（构建好的应用客户实现CI），并且比第二种方式效率更高、适用多种开发语言。</p>
-</li>
-</ul>
-<h2 id="S2I的应用容器化过程"><a href="#S2I的应用容器化过程" class="headerlink" title="S2I的应用容器化过程"></a>S2I的应用容器化过程</h2><ul>
-<li>S2I方式构建通常有6个步骤，下图为构建一个tomcat容器应用镜像示例：</li>
-</ul>
-<p><img src="/2018/04/25/OpenShift-构建自动化-B2I-Tomcat/9512130e33c8b58ad83a039f55b0648f.png" alt=""></p>
-<table>
-<thead>
-<tr>
-<th>1．装S2I命令行工具：</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>指的是在构建builder的rhel/centos主机上安装s2i的命令行工具</td>
-</tr>
-<tr>
-<td>2．选定base image：</td>
-</tr>
-<tr>
-<td>也就是说，我们选则一个最初的原始docker image。在基础镜像的选择上，也需要一些考量。比如：我可以选择一个docker.io上的tomcat 镜像直接用，也可以选择一个centos的docker image安装tomcat。</td>
-</tr>
-<tr>
-<td>3．编写S2I脚本：</td>
-</tr>
-<tr>
-<td>S2I有四个脚本。在S2I脚本的编写中，我的经验是采取“反推法”。也就是应用镜像运行起来，到底需要assmble和run做什么，这两个脚本就应该怎么写。 在这个阶段，我们还需要书写Dockerfile，准备基于第二步选定的base image构建新的builder image。Dockerfile中需要定义S2I脚本的拷贝和执行，base image的名称、和应用相关的一些目录权限、用户和权限等。</td>
-</tr>
-<tr>
-<td>4．生成builder image。</td>
-</tr>
-<tr>
-<td>5．选定源码库。</td>
-</tr>
-<tr>
-<td>6．根据选定的代码地址和builder image，构建应用镜像并部署。</td>
-</tr>
-</tbody>
-</table>
-<h2 id="安装S2I命令行工具"><a href="#安装S2I命令行工具" class="headerlink" title="安装S2I命令行工具"></a>安装S2I命令行工具</h2><table>
-<thead>
-<tr>
-<th>下载地址：<a href="https://github.com/openshift/source-to-image/releases" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/releases</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>curl -L -O <a href="https://github.com/openshift/source-to-image/releases/download/v1.1.8/source-to-image-v1.1.8-e3140d01-linux-amd64.tar.gz" target="_blank" rel="noopener">https://github.com/openshift/source-to-image/releases/download/v1.1.8/source-to-image-v1.1.8-e3140d01-linux-amd64.tar.gz</a></td>
-</tr>
-<tr>
-<td>tar zxvf source-to-image-v1.1.8-e3140d01-linux-amd64.tar.gz</td>
-</tr>
-<tr>
-<td>mv s2i sti /usr/bin/</td>
-</tr>
-<tr>
-<td>s2i version</td>
-</tr>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="选定base-image"><a href="#选定base-image" class="headerlink" title="选定base image"></a>选定base image</h2><ul>
-<li><p>基于S2I构建一个tomcat容器应用镜像</p>
-</li>
-<li><p>选择centos的镜像，然后在dockerfile中指定安装tomcat</p>
-</li>
-<li><p>base image选择 openshift/base-centos7</p>
-</li>
-</ul>
-<h2 id="编写S2I脚本并书写Dockerfile"><a href="#编写S2I脚本并书写Dockerfile" class="headerlink" title="编写S2I脚本并书写Dockerfile"></a>编写S2I脚本并书写Dockerfile</h2><ul>
-<li>一个符合S2I/B2I的building image，在bin目录下，是需要包含如下四个脚本的：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>assemble脚本：</th>
-<th>这个脚本负责将外部代码库的代码下载到本地，并且进行编译打包。</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>run脚本：</td>
-<td>这个脚本负责运行assemble编译好的应用。</td>
-</tr>
-<tr>
-<td>save-artifacts脚本：</td>
-<td>save-artifacts脚本负责将构建所需要的所有依赖包收集到一个tar文件中。save-artifacts的好处是可以加速构建的过程。</td>
-</tr>
-<tr>
-<td>usage脚本：</td>
-<td>usage脚本是告诉使用者如何使用镜像。</td>
-</tr>
-<tr>
-<td>在S2I的四个脚本中，通常我们只会用到assemble和run两个脚本。实际上脚本的书写，和应用是关系很大的。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="创建S2I目录结构"><a href="#创建S2I目录结构" class="headerlink" title="创建S2I目录结构"></a>创建S2I目录结构</h3><table>
-<thead>
-<tr>
-<th>mkdir tomcat8-jdk8 &amp;&amp; cd tomcat8-jdk8</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>mkdir -p .s2i/bin touch .s2i/bin/assemble.sh touch .s2i/bin/run.sh touch .s2i/bin/usage.sh</td>
-</tr>
-<tr>
-<td>#也可以使用s2i create直接创建</td>
-</tr>
-</tbody>
-</table>
-<h3 id="配置assemble"><a href="#配置assemble" class="headerlink" title="配置assemble"></a>配置assemble</h3><table>
-<thead>
-<tr>
-<th>请记住如下脚本中的”WAR’s copied”输出，这在后文中将作为应用build成功的标志。 assemble 脚本的作用，就是将代码库的代码，拷贝到\$CATALINA_HOME/webapps下去运行。\$CATALINA_HOME变量在dockerfile中被指定成/tomcat</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>echo “—> Installing application source…” cp -Rf /tmp/src/. \$CATALINA_HOME/webapps echo “WAR’s copied”</td>
-</tr>
-</tbody>
-</table>
-<h3 id="配置run"><a href="#配置run" class="headerlink" title="配置run"></a>配置run</h3><table>
-<thead>
-<tr>
-<th>run脚本的作用，就是当build包的应用镜像部署成功以后，启动镜像中的tomcat应用。</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>\${CATALINA_HOME}/bin/catalina.sh run</td>
-</tr>
-</tbody>
-</table>
-<h3 id="配置usage"><a href="#配置usage" class="headerlink" title="配置usage"></a>配置usage</h3><table>
-<thead>
-<tr>
-<th>#!/bin/bash -e cat \&lt;\&lt;EOF This is not an application image, please refer this documentation on using this image <a href="https://github.com/debianmaster/openshift-s2i-example.git" target="_blank" rel="noopener">https://github.com/debianmaster/openshift-s2i-example.git</a> EOF</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="配置save-artifacts"><a href="#配置save-artifacts" class="headerlink" title="配置save-artifacts"></a>配置save-artifacts</h3><table>
-<thead>
-<tr>
-<th>#curl -o \$CATALINA_HOME/webapps/ROOT.war -O \${WAR_FILE_URL}</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ol>
-<li><p>编写Dockerfile</p>
-<ol>
-<li>指定base image并安装依赖包</li>
-</ol>
-</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>vim tomcat8-jdk8/Dockerfile</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FROM openshift/base-centos7 MAINTAINER Chen Fei (chenf\@inno-view.cn) ENV BUILDER_VERSION 1.1 RUN yum install wget -y; \ yum install tar -y; \ yum install unzip -y; \ yum install ca-certificates -y;\ yum install sudo -y;\ yum clean all -y ENV TOMCAT_MAJOR_VERSION 8 ENV TOMCAT_MINOR_VERSION 8.0.32 ENV CATALINA_HOME /tomcat</td>
-</tr>
-</tbody>
-</table>
-<h3 id="安装jdk和tomcat"><a href="#安装jdk和tomcat" class="headerlink" title="安装jdk和tomcat"></a>安装jdk和tomcat</h3><table>
-<thead>
-<tr>
-<th># Install openjdk 1.8 RUN yum install java-1.8.0-openjdk.x86_64* -y &amp;&amp; \ yum clean all -y &amp;&amp; \ rm -rf /var/lib/apt/lists/* # INSTALL TOMCAT WORKDIR / RUN wget -q -e use_proxy=yes <a href="https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.32/bin/apache-tomcat-8.0.32.tar.gz" target="_blank" rel="noopener">https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.32/bin/apache-tomcat-8.0.32.tar.gz</a> &amp;&amp; \ tar -zxf apache-tomcat-*.tar.gz &amp;&amp;\ rm -f apache-tomcat-*.tar.gz &amp;&amp; \ mv apache-tomcat* tomcat ENV JAVA_OPTS=”-Dtuf.environment=DEV -Dtuf.appFiles.rootDirectory=/TempDirRoot”</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="创建用户、目录"><a href="#创建用户、目录" class="headerlink" title="创建用户、目录"></a>创建用户、目录</h3><table>
-<thead>
-<tr>
-<th>RUN groupadd -r safe RUN useradd -r -g safe safe RUN mkdir -p /tomcat/webapps /TempDirRoot /usr/libexec/s2i /tmp/src RUN chmod -R 755 /tomcat /TempDirRoot /tmp/src /usr/libexec/s2i /tomcat/bin RUN chown -R 1001:1001 /tomcat /TempDirRoot /tmp/src /usr/libexec/s2i /tomcat/bin RUN chmod -R 777 /tomcat /TempDirRoot RUN cd /tomcat/webapps/; rm -rf ROOT docs examples host-manager manager COPY ./.s2i/bin/ /usr/libexec/s2i RUN chmod -R 755 /usr/libexec/s2i USER 1001 EXPOSE 8080 CMD \$STI_SCRIPTS_PATH/usage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="生成builder-image"><a href="#生成builder-image" class="headerlink" title="生成builder image"></a>生成builder image</h2><h3 id="生成builder-image-1"><a href="#生成builder-image-1" class="headerlink" title="生成builder image"></a>生成builder image</h3><table>
-<thead>
-<tr>
-<th>命名名字为tomcat8-jdk8</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>docker build -t tomcat8-jdk8 .</td>
-</tr>
-</tbody>
-</table>
-<h3 id="验证builder-image"><a href="#验证builder-image" class="headerlink" title="验证builder image"></a>验证builder image</h3><table>
-<thead>
-<tr>
-<th>docker run -it d67311e72289 /bin/bash</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>前面拷贝的文件都在</td>
-</tr>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="OpenShift使用builder-image"><a href="#OpenShift使用builder-image" class="headerlink" title="OpenShift使用builder image"></a>OpenShift使用builder image</h2><h3 id="上传到内部docker-registry"><a href="#上传到内部docker-registry" class="headerlink" title="上传到内部docker registry"></a>上传到内部docker registry</h3><table>
-<thead>
-<tr>
-<th>docker tag tomcat8-jdk8:latest dtr.ivops.cn:5443/openshift-chenf/tomcat8-jdk8:latest</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>docker push dtr.ivops.cn:5443/openshift-chenf/tomcat8-jdk8:latest</td>
-</tr>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="创建Image-Stream"><a href="#创建Image-Stream" class="headerlink" title="创建Image Stream"></a>创建Image Stream</h3><table>
-<thead>
-<tr>
-<th>要导入到openshift项目中，以使该Image Stream可以被其他项目引用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc import-image dtr.ivops.cn:5443/openshift-chenf/tomcat8-jdk8 -n openshift –confirm –insecure</td>
-</tr>
-<tr>
-<td><a href="./media/image5.png">./media/image5.png</a></td>
-</tr>
-<tr>
-<td>为了让openshift识别出这个镜像是S2I的Builder镜像，需要编辑刚刚导入的Image Stream。添加注解”tags”:”builder”</td>
-</tr>
-<tr>
-<td>oc edit is tomcat8-jdk8</td>
-</tr>
-<tr>
-<td><a href="./media/image6.png">./media/image6.png</a></td>
-</tr>
-<tr>
-<td>这样，在web控制台就能看到</td>
-</tr>
-<tr>
-<td><a href="./media/image7.png">./media/image7.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="选定代码库"><a href="#选定代码库" class="headerlink" title="选定代码库"></a>选定代码库</h2><table>
-<thead>
-<tr>
-<th>示例使用GitHub上的代码</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>URL：<a href="https://github.com/debianmaster/sample-binaries.git" target="_blank" rel="noopener">https://github.com/debianmaster/sample-binaries.git</a></td>
-</tr>
-<tr>
-<td>war中的内容：</td>
-</tr>
-<tr>
-<td><a href="./media/image8.tiff">./media/image8.tiff</a></td>
-</tr>
-<tr>
-<td>查看war包中的index.html:</td>
-</tr>
-<tr>
-<td><a href="./media/image9.tiff">./media/image9.tiff</a></td>
-</tr>
-<tr>
-<td>查看hello.jsp中的代码：</td>
-</tr>
-<tr>
-<td><a href="./media/image10.tiff">./media/image10.tiff</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="根据选定的代码和builder-image，构建应用镜像并部署"><a href="#根据选定的代码和builder-image，构建应用镜像并部署" class="headerlink" title="根据选定的代码和builder image，构建应用镜像并部署"></a>根据选定的代码和builder image，构建应用镜像并部署</h2><table>
-<thead>
-<tr>
-<th>进入project</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc project test</td>
-</tr>
-<tr>
-<td>指定builder image的image stream和代码的git地址:</td>
-</tr>
-<tr>
-<td>oc new-app tomcat8-jdk8~<a href="https://github.com/debianmaster/sample-binaries.git" target="_blank" rel="noopener">https://github.com/debianmaster/sample-binaries.git</a> –name=’tomcat8-jdk8-war’</td>
-</tr>
-<tr>
-<td><a href="./media/image11.png">./media/image11.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="Build过程"><a href="#Build过程" class="headerlink" title="Build过程"></a>Build过程</h3><table>
-<thead>
-<tr>
-<th>第一部分：其实就是assemble脚本执行成功后的输出 第二部分：镜像构建成功以后，会先push到docker registry中</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image12.png">./media/image12.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="触发DC"><a href="#触发DC" class="headerlink" title="触发DC"></a>触发DC</h3><table>
-<thead>
-<tr>
-<th>再会根据build成功的镜像，触发dc，也就是部署一个应用的容器</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image13.png">./media/image13.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="部署完成"><a href="#部署完成" class="headerlink" title="部署完成"></a>部署完成</h3><table>
-<thead>
-<tr>
-<th><a href="./media/image14.png">./media/image14.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="添加route"><a href="#添加route" class="headerlink" title="添加route"></a>添加route</h3><table>
-<thead>
-<tr>
-<th><a href="./media/image15.png">./media/image15.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image16.png">./media/image16.png</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="测试访问"><a href="#测试访问" class="headerlink" title="测试访问"></a>测试访问</h3><table>
-<thead>
-<tr>
-<th>dnsmasq添加解析</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>vim /etc/dnsmasq.d/local.conf</td>
-</tr>
-<tr>
-<td><a href="./media/image17.png">./media/image17.png</a></td>
-</tr>
-<tr>
-<td>systemctl restart dnsmasq</td>
-</tr>
-<tr>
-<td><a href="./media/image18.png">./media/image18.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="生成Template"><a href="#生成Template" class="headerlink" title="生成Template"></a>生成Template</h2><table>
-<thead>
-<tr>
-<th>导出成yaml格式的template</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc export is,bc,dc,svc –as-template=tomcat8-jdk8 > ./tomcat8-jdk8.yml</td>
-</tr>
-<tr>
-<td>导入</td>
-</tr>
-<tr>
-<td>oc create -f tomcat8-jdk8.yml -n openshift</td>
-</tr>
-<tr>
-<td><a href="./media/image19.png">./media/image19.png</a></td>
-</tr>
-</tbody>
-</table>
 
-          
-        
-      
-    </div>
-
     
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
 
-    
     
-    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
 
+    <!--- Font Part-->
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fearchen.github.io/2018/04/25/OpenShift-构建-Rabbitmq/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Chen Fei">
-      <meta itemprop="description" content="把我的过程记录下来，以免以后忘了">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fearchen's Blog">
-    </span>
-
     
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/OpenShift-构建-Rabbitmq/" itemprop="url">
-                  OpenShift-构建-Rabbitmq
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-04-25 09:51:18 / 修改时间：10:02:57" itemprop="dateCreated datePublished" datetime="2018-04-25T09:51:18+08:00">2018-04-25</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenShift/" itemprop="url" rel="index"><span itemprop="name">OpenShift</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
     
 
-    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"fearchen.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Fearchen's Blog","subtitle":{"text":["Linux · 容器 · 云计算 运维笔记","Kubernetes & OpenShift"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":[{"icon":"fa-brands fa-github","url":null},{"icon":"fa-brands fa-twitter","url":null},{"icon":"fa-solid fa-at","url":"you@example.com"},{"icon":"fa-brands fa-telegram","url":null},{"icon":"/images/custom-icon.svg","url":null}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"归档":{"path":"/archives","icon":"fa-regular fa-archive"},"分类":{"path":"/categories","icon":"fa-regular fa-folder"},"标签":{"path":"/tags","icon":"fa-regular fa-tags"},"关于":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart fa-beat\" style=\"--fa-animation-duration: 0.5s; color: #f54545\"></i>","start":"2022/8/17 11:45:14","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2022/8/17 11:45:14","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.i18n = {"search":"站内搜索您需要的内容...","toc":"目录","prev":"上一页","next":"下一页","prev_posts":"上一篇","next_posts":"下一篇","page":"第 %d 页","recent_posts":"最新文章","share":"分享","powered_by":"由 %s 驱动","theme":"主题","rss_feed":"RSS Feed","category":"分类","categories":"分类","tag":"标签","tags":"标签","post":"文章","posts":"文章","tagcloud":"标签云","comment":"评论","comments":"评论","top":"置顶","sticky":"置顶","go-back-home":"回到首页","masonry_loading":"照片加载中...","image_viewer":"图片查看器","close":"关闭","exif":{"title":"EXIF","cards":{"camera":"相机","lens":"镜头","exposure":"曝光","other":"其他"},"fields":{"make":"品牌","model":"机型","date_taken":"拍摄时间","lens_model":"镜头","focal_length":"焦距","focus_mode":"对焦模式","shutter":"快门","aperture":"光圈","iso":"感光度","exposure_program":"曝光程序","exposure_compensation":"曝光补偿","metering_mode":"测光模式","flash":"闪光灯","white_balance":"白平衡","latitude":"纬度","longitude":"经度","altitude":"海拔"},"status":{"loading":"加载中...","no_exif":"无 EXIF 信息","library_missing":"EXIF 库未加载","image_source_missing":"图片地址不可用","unavailable":"EXIF 不可用（可能被 CORS 阻止或缺少元数据）","flag_unavailable":"EXIF 不可用"}},"home":"首页","archive":"归档","archives":"归档","about":"关于","links":"链接","link":"链接","friends":"友情链接","friend":"友情链接","timeline":"时间轴","shuoshuo":"说说","bookmarks":"书签","site_uv":"访问人数","site_pv":"总访问量","read_more":"阅读全文","wordcount":"字","min2read":"分钟","changelog":"更新日志","status":"状态","runtime":"博客已运行","days":"天","hours":"小时","minutes":"分钟","seconds":"秒","optimized_by":"并由 Evan 进行优化","rights":"版权所有","site_posts":"共撰写了 %s 篇文章","site_wordcount":"共 %s 字","copyright":{"title":"标题","author":"作者","link":"链接","create_time":"创建于","update_time":"更新于","license_title":"版权声明","license_content":"本文章采用 %s 进行许可。","all_rights_reserved":"版权所有 &#169 %s，禁止转载。","public_domain":"本文为公有领域作品，可自由转载、引用。"},"ago":{"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"},"create_time":"创建","update_time":"更新","expired":"这篇文章最后更新于 %s 天前，内容可能已经过时。"};
+    window.data = {"masonry":false};
+  </script>
     
+    <!--- Fontawesome Part-->
     
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="准备Rabbitmq镜像"><a href="#准备Rabbitmq镜像" class="headerlink" title="准备Rabbitmq镜像"></a>准备Rabbitmq镜像</h2><h2 id="Dockfile"><a href="#Dockfile" class="headerlink" title="Dockfile"></a>Dockfile</h2><table>
-<thead>
-<tr>
-<th>FROM ubuntu:14.04 MAINTAINER Chen Fei \&lt;chenf\@inno-view.cn> LABEL io.k8s.description=”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.display-name=”Rabbitmq-server lastest” \ io.openshift.expose-services=”5672:rabbitmq” \ io.openshift.tags=”rabbitmq” EXPOSE 5672/tcp EXPOSE 25672/tcp USER root ADD root / RUN echo ‘deb <a href="http://www.rabbitmq.com/debian/" target="_blank" rel="noopener">http://www.rabbitmq.com/debian/</a> testing main’ \</th>
-<th>sudo tee /etc/apt/sources.list.d/rabbitmq.list RUN apt-get update RUN apt-get install -y wget RUN wget -O- <a href="https://www.rabbitmq.com/rabbitmq-release-signing-key.asc" target="_blank" rel="noopener">https://www.rabbitmq.com/rabbitmq-release-signing-key.asc</a> \</th>
-<th>sudo apt-key add - RUN apt-get update RUN apt-get install -y rabbitmq-server RUN echo -n ‘LCQLSHVOPZFHRUXMMAPF’ > /var/lib/rabbitmq/.erlang.cookie RUN chown -R rabbitmq. /var/lib/rabbitmq RUN chmod 400 /var/lib/rabbitmq/.erlang.cookie ADD rabbitmq-env.conf /etc/rabbitmq/rabbitmq-env.conf ENTRYPOINT [“/usr/bin/container-entrypoint.sh”]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="生成镜像"><a href="#生成镜像" class="headerlink" title="生成镜像"></a>生成镜像</h2><table>
-<thead>
-<tr>
-<th>docker build -t rabbitmq .</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./media/image1.png">./media/image1.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="上传OpenShift"><a href="#上传OpenShift" class="headerlink" title="上传OpenShift"></a>上传OpenShift</h2><h2 id="上传到Harbor"><a href="#上传到Harbor" class="headerlink" title="上传到Harbor"></a>上传到Harbor</h2><table>
-<thead>
-<tr>
-<th>docker tag rabbitmq dtr.ivops.cn:5443/openshift-chenf/rabbitmq</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>docker push dtr.ivops.cn:5443/openshift-chenf/rabbitmq</td>
-</tr>
-<tr>
-<td><a href="./media/image2.png">./media/image2.png</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="部署应用"><a href="#部署应用" class="headerlink" title="部署应用"></a>部署应用</h2><h2 id="创建rabbitmq用户"><a href="#创建rabbitmq用户" class="headerlink" title="创建rabbitmq用户"></a>创建rabbitmq用户</h2><table>
-<thead>
-<tr>
-<th>oc create serviceaccount rabbitmq</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>oc adm policy add-scc-to-user anyuid -z rabbitmq</td>
-</tr>
-</tbody>
-</table>
-<h2 id="部署rabbitmq"><a href="#部署rabbitmq" class="headerlink" title="部署rabbitmq"></a>部署rabbitmq</h2><table>
-<thead>
-<tr>
-<th>oc create -f rabbitmq.yaml</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io/tolerate-unready-endpoints: “true” name: rabbitmq labels: app: rabbit spec: ports: - port: 5672 name: rabbit clusterIP: None selector: app: rabbit — apiVersion: apps/v1beta1 kind: StatefulSet metadata: name: rabbit spec: serviceName: “rabbitmq” replicas: 3 template: metadata: labels: app: rabbit annotations: pod.alpha.kubernetes.io/initialized: “true” spec: containers: - name: rabbit image: dtr.ivops.cn:5443/openshift-chenf/rabbitmq imagePullPolicy: IfNotPresent ports: - containerPort: 5672 name: rabbit - containerPort: 25672 name: bean readinessProbe: exec: command: - /usr/share/container-scripts/rabbitmq/readiness-probe.sh initialDelaySeconds: 15 timeoutSeconds: 5 env: - name: POD_NAMESPACE valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.namespace - name: RABBITMQ_USE_LONGNAME value: “true” - name: RABBITMQ_NODENAME value: “rabbit” nodeSelector: region: infra serviceAccount: rabbitmq securityContext: {} serviceAccountName: rabbitmq</td>
-</tr>
-<tr>
-<td><a href="./media/image3.png">./media/image3.png</a></td>
-</tr>
-<tr>
-<td><a href="./media/image4.png">./media/image4.png</a></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="集群状态"><a href="#集群状态" class="headerlink" title="集群状态"></a>集群状态</h2><table>
-<thead>
-<tr>
-<th><a href="./media/image5.png">./media/image5.png</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
 
-          
-        
-      
-    </div>
-
     
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
 
-    
     
-    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
 
     
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
 
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
     
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
-
-
-          </div>
-          
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
     
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Chen Fei</p>
-              <p class="site-description motion-element" itemprop="description">把我的过程记录下来，以免以后忘了</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">68</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">15</span>
-                    <span class="site-state-item-name">分类</span>
-                  
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">40</span>
-                    <span class="site-state-item-name">标签</span>
-                  
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
+<meta name="generator" content="Hexo 8.1.2"></head>
 
-          
-          
 
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Chen Fei</span>
-
-  
-
-  
-</div>
-
-
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
+<body>
+	<div class="progress-bar-container">
 	
-    
 
-    
-  </div>
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
 
+<main class="page-container" id="swup">
+
+	
+	<style>
+    .home-article-item,
+    .sidebar-links,
+    .sidebar-content,
+    a.page-number,
+    a.extend,
+    .sidebar-links .links:hover,
+    .right-bottom-tools,
+    footer.footer {
+        background-color: var(--background-color-transparent-80) !important;
+    }
+    .right-bottom-tools:hover,
+    a.page-number:hover,
+    a.extend:hover {
+        background-color: var(--primary-color) !important;
+    }
+    .site-info,
+    .home-article-sticky-label {
+        background-color: var(--background-color-transparent-15) !important;
+    }
+    .home-article-sticky-label {
+        backdrop-filter: none !important;
+    }
+    .home-banner-background {
+        filter: blur(15px);
+    }
+</style>
+
+<div class="home-banner-background transition-fade fixed top-0 left-0 w-screen h-screen scale-125 sm:scale-110 box-border will-change-transform bg-cover">
+    <img src="/images/wallhaven-wqery6-light.webp" alt="home-banner-background" class="w-full h-full object-cover dark:hidden">
+    <img src="/images/wallhaven-wqery6-dark.webp" alt="home-banner-background" class="w-full h-full object-cover hidden dark:block">
+</div>
+
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                <h1>
+                Fearchen&#39;s Blog
+                </h1>
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="active"
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">40</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">68</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+			<div class="home-sidebar-container">
+    <div class="sticky-container sticky">
+        
+        
+            
+            <div class="sidebar-content" >
+                <div class="avatar flex justify-center">
+    <img src="/images/redefine-avatar.svg">
+</div>
+                <div class="author flex flex-col justify-center my-2.5 mx-0">
+    <div class="name">Chen Fei</div>
+    
+        <div class="label">Lv5</div>
+    
+</div>
+                <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">40</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">68</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+            </div>
+        
+
+    </div>
+</div>
+
+			
+
+			<div class="main-content">
+				<div class="home-content-container">
+    <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/">
+                            OpenShift-对象定义文件示例
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            Image Stream模版地址
+
+
+https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json
+
+
+
+
+
+
+example
+
+
+{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { ...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/">阅读全文<span class="seo-reader-text">OpenShift-对象定义文件示例</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/">
+                            OpenShift-持续集成-Jenkins
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            部署Jenkins
+
+
+使用自带模版部署
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+
+
+
+
+准备Dockfile
+生成Builder Image
+上传OpenShift
+根据源代码构建
+生成Template
+
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/">阅读全文<span class="seo-reader-text">OpenShift-持续集成-Jenkins</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/">
+                            OpenShift-构建-Rabbitmq
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            准备Rabbitmq镜像Dockfile
+
+
+FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.description&#x3D;”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.displ...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/">阅读全文<span class="seo-reader-text">OpenShift-构建-Rabbitmq</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/">
+                            OpenShift-S2I构建过程
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
+如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
+编译和部署...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:17 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/">阅读全文<span class="seo-reader-text">OpenShift-S2I构建过程</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-Project%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+                            OpenShift-Project权限管理
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            环境准备环境中有两个Project：Project1和Project2。测试需求如下：
+
+
+
+普通用户 admin 作为管理员 普通用户 p1admin 作为 project1 管理员 普通用户 p1dev1 作为 project1 的开发人员，有修改权限 普通用户 p1test1 作为 project1 的测试人员，有查看权限
+
+
+
+普通用户 p2admin 作为 project2 管理员...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:16 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-Project%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-Project权限管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8-3.6.1/">
+                            OpenShift-企业应用
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            Ansible部署为区分各角色，部署结构如下：
+环境配置
+
+
+主机名
+角色
+IP地址
+操作系统
+硬件配置
+
+
+
+master.example.com
+master
+10.10.31.161
+7.4 mini
+4C2G+30G
+
+
+node1.example.com
+node
+10.10.31.162
+7.4 mini
+4C2G+30G
+
+
+node2.example.com
+node
+10....
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8-3.6.1/">阅读全文<span class="seo-reader-text">OpenShift-企业应用</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/">
+                            OpenShift-性能监控
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。
+
+项目URL：https://github.com/openshift/origin-metrics
+
+主要通过以下组件实现：
+
+Heapster
+
+
+Heapster通过Master API收集系统级...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/">阅读全文<span class="seo-reader-text">OpenShift-性能监控</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/">
+                            OpenShift-日志管理
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            简介OpenShift平台的日志聚合和管理是在EFK方案的基础上实现的。EFK主要汇集来自Host和App的运行日志，包括多个容器和已删除的Pods。
+EFK Stack是在EFK上修改的版本，由以下部分组成：
+
+Elasticsearch：存储所有日志的额对象存储
+Fluentd：从节点收集日志并推送给ES
+Kibana：ES的Web UI
+Curator：从ES删除旧日志
+
+部署EFK ...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-日志管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%9E%B6%E6%9E%84%E4%BA%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5/">
+                            OpenShift架构了解与实践
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比
+
+
+参考链接：ht...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%9E%B6%E6%9E%84%E4%BA%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5/">阅读全文<span class="seo-reader-text">OpenShift架构了解与实践</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/">
+                            OpenShift-混合云管理
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
+混合云管理平台的价值：
+
+度量采集及分析
+策略控制
+自动化集成
+
+MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-混合云管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+    </ul>
+
+    <div class="home-paginator px-7 py-5">
+        <div class="paginator">
+	<a class="extend prev" rel="prev" href="/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa-regular fa-angle-right"></i></a>
+</div>
   
+    </div>
+</div>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Chen Fei</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 68 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="图片查看器">
+	<button class="image-viewer-close" type="button" aria-label="关闭">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="上一页">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="关闭">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="下一页">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    window.swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
 </script>
 
 
 
 
+	
+<script src="/js/build/main.js" type="module"></script>
 
 
 
+    
+<script src="/js/build/libs/odometer.min.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
-
-
-
-  
-  
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
 
 
 
@@ -2224,31 +1436,22 @@
 
 
   
+<script src="/js/build/libs/Typed.min.js"></script>
 
 
 
 
 
-  
 
-  
 
-  
 
-  
 
-  
-  
 
-  
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
 
-  
 
-  
 
-  
-
-  
-
+	
 </body>
+
 </html>
