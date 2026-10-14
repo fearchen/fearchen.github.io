@@ -1,0 +1,56 @@
+{
+  "updated": "2026-10-14",
+  "note": "数据均摘自公开报道/榜单页面，每条附来源与数据日期；第三方榜单口径各不相同，仅供趋势参考。",
+  "charts": {
+    "domestic": [
+      {"id":"wx-sell","title":"微信小游戏畅销榜 Top10（9月月榜）","date":"2026-09（月榜，10-02 发布）","method":"GameLook 统计月度畅销榜","source":"https://news.qq.com/rain/a/20261002A09LA800","sourceName":"GameLook / 腾讯新闻",
+       "items":["向僵尸开炮","疯狂水世界","无尽冬日","三国：冰河时代","我的花园世界","向往的生活","浪漫餐厅","灵画师","跃动小子","梦幻消除战"]},
+      {"id":"dy-sell","title":"抖音小游戏畅销榜 Top10（日榜）","date":"2026-10-14","method":"MomoRank：按广告消耗与付费综合计算","source":"https://www.momorank.com/douyin/rankings/bestseller","sourceName":"MomoRank",
+       "items":[["造化仙府","模拟经营","+4"],["疯狂水世界","模拟经营","-1"],["灵画师","修仙","-1"],["梦幻消除战","合成","+8"],["狱国争霸","SLG","+1"],["向僵尸开炮","割草","-3"],["三国：冰河时代","模拟经营","-3"],["肥鹅美食街","超休闲","+1"],["镇邪人","冒险","+2"],["时尚百货城","模拟经营","持平"]]},
+      {"id":"dy-hot","title":"抖音小游戏热门榜 Top10（日榜）","date":"2026-10-14","method":"MomoRank：按访问用户量综合计算","source":"https://www.momorank.com/douyin/rankings/popular","sourceName":"MomoRank",
+       "items":[["大神也破防","解谜","新上榜"],["羊了个羊：星球","消除","-1"],["抓大鹅","消除","-1"],["疯狂水世界","模拟经营","-1"],["赵云与阿斗","塔防","-1"],["梦幻消除战","合成","持平"],["肥鹅美食街","超休闲","持平"],["多乐升级","扑克牌","+2"],["指尖快消","寻物","持平"],["浪漫餐厅","合成","+1"]]}
+    ],
+    "overseas": [
+      {"id":"poki","title":"Poki 实时热门 Top5","date":"2026-10-14 抓取","method":"Poki 首页“按实时游玩量”的 trending 列表","source":"https://poki.com/","sourceName":"Poki",
+       "items":[["Level Devil","平台跳跃","4.4★"],["Smash Karts","多人竞速","4.4★"],["Subway Surfers","跑酷","4.4★"],["Blocky Blast Puzzle","方块消除","4.3★"],["Drive Mad","物理驾驶","4.3★"]]},
+      {"id":"crazy","title":"CrazyGames 累计投票 Top10","date":"2026-10-13","method":"StatKraken 汇总的 CrazyGames 投票数（累计口径，非周榜）","source":"https://www.statkraken.com/rankings","sourceName":"StatKraken",
+       "items":[["Bloxd.io","沙盒 .io","7.9M 票"],["Space Waves","节奏/街机","5.92M"],["Racing Limits","竞速","3.27M"],["EvoWars.io",".io 对战","3M"],["Ragdoll Archers","物理射箭","2.71M"],["Hazmob FPS","FPS","2.5M"],["BuildNow GG","建造射击","2.39M"],["Cubes 2048.io",".io 合成","1.92M"],["Smash Karts","多人竞速","1.92M"],["Shell Shockers","FPS","1.74M"]]},
+      {"id":"tg","title":"Telegram 小程序生态（Apps 标签页抽样）","date":"2026-10-11/12","method":"作者拉取 Telegram 官方 Apps 列表 192 个应用后人工分类（单一账号视角）","source":"https://charliemorrison.dev/blog/telegram-mini-games-list-2026/","sourceName":"Charlie Morrison",
+       "items":[["开箱/竞猜/博彩类","40 个","月活 686 万"],["边玩边赚/挖矿/空投","34 个","352 万"],["游戏","28 个","313 万"],["AI 工具","16 个","691 万"],["AI 陪伴","20 个","194 万"]]}
+    ]
+  },
+  "newGames": [
+    {"name":"使命召唤手游（微信小游戏版）","platform":"微信","what":"9 月畅销榜第 43 名，Top50 唯一新面孔（腾讯）","date":"2026-09","source":"https://news.qq.com/rain/a/20261002A09LA800"},
+    {"name":"塔塔冒险队","platform":"微信","what":"莉莉丝新品，9 月 11 日进入微信畅销榜，月榜第 53 名","date":"2026-09-11","source":"https://m.thepaper.cn/newsDetail_forward_34234932"},
+    {"name":"下方了","platform":"微信","what":"飞鱼科技“中式微恐+靶心like”，9 月 1 日入榜","date":"2026-09-01","source":"https://m.thepaper.cn/newsDetail_forward_34234932"},
+    {"name":"三界降妖录 / 喵骑战域","platform":"抖音","what":"9 月抖音畅销榜新入榜靠前产品，分列第 24、30 名","date":"2026-09","source":"https://www.10100.com/article/152896367"},
+    {"name":"怪物入侵 / 我要闯个关 / 没钱修什么仙","platform":"抖音","what":"抖音新游榜第 1、2 名；《没钱修什么仙》当日新进榜","date":"2026-10-14","source":"https://www.momorank.com/douyin/rankings/new_game"},
+    {"name":"Talking Tom Gold Run","platform":"Poki","what":"Outfit7 头部 IP 以独占形式登陆 Poki 网页端","date":"2026","source":"https://poki.com/blog/outfit7-hit-talking-tom-live-on-poki"},
+    {"name":"Little Farm World","platform":"Poki","what":"农场模拟，9 月上线 Poki，支持桌面与移动","date":"2026-09","source":"https://minutemirror.com.pk/10-poki-games-to-try-in-october-2026-638696/"}
+  ],
+  "breakdowns": [
+    {"name":"疯狂水世界","maker":"益世界","tag":"模拟经营 + 卡牌养成 + 轻 SLG","rank":"微信 9 月畅销第 2；抖音 9 月畅销第 1",
+     "gameplay":"前期捡资源、建基地、做订单；中期英雄养成与推图；16 级后才进入联盟城战，SLG 仅每晚 8–9 点开放，降低 PVP 挫败感。",
+     "monet":"以内购（IAP）为主：卡牌、养成、资源/时间礼包，兼顾中低氪留存。",
+     "ua":"巨量引擎为主；素材走“末日生存/建造”钩子、AIGC 短剧、玩法实录，直播间起号承接，强调免下载点击即玩。",
+     "sources":["https://www.lightgame.cc/game/wechat-931f4f400e.html","https://news.qq.com/rain/a/20260419A06JO100","https://youcloud.com/report/s/6QKBfWk/"],
+     "caveat":"拆解来自第三方分析文章与投放监测报告，非厂商官方披露。"}
+  ],
+  "news": [
+    {"date":"2026-07-30","tag":"市场","title":"2026 上半年小程序游戏收入 316.57 亿元，同比 +36.01%","detail":"内购 211.37 亿（66.8%），广告变现 105.20 亿（33.2%）。来源：《2026年1—6月中国游戏产业报告》。","source":"https://finance.sina.com.cn/tech/2026-07-30/doc-inikqiym5146287.shtml"},
+    {"date":"2026-09-30","tag":"版号","title":"9 月 209 款游戏获版号（国产 206、进口 3）","detail":"国产中“移动-休闲益智”75 款；年内累计 1571 款，前三季度同比约 +23%。截至 10-14，10 月批次尚未公布。","source":"https://finance.eastmoney.com/a/202609303887899241.html"},
+    {"date":"2026-09-30","tag":"政策","title":"小程序游戏实行差异化审批路径","detail":"上市公司公告提及国产、进口、小程序、主机游戏分类审批；北京、上海试点“版号预审制”，平均周期由 60 天缩至 30 天（企业公告口径）。","source":"https://finance.eastmoney.com/a/202609303887899241.html"},
+    {"date":"2026-10-02","tag":"格局","title":"微信畅销榜头部固化：换血率 23%，三七互娱 7 款领跑","detail":"Top50 仅 1 款新品；大梦龙途、腾讯各 5 款并列第二；模拟经营占 Top10 中 3 席。","source":"https://www.mycapitalanalyze.com/zh/game/post/wechat-mini-game-top-100-september-2026.html"},
+    {"date":"2026-09-30","tag":"海外","title":"Meta：Facebook Web Games 9 月 30 日停止服务","detail":"旧 Web Games 需迁移到采用 NEZP（零权限联网）的 Instant Games，否则下线；Unity 旧版 Instant Games SDK 已弃用。","source":"https://ppc.land/meta-announces-web-games-sunset-by-september-2026/"},
+    {"date":"2026-10-12","tag":"海外","title":"Telegram 小程序：开箱/博彩类应用数量与用户均多于游戏","detail":"Apps 标签页 192 个应用中游戏 28 个（月活约 313 万），开箱/竞猜类 48 个（约 774 万）。单一账号抽样。","source":"https://charliemorrison.dev/blog/telegram-mini-games-list-2026/"},
+    {"date":"2025","tag":"海外","title":"Poki：月活 1 亿、每月 10 亿次游玩","detail":"Poki 官方博客口径，2020 年月活 1000 万，五年增长十倍。","source":"https://poki.com/blog/outfit7-hit-talking-tom-live-on-poki"}
+  ],
+  "sources": [
+    ["GameLook（经腾讯新闻）","微信小游戏月度畅销榜","https://news.qq.com/rain/a/20261002A09LA800"],
+    ["DataEye × 引力引擎（澎湃转载）","微信/抖音小游戏月榜","https://m.thepaper.cn/newsDetail_forward_34234932"],
+    ["MomoRank","抖音小游戏日榜（免费版仅 Top10）","https://www.momorank.com/douyin/rankings/bestseller"],
+    ["国家新闻出版署","游戏审批结果","https://www.nppa.gov.cn/bsfw/jggs/yxspjg/"],
+    ["Poki","实时 trending","https://poki.com/"],
+    ["StatKraken","CrazyGames 等网页游戏统计","https://www.statkraken.com/rankings"]
+  ]
+}
