@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2.OpenShift-应用部署</title>
+    <url>/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>1.OpenShift-架构概述</title>
     <url>/2018/08/02/1.OpenShift-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[
@@ -67,15 +76,6 @@ rm -rf &#x2F;path&#x2F;to&#x2F;httpd-2.2.4*根据安装步骤不同和版本不�
       </tags>
   </entry>
   <entry>
-    <title>2.OpenShift-应用部署</title>
-    <url>/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Centos server配置ntp时间同步</title>
     <url>/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</url>
     <content><![CDATA[yum install ntp添加NTP服务器地址vi &#x2F;etc&#x2F;ntp.confserver 0.pool.ntp.orgserver 1.pool.ntp.orgserver 2.pool.ntp.orgserver 3.pool.ntp.org
@@ -115,22 +115,6 @@ service iptables restart安装JDKyum -y install java-1.7.0-openjdk*
       </tags>
   </entry>
   <entry>
-    <title>Centos6.4部署puppet3.8.4</title>
-    <url>/2016/03/05/Centos6.4%E9%83%A8%E7%BD%B2puppet3.8.4/</url>
-    <content><![CDATA[关闭ipatbles和selinuxpuppet官网下载puppetyum源url：http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm上传至puppet服务器并安装
-yum安装puppet-serveryum install puppet-server启动puppetchkconfig puppetmaster onchkconfig puppet on&#x2F;etc&#x2F;init.d&#x2F;puppetmaster start&#x2F;etc&#x2F;init.d&#x2F;puppet start在puppet-server上查看证书puppet cert list –all
-使用apache+passenger运行puppet-serveryum install httpd httpd-devel ruby-devel mod_ssl make gcc gcc-c++ curl-devel openssl-devel zlib-devel安装rack和passengergem install rack
-gem install passenger
-编译passengerpassenger-install-apache2-module
-]]></content>
-      <categories>
-        <category>Dev Ops</category>
-      </categories>
-      <tags>
-        <tag>puppet</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos6.5搭建shdowsocks服务器</title>
     <url>/2016/03/05/Centos6.5%E6%90%AD%E5%BB%BAshdowsocks%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
     <content><![CDATA[yum updateyum install python-setuptools &amp;&amp; easy_install pippip install shadowsocksvi &#x2F;etc&#x2F;shadowsocks.json[root@iZu1cf4uswmZ ~]# more &#x2F;etc&#x2F;shadowsocks.json{ “server”:”47.88.50.29”, “server_port”:8000, “password”:”PA@@w0rd”, “timeout”:300, “method”:”rc4-md5”, “fast_open”:true}
@@ -151,6 +135,22 @@ workers：workers数量，默认为 1。
       </categories>
       <tags>
         <tag>shdowsocks</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos6.4部署puppet3.8.4</title>
+    <url>/2016/03/05/Centos6.4%E9%83%A8%E7%BD%B2puppet3.8.4/</url>
+    <content><![CDATA[关闭ipatbles和selinuxpuppet官网下载puppetyum源url：http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm上传至puppet服务器并安装
+yum安装puppet-serveryum install puppet-server启动puppetchkconfig puppetmaster onchkconfig puppet on&#x2F;etc&#x2F;init.d&#x2F;puppetmaster start&#x2F;etc&#x2F;init.d&#x2F;puppet start在puppet-server上查看证书puppet cert list –all
+使用apache+passenger运行puppet-serveryum install httpd httpd-devel ruby-devel mod_ssl make gcc gcc-c++ curl-devel openssl-devel zlib-devel安装rack和passengergem install rack
+gem install passenger
+编译passengerpassenger-install-apache2-module
+]]></content>
+      <categories>
+        <category>Dev Ops</category>
+      </categories>
+      <tags>
+        <tag>puppet</tag>
       </tags>
   </entry>
   <entry>
@@ -317,6 +317,21 @@ echo_supervisord_conf &gt;&gt; &#x2F;etc&#x2F;supervisord.conf编辑配置文件
       </tags>
   </entry>
   <entry>
+    <title>Centos quick install OpenShift3.9.0</title>
+    <url>/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/</url>
+    <content><![CDATA[1. deploy Centos minial system2. yum update -ya. reboot
+
+3. yum install git docker net-tools4. git clone https://github.com/gshipley/installcentos.gita. export DOMAIN=openshift.iob. export USERNAME=chenfc. export PASSWORD=&lt;your-password&gt;
+
+5. cd installcentosa. ./install-openshift.sh
+
+6. DNS Sercera. openshift.io 8443b. openshift.io 80c. openshift.io 443
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Centos7.2部署kubernetes</title>
     <url>/2017/01/25/Centos7.2%E9%83%A8%E7%BD%B2kubernetes/</url>
     <content><![CDATA[
@@ -345,59 +360,6 @@ FLANNEL_ETCD_ENDPOINTS&#x3D;”]]></content>
       <tags>
         <tag>docker,kubernetes</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Centos安全配置参考</title>
-    <url>/2017/01/03/Centos%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[0x01 系统安全记录文件
-#more &#x2F;var&#x2F;log&#x2F;secure统计访问IP及次数。
-#grep -oP ‘(\d+.){3}\d+’ &#x2F;var&#x2F;log&#x2F;secure |sort |uniq -c0x02 启动和登录安全性1．用户口令 修改改密码长度&#x2F;etc&#x2F;login.defs
-#vi &#x2F;etc&#x2F;login.defs PASS_MIN_LEN 82．注释掉不需要的用户和用户组vi &#x2F;etc&#x2F;passwd vi &#x2F;etc&#x2F;group3．口令文件chattr命令给下面的文件加上不可更改属性，从而防止非授权用户获得权限。
-#chattr +i &#x2F;etc&#x2F;passwd
-#chattr +i &#x2F;etc&#x2F;shadow
-#chattr +i &#x2F;etc&#x2F;group
-#chattr +i &#x2F;etc&#x2F;gshadow4．禁止CtrlAltDelete重新启动机器命令 修改&#x2F;etc&#x2F;inittab文件，将ca::ctrlaltdel:&#x2F;sbin&#x2F;shutdown -t3 -r now”一行注释掉。然后重新设置&#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;目录下所有文件的许可权限，运行如下命令：
-#chmod -R 700 &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;*这样便仅有root可以读、写或执行上述所有脚本文件。5．限制su命令 当不想任何人能够su作为root，可以编辑&#x2F;etc&#x2F;pam.d&#x2F;su文件，增加如下两行：auth sufficient &#x2F;lib&#x2F;security&#x2F;pam_rootok.so debug auth required &#x2F;lib&#x2F;security&#x2F;pam_wheel.so group&#x3D;isd这时，仅isd组的用户可以su作为root。此后，如果希望用户admin能够su作为root，可以运行如下命令：
-#usermod -G10 admin6 . 更改SSH端口 最好改为10000以上，别人扫描到端口的机率也会下降,不允许使用低版本的SSH协议vi &#x2F;etc&#x2F;ssh&#x2F;ssd_config将#protocol2,1改为protocol2将PORT改为1000以上端口vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config Port 10000同时，创建一个普通登录用户，并取消直接root登录useradd ‘username’ passwd ‘username’ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config PermitRootLogin no＃取消root直接远程登录7 . 关闭那些不需要的服务记住少开一个服务，就少一个危险。以下仅列出需要启动的服务，未列出的服务一律关闭：
-#setupacpidanacroncpuspeedcrondirqbalance\仅当服务器CPU为S.M.P架构或支持双核心、HT技术时，才需开启，否则关闭。microcode_ctl network random sendmail sshd syslog yum-updatesd8 . 启用iptables防火墙对增加系统安全有许多好处。设置好防火墙的规则，例如只允许内网IP访问，禁止对外发送。&#x2F;etc&#x2F;init.d&#x2F;iptables start0x03 限制网络访问1．NFS访问 使用NFS网络文件系统服务，应该确保&#x2F;etc&#x2F;exports具有最严格的访问权限设置，也就是意味着不要使用任何通配符、不允许root写权限并且只能安装为只读文件系统。编辑文件&#x2F;etc&#x2F;exports并加入如下两行。&#x2F;dir&#x2F;to&#x2F;export host1.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export host2.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export是想输出的目录，host.mydomain.com是登录这个目录的机器名，ro意味着mount成只读系统，root_squash禁止root写入该目录。为了使改动生效，运行如下命令。
-#&#x2F;usr&#x2F;sbin&#x2F;exportfs-a 2．TCP_WRAPPERS设置 默认情况下，多数Linux系统允许所有的请求，而用TCP_WRAPPERS增强系统安全性是举手之劳，可以修改&#x2F;etc&#x2F;hosts.deny和&#x2F;etc&#x2F;hosts.allow来增加访问限制。例如，将&#x2F;etc&#x2F;hosts.deny设为”ALL:ALL”可以默认拒绝所有访问，然后在&#x2F;etc&#x2F;hosts.allow文件中添加允许的访问。 例如，”sshd:192.168.10.10&#x2F;255.255.255.0 gate.openarch.com”表示 允许IP地址192.168.10.10和主机名gate.openarch.com允许通过SSH连接。3．登录终端设置&#x2F;etc&#x2F;securetty文件指定了允许root登录的tty设备，由&#x2F;bin&#x2F;login程序读取，其格式是一个被允许的名字列表，可以编辑&#x2F;etc&#x2F;securetty且注释掉如下的行。tty1
-#tty2
-#tty3
-#tty4
-#tty5
-#tty6这时，root仅可在tty1终端登录。
-0x04 防止攻击1．阻止ping如果没人能ping通系统，安全性自然增加了，为此，我们可以在&#x2F;etc&#x2F;rc.d&#x2F;rc.local文件中增加如下一行echo 1 &gt;&#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;icmp_echo_ignore_all 2．防止IP欺骗 编辑host.conf文件并增加如下几行来防止IP欺骗攻击。order bind，hosts 解析顺序multi on 允许多面网络（多网卡开启）nospoof on 拒绝IP欺骗3．防止DoS攻击 对系统所有的用户设置资源限制可以防止DoS类型攻击，如最大进程数和内存使用数量等。 例如，可以在&#x2F;etc&#x2F;security&#x2F;limits.conf中添加如下几行：
-
-hard core 0
-hard rss 5000
-hard nproc 20然后必须编辑&#x2F;etc&#x2F;pam.d&#x2F;login文件检查下面一行是否存在。session required &#x2F;lib&#x2F;security&#x2F;pam_limits.socore 0 表示禁止创建core文件，nproc 20 把最多的进程数限制到20
-表示登录到系统的所有用户rss 5000 表示除了root之外，其它用户最多只能用5M内存。这样可以更好的控制系统中用户对进程、core文件和内存的使用情况。
-
-
-
-参考链接：http://blog.csdn.net/qq_29277155/article/details/52497113
-]]></content>
-      <categories>
-        <category>安全配置参考</category>
-      </categories>
-      <tags>
-        <tag>Centos</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos quick install OpenShift3.9.0</title>
-    <url>/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/</url>
-    <content><![CDATA[1. deploy Centos minial system2. yum update -ya. reboot
-
-3. yum install git docker net-tools4. git clone https://github.com/gshipley/installcentos.gita. export DOMAIN=openshift.iob. export USERNAME=chenfc. export PASSWORD=&lt;your-password&gt;
-
-5. cd installcentosa. ./install-openshift.sh
-
-6. DNS Sercera. openshift.io 8443b. openshift.io 80c. openshift.io 443
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
   </entry>
   <entry>
     <title>Centos网卡做bond0</title>
@@ -453,6 +415,44 @@ acl is_cbs hdr_beg(host) ＊＊＊＊＊redirect prefix https://******** if is_c
       </tags>
   </entry>
   <entry>
+    <title>Centos安全配置参考</title>
+    <url>/2017/01/03/Centos%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[0x01 系统安全记录文件
+#more &#x2F;var&#x2F;log&#x2F;secure统计访问IP及次数。
+#grep -oP ‘(\d+.){3}\d+’ &#x2F;var&#x2F;log&#x2F;secure |sort |uniq -c0x02 启动和登录安全性1．用户口令 修改改密码长度&#x2F;etc&#x2F;login.defs
+#vi &#x2F;etc&#x2F;login.defs PASS_MIN_LEN 82．注释掉不需要的用户和用户组vi &#x2F;etc&#x2F;passwd vi &#x2F;etc&#x2F;group3．口令文件chattr命令给下面的文件加上不可更改属性，从而防止非授权用户获得权限。
+#chattr +i &#x2F;etc&#x2F;passwd
+#chattr +i &#x2F;etc&#x2F;shadow
+#chattr +i &#x2F;etc&#x2F;group
+#chattr +i &#x2F;etc&#x2F;gshadow4．禁止CtrlAltDelete重新启动机器命令 修改&#x2F;etc&#x2F;inittab文件，将ca::ctrlaltdel:&#x2F;sbin&#x2F;shutdown -t3 -r now”一行注释掉。然后重新设置&#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;目录下所有文件的许可权限，运行如下命令：
+#chmod -R 700 &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;*这样便仅有root可以读、写或执行上述所有脚本文件。5．限制su命令 当不想任何人能够su作为root，可以编辑&#x2F;etc&#x2F;pam.d&#x2F;su文件，增加如下两行：auth sufficient &#x2F;lib&#x2F;security&#x2F;pam_rootok.so debug auth required &#x2F;lib&#x2F;security&#x2F;pam_wheel.so group&#x3D;isd这时，仅isd组的用户可以su作为root。此后，如果希望用户admin能够su作为root，可以运行如下命令：
+#usermod -G10 admin6 . 更改SSH端口 最好改为10000以上，别人扫描到端口的机率也会下降,不允许使用低版本的SSH协议vi &#x2F;etc&#x2F;ssh&#x2F;ssd_config将#protocol2,1改为protocol2将PORT改为1000以上端口vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config Port 10000同时，创建一个普通登录用户，并取消直接root登录useradd ‘username’ passwd ‘username’ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config PermitRootLogin no＃取消root直接远程登录7 . 关闭那些不需要的服务记住少开一个服务，就少一个危险。以下仅列出需要启动的服务，未列出的服务一律关闭：
+#setupacpidanacroncpuspeedcrondirqbalance\仅当服务器CPU为S.M.P架构或支持双核心、HT技术时，才需开启，否则关闭。microcode_ctl network random sendmail sshd syslog yum-updatesd8 . 启用iptables防火墙对增加系统安全有许多好处。设置好防火墙的规则，例如只允许内网IP访问，禁止对外发送。&#x2F;etc&#x2F;init.d&#x2F;iptables start0x03 限制网络访问1．NFS访问 使用NFS网络文件系统服务，应该确保&#x2F;etc&#x2F;exports具有最严格的访问权限设置，也就是意味着不要使用任何通配符、不允许root写权限并且只能安装为只读文件系统。编辑文件&#x2F;etc&#x2F;exports并加入如下两行。&#x2F;dir&#x2F;to&#x2F;export host1.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export host2.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export是想输出的目录，host.mydomain.com是登录这个目录的机器名，ro意味着mount成只读系统，root_squash禁止root写入该目录。为了使改动生效，运行如下命令。
+#&#x2F;usr&#x2F;sbin&#x2F;exportfs-a 2．TCP_WRAPPERS设置 默认情况下，多数Linux系统允许所有的请求，而用TCP_WRAPPERS增强系统安全性是举手之劳，可以修改&#x2F;etc&#x2F;hosts.deny和&#x2F;etc&#x2F;hosts.allow来增加访问限制。例如，将&#x2F;etc&#x2F;hosts.deny设为”ALL:ALL”可以默认拒绝所有访问，然后在&#x2F;etc&#x2F;hosts.allow文件中添加允许的访问。 例如，”sshd:192.168.10.10&#x2F;255.255.255.0 gate.openarch.com”表示 允许IP地址192.168.10.10和主机名gate.openarch.com允许通过SSH连接。3．登录终端设置&#x2F;etc&#x2F;securetty文件指定了允许root登录的tty设备，由&#x2F;bin&#x2F;login程序读取，其格式是一个被允许的名字列表，可以编辑&#x2F;etc&#x2F;securetty且注释掉如下的行。tty1
+#tty2
+#tty3
+#tty4
+#tty5
+#tty6这时，root仅可在tty1终端登录。
+0x04 防止攻击1．阻止ping如果没人能ping通系统，安全性自然增加了，为此，我们可以在&#x2F;etc&#x2F;rc.d&#x2F;rc.local文件中增加如下一行echo 1 &gt;&#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;icmp_echo_ignore_all 2．防止IP欺骗 编辑host.conf文件并增加如下几行来防止IP欺骗攻击。order bind，hosts 解析顺序multi on 允许多面网络（多网卡开启）nospoof on 拒绝IP欺骗3．防止DoS攻击 对系统所有的用户设置资源限制可以防止DoS类型攻击，如最大进程数和内存使用数量等。 例如，可以在&#x2F;etc&#x2F;security&#x2F;limits.conf中添加如下几行：
+
+hard core 0
+hard rss 5000
+hard nproc 20然后必须编辑&#x2F;etc&#x2F;pam.d&#x2F;login文件检查下面一行是否存在。session required &#x2F;lib&#x2F;security&#x2F;pam_limits.socore 0 表示禁止创建core文件，nproc 20 把最多的进程数限制到20
+表示登录到系统的所有用户rss 5000 表示除了root之外，其它用户最多只能用5M内存。这样可以更好的控制系统中用户对进程、core文件和内存的使用情况。
+
+
+
+参考链接：http://blog.csdn.net/qq_29277155/article/details/52497113
+]]></content>
+      <categories>
+        <category>安全配置参考</category>
+      </categories>
+      <tags>
+        <tag>Centos</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MAC设置无共享密钥的IPsec链接</title>
     <url>/2016/03/05/MAC%E8%AE%BE%E7%BD%AE%E6%97%A0%E5%85%B1%E4%BA%AB%E5%AF%86%E9%92%A5%E7%9A%84IPsec%E9%93%BE%E6%8E%A5/</url>
     <content><![CDATA[在&#x2F;etc&#x2F;ppp目录下新建一个文件options :
@@ -490,22 +490,6 @@ show variables like ‘max_connections’;
     <title>Markdown基本语法</title>
     <url>/2016/08/22/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>NFS安装配置</title>
-    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
-NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
-NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
-nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
-iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
-]]></content>
-      <categories>
-        <category>Centos</category>
-      </categories>
-      <tags>
-        <tag>nfs</tag>
-      </tags>
   </entry>
   <entry>
     <title>MySQL Tuning Primer Script使用（Mysql调优脚本）</title>
@@ -560,230 +544,6 @@ TABLE LOCKINGCurrent Lock Wait ratio &#x3D; 0 : 318Your table locking seems to b
       <tags>
         <tag>tuning-script</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>OpenShift-S2I构建过程</title>
-    <url>/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
-如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
-编译和部署自己的应用程序docker生成镜像的过程，当我们创建自己的应用程序镜像的时候，一般来说有两种途径：
-
-通过Dockerfile来创建：
-
-传统做法是自己编写Dockerfile，使用基础镜像，copy源代码、RUN命令来安装依赖包、shell命令来编译程序、CMD名字指定可运行程序，最后使用docker build 生成镜像。
-
-通过docker run和docker commit来创建
-
-还有一种比较小众的做法。是docker run运行基础镜像，然后使用交互式shell下载源代码、安装依赖包最后使用dockercommit提交容器生成镜像。
-理解s2i 历程中的三个镜像要了解 s2i的过程我们先来理解三个阶段的三个镜像：
-
-基础镜像 base image：
-
-是我们在docker hub下载的某个语言的官方镜像，比如python2.7、PHP3.5，这些镜像只包含语言的编译环境，没有做任何加工。
-
-编译镜像 builder image：
-
-这个镜像是我们在基础镜像的基础上，经过加工以后，可以自动编译代码，并自动完成部署运行的镜像，这个镜像是通过dockerfile生成，继承自上面的baseimage。制作过程参考：https://github.com/openshift/source-to-image/
-
-运行时镜像 runtime image：
-
-这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builderimage; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builderimage，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit出一个新的image ，称为 runtime image
-OpenShift由builder image到runtime image的过程如下图：
-
-自定义s2i脚本openshift官方已经提供了各种语言的 builder image，(当然这些builderimage中已经注入了写好的s2i脚本，一般保存在&#x2F;usr&#x2F;libexec&#x2F;s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：
-有以下三种方式可以使用自定义s2i脚本来替换默认脚本：
-
-在代码中包含s2i脚本：在代码仓库的跟目录创建文件夹.s2i&#x2F;bin，把脚本放到这个目录中，当编译时会自动调用这个脚本，值得注意的是，早期版本使用的是.sti&#x2F;bin文件夹，后期版本使用的是.s2i&#x2F;bin。
-指定网络上的s2i脚本地址：通过设置bc的bc.spec.strategy.sourceStrategy.scripts项目来指定s2i脚本地址，系统会自动去该地址下载脚本。
-如果使用s2i工具创建，可以通过三种方式设置脚本位置
-
-s2i配置文件信息主要包含四个文件，分别为：
-
-assemble 用于对源码编译以及安装配置的脚本
-run 启动应用镜像时执行的脚本
-save-artifacts用于保存一些编译中复用的内容，这样下次编译可以直接使用这些文件，从而加快编译安装等速度
-usage 打印生成镜像的帮助信息
-
-这四个文件都需要用户自行定义，s2i会通过三种方式寻找这些文件，分别为：
-
-源码中.s2i&#x2F;bin下
--scripts-url 参数指定的位置
-镜像中label：io.openshift.s2i.scripts-url指定的位置
-
-推荐使用第一种方式，这样方便管理和持续集成，其他两种url都支持以下三种形式：
-image:&#x2F;&#x2F;path_to_scripts_dir 在镜像内的绝对路径
-file:&#x2F;&#x2F;path_to_scripts_dir 在主机上的绝对或者相对路径
-http(s):&#x2F;&#x2F;path_to_scripts_dir 网络上的文件
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Nginx安全配置参考</title>
-    <url>/2017/01/03/Nginx%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[0X01 日志审计① 参考配置操作(1)编辑 nginx.conf 配置文件将 error_log 前的“#”去掉，记录错误日志将 access_log 前的“#”去掉，记录访问日志(2)设置 access_log，修改配置文件如下：log_format formatname ‘$remote_addr - $remote_user [$time_local] ‘‘ “$request” $status $body_bytes_sent “$http_referer” ‘‘ “$http_user_agent” “$http_x_forwarded_for”‘; access_loglogs&#x2F;access.log formantname; #formatname 是设置配置文件格式的名称② 备注事项查看 nginx.conf 配置文件中，error_log、access_log 前的“#”是否去掉0x02 服务1 限制 IP 访问对网站或敏感目录的访问 IP 进行限制① 参考配置操作(1)修改配置文件
-#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：location &#x2F; {deny 192.168.1.1; #拒绝 IPallow 192.168.1.0&#x2F;24; #允许 IPallow 10.1.1.0&#x2F;16; #允许 IPdeny all; #拒绝其他所有 IP(2)重新启动 nginx 服务② 备注事项根据应用场景，设置合适的 IP 地址，检查配置文件 #more &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf 中的 server 项2 控制超时时间控制超时时间，提高服务器性能，降低客户端的等待时间① 建议配置(1)修改配置文件
-#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：client_body_timeout 10; #设置客户端请求主体读取超时时间client_header_timeout 10; #设置客户端请求头读取超时时间keepalive_timeout 5 5; #第一个参数指定客户端连接保持活动的超时时间，第二个参数是可选的，它指定了消息头保持活动的有效时间send_timeout 10; #指定响应客户端的超时时间(2)重新启动 nginx 服务② 备注事项需要根据应用场景的需要选择合适的参数值。1 、符合性判定依据超时后，服务器返回相应的消息。2 、参考检测方法检查配置文件 #more &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf3 下载限制并发和速度限制客户端下载速度，保证服务器负载正常① 建议配置例如网站存放路径为&#x2F;usr&#x2F;local&#x2F;nsfocus&#x2F; ，服务器名称为：down.nsfocus.com(1)修改配置文件
-#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：limit_zone one $binary_remote_addr 10m;server{listen 80;server_name down.nsfocus.com;index index.html index.htm index.PHP;oot &#x2F;usr&#x2F;local&#x2F;nsfocus;
-#Zone limit;location &#x2F; {limit_conn one 1;limit_rate 20k;}………}(2)重新启动 nginx 服务下载时，不会超过设计的并发连接数和速度限制，同时检查 nginx.conf 文件中的配置0x03 其他事项1 卸载不需要的模块卸载不需要的 nginx 模块, 最大限度地将 nginx 加载的模块最小化① 建议配置(1)检查需要禁用的模块在编译 nginx 服务器时，使用下面的命令查看哪些模块应该启用，哪些模应该禁用：
-.&#x2F;configure –help | less一旦处选了要禁用的模块，需要与相关人员沟通确认，并经过测试不影响业务运行。(2)例如，要禁用 autoindex 和 SSI 模块，命令如下：
-.&#x2F;configure –without-http_autoindex_module –without-http_ssi_modulemakemake install② 备注事项Nginx 不包含不必要的模块或者输入 .&#x2F;configure –help | less 进行检查2 防盗链设置防止其他网站盗链本网站资源① 建议配置(1)修改配置文件
-#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：location ~ ^.+.(gif|jpg|png|swf|flv|rar|zip)$ {valid_referers none blocked server_names .nsfocus.comhttp://localhost baidu.com;if ($invalid_referer) {rewrite ^&#x2F; [img]http://www.nsfocus.com/images/default/logo.gif[/img];
-return 403;}}根据应用场景，设置合适的域名(2)重新启动 nginx 服务② 备注事项从非法网站访问所保护的资源，出现设置的页面。同时检查配置文件 #more &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf3 自定义错误信息1)修改 src&#x2F;http&#x2F;ngx_http_special_response.c，自己定制错误信息
-messages with just a carriage return.static char ngx_http_error_400_page[] &#x3D; CRLF;static char ngx_http_error_404_page[] &#x3D; CRLF;static char ngx_http_error_413_page[] &#x3D; CRLF;static char ngx_http_error_502_page[] &#x3D; CRLF;static char ngx_http_error_504_page[] &#x3D; CRLF;常见错误：400 bad request404 NOT FOUND413 Request Entity Too Large502 Bad Gateway504 Gateway Time-out(2)重新启动 nginx 服务② 备注事项URL 地址栏中输入 http://ip:8800/manager12345，访问出错时，返回自定义的错误页面4 隐藏 nginx 服务信息头① 建议配置修改 nginx解压路径&#x2F;src&#x2F;http&#x2F;ngx_http_header_filter_module.c文件的第48和 49 行内容，自定义头信息：static char ngx_http_server_string[] &#x3D; “Server:XXXXX.com” CRLF;static char ngx_http_server_full_string[] &#x3D; “Server:XXXXX.com” CRLF;添加如下代码到 nginx.conf 配置文件，禁止错误页面中显示 nginx 版本号：server_tokens off② 备注事项服务信息头显示设置的内容，检查 http 服务信息头内容5 补丁更新安装系统补丁，修补漏洞1 、参考配置操作手动安装补丁或安装最新版本软件，所安装的补丁，应首先在经过测试验证；安装前，要做好数据备份。2查看版本和编译器信息
-参考链接：http://blog.csdn.net/qq_29277155/article/details/52819635
-]]></content>
-      <categories>
-        <category>安全配置参考</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OpenShift-安全与配额</title>
-    <url>/2018/04/25/OpenShift-%E5%AE%89%E5%85%A8%E4%B8%8E%E9%85%8D%E9%A2%9D/</url>
-    <content><![CDATA[概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。
-容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全
-用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时间内对系统进行访问。
-
-获取token：oc whoami -t
-获取tokenAPI：&#x2F;oauth&#x2F;token&#x2F;request
-
-身份验证 identity provideropenshift提供不同的适配器链接不同的用户信息管理系统：LDAP、ActiveDirectory、HTPasswd。
-openshift默认采用HTPasswd的文件存储用户信息。该文件存储位置在：&#x2F;etc&#x2F;origin&#x2F;master&#x2F;htpasswd
-使用htpasswd命令可以对用户数据库进行增删改查
-用户组
-查看provider来源：oc get identity
-认证系统：authentication
-授权系统：authorization
-角色访问控制系统：RBAC （role based access control）
-
-权限cluster local
-role：角色，一组权限的集合，RBAC系统中，权限–&gt;role–&gt;用户或者组
-rule：规则，rule三要素：角色role、资源resource、动作verb。
-policy：策略，若干role组成的集合
-role binding ，角色与用户或者组的绑定关系
-policy binding，若干role组成的集合与用户或者组的绑定关系。
-
-权限操作
-授予用户查看当前项目权限：
-
-oc policy add-role-to-user view user2
-
-编辑权限：
-
-oc policy add-role-to-user edit user2
-删除：oc policy remove-role-from-user edit user2
-
-查看角色绑定关系：
-
-oc get rolebinding
-
-查看role的详细信息
-
-oc describe clusterrole admin
-
-创建组：
-
-oc adm groups new newgroups
-
-增加用户到组
-
-oc adm groups add-users newgroups user2
-
-绑定cluster-admin role到新建组
-
-oc adm policy add-cluster-role-to-group cluster-admin newgroups
-cluster-admin是系统管理员角色，这个角色可以在系统中对任意对象执行任意操作。
-Service Account
-builder对象：用于S2I
-default对象：用于运行容器
-depolyer对象：用于部署容器
-
-
-
-
-每个service account包含secret 和token
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-安全上下文SCCprivileged权限最大，restricted权限最小，普通用户及其创建的项目，都属于restricted组。这个组不允许容器以root用户运行，如该要容器以root权限运行，可以把项目默认的defaultservice account加入到高权限的组中，
-比如加入到anyuid组中，因为anyuid组中的RUNASUSER属性值为：RUNASANY，命令如下：
-oc adm policy add-scc-to-user anyuid -z default -n projectname
-
-
-
-查看当前用户的scc（Security content constraint）
-
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-Quota额度配置额度的控制通过资源额度对象resource quota管理（集群用clusterresourcequota），
-resourcequota是基于项目的，以项目为单位对资源进行额度管理，资源的额度对象分为两种：
-
-计算资源：compute resource
-
-
-计算资源：对CPU、内存资源的额度管理
-
-CPU：
-
-
-
-limits.cpu: “40” #limits ：容器所能使用的cpu上限值。 limits.memory: 40Gi requests.cpu: “4” #requests：容器运行所需的cpu下限值。 requests.memory: 4Gi
-
-
-
-
-
-
-CPU资源的度量最小单位是Millicore，一个计算节点上CPU核数乘以1000，即为该节点CPU资源总量。
-例如：4Core&#x3D;4000m
-注意：设置计算资源以后，用户部署容器的时候，必须显示的为每一个容器指定CPU和内存的requests及limits的值，否则容器无法部署。
-
-对象数量额度：pod、rc、rq、svc、cm、pvc、is、secrets
-
-
-
-
-openshift.io&#x2F;imagestreams: “400” persistentvolumeclaims: “400” pods: “40” replicationcontrollers: “40” resourcequotas: “40” secrets: “100” services: “100”
-
-
-
-
-
-
-
-cluster resource quota
-
-ClusterResourceQuota允许限制多个project，多个project可以通过annotation 或者label进行选择，比如某个用户下的所有project就可以通过：annotations：openshift.io&#x2F;requester&#x3D;进行限制。项目管理员不能创建和修改ClusterResourceQuota，但是可以查看集群限额在当前项目的应用情况，通过以下命令查看：
-
-
-
-oc describe AppliedClusterResourceQuota
-
-
-
-
-
-
-Limit Range 资源限制资源限制是更具体的控制每个容器具体使用多少CPU和内存资源。
-可以通过两个层面进行定义：
-
-项目级别统一定义每个容器资源是用总量
-容器级别单独定义某个容器资源是用总量
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
   </entry>
   <entry>
     <title>OpenShift-Project权限管理</title>
@@ -987,6 +747,246 @@ oc get clusterrolebinding
 
 
 
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Nginx安全配置参考</title>
+    <url>/2017/01/03/Nginx%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[0X01 日志审计① 参考配置操作(1)编辑 nginx.conf 配置文件将 error_log 前的“#”去掉，记录错误日志将 access_log 前的“#”去掉，记录访问日志(2)设置 access_log，修改配置文件如下：log_format formatname ‘$remote_addr - $remote_user [$time_local] ‘‘ “$request” $status $body_bytes_sent “$http_referer” ‘‘ “$http_user_agent” “$http_x_forwarded_for”‘; access_loglogs&#x2F;access.log formantname; #formatname 是设置配置文件格式的名称② 备注事项查看 nginx.conf 配置文件中，error_log、access_log 前的“#”是否去掉0x02 服务1 限制 IP 访问对网站或敏感目录的访问 IP 进行限制① 参考配置操作(1)修改配置文件
+#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：location &#x2F; {deny 192.168.1.1; #拒绝 IPallow 192.168.1.0&#x2F;24; #允许 IPallow 10.1.1.0&#x2F;16; #允许 IPdeny all; #拒绝其他所有 IP(2)重新启动 nginx 服务② 备注事项根据应用场景，设置合适的 IP 地址，检查配置文件 #more &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf 中的 server 项2 控制超时时间控制超时时间，提高服务器性能，降低客户端的等待时间① 建议配置(1)修改配置文件
+#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：client_body_timeout 10; #设置客户端请求主体读取超时时间client_header_timeout 10; #设置客户端请求头读取超时时间keepalive_timeout 5 5; #第一个参数指定客户端连接保持活动的超时时间，第二个参数是可选的，它指定了消息头保持活动的有效时间send_timeout 10; #指定响应客户端的超时时间(2)重新启动 nginx 服务② 备注事项需要根据应用场景的需要选择合适的参数值。1 、符合性判定依据超时后，服务器返回相应的消息。2 、参考检测方法检查配置文件 #more &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf3 下载限制并发和速度限制客户端下载速度，保证服务器负载正常① 建议配置例如网站存放路径为&#x2F;usr&#x2F;local&#x2F;nsfocus&#x2F; ，服务器名称为：down.nsfocus.com(1)修改配置文件
+#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：limit_zone one $binary_remote_addr 10m;server{listen 80;server_name down.nsfocus.com;index index.html index.htm index.PHP;oot &#x2F;usr&#x2F;local&#x2F;nsfocus;
+#Zone limit;location &#x2F; {limit_conn one 1;limit_rate 20k;}………}(2)重新启动 nginx 服务下载时，不会超过设计的并发连接数和速度限制，同时检查 nginx.conf 文件中的配置0x03 其他事项1 卸载不需要的模块卸载不需要的 nginx 模块, 最大限度地将 nginx 加载的模块最小化① 建议配置(1)检查需要禁用的模块在编译 nginx 服务器时，使用下面的命令查看哪些模块应该启用，哪些模应该禁用：
+.&#x2F;configure –help | less一旦处选了要禁用的模块，需要与相关人员沟通确认，并经过测试不影响业务运行。(2)例如，要禁用 autoindex 和 SSI 模块，命令如下：
+.&#x2F;configure –without-http_autoindex_module –without-http_ssi_modulemakemake install② 备注事项Nginx 不包含不必要的模块或者输入 .&#x2F;configure –help | less 进行检查2 防盗链设置防止其他网站盗链本网站资源① 建议配置(1)修改配置文件
+#vi &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf具体设置如下：location ~ ^.+.(gif|jpg|png|swf|flv|rar|zip)$ {valid_referers none blocked server_names .nsfocus.comhttp://localhost baidu.com;if ($invalid_referer) {rewrite ^&#x2F; [img]http://www.nsfocus.com/images/default/logo.gif[/img];
+return 403;}}根据应用场景，设置合适的域名(2)重新启动 nginx 服务② 备注事项从非法网站访问所保护的资源，出现设置的页面。同时检查配置文件 #more &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf3 自定义错误信息1)修改 src&#x2F;http&#x2F;ngx_http_special_response.c，自己定制错误信息
+messages with just a carriage return.static char ngx_http_error_400_page[] &#x3D; CRLF;static char ngx_http_error_404_page[] &#x3D; CRLF;static char ngx_http_error_413_page[] &#x3D; CRLF;static char ngx_http_error_502_page[] &#x3D; CRLF;static char ngx_http_error_504_page[] &#x3D; CRLF;常见错误：400 bad request404 NOT FOUND413 Request Entity Too Large502 Bad Gateway504 Gateway Time-out(2)重新启动 nginx 服务② 备注事项URL 地址栏中输入 http://ip:8800/manager12345，访问出错时，返回自定义的错误页面4 隐藏 nginx 服务信息头① 建议配置修改 nginx解压路径&#x2F;src&#x2F;http&#x2F;ngx_http_header_filter_module.c文件的第48和 49 行内容，自定义头信息：static char ngx_http_server_string[] &#x3D; “Server:XXXXX.com” CRLF;static char ngx_http_server_full_string[] &#x3D; “Server:XXXXX.com” CRLF;添加如下代码到 nginx.conf 配置文件，禁止错误页面中显示 nginx 版本号：server_tokens off② 备注事项服务信息头显示设置的内容，检查 http 服务信息头内容5 补丁更新安装系统补丁，修补漏洞1 、参考配置操作手动安装补丁或安装最新版本软件，所安装的补丁，应首先在经过测试验证；安装前，要做好数据备份。2查看版本和编译器信息
+参考链接：http://blog.csdn.net/qq_29277155/article/details/52819635
+]]></content>
+      <categories>
+        <category>安全配置参考</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NFS安装配置</title>
+    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
+NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
+NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
+nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
+iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
+]]></content>
+      <categories>
+        <category>Centos</category>
+      </categories>
+      <tags>
+        <tag>nfs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OpenShift-S2I构建过程</title>
+    <url>/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
+如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
+编译和部署自己的应用程序docker生成镜像的过程，当我们创建自己的应用程序镜像的时候，一般来说有两种途径：
+
+通过Dockerfile来创建：
+
+传统做法是自己编写Dockerfile，使用基础镜像，copy源代码、RUN命令来安装依赖包、shell命令来编译程序、CMD名字指定可运行程序，最后使用docker build 生成镜像。
+
+通过docker run和docker commit来创建
+
+还有一种比较小众的做法。是docker run运行基础镜像，然后使用交互式shell下载源代码、安装依赖包最后使用dockercommit提交容器生成镜像。
+理解s2i 历程中的三个镜像要了解 s2i的过程我们先来理解三个阶段的三个镜像：
+
+基础镜像 base image：
+
+是我们在docker hub下载的某个语言的官方镜像，比如python2.7、PHP3.5，这些镜像只包含语言的编译环境，没有做任何加工。
+
+编译镜像 builder image：
+
+这个镜像是我们在基础镜像的基础上，经过加工以后，可以自动编译代码，并自动完成部署运行的镜像，这个镜像是通过dockerfile生成，继承自上面的baseimage。制作过程参考：https://github.com/openshift/source-to-image/
+
+运行时镜像 runtime image：
+
+这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builderimage; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builderimage，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit出一个新的image ，称为 runtime image
+OpenShift由builder image到runtime image的过程如下图：
+
+自定义s2i脚本openshift官方已经提供了各种语言的 builder image，(当然这些builderimage中已经注入了写好的s2i脚本，一般保存在&#x2F;usr&#x2F;libexec&#x2F;s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：
+有以下三种方式可以使用自定义s2i脚本来替换默认脚本：
+
+在代码中包含s2i脚本：在代码仓库的跟目录创建文件夹.s2i&#x2F;bin，把脚本放到这个目录中，当编译时会自动调用这个脚本，值得注意的是，早期版本使用的是.sti&#x2F;bin文件夹，后期版本使用的是.s2i&#x2F;bin。
+指定网络上的s2i脚本地址：通过设置bc的bc.spec.strategy.sourceStrategy.scripts项目来指定s2i脚本地址，系统会自动去该地址下载脚本。
+如果使用s2i工具创建，可以通过三种方式设置脚本位置
+
+s2i配置文件信息主要包含四个文件，分别为：
+
+assemble 用于对源码编译以及安装配置的脚本
+run 启动应用镜像时执行的脚本
+save-artifacts用于保存一些编译中复用的内容，这样下次编译可以直接使用这些文件，从而加快编译安装等速度
+usage 打印生成镜像的帮助信息
+
+这四个文件都需要用户自行定义，s2i会通过三种方式寻找这些文件，分别为：
+
+源码中.s2i&#x2F;bin下
+-scripts-url 参数指定的位置
+镜像中label：io.openshift.s2i.scripts-url指定的位置
+
+推荐使用第一种方式，这样方便管理和持续集成，其他两种url都支持以下三种形式：
+image:&#x2F;&#x2F;path_to_scripts_dir 在镜像内的绝对路径
+file:&#x2F;&#x2F;path_to_scripts_dir 在主机上的绝对或者相对路径
+http(s):&#x2F;&#x2F;path_to_scripts_dir 网络上的文件
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-安全与配额</title>
+    <url>/2018/04/25/OpenShift-%E5%AE%89%E5%85%A8%E4%B8%8E%E9%85%8D%E9%A2%9D/</url>
+    <content><![CDATA[概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。
+容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全
+用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时间内对系统进行访问。
+
+获取token：oc whoami -t
+获取tokenAPI：&#x2F;oauth&#x2F;token&#x2F;request
+
+身份验证 identity provideropenshift提供不同的适配器链接不同的用户信息管理系统：LDAP、ActiveDirectory、HTPasswd。
+openshift默认采用HTPasswd的文件存储用户信息。该文件存储位置在：&#x2F;etc&#x2F;origin&#x2F;master&#x2F;htpasswd
+使用htpasswd命令可以对用户数据库进行增删改查
+用户组
+查看provider来源：oc get identity
+认证系统：authentication
+授权系统：authorization
+角色访问控制系统：RBAC （role based access control）
+
+权限cluster local
+role：角色，一组权限的集合，RBAC系统中，权限–&gt;role–&gt;用户或者组
+rule：规则，rule三要素：角色role、资源resource、动作verb。
+policy：策略，若干role组成的集合
+role binding ，角色与用户或者组的绑定关系
+policy binding，若干role组成的集合与用户或者组的绑定关系。
+
+权限操作
+授予用户查看当前项目权限：
+
+oc policy add-role-to-user view user2
+
+编辑权限：
+
+oc policy add-role-to-user edit user2
+删除：oc policy remove-role-from-user edit user2
+
+查看角色绑定关系：
+
+oc get rolebinding
+
+查看role的详细信息
+
+oc describe clusterrole admin
+
+创建组：
+
+oc adm groups new newgroups
+
+增加用户到组
+
+oc adm groups add-users newgroups user2
+
+绑定cluster-admin role到新建组
+
+oc adm policy add-cluster-role-to-group cluster-admin newgroups
+cluster-admin是系统管理员角色，这个角色可以在系统中对任意对象执行任意操作。
+Service Account
+builder对象：用于S2I
+default对象：用于运行容器
+depolyer对象：用于部署容器
+
+
+
+
+每个service account包含secret 和token
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+安全上下文SCCprivileged权限最大，restricted权限最小，普通用户及其创建的项目，都属于restricted组。这个组不允许容器以root用户运行，如该要容器以root权限运行，可以把项目默认的defaultservice account加入到高权限的组中，
+比如加入到anyuid组中，因为anyuid组中的RUNASUSER属性值为：RUNASANY，命令如下：
+oc adm policy add-scc-to-user anyuid -z default -n projectname
+
+
+
+查看当前用户的scc（Security content constraint）
+
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+Quota额度配置额度的控制通过资源额度对象resource quota管理（集群用clusterresourcequota），
+resourcequota是基于项目的，以项目为单位对资源进行额度管理，资源的额度对象分为两种：
+
+计算资源：compute resource
+
+
+计算资源：对CPU、内存资源的额度管理
+
+CPU：
+
+
+
+limits.cpu: “40” #limits ：容器所能使用的cpu上限值。 limits.memory: 40Gi requests.cpu: “4” #requests：容器运行所需的cpu下限值。 requests.memory: 4Gi
+
+
+
+
+
+
+CPU资源的度量最小单位是Millicore，一个计算节点上CPU核数乘以1000，即为该节点CPU资源总量。
+例如：4Core&#x3D;4000m
+注意：设置计算资源以后，用户部署容器的时候，必须显示的为每一个容器指定CPU和内存的requests及limits的值，否则容器无法部署。
+
+对象数量额度：pod、rc、rq、svc、cm、pvc、is、secrets
+
+
+
+
+openshift.io&#x2F;imagestreams: “400” persistentvolumeclaims: “400” pods: “40” replicationcontrollers: “40” resourcequotas: “40” secrets: “100” services: “100”
+
+
+
+
+
+
+
+cluster resource quota
+
+ClusterResourceQuota允许限制多个project，多个project可以通过annotation 或者label进行选择，比如某个用户下的所有project就可以通过：annotations：openshift.io&#x2F;requester&#x3D;进行限制。项目管理员不能创建和修改ClusterResourceQuota，但是可以查看集群限额在当前项目的应用情况，通过以下命令查看：
+
+
+
+oc describe AppliedClusterResourceQuota
+
+
+
+
+
+
+Limit Range 资源限制资源限制是更具体的控制每个容器具体使用多少CPU和内存资源。
+可以通过两个层面进行定义：
+
+项目级别统一定义每个容器资源是用总量
+容器级别单独定义某个容器资源是用总量
 
 ]]></content>
       <categories>
@@ -2443,90 +2443,6 @@ https://github.com/kubernetes/heapster/
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-构建-Rabbitmq</title>
-    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/</url>
-    <content><![CDATA[准备Rabbitmq镜像Dockfile
-
-
-FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.description&#x3D;”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.display-name&#x3D;”Rabbitmq-server lastest” \ io.openshift.expose-services&#x3D;”5672:rabbitmq” \ io.openshift.tags&#x3D;”rabbitmq” EXPOSE 5672&#x2F;tcp EXPOSE 25672&#x2F;tcp USER root ADD root &#x2F; RUN echo ‘deb http://www.rabbitmq.com/debian/ testing main’ \
-sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;rabbitmq.list RUN apt-get update RUN apt-get install -y wget RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc \
-sudo apt-key add - RUN apt-get update RUN apt-get install -y rabbitmq-server RUN echo -n ‘LCQLSHVOPZFHRUXMMAPF’ &gt; &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie RUN chown -R rabbitmq. &#x2F;var&#x2F;lib&#x2F;rabbitmq RUN chmod 400 &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie ADD rabbitmq-env.conf &#x2F;etc&#x2F;rabbitmq&#x2F;rabbitmq-env.conf ENTRYPOINT [“&#x2F;usr&#x2F;bin&#x2F;container-entrypoint.sh”]
-
-
-
-
-
-
-
-
-生成镜像
-
-
-docker build -t rabbitmq .
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-上传OpenShift上传到Harbor
-
-
-docker tag rabbitmq dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
-
-
-
-docker push dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-部署应用创建rabbitmq用户
-
-
-oc create serviceaccount rabbitmq
-
-
-
-oc adm policy add-scc-to-user anyuid -z rabbitmq
-
-
-部署rabbitmq
-
-
-oc create -f rabbitmq.yaml
-
-
-
-apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io&#x2F;tolerate-unready-endpoints: “true” name: rabbitmq labels: app: rabbit spec: ports: - port: 5672 name: rabbit clusterIP: None selector: app: rabbit — apiVersion: apps&#x2F;v1beta1 kind: StatefulSet metadata: name: rabbit spec: serviceName: “rabbitmq” replicas: 3 template: metadata: labels: app: rabbit annotations: pod.alpha.kubernetes.io&#x2F;initialized: “true” spec: containers: - name: rabbit image: dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq imagePullPolicy: IfNotPresent ports: - containerPort: 5672 name: rabbit - containerPort: 25672 name: bean readinessProbe: exec: command: - &#x2F;usr&#x2F;share&#x2F;container-scripts&#x2F;rabbitmq&#x2F;readiness-probe.sh initialDelaySeconds: 15 timeoutSeconds: 5 env: - name: POD_NAMESPACE valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.namespace - name: RABBITMQ_USE_LONGNAME value: “true” - name: RABBITMQ_NODENAME value: “rabbit” nodeSelector: region: infra serviceAccount: rabbitmq securityContext: {} serviceAccountName: rabbitmq
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-
-
-
-集群状态
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenShift-日志管理</title>
     <url>/2018/04/25/OpenShift-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[简介OpenShift平台的日志聚合和管理是在EFK方案的基础上实现的。EFK主要汇集来自Host和App的运行日志，包括多个容器和已删除的Pods。
@@ -2652,6 +2568,90 @@ openshift_logging_journal_read_from_head
 
 
 … assetConfig: … loggingPublicURL: “]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-构建-Rabbitmq</title>
+    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/</url>
+    <content><![CDATA[准备Rabbitmq镜像Dockfile
+
+
+FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.description&#x3D;”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.display-name&#x3D;”Rabbitmq-server lastest” \ io.openshift.expose-services&#x3D;”5672:rabbitmq” \ io.openshift.tags&#x3D;”rabbitmq” EXPOSE 5672&#x2F;tcp EXPOSE 25672&#x2F;tcp USER root ADD root &#x2F; RUN echo ‘deb http://www.rabbitmq.com/debian/ testing main’ \
+sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;rabbitmq.list RUN apt-get update RUN apt-get install -y wget RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc \
+sudo apt-key add - RUN apt-get update RUN apt-get install -y rabbitmq-server RUN echo -n ‘LCQLSHVOPZFHRUXMMAPF’ &gt; &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie RUN chown -R rabbitmq. &#x2F;var&#x2F;lib&#x2F;rabbitmq RUN chmod 400 &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie ADD rabbitmq-env.conf &#x2F;etc&#x2F;rabbitmq&#x2F;rabbitmq-env.conf ENTRYPOINT [“&#x2F;usr&#x2F;bin&#x2F;container-entrypoint.sh”]
+
+
+
+
+
+
+
+
+生成镜像
+
+
+docker build -t rabbitmq .
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+上传OpenShift上传到Harbor
+
+
+docker tag rabbitmq dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
+
+
+
+docker push dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+部署应用创建rabbitmq用户
+
+
+oc create serviceaccount rabbitmq
+
+
+
+oc adm policy add-scc-to-user anyuid -z rabbitmq
+
+
+部署rabbitmq
+
+
+oc create -f rabbitmq.yaml
+
+
+
+apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io&#x2F;tolerate-unready-endpoints: “true” name: rabbitmq labels: app: rabbit spec: ports: - port: 5672 name: rabbit clusterIP: None selector: app: rabbit — apiVersion: apps&#x2F;v1beta1 kind: StatefulSet metadata: name: rabbit spec: serviceName: “rabbitmq” replicas: 3 template: metadata: labels: app: rabbit annotations: pod.alpha.kubernetes.io&#x2F;initialized: “true” spec: containers: - name: rabbit image: dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq imagePullPolicy: IfNotPresent ports: - containerPort: 5672 name: rabbit - containerPort: 25672 name: bean readinessProbe: exec: command: - &#x2F;usr&#x2F;share&#x2F;container-scripts&#x2F;rabbitmq&#x2F;readiness-probe.sh initialDelaySeconds: 15 timeoutSeconds: 5 env: - name: POD_NAMESPACE valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.namespace - name: RABBITMQ_USE_LONGNAME value: “true” - name: RABBITMQ_NODENAME value: “rabbit” nodeSelector: region: infra serviceAccount: rabbitmq securityContext: {} serviceAccountName: rabbitmq
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+
+
+
+集群状态
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+
+
+
+
+]]></content>
       <categories>
         <category>OpenShift</category>
       </categories>
@@ -3242,47 +3242,6 @@ Builds:
 
 &lt;.&#x2F;media&#x2F;image11.png&gt;
 
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-核心组件和概念</title>
-    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
-    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
-
-api server ：提供集群的web console以及restful api 服务。
-datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
-scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
-replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
-
-Node节点介绍
-主要负责介绍master节点指令，运行和维护docker容器
-master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
-通过oc get nodes 可以查看系统中的node节点信息。
-
-Project
-namespace：在k8s中使用命名空间概念来隔离资源。
-project：在openshift中，引入了project概念。
-
-Pod
-pod是一种特殊的容器，oc get pods 可以查看pod
-可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
-查看pod日志：oc logs
-进入容器内部：oc rsh
-
-Service
-service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
-service起到了代理的作用，在相互依赖的容器之间实现了解耦。
-oc get svc 查看servie
-service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
-除了IP地址访问service，还可以通过域名访问service。
-master内置DNS服务器，负责解析这个域名
-
-Router
-负责将集群外部的请求转发到集群的容器。
 
 ]]></content>
       <categories>
@@ -4815,136 +4774,41 @@ oc new-app logging-deployer-template \ –param IMAGE_VERSION&#x3D;v1.3.0 \ –p
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-混合云管理</title>
-    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
-混合云管理平台的价值：
+    <title>OpenShift-核心组件和概念</title>
+    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
+    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
+
+api server ：提供集群的web console以及restful api 服务。
+datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
+scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
+replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
+
+Node节点介绍
+主要负责介绍master节点指令，运行和维护docker容器
+master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
+通过oc get nodes 可以查看系统中的node节点信息。
+
+Project
+namespace：在k8s中使用命名空间概念来隔离资源。
+project：在openshift中，引入了project概念。
+
+Pod
+pod是一种特殊的容器，oc get pods 可以查看pod
+可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
+查看pod日志：oc logs
+进入容器内部：oc rsh
+
+Service
+service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
+service起到了代理的作用，在相互依赖的容器之间实现了解耦。
+oc get svc 查看servie
+service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
+除了IP地址访问service，还可以通过域名访问service。
+master内置DNS服务器，负责解析这个域名
+
+Router
+负责将集群外部的请求转发到集群的容器。
 
-度量采集及分析
-策略控制
-自动化集成
-
-MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
-用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
-部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
-项目主页：http://manageiq.org/
-安装包下载页：http://manageiq.org/download/
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-
-下载VMWare VSphere的OVA文件，并导入到vmware环境
-
-
-默认用户密码root：smartvm
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-使用appliance_console命令修改系统信息
-
-
-先修改IP地址
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-配置跟OpenShift集群同一网段的IP地址
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-测试网络连通性
-
-
-测试链接Master地址
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-Web访问，默认密码admin：smartvm
-
-
-https://10.10.31.169/
-
-
-&lt;.&#x2F;media&#x2F;image6.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image7.png&gt;
-
-
-使用
-
-
-添加OpenShift集群
-
-
-
-计算-&gt;容器-&gt;供应商
-
-
-&lt;.&#x2F;media&#x2F;image8.png&gt;
-
-
-配置-&gt;添加新容器供应商
-
-
-获取token
-
-
-oc sa get-token -n management-infra management-admin
-
-
-&lt;.&#x2F;media&#x2F;image9.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image10.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image11.png&gt;
-
-
-添加完成
-
-
-&lt;.&#x2F;media&#x2F;image12.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image13.png&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PaaS平台介绍</title>
-    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[
 ]]></content>
       <categories>
         <category>OpenShift</category>
@@ -5098,6 +4962,133 @@ oc adm manage-node master.example.com –schedulable&#x3D;false
       </categories>
   </entry>
   <entry>
+    <title>OpenShift-混合云管理</title>
+    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
+混合云管理平台的价值：
+
+度量采集及分析
+策略控制
+自动化集成
+
+MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
+用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
+部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
+项目主页：http://manageiq.org/
+安装包下载页：http://manageiq.org/download/
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+
+下载VMWare VSphere的OVA文件，并导入到vmware环境
+
+
+默认用户密码root：smartvm
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+使用appliance_console命令修改系统信息
+
+
+先修改IP地址
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+配置跟OpenShift集群同一网段的IP地址
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+测试网络连通性
+
+
+测试链接Master地址
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+Web访问，默认密码admin：smartvm
+
+
+https://10.10.31.169/
+
+
+&lt;.&#x2F;media&#x2F;image6.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image7.png&gt;
+
+
+使用
+
+
+添加OpenShift集群
+
+
+
+计算-&gt;容器-&gt;供应商
+
+
+&lt;.&#x2F;media&#x2F;image8.png&gt;
+
+
+配置-&gt;添加新容器供应商
+
+
+获取token
+
+
+oc sa get-token -n management-infra management-admin
+
+
+&lt;.&#x2F;media&#x2F;image9.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image10.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image11.png&gt;
+
+
+添加完成
+
+
+&lt;.&#x2F;media&#x2F;image12.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image13.png&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RHCA-RH413(服务器固化)学习笔记</title>
     <url>/2017/01/06/RHCA-RH413(%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9B%BA%E5%8C%96)%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[413-1-operating system update:
@@ -5207,6 +5198,15 @@ iptables a. setup b. iptables -L -v -n
       <tags>
         <tag>RH413</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>PaaS平台介绍</title>
+    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
   </entry>
   <entry>
     <title>RHCA-RH442(性能调优)学习笔记</title>
@@ -5405,6 +5405,18 @@ true
       </tags>
   </entry>
   <entry>
+    <title>Brew-cask安装本地应用</title>
+    <url>/2016/03/05/brew-cask%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[修改目录：&#x2F;usr&#x2F;local&#x2F;Library&#x2F;Taps&#x2F;caskroom&#x2F;homebrew-cask&#x2F;Casks下的相对应的.rb文件注释掉外网路径，并添加本地路径有的应用可能需要修改一下sha356值209214.png然后运行brew-cask cleanup清除缓存然后就可以正常安装了brew-cask install svnx
+]]></content>
+      <categories>
+        <category>Other</category>
+      </categories>
+      <tags>
+        <tag>brew-cask</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Haproxy-1.6.2启动脚本</title>
     <url>/2016/03/05/haproxy-1-6-2/</url>
     <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init
@@ -5418,18 +5430,6 @@ true
       </categories>
       <tags>
         <tag>haproy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Brew-cask安装本地应用</title>
-    <url>/2016/03/05/brew-cask%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[修改目录：&#x2F;usr&#x2F;local&#x2F;Library&#x2F;Taps&#x2F;caskroom&#x2F;homebrew-cask&#x2F;Casks下的相对应的.rb文件注释掉外网路径，并添加本地路径有的应用可能需要修改一下sha356值209214.png然后运行brew-cask cleanup清除缓存然后就可以正常安装了brew-cask install svnx
-]]></content>
-      <categories>
-        <category>Other</category>
-      </categories>
-      <tags>
-        <tag>brew-cask</tag>
       </tags>
   </entry>
   <entry>
@@ -5680,23 +5680,6 @@ Slave_SQL_Running: Yes
       </tags>
   </entry>
   <entry>
-    <title>Sysbench测试mysql性能</title>
-    <url>/2016/03/05/sysbench%E6%B5%8B%E8%AF%95mysql%E6%80%A7%E8%83%BD/</url>
-    <content><![CDATA[下载sysbench URL：https://codeload.github.com/akopytov/sysbench/zip/0.5上传到&#x2F;root&#x2F;backup下解压进入目录安装编译依赖包：yum install gcc gcc-c++ libtool unzip编译并安装：.&#x2F;autogen.sh
-.&#x2F;configure –prefix&#x3D;&#x2F;data&#x2F;sysbench
-make &amp;&amp; make install
-测试命令：CPU测试：&#x2F;data&#x2F;sysbench&#x2F;bin&#x2F;sysbench –test&#x3D;cpu –cpu-max-prime&#x3D;20000 run
-测试脚本
-测试结果
-]]></content>
-      <categories>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>Sysbencg</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Redis-3.0.4启动脚本</title>
     <url>/2016/03/05/redis-3-0-4/</url>
     <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script配置文件在&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;redis.conf拷贝到init.d下：cp &#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script &#x2F;etc&#x2F;init.d&#x2F;redis-server修改安装于配置问价路径：
@@ -5730,6 +5713,23 @@ for db in **do sql_file&#x3D;”&#x2F;data&#x2F;$db.sql” echo “$db Export St
       </categories>
       <tags>
         <tag>dbsync</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Sysbench测试mysql性能</title>
+    <url>/2016/03/05/sysbench%E6%B5%8B%E8%AF%95mysql%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[下载sysbench URL：https://codeload.github.com/akopytov/sysbench/zip/0.5上传到&#x2F;root&#x2F;backup下解压进入目录安装编译依赖包：yum install gcc gcc-c++ libtool unzip编译并安装：.&#x2F;autogen.sh
+.&#x2F;configure –prefix&#x3D;&#x2F;data&#x2F;sysbench
+make &amp;&amp; make install
+测试命令：CPU测试：&#x2F;data&#x2F;sysbench&#x2F;bin&#x2F;sysbench –test&#x3D;cpu –cpu-max-prime&#x3D;20000 run
+测试脚本
+测试结果
+]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>Sysbencg</tag>
       </tags>
   </entry>
   <entry>
@@ -5801,18 +5801,6 @@ hexo deploy重新部署
       </tags>
   </entry>
   <entry>
-    <title>Zabbix添加php-fpm监控</title>
-    <url>/2016/03/05/zabbix%E6%B7%BB%E5%8A%A0php-fpm%E7%9B%91%E6%8E%A7/</url>
-    <content><![CDATA[在配置文件中添加php-fpm &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;default.conf在 php-fpm配置文件 &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;etc&#x2F;php-fpm.d&#x2F;www.conf 中添加pm.status_path &#x3D; &#x2F;phpfpmstatus把脚本”monitor_phpfpm_status“放到&#x2F;etc&#x2F;zabbix&#x2F;scripts下，chmod 777添加变量内容到&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.confUserParameter&#x3D;phpfpm.status.pool,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status poolUserParameter&#x3D;phpfpm.status.process.manager,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status process_managerUserParameter&#x3D;phpfpm.status.start.since,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status start_sinceUserParameter&#x3D;phpfpm.status.accepted.conn,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status accepted_connUserParameter&#x3D;phpfpm.status.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queueUserParameter&#x3D;phpfpm.status.max.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_listen_queueUserParameter&#x3D;phpfpm.status.listen.queue.len,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queue_lenUserParameter&#x3D;phpfpm.status.idle.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status idle_processesUserParameter&#x3D;phpfpm.status.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status active_processesUserParameter&#x3D;phpfpm.status.total.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status total_processesUserParameter&#x3D;phpfpm.status.max.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_active_processesUserParameter&#x3D;phpfpm.status.max.children.reached,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_children_reached 5. 重启zabbix客户端 6.成功
-]]></content>
-      <categories>
-        <category>Zabbix</category>
-      </categories>
-      <tags>
-        <tag>zabbix</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Zabbix监控mysql</title>
     <url>/2016/03/05/zabbix%E7%9B%91%E6%8E%A7mysql/</url>
     <content><![CDATA[在mysql中建立zabbix用户GRANTUSAGEON_._TO‘zabbix‘@’localhost’IDENTIFIED BY’*‘;FLUSHPRIVILEGES;
@@ -5823,6 +5811,18 @@ Zabbix Agent[mysql]host &#x3D; localhostuser &#x3D; zabbixpassword &#x3D; ***
 保存此文件然后修改&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.d&#x2F;userparameter_mysql.conf，这个文件用于制定Zabbix Agent如何获取MySQL数据，我们需要将所有的&#x2F;var&#x2F;lib&#x2F;zabbix修改为当前.my.cnf文件的路径&#x2F;etc&#x2F;zabbix。设置完成之后保存并重启
 zabbix只对&#x2F;usr&#x2F;bin和&#x2F;usr&#x2F;sbin下的环境变量识别，所以如果编译安装的mysql就要在&#x2F;usr&#x2F;bin&#x2F;下建立软连接ln -s &#x2F;data&#x2F;mysql&#x2F;bin&#x2F;mysql &#x2F;usr&#x2F;bin&#x2F;mysqlln -s &#x2F;data&#x2F;mysql&#x2F;bin&#x2F;mysqladmin &#x2F;usr&#x2F;bin&#x2F;mysqladmin
 参考链接：http://www.kaijia.me/2014/01/use-zabbix-monitor-mysql-server/
+]]></content>
+      <categories>
+        <category>Zabbix</category>
+      </categories>
+      <tags>
+        <tag>zabbix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zabbix添加php-fpm监控</title>
+    <url>/2016/03/05/zabbix%E6%B7%BB%E5%8A%A0php-fpm%E7%9B%91%E6%8E%A7/</url>
+    <content><![CDATA[在配置文件中添加php-fpm &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;default.conf在 php-fpm配置文件 &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;etc&#x2F;php-fpm.d&#x2F;www.conf 中添加pm.status_path &#x3D; &#x2F;phpfpmstatus把脚本”monitor_phpfpm_status“放到&#x2F;etc&#x2F;zabbix&#x2F;scripts下，chmod 777添加变量内容到&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.confUserParameter&#x3D;phpfpm.status.pool,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status poolUserParameter&#x3D;phpfpm.status.process.manager,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status process_managerUserParameter&#x3D;phpfpm.status.start.since,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status start_sinceUserParameter&#x3D;phpfpm.status.accepted.conn,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status accepted_connUserParameter&#x3D;phpfpm.status.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queueUserParameter&#x3D;phpfpm.status.max.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_listen_queueUserParameter&#x3D;phpfpm.status.listen.queue.len,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queue_lenUserParameter&#x3D;phpfpm.status.idle.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status idle_processesUserParameter&#x3D;phpfpm.status.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status active_processesUserParameter&#x3D;phpfpm.status.total.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status total_processesUserParameter&#x3D;phpfpm.status.max.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_active_processesUserParameter&#x3D;phpfpm.status.max.children.reached,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_children_reached 5. 重启zabbix客户端 6.成功
 ]]></content>
       <categories>
         <category>Zabbix</category>
