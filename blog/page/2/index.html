@@ -78,7 +78,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://fearchen.github.io/page/7/"/>
+    <link rel="canonical" href="https://fearchen.github.io/blog/page/2/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -88,7 +88,7 @@
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fearchen&#39;s Blog">
-<meta property="og:url" content="https://fearchen.github.io/page/7/index.html">
+<meta property="og:url" content="https://fearchen.github.io/blog/page/2/index.html">
 <meta property="og:site_name" content="Fearchen&#39;s Blog">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="zh_CN">
@@ -250,7 +250,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/"
                                         >
                                     <i class="fa-regular fa-house fa-fw"></i>
@@ -342,7 +342,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/"
                         >
                             <span>
@@ -497,27 +497,37 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/tengine-2-1-0/">
-                            Tengine-2.1.0启动脚本
+                        <a href="/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/">
+                            OpenShift-对象定义文件示例
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            官网链接：https://www.nginx.com/resources/wiki/start/topics/examples/redhatnginxinit/修改一下安装路径：
-改权限：chmod 755 nginx
-加到开机服务：chkconfig –add nginx设置开机自启动：chkconfig nginx on
+                            Image Stream模版地址
 
+
+https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json
+
+
+
+
+
+
+example
+
+
+{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { ...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:21:54 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -530,7 +540,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Middleware/">Middleware</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -539,21 +549,9 @@
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/Tengine/">Tengine</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
     </div>
 
-    <a href="/2016/03/05/tengine-2-1-0/">阅读全文<span class="seo-reader-text">Tengine-2.1.0启动脚本</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/">阅读全文<span class="seo-reader-text">OpenShift-对象定义文件示例</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -568,17 +566,34 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/rabbitmq-server-3-5-6/">
-                            Rabbitmq-server-3.5.6启动脚本
+                        <a href="/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/">
+                            OpenShift-持续集成-Jenkins
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            修改脚本文件的安装路径
-改权限：chmod 755 rabbitmq-server
-加到开机服务：chkconfig –add rabbitmq-server设置开机自启动：chkconfig rabbitmq-server on
+                            部署Jenkins
+
+
+使用自带模版部署
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+
+
+
+
+准备Dockfile
+生成Builder Image
+上传OpenShift
+根据源代码构建
+生成Template
+
 
                         
                     </div>
@@ -586,9 +601,9 @@
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:21:29 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -601,7 +616,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Middleware/">Middleware</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -610,21 +625,9 @@
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/Rabbitmq/">Rabbitmq</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
     </div>
 
-    <a href="/2016/03/05/rabbitmq-server-3-5-6/">阅读全文<span class="seo-reader-text">Rabbitmq-server-3.5.6启动脚本</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/">阅读全文<span class="seo-reader-text">OpenShift-持续集成-Jenkins</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -639,24 +642,27 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/redis-3-0-4/">
-                            Redis-3.0.4启动脚本
+                        <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/">
+                            OpenShift-构建-Rabbitmq
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script配置文件在&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;redis.conf拷贝到init.d下：cp &#x2F;root&#x2F;backup&#x2F;redis-3.0....
+                            准备Rabbitmq镜像Dockfile
+
+
+FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.description&#x3D;”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.displ...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:20:56 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -669,7 +675,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Middleware/">Middleware</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -678,21 +684,9 @@
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/Rredis/">Rredis</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
     </div>
 
-    <a href="/2016/03/05/redis-3-0-4/">阅读全文<span class="seo-reader-text">Redis-3.0.4启动脚本</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/">阅读全文<span class="seo-reader-text">OpenShift-构建-Rabbitmq</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -707,25 +701,26 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/haproxy-1-6-2/">
-                            Haproxy-1.6.2启动脚本
+                        <a href="/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/">
+                            OpenShift-S2I构建过程
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init
-拷贝到init.d下面直接用：cp &#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init &#x2F;etc&#x2F;init...
+                            概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
+如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
+编译和部署...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:10:19 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:17 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -738,7 +733,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Middleware/">Middleware</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -747,21 +742,9 @@
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/haproy/">haproy</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
     </div>
 
-    <a href="/2016/03/05/haproxy-1-6-2/">阅读全文<span class="seo-reader-text">Haproxy-1.6.2启动脚本</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/">阅读全文<span class="seo-reader-text">OpenShift-S2I构建过程</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -776,26 +759,32 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/keepalived-1-2-19/">
-                            keepalived-1.2.19启动脚本
+                        <a href="/2018/04/25/OpenShift-Project%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+                            OpenShift-Project权限管理
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            找到编译的安装目录，之际拷贝到的init.dcp &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;keepalived &#x2F;etc&#x2F;init.d&#x2F;
-修改vi &#x2F;etc&#x2F;init.d&#x2F;keepalived
-. &#x2F;app&#x2F;keepalived&...
+                            环境准备环境中有两个Project：Project1和Project2。测试需求如下：
+
+
+
+普通用户 admin 作为管理员 普通用户 p1admin 作为 project1 管理员 普通用户 p1dev1 作为 project1 的开发人员，有修改权限 普通用户 p1test1 作为 project1 的测试人员，有查看权限
+
+
+
+普通用户 p2admin 作为 project2 管理员...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:09:49 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:16 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -808,7 +797,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Middleware/">Middleware</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -817,21 +806,9 @@
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/keepalived/">keepalived</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
     </div>
 
-    <a href="/2016/03/05/keepalived-1-2-19/">阅读全文<span class="seo-reader-text">keepalived-1.2.19启动脚本</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-Project%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-Project权限管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -846,26 +823,33 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/">
-                            Centos server配置ntp时间同步
+                        <a href="/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/">
+                            OpenShift-性能监控
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            yum install ntp添加NTP服务器地址vi &#x2F;etc&#x2F;ntp.confserver 0.pool.ntp.orgserver 1.pool.ntp.orgserver 2.pool.ntp.orgserver 3.pool.ntp.org
-&#x2F;etc&#x2F;init.d&#x2F;ntp restartntpstat
+                            简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。
 
+项目URL：https://github.com/openshift/origin-metrics
+
+主要通过以下组件实现：
+
+Heapster
+
+
+Heapster通过Master API收集系统级...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:08:06 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -878,7 +862,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Centos/">Centos</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -887,21 +871,9 @@
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/ntp/">ntp</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
     </div>
 
-    <a href="/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/">阅读全文<span class="seo-reader-text">Centos server配置ntp时间同步</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/">阅读全文<span class="seo-reader-text">OpenShift-性能监控</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -916,25 +888,52 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/mysql5.6%E9%85%8D%E7%BD%AE%E4%B8%BB%E4%BB%8E/">
-                            Mysql5.6配置主从
+                        <a href="/2018/04/25/OpenShift-%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8-3.6.1/">
+                            OpenShift-企业应用
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            修改mysql配置文件，增加同步参数：mkdir &#x2F;mysqllog主：server-id&#x3D;1
-BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D; &#x2F;mysqllog&#x2F;master-binexpire-logs-days &#x3D; 7sy...
+                            Ansible部署为区分各角色，部署结构如下：
+环境配置
+
+
+主机名
+角色
+IP地址
+操作系统
+硬件配置
+
+
+
+master.example.com
+master
+10.10.31.161
+7.4 mini
+4C2G+30G
+
+
+node1.example.com
+node
+10.10.31.162
+7.4 mini
+4C2G+30G
+
+
+node2.example.com
+node
+10....
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:07:15 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -947,7 +946,7 @@ BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D
                     
                         
                         <li>
-                            <a href="/categories/Mysql/">Mysql</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -956,21 +955,9 @@ BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/mysql5-6/">mysql5.6</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
     </div>
 
-    <a href="/2016/03/05/mysql5.6%E9%85%8D%E7%BD%AE%E4%B8%BB%E4%BB%8E/">阅读全文<span class="seo-reader-text">Mysql5.6配置主从</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8-3.6.1/">阅读全文<span class="seo-reader-text">OpenShift-企业应用</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -985,26 +972,32 @@ BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2Lustre2.5.3%E8%BF%87%E7%A8%8B/">
-                            Centos6.5部署Lustre2.5.3过程
+                        <a href="/2018/04/25/OpenShift-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/">
+                            OpenShift-日志管理
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            MDS上操作：
-所有机器都需配置基础环境service iptables stopchkconfig iptables offsed -i ‘&#x2F;SELINUX&#x2F;s&#x2F;enforcing&#x2F;disabled&#x2F;‘ &#x2F;etc&#x2F;selinux&#x2F;config
-安装编译依赖包yum install zlib-devel pyth...
+                            简介OpenShift平台的日志聚合和管理是在EFK方案的基础上实现的。EFK主要汇集来自Host和App的运行日志，包括多个容器和已删除的Pods。
+EFK Stack是在EFK上修改的版本，由以下部分组成：
+
+Elasticsearch：存储所有日志的额对象存储
+Fluentd：从节点收集日志并推送给ES
+Kibana：ES的Web UI
+Curator：从ES删除旧日志
+
+部署EFK ...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Mar 05 2016 13:06:15 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
                 
-                    2016-03-05
+                    2018-04-25
                 
             </span>
         </span>
@@ -1017,7 +1010,7 @@ BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D
                     
                         
                         <li>
-                            <a href="/categories/Lustre/">Lustre</a>&nbsp;
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
                     
@@ -1026,21 +1019,132 @@ BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D
         </span>
         
         
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-日志管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%9E%B6%E6%9E%84%E4%BA%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5/">
+                            OpenShift架构了解与实践
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
                             
-                            <a href="/tags/lustre/">lustre</a>&nbsp;
+                            &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比
+
+
+参考链接：ht...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
                         </li>
                     
-                </ul>
-            </span>
+                    
+                
+            </ul>
+        </span>
+        
         
     </div>
 
-    <a href="/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2Lustre2.5.3%E8%BF%87%E7%A8%8B/">阅读全文<span class="seo-reader-text">Centos6.5部署Lustre2.5.3过程</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E6%9E%B6%E6%9E%84%E4%BA%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5/">阅读全文<span class="seo-reader-text">OpenShift架构了解与实践</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/">
+                            OpenShift-混合云管理
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
+混合云管理平台的价值：
+
+度量采集及分析
+策略控制
+自动化集成
+
+MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-混合云管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1050,7 +1154,7 @@ BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D
 
     <div class="home-paginator px-7 py-5">
         <div class="paginator">
-	<a class="extend prev" rel="prev" href="/page/6/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span>
+	<a class="extend prev" rel="prev" href="/blog/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/blog/">1</a><span class="page-number current">2</span><a class="page-number" href="/blog/page/3/">3</a><a class="page-number" href="/blog/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/7/">7</a><a class="extend next" rel="next" href="/blog/page/3/"><i class="fa-regular fa-angle-right"></i></a>
 </div>
   
     </div>
@@ -1142,6 +1246,12 @@ BINARY LOGGINGinnodb_log_group_home_dir &#x3D; &#x2F;mysqllog&#x2F;log-bin &#x3D
 
                     
                         <script data-swup-reload-script src="/js/products.js" defer></script>
+                    
+        
+                
+
+                    
+                        <script data-swup-reload-script src="/js/intel-home.js" defer></script>
                     
         
         

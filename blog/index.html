@@ -78,7 +78,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://fearchen.github.io/page/2/"/>
+    <link rel="canonical" href="https://fearchen.github.io/blog/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -88,7 +88,7 @@
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fearchen&#39;s Blog">
-<meta property="og:url" content="https://fearchen.github.io/page/2/index.html">
+<meta property="og:url" content="https://fearchen.github.io/blog/index.html">
 <meta property="og:site_name" content="Fearchen&#39;s Blog">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="zh_CN">
@@ -191,46 +191,93 @@
 <main class="page-container" id="swup">
 
 	
-	<style>
-    .home-article-item,
-    .sidebar-links,
-    .sidebar-content,
-    a.page-number,
-    a.extend,
-    .sidebar-links .links:hover,
-    .right-bottom-tools,
-    footer.footer {
-        background-color: var(--background-color-transparent-80) !important;
-    }
-    .right-bottom-tools:hover,
-    a.page-number:hover,
-    a.extend:hover {
-        background-color: var(--primary-color) !important;
-    }
-    .site-info,
-    .home-article-sticky-label {
-        background-color: var(--background-color-transparent-15) !important;
-    }
-    .home-article-sticky-label {
-        backdrop-filter: none !important;
-    }
-    .home-banner-background {
-        filter: blur(15px);
-    }
-</style>
+	
+    <style>
+        .home-banner-container {
+            background: none !important;
+        }
+        .home-article-item,
+        .sidebar-links,
+        .sidebar-content,
+        a.page-number,
+        a.extend,
+        .sidebar-links .links:hover,
+        .right-bottom-tools,
+        footer.footer {
+            background-color: var(--background-color-transparent-80) !important;
+        }
+        .right-bottom-tools:hover,
+        a.page-number:hover,
+        a.extend:hover {
+            background-color: var(--primary-color) !important;
+        }
+        .site-info,
+        .home-article-sticky-label {
+            background-color: var(--background-color-transparent-15) !important;
+        }
+        .home-article-sticky-label {
+            backdrop-filter: none !important;
+        }
+    </style>
+    <div class="home-banner-background transition-fade fixed top-0 left-0 w-screen h-screen scale-125 sm:scale-110 box-border will-change-transform bg-cover">
+        <img src="/images/wallhaven-wqery6-light.webp" alt="home-banner-background" class="w-full h-full object-cover dark:hidden">
+        <img src="/images/wallhaven-wqery6-dark.webp" alt="home-banner-background" class="w-full h-full object-cover hidden dark:block">
+    </div>
 
-<div class="home-banner-background transition-fade fixed top-0 left-0 w-screen h-screen scale-125 sm:scale-110 box-border will-change-transform bg-cover">
-    <img src="/images/wallhaven-wqery6-light.webp" alt="home-banner-background" class="w-full h-full object-cover dark:hidden">
-    <img src="/images/wallhaven-wqery6-dark.webp" alt="home-banner-background" class="w-full h-full object-cover hidden dark:block">
+
+<div class="home-banner-container flex justify-center items-center transition-fade relative">
+    
+    <div class="content mt-8 flex flex-col justify-center items-center transition-fade-down">
+        <div class="description flex flex-col justify-center items-center w-screen font-medium text-center"
+        
+        >
+            Fearchen's Blog
+            
+            
+            
+            
+            
+                <p><i id="subtitle"></i></p>
+            
+        </div>
+        
+    </div>
+    <style>
+        /* Mobile-specific QR code styles */
+        .qr-toggle-item.qr-active .qr-popup {
+            visibility: visible !important;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        
+        /* Prevent button from staying in focus/hover state on mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .qr-toggle-item:focus,
+            .qr-toggle-item:hover {
+                background-color: transparent;
+            }
+            
+            .qr-toggle-item .qr-trigger:focus,
+            .qr-toggle-item .qr-trigger:hover {
+                background-color: transparent;
+                color: inherit;
+            }
+            
+            /* Only show active state when explicitly toggled */
+            .qr-popup {
+                visibility: hidden !important;
+                opacity: 0 !important;
+            }
+        }
+    </style>
 </div>
-
 
 	
 
 	<div class="main-content-container flex flex-col justify-between min-h-dvh">
 		<div class="main-content-header">
 			<header class="navbar-container px-6 md:px-12">
-    <div class="navbar-content transition-navbar ">
+    <div class="navbar-content transition-navbar has-home-banner">
         <div class="left">
             
             <a class="logo-title" href="/">
@@ -250,7 +297,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/"
                                         >
                                     <i class="fa-regular fa-house fa-fw"></i>
@@ -342,7 +389,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/"
                         >
                             <span>
@@ -497,35 +544,333 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/">
-                            OpenShift-对象定义文件示例
+                        <a href="/2018/08/02/1.OpenShift-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/">
+                            1.OpenShift-架构概述
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            Image Stream模版地址
+                            
 
-
-https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json
-
-
-
-
-
-
-example
-
-
-{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { ...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
+            <span class="home-article-date" data-date="Thu Aug 02 2018 00:00:00 GMT+0800">
+                
+                    2018-08-02
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/08/02/1.OpenShift-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/">阅读全文<span class="seo-reader-text">1.OpenShift-架构概述</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/">
+                            3.OpenShift-运维管理
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Aug 02 2018 00:00:00 GMT+0800">
+                
+                    2018-08-02
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">3.OpenShift-运维管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/">
+                            2.OpenShift-应用部署
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Aug 02 2018 00:00:00 GMT+0800">
+                
+                    2018-08-02
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/">阅读全文<span class="seo-reader-text">2.OpenShift-应用部署</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/">
+                            PaaS平台介绍
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Aug 02 2018 00:00:00 GMT+0800">
+                
+                    2018-08-02
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/">阅读全文<span class="seo-reader-text">PaaS平台介绍</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/">
+                            Centos quick install OpenShift3.9.0
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            1. deploy Centos minial system2. yum update -y1a. reboot
+
+3. yum install git docker net-tools4. git clone https://github.com/gshipley/installcentos.git123a. export DOMAIN=openshift.iob. export USER...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Apr 26 2018 16:32:10 GMT+0800">
+                
+                    2018-04-26
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/">阅读全文<span class="seo-reader-text">Centos quick install OpenShift3.9.0</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-B2I-Tomcat/">
+                            OpenShift构建自动化-Tomcat8
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            应用容器化方式
+应用容器化，常见的方法有以下三种：
+
+
+
+
+名称
+举例
+类别
+适用场景
+特点
+
+
+
+本地构建
+工程师编写Dockerfile，并手工在一台或多台主机上手工执行Docker Build命令构建应用镜像
+人工
+开发测试
+简单
+
+
+CI构建
+Jenkins集群在CI流程中调用Maven执行构建，Maven 通过插件按指定的Dockerfile生成应用的镜像。
+自动化
+传统持续集成
+...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:19 GMT+0800">
                 
                     2018-04-25
                 
@@ -551,7 +896,7 @@ example
         
     </div>
 
-    <a href="/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/">阅读全文<span class="seo-reader-text">OpenShift-对象定义文件示例</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-B2I-Tomcat/">阅读全文<span class="seo-reader-text">OpenShift构建自动化-Tomcat8</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -566,28 +911,16 @@ example
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/">
-                            OpenShift-持续集成-Jenkins
+                        <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-NodeJS/">
+                            OpenShift-构建自动化-NodeJS
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            部署Jenkins
-
-
-使用自带模版部署
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-
-
-
-
+                            
+准备S2I脚本
 准备Dockfile
 生成Builder Image
 上传OpenShift
@@ -601,7 +934,7 @@ example
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:18 GMT+0800">
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:19 GMT+0800">
                 
                     2018-04-25
                 
@@ -627,7 +960,7 @@ example
         
     </div>
 
-    <a href="/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/">阅读全文<span class="seo-reader-text">OpenShift-持续集成-Jenkins</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-NodeJS/">阅读全文<span class="seo-reader-text">OpenShift-构建自动化-NodeJS</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -642,18 +975,147 @@ example
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/">
-                            OpenShift-构建-Rabbitmq
+                        <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-S2i-Nginx/">
+                            OpenShift-构建自动化-Nginx
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
                             
-                            准备Rabbitmq镜像Dockfile
+                            创建S2I项目
 
 
-FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.description&#x3D;”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.displ...
+s2i create nginx-centos7-s2i nginx-centos7
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+准备S2I脚本assemble
+
+
+#!&#x2F;bin&#x2F;bash -e # # S2I assemble script for the ‘nginx-centos7’ image. # Th...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:19 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-S2i-Nginx/">阅读全文<span class="seo-reader-text">OpenShift-构建自动化-Nginx</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/">
+                            OpenShift-核心组件和概念
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            Master节点介绍master 节点上运行着众多集群的服务组建：
+
+api server ：提供集群的web console以及restful api 服务。
+datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
+scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
+r...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:19 GMT+0800">
+                
+                    2018-04-25
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+    </div>
+
+    <a href="/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/">阅读全文<span class="seo-reader-text">OpenShift-核心组件和概念</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2018/04/25/OpenShift-%E5%AE%89%E5%85%A8%E4%B8%8E%E9%85%8D%E9%A2%9D/">
+                            OpenShift-安全与配额
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            
+                            概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。
+容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全
+用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有...
                         
                     </div>
 
@@ -686,459 +1148,7 @@ FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.de
         
     </div>
 
-    <a href="/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/">阅读全文<span class="seo-reader-text">OpenShift-构建-Rabbitmq</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/">
-                            OpenShift-S2I构建过程
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            
-                            概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
-如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
-编译和部署...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:17 GMT+0800">
-                
-                    2018-04-25
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/">阅读全文<span class="seo-reader-text">OpenShift-S2I构建过程</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-Project%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
-                            OpenShift-Project权限管理
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            
-                            环境准备环境中有两个Project：Project1和Project2。测试需求如下：
-
-
-
-普通用户 admin 作为管理员 普通用户 p1admin 作为 project1 管理员 普通用户 p1dev1 作为 project1 的开发人员，有修改权限 普通用户 p1test1 作为 project1 的测试人员，有查看权限
-
-
-
-普通用户 p2admin 作为 project2 管理员...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:16 GMT+0800">
-                
-                    2018-04-25
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2018/04/25/OpenShift-Project%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-Project权限管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8-3.6.1/">
-                            OpenShift-企业应用
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            
-                            Ansible部署为区分各角色，部署结构如下：
-环境配置
-
-
-主机名
-角色
-IP地址
-操作系统
-硬件配置
-
-
-
-master.example.com
-master
-10.10.31.161
-7.4 mini
-4C2G+30G
-
-
-node1.example.com
-node
-10.10.31.162
-7.4 mini
-4C2G+30G
-
-
-node2.example.com
-node
-10....
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
-                
-                    2018-04-25
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2018/04/25/OpenShift-%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8-3.6.1/">阅读全文<span class="seo-reader-text">OpenShift-企业应用</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/">
-                            OpenShift-性能监控
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            
-                            简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。
-
-项目URL：https://github.com/openshift/origin-metrics
-
-主要通过以下组件实现：
-
-Heapster
-
-
-Heapster通过Master API收集系统级...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
-                
-                    2018-04-25
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/">阅读全文<span class="seo-reader-text">OpenShift-性能监控</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/">
-                            OpenShift-日志管理
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            
-                            简介OpenShift平台的日志聚合和管理是在EFK方案的基础上实现的。EFK主要汇集来自Host和App的运行日志，包括多个容器和已删除的Pods。
-EFK Stack是在EFK上修改的版本，由以下部分组成：
-
-Elasticsearch：存储所有日志的额对象存储
-Fluentd：从节点收集日志并推送给ES
-Kibana：ES的Web UI
-Curator：从ES删除旧日志
-
-部署EFK ...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
-                
-                    2018-04-25
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2018/04/25/OpenShift-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-日志管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E6%9E%B6%E6%9E%84%E4%BA%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5/">
-                            OpenShift架构了解与实践
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            
-                            &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
-OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比
-
-
-参考链接：ht...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
-                
-                    2018-04-25
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2018/04/25/OpenShift-%E6%9E%B6%E6%9E%84%E4%BA%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5/">阅读全文<span class="seo-reader-text">OpenShift架构了解与实践</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/">
-                            OpenShift-运维管理
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            
-                            Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
-项目URL：htt...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Apr 25 2018 09:51:07 GMT+0800">
-                
-                    2018-04-25
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/OpenShift/">OpenShift</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/">阅读全文<span class="seo-reader-text">OpenShift-运维管理</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2018/04/25/OpenShift-%E5%AE%89%E5%85%A8%E4%B8%8E%E9%85%8D%E9%A2%9D/">阅读全文<span class="seo-reader-text">OpenShift-安全与配额</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1148,7 +1158,7 @@ OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比
 
     <div class="home-paginator px-7 py-5">
         <div class="paginator">
-	<a class="extend prev" rel="prev" href="/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa-regular fa-angle-right"></i></a>
+	<span class="page-number current">1</span><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/7/">7</a><a class="extend next" rel="next" href="/blog/page/2/"><i class="fa-regular fa-angle-right"></i></a>
 </div>
   
     </div>
@@ -1240,6 +1250,12 @@ OpenShift Origin 与OPENSHIFT CONTAINER PLATFORM对比
 
                     
                         <script data-swup-reload-script src="/js/products.js" defer></script>
+                    
+        
+                
+
+                    
+                        <script data-swup-reload-script src="/js/intel-home.js" defer></script>
                     
         
         
