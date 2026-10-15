@@ -11,7 +11,7 @@ el.innerHTML=`<div class="hero"><div><b>🔥 产品情报 · 每周更新</b><p>
 <div class="foot">说明：榜单与数字直接抓自 GitHub Trending 与 Product Hunt 周榜页面；中文简介只依据各仓库 README 与产品页自我介绍撰写，未作独立验证，宣传性说法以原页面为准。</div>`;
 el.querySelectorAll('.jump a').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth',block:'start'})});}
 window.__trInit=function(){const el=document.getElementById('tr');if(!el||el.dataset.done)return;el.dataset.done=1;
-fetch('/trending/data.json',{cache:'no-cache'}).then(r=>r.json()).then(D=>render(el,D)).catch(e=>{el.innerHTML='<p>数据加载失败：'+esc(e)+'</p>'})};
+fetch('/products/data.json',{cache:'no-cache'}).then(r=>r.json()).then(D=>render(el,D)).catch(e=>{el.innerHTML='<p>数据加载失败：'+esc(e)+'</p>'})};
 window.__trInit();
 const hook=()=>window.swup&&window.swup.hooks&&window.swup.hooks.on('page:view',()=>window.__trInit());
 if(!hook())window.addEventListener('redefine:swup:ready',hook,{once:true});

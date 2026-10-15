@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>2.OpenShift-应用部署</title>
-    <url>/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>1.OpenShift-架构概述</title>
     <url>/2018/08/02/1.OpenShift-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[
@@ -19,8 +10,8 @@
       </categories>
   </entry>
   <entry>
-    <title>3.OpenShift-运维管理</title>
-    <url>/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
+    <title>2.OpenShift-应用部署</title>
+    <url>/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[
 ]]></content>
       <categories>
@@ -76,6 +67,15 @@ rm -rf &#x2F;path&#x2F;to&#x2F;httpd-2.2.4*根据安装步骤不同和版本不�
       </tags>
   </entry>
   <entry>
+    <title>3.OpenShift-运维管理</title>
+    <url>/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Centos server配置ntp时间同步</title>
     <url>/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</url>
     <content><![CDATA[yum install ntp添加NTP服务器地址vi &#x2F;etc&#x2F;ntp.confserver 0.pool.ntp.orgserver 1.pool.ntp.orgserver 2.pool.ntp.orgserver 3.pool.ntp.org
@@ -86,6 +86,22 @@ rm -rf &#x2F;path&#x2F;to&#x2F;httpd-2.2.4*根据安装步骤不同和版本不�
       </categories>
       <tags>
         <tag>ntp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos6.4部署puppet3.8.4</title>
+    <url>/2016/03/05/Centos6.4%E9%83%A8%E7%BD%B2puppet3.8.4/</url>
+    <content><![CDATA[关闭ipatbles和selinuxpuppet官网下载puppetyum源url：http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm上传至puppet服务器并安装
+yum安装puppet-serveryum install puppet-server启动puppetchkconfig puppetmaster onchkconfig puppet on&#x2F;etc&#x2F;init.d&#x2F;puppetmaster start&#x2F;etc&#x2F;init.d&#x2F;puppet start在puppet-server上查看证书puppet cert list –all
+使用apache+passenger运行puppet-serveryum install httpd httpd-devel ruby-devel mod_ssl make gcc gcc-c++ curl-devel openssl-devel zlib-devel安装rack和passengergem install rack
+gem install passenger
+编译passengerpassenger-install-apache2-module
+]]></content>
+      <categories>
+        <category>Dev Ops</category>
+      </categories>
+      <tags>
+        <tag>puppet</tag>
       </tags>
   </entry>
   <entry>
@@ -135,22 +151,6 @@ workers：workers数量，默认为 1。
       </categories>
       <tags>
         <tag>shdowsocks</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos6.4部署puppet3.8.4</title>
-    <url>/2016/03/05/Centos6.4%E9%83%A8%E7%BD%B2puppet3.8.4/</url>
-    <content><![CDATA[关闭ipatbles和selinuxpuppet官网下载puppetyum源url：http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm上传至puppet服务器并安装
-yum安装puppet-serveryum install puppet-server启动puppetchkconfig puppetmaster onchkconfig puppet on&#x2F;etc&#x2F;init.d&#x2F;puppetmaster start&#x2F;etc&#x2F;init.d&#x2F;puppet start在puppet-server上查看证书puppet cert list –all
-使用apache+passenger运行puppet-serveryum install httpd httpd-devel ruby-devel mod_ssl make gcc gcc-c++ curl-devel openssl-devel zlib-devel安装rack和passengergem install rack
-gem install passenger
-编译passengerpassenger-install-apache2-module
-]]></content>
-      <categories>
-        <category>Dev Ops</category>
-      </categories>
-      <tags>
-        <tag>puppet</tag>
       </tags>
   </entry>
   <entry>
@@ -362,6 +362,44 @@ FLANNEL_ETCD_ENDPOINTS&#x3D;”]]></content>
       </tags>
   </entry>
   <entry>
+    <title>Centos安全配置参考</title>
+    <url>/2017/01/03/Centos%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[0x01 系统安全记录文件
+#more &#x2F;var&#x2F;log&#x2F;secure统计访问IP及次数。
+#grep -oP ‘(\d+.){3}\d+’ &#x2F;var&#x2F;log&#x2F;secure |sort |uniq -c0x02 启动和登录安全性1．用户口令 修改改密码长度&#x2F;etc&#x2F;login.defs
+#vi &#x2F;etc&#x2F;login.defs PASS_MIN_LEN 82．注释掉不需要的用户和用户组vi &#x2F;etc&#x2F;passwd vi &#x2F;etc&#x2F;group3．口令文件chattr命令给下面的文件加上不可更改属性，从而防止非授权用户获得权限。
+#chattr +i &#x2F;etc&#x2F;passwd
+#chattr +i &#x2F;etc&#x2F;shadow
+#chattr +i &#x2F;etc&#x2F;group
+#chattr +i &#x2F;etc&#x2F;gshadow4．禁止CtrlAltDelete重新启动机器命令 修改&#x2F;etc&#x2F;inittab文件，将ca::ctrlaltdel:&#x2F;sbin&#x2F;shutdown -t3 -r now”一行注释掉。然后重新设置&#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;目录下所有文件的许可权限，运行如下命令：
+#chmod -R 700 &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;*这样便仅有root可以读、写或执行上述所有脚本文件。5．限制su命令 当不想任何人能够su作为root，可以编辑&#x2F;etc&#x2F;pam.d&#x2F;su文件，增加如下两行：auth sufficient &#x2F;lib&#x2F;security&#x2F;pam_rootok.so debug auth required &#x2F;lib&#x2F;security&#x2F;pam_wheel.so group&#x3D;isd这时，仅isd组的用户可以su作为root。此后，如果希望用户admin能够su作为root，可以运行如下命令：
+#usermod -G10 admin6 . 更改SSH端口 最好改为10000以上，别人扫描到端口的机率也会下降,不允许使用低版本的SSH协议vi &#x2F;etc&#x2F;ssh&#x2F;ssd_config将#protocol2,1改为protocol2将PORT改为1000以上端口vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config Port 10000同时，创建一个普通登录用户，并取消直接root登录useradd ‘username’ passwd ‘username’ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config PermitRootLogin no＃取消root直接远程登录7 . 关闭那些不需要的服务记住少开一个服务，就少一个危险。以下仅列出需要启动的服务，未列出的服务一律关闭：
+#setupacpidanacroncpuspeedcrondirqbalance\仅当服务器CPU为S.M.P架构或支持双核心、HT技术时，才需开启，否则关闭。microcode_ctl network random sendmail sshd syslog yum-updatesd8 . 启用iptables防火墙对增加系统安全有许多好处。设置好防火墙的规则，例如只允许内网IP访问，禁止对外发送。&#x2F;etc&#x2F;init.d&#x2F;iptables start0x03 限制网络访问1．NFS访问 使用NFS网络文件系统服务，应该确保&#x2F;etc&#x2F;exports具有最严格的访问权限设置，也就是意味着不要使用任何通配符、不允许root写权限并且只能安装为只读文件系统。编辑文件&#x2F;etc&#x2F;exports并加入如下两行。&#x2F;dir&#x2F;to&#x2F;export host1.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export host2.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export是想输出的目录，host.mydomain.com是登录这个目录的机器名，ro意味着mount成只读系统，root_squash禁止root写入该目录。为了使改动生效，运行如下命令。
+#&#x2F;usr&#x2F;sbin&#x2F;exportfs-a 2．TCP_WRAPPERS设置 默认情况下，多数Linux系统允许所有的请求，而用TCP_WRAPPERS增强系统安全性是举手之劳，可以修改&#x2F;etc&#x2F;hosts.deny和&#x2F;etc&#x2F;hosts.allow来增加访问限制。例如，将&#x2F;etc&#x2F;hosts.deny设为”ALL:ALL”可以默认拒绝所有访问，然后在&#x2F;etc&#x2F;hosts.allow文件中添加允许的访问。 例如，”sshd:192.168.10.10&#x2F;255.255.255.0 gate.openarch.com”表示 允许IP地址192.168.10.10和主机名gate.openarch.com允许通过SSH连接。3．登录终端设置&#x2F;etc&#x2F;securetty文件指定了允许root登录的tty设备，由&#x2F;bin&#x2F;login程序读取，其格式是一个被允许的名字列表，可以编辑&#x2F;etc&#x2F;securetty且注释掉如下的行。tty1
+#tty2
+#tty3
+#tty4
+#tty5
+#tty6这时，root仅可在tty1终端登录。
+0x04 防止攻击1．阻止ping如果没人能ping通系统，安全性自然增加了，为此，我们可以在&#x2F;etc&#x2F;rc.d&#x2F;rc.local文件中增加如下一行echo 1 &gt;&#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;icmp_echo_ignore_all 2．防止IP欺骗 编辑host.conf文件并增加如下几行来防止IP欺骗攻击。order bind，hosts 解析顺序multi on 允许多面网络（多网卡开启）nospoof on 拒绝IP欺骗3．防止DoS攻击 对系统所有的用户设置资源限制可以防止DoS类型攻击，如最大进程数和内存使用数量等。 例如，可以在&#x2F;etc&#x2F;security&#x2F;limits.conf中添加如下几行：
+
+hard core 0
+hard rss 5000
+hard nproc 20然后必须编辑&#x2F;etc&#x2F;pam.d&#x2F;login文件检查下面一行是否存在。session required &#x2F;lib&#x2F;security&#x2F;pam_limits.socore 0 表示禁止创建core文件，nproc 20 把最多的进程数限制到20
+表示登录到系统的所有用户rss 5000 表示除了root之外，其它用户最多只能用5M内存。这样可以更好的控制系统中用户对进程、core文件和内存的使用情况。
+
+
+
+参考链接：http://blog.csdn.net/qq_29277155/article/details/52497113
+]]></content>
+      <categories>
+        <category>安全配置参考</category>
+      </categories>
+      <tags>
+        <tag>Centos</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos网卡做bond0</title>
     <url>/2016/03/05/Centos%E7%BD%91%E5%8D%A1%E5%81%9Abond0/</url>
     <content><![CDATA[mode&#x3D;0：平衡负载模式，有自动备援，但需要”Switch”支援及设定。
@@ -412,44 +450,6 @@ acl is_cbs hdr_beg(host) ＊＊＊＊＊redirect prefix https://******** if is_c
       </categories>
       <tags>
         <tag>haproxy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos安全配置参考</title>
-    <url>/2017/01/03/Centos%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[0x01 系统安全记录文件
-#more &#x2F;var&#x2F;log&#x2F;secure统计访问IP及次数。
-#grep -oP ‘(\d+.){3}\d+’ &#x2F;var&#x2F;log&#x2F;secure |sort |uniq -c0x02 启动和登录安全性1．用户口令 修改改密码长度&#x2F;etc&#x2F;login.defs
-#vi &#x2F;etc&#x2F;login.defs PASS_MIN_LEN 82．注释掉不需要的用户和用户组vi &#x2F;etc&#x2F;passwd vi &#x2F;etc&#x2F;group3．口令文件chattr命令给下面的文件加上不可更改属性，从而防止非授权用户获得权限。
-#chattr +i &#x2F;etc&#x2F;passwd
-#chattr +i &#x2F;etc&#x2F;shadow
-#chattr +i &#x2F;etc&#x2F;group
-#chattr +i &#x2F;etc&#x2F;gshadow4．禁止CtrlAltDelete重新启动机器命令 修改&#x2F;etc&#x2F;inittab文件，将ca::ctrlaltdel:&#x2F;sbin&#x2F;shutdown -t3 -r now”一行注释掉。然后重新设置&#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;目录下所有文件的许可权限，运行如下命令：
-#chmod -R 700 &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;*这样便仅有root可以读、写或执行上述所有脚本文件。5．限制su命令 当不想任何人能够su作为root，可以编辑&#x2F;etc&#x2F;pam.d&#x2F;su文件，增加如下两行：auth sufficient &#x2F;lib&#x2F;security&#x2F;pam_rootok.so debug auth required &#x2F;lib&#x2F;security&#x2F;pam_wheel.so group&#x3D;isd这时，仅isd组的用户可以su作为root。此后，如果希望用户admin能够su作为root，可以运行如下命令：
-#usermod -G10 admin6 . 更改SSH端口 最好改为10000以上，别人扫描到端口的机率也会下降,不允许使用低版本的SSH协议vi &#x2F;etc&#x2F;ssh&#x2F;ssd_config将#protocol2,1改为protocol2将PORT改为1000以上端口vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config Port 10000同时，创建一个普通登录用户，并取消直接root登录useradd ‘username’ passwd ‘username’ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config PermitRootLogin no＃取消root直接远程登录7 . 关闭那些不需要的服务记住少开一个服务，就少一个危险。以下仅列出需要启动的服务，未列出的服务一律关闭：
-#setupacpidanacroncpuspeedcrondirqbalance\仅当服务器CPU为S.M.P架构或支持双核心、HT技术时，才需开启，否则关闭。microcode_ctl network random sendmail sshd syslog yum-updatesd8 . 启用iptables防火墙对增加系统安全有许多好处。设置好防火墙的规则，例如只允许内网IP访问，禁止对外发送。&#x2F;etc&#x2F;init.d&#x2F;iptables start0x03 限制网络访问1．NFS访问 使用NFS网络文件系统服务，应该确保&#x2F;etc&#x2F;exports具有最严格的访问权限设置，也就是意味着不要使用任何通配符、不允许root写权限并且只能安装为只读文件系统。编辑文件&#x2F;etc&#x2F;exports并加入如下两行。&#x2F;dir&#x2F;to&#x2F;export host1.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export host2.mydomain.com(ro，root_squash) &#x2F;dir&#x2F;to&#x2F;export是想输出的目录，host.mydomain.com是登录这个目录的机器名，ro意味着mount成只读系统，root_squash禁止root写入该目录。为了使改动生效，运行如下命令。
-#&#x2F;usr&#x2F;sbin&#x2F;exportfs-a 2．TCP_WRAPPERS设置 默认情况下，多数Linux系统允许所有的请求，而用TCP_WRAPPERS增强系统安全性是举手之劳，可以修改&#x2F;etc&#x2F;hosts.deny和&#x2F;etc&#x2F;hosts.allow来增加访问限制。例如，将&#x2F;etc&#x2F;hosts.deny设为”ALL:ALL”可以默认拒绝所有访问，然后在&#x2F;etc&#x2F;hosts.allow文件中添加允许的访问。 例如，”sshd:192.168.10.10&#x2F;255.255.255.0 gate.openarch.com”表示 允许IP地址192.168.10.10和主机名gate.openarch.com允许通过SSH连接。3．登录终端设置&#x2F;etc&#x2F;securetty文件指定了允许root登录的tty设备，由&#x2F;bin&#x2F;login程序读取，其格式是一个被允许的名字列表，可以编辑&#x2F;etc&#x2F;securetty且注释掉如下的行。tty1
-#tty2
-#tty3
-#tty4
-#tty5
-#tty6这时，root仅可在tty1终端登录。
-0x04 防止攻击1．阻止ping如果没人能ping通系统，安全性自然增加了，为此，我们可以在&#x2F;etc&#x2F;rc.d&#x2F;rc.local文件中增加如下一行echo 1 &gt;&#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;icmp_echo_ignore_all 2．防止IP欺骗 编辑host.conf文件并增加如下几行来防止IP欺骗攻击。order bind，hosts 解析顺序multi on 允许多面网络（多网卡开启）nospoof on 拒绝IP欺骗3．防止DoS攻击 对系统所有的用户设置资源限制可以防止DoS类型攻击，如最大进程数和内存使用数量等。 例如，可以在&#x2F;etc&#x2F;security&#x2F;limits.conf中添加如下几行：
-
-hard core 0
-hard rss 5000
-hard nproc 20然后必须编辑&#x2F;etc&#x2F;pam.d&#x2F;login文件检查下面一行是否存在。session required &#x2F;lib&#x2F;security&#x2F;pam_limits.socore 0 表示禁止创建core文件，nproc 20 把最多的进程数限制到20
-表示登录到系统的所有用户rss 5000 表示除了root之外，其它用户最多只能用5M内存。这样可以更好的控制系统中用户对进程、core文件和内存的使用情况。
-
-
-
-参考链接：http://blog.csdn.net/qq_29277155/article/details/52497113
-]]></content>
-      <categories>
-        <category>安全配置参考</category>
-      </categories>
-      <tags>
-        <tag>Centos</tag>
       </tags>
   </entry>
   <entry>
@@ -543,6 +543,22 @@ TABLE LOCKINGCurrent Lock Wait ratio &#x3D; 0 : 318Your table locking seems to b
       </categories>
       <tags>
         <tag>tuning-script</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NFS安装配置</title>
+    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
+NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
+NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
+nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
+iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
+]]></content>
+      <categories>
+        <category>Centos</category>
+      </categories>
+      <tags>
+        <tag>nfs</tag>
       </tags>
   </entry>
   <entry>
@@ -773,22 +789,6 @@ messages with just a carriage return.static char ngx_http_error_400_page[] &#x3D
       </categories>
       <tags>
         <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NFS安装配置</title>
-    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
-NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
-NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
-nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
-iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
-]]></content>
-      <categories>
-        <category>Centos</category>
-      </categories>
-      <tags>
-        <tag>nfs</tag>
       </tags>
   </entry>
   <entry>
@@ -2657,6 +2657,22 @@ apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io&
       </categories>
   </entry>
   <entry>
+    <title>OpenShift-构建自动化-NodeJS</title>
+    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-NodeJS/</url>
+    <content><![CDATA[
+准备S2I脚本
+准备Dockfile
+生成Builder Image
+上传OpenShift
+根据源代码构建
+生成Template
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>OpenShift构建自动化-Tomcat8</title>
     <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-B2I-Tomcat/</url>
     <content><![CDATA[应用容器化方式
@@ -3085,22 +3101,6 @@ oc create -f tomcat8-jdk8.yml -n openshift
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-构建自动化-NodeJS</title>
-    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-NodeJS/</url>
-    <content><![CDATA[
-准备S2I脚本
-准备Dockfile
-生成Builder Image
-上传OpenShift
-根据源代码构建
-生成Template
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenShift-构建自动化-Nginx</title>
     <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-S2i-Nginx/</url>
     <content><![CDATA[创建S2I项目
@@ -3242,6 +3242,47 @@ Builds:
 
 &lt;.&#x2F;media&#x2F;image11.png&gt;
 
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-核心组件和概念</title>
+    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
+    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
+
+api server ：提供集群的web console以及restful api 服务。
+datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
+scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
+replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
+
+Node节点介绍
+主要负责介绍master节点指令，运行和维护docker容器
+master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
+通过oc get nodes 可以查看系统中的node节点信息。
+
+Project
+namespace：在k8s中使用命名空间概念来隔离资源。
+project：在openshift中，引入了project概念。
+
+Pod
+pod是一种特殊的容器，oc get pods 可以查看pod
+可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
+查看pod日志：oc logs
+进入容器内部：oc rsh
+
+Service
+service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
+service起到了代理的作用，在相互依赖的容器之间实现了解耦。
+oc get svc 查看servie
+service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
+除了IP地址访问service，还可以通过域名访问service。
+master内置DNS服务器，负责解析这个域名
+
+Router
+负责将集群外部的请求转发到集群的容器。
 
 ]]></content>
       <categories>
@@ -4774,47 +4815,6 @@ oc new-app logging-deployer-template \ –param IMAGE_VERSION&#x3D;v1.3.0 \ –p
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-核心组件和概念</title>
-    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
-    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
-
-api server ：提供集群的web console以及restful api 服务。
-datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
-scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
-replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
-
-Node节点介绍
-主要负责介绍master节点指令，运行和维护docker容器
-master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
-通过oc get nodes 可以查看系统中的node节点信息。
-
-Project
-namespace：在k8s中使用命名空间概念来隔离资源。
-project：在openshift中，引入了project概念。
-
-Pod
-pod是一种特殊的容器，oc get pods 可以查看pod
-可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
-查看pod日志：oc logs
-进入容器内部：oc rsh
-
-Service
-service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
-service起到了代理的作用，在相互依赖的容器之间实现了解耦。
-oc get svc 查看servie
-service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
-除了IP地址访问service，还可以通过域名访问service。
-master内置DNS服务器，负责解析这个域名
-
-Router
-负责将集群外部的请求转发到集群的容器。
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenShift-运维管理</title>
     <url>/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
@@ -5089,6 +5089,15 @@ oc sa get-token -n management-infra management-admin
       </categories>
   </entry>
   <entry>
+    <title>PaaS平台介绍</title>
+    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RHCA-RH413(服务器固化)学习笔记</title>
     <url>/2017/01/06/RHCA-RH413(%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9B%BA%E5%8C%96)%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[413-1-operating system update:
@@ -5198,15 +5207,6 @@ iptables a. setup b. iptables -L -v -n
       <tags>
         <tag>RH413</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>PaaS平台介绍</title>
-    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
   </entry>
   <entry>
     <title>RHCA-RH442(性能调优)学习笔记</title>
@@ -5470,18 +5470,6 @@ i. docker pull docker.io&#x2F;fearchan&#x2F;kube-controller-manager-amd64:v1.5.1
       </tags>
   </entry>
   <entry>
-    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
-    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
-    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
-modprobe lnet
-最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
-tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
-]]></content>
-      <categories>
-        <category>Lustre</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Iml-lustre multipath安装(centos 6.6)</title>
     <url>/2016/03/05/iml-lustre%20multipath%E5%AE%89%E8%A3%85(centos%206.6)/</url>
     <content><![CDATA[服务器上插入Dell存储自带的光盘，然后挂载mount &#x2F;dev&#x2F;cdrom &#x2F;mnt&#x2F;cd &#x2F;mnt&#x2F;linux&#x2F;dkms先安装rpm依赖包 rpm -ivh dkms-2.1.1.2-1.noarch.rpmcd ..&#x2F;dm安装 .&#x2F;install_dm.sh安装完成后reboot重启完后根据multipath -ll下的dm-*编号，修改vi &#x2F;etc&#x2F;multipath.conf配置文件修改完后重启multipan &#x2F;etc&#x2F;init.d&#x2F;multipathd restart
@@ -5492,6 +5480,18 @@ tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上�
       <tags>
         <tag>multipath</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
+    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
+    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
+modprobe lnet
+最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
+tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
+]]></content>
+      <categories>
+        <category>Lustre</category>
+      </categories>
   </entry>
   <entry>
     <title>keepalived-1.2.19启动脚本</title>
@@ -5577,19 +5577,6 @@ Lynis是针对Unix&#x2F;Linux的安全检查工具，可以发现潜在的安全
       </tags>
   </entry>
   <entry>
-    <title>Memcached-1.4.24启动脚本</title>
-    <url>/2016/03/05/memcached-1-4-24/</url>
-    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv拷贝到init.d下面用：cp &#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv &#x2F;etc&#x2F;init.d&#x2F;memcached新建var下目录：mkdir &#x2F;var&#x2F;run&#x2F;memcached需要修改安装路径：
-改权限：chmod 755 memcached加到开机服务：chkconfig –add memcached设置开机自启动：chkconfig memcached on
-]]></content>
-      <categories>
-        <category>Middleware</category>
-      </categories>
-      <tags>
-        <tag>memcache</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mysql-5.7.10安装配置&amp;主备</title>
     <url>/2016/03/05/mysql-5.7.10%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE&amp;%E4%B8%BB%E5%A4%87/</url>
     <content><![CDATA[官网下载：http://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.10.tar.gz上传到&#x2F;root&#x2F;backup&#x2F;下解压准备工作：安装编译依赖包：yum -y install make gcc-c++ cmake bison-devel ncurses-devel防火墙开3306端口：
@@ -5626,6 +5613,19 @@ mysql初始化：&#x2F;data&#x2F;mysql&#x2F;bin&#x2F;mysqld –initialize-insecu
       <categories>
         <category>Mysql</category>
       </categories>
+  </entry>
+  <entry>
+    <title>Memcached-1.4.24启动脚本</title>
+    <url>/2016/03/05/memcached-1-4-24/</url>
+    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv拷贝到init.d下面用：cp &#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv &#x2F;etc&#x2F;init.d&#x2F;memcached新建var下目录：mkdir &#x2F;var&#x2F;run&#x2F;memcached需要修改安装路径：
+改权限：chmod 755 memcached加到开机服务：chkconfig –add memcached设置开机自启动：chkconfig memcached on
+]]></content>
+      <categories>
+        <category>Middleware</category>
+      </categories>
+      <tags>
+        <tag>memcache</tag>
+      </tags>
   </entry>
   <entry>
     <title>Mysql5.6配置主从</title>
@@ -5801,6 +5801,18 @@ hexo deploy重新部署
       </tags>
   </entry>
   <entry>
+    <title>Zabbix添加php-fpm监控</title>
+    <url>/2016/03/05/zabbix%E6%B7%BB%E5%8A%A0php-fpm%E7%9B%91%E6%8E%A7/</url>
+    <content><![CDATA[在配置文件中添加php-fpm &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;default.conf在 php-fpm配置文件 &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;etc&#x2F;php-fpm.d&#x2F;www.conf 中添加pm.status_path &#x3D; &#x2F;phpfpmstatus把脚本”monitor_phpfpm_status“放到&#x2F;etc&#x2F;zabbix&#x2F;scripts下，chmod 777添加变量内容到&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.confUserParameter&#x3D;phpfpm.status.pool,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status poolUserParameter&#x3D;phpfpm.status.process.manager,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status process_managerUserParameter&#x3D;phpfpm.status.start.since,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status start_sinceUserParameter&#x3D;phpfpm.status.accepted.conn,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status accepted_connUserParameter&#x3D;phpfpm.status.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queueUserParameter&#x3D;phpfpm.status.max.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_listen_queueUserParameter&#x3D;phpfpm.status.listen.queue.len,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queue_lenUserParameter&#x3D;phpfpm.status.idle.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status idle_processesUserParameter&#x3D;phpfpm.status.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status active_processesUserParameter&#x3D;phpfpm.status.total.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status total_processesUserParameter&#x3D;phpfpm.status.max.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_active_processesUserParameter&#x3D;phpfpm.status.max.children.reached,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_children_reached 5. 重启zabbix客户端 6.成功
+]]></content>
+      <categories>
+        <category>Zabbix</category>
+      </categories>
+      <tags>
+        <tag>zabbix</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zabbix监控mysql</title>
     <url>/2016/03/05/zabbix%E7%9B%91%E6%8E%A7mysql/</url>
     <content><![CDATA[在mysql中建立zabbix用户GRANTUSAGEON_._TO‘zabbix‘@’localhost’IDENTIFIED BY’*‘;FLUSHPRIVILEGES;
@@ -5811,18 +5823,6 @@ Zabbix Agent[mysql]host &#x3D; localhostuser &#x3D; zabbixpassword &#x3D; ***
 保存此文件然后修改&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.d&#x2F;userparameter_mysql.conf，这个文件用于制定Zabbix Agent如何获取MySQL数据，我们需要将所有的&#x2F;var&#x2F;lib&#x2F;zabbix修改为当前.my.cnf文件的路径&#x2F;etc&#x2F;zabbix。设置完成之后保存并重启
 zabbix只对&#x2F;usr&#x2F;bin和&#x2F;usr&#x2F;sbin下的环境变量识别，所以如果编译安装的mysql就要在&#x2F;usr&#x2F;bin&#x2F;下建立软连接ln -s &#x2F;data&#x2F;mysql&#x2F;bin&#x2F;mysql &#x2F;usr&#x2F;bin&#x2F;mysqlln -s &#x2F;data&#x2F;mysql&#x2F;bin&#x2F;mysqladmin &#x2F;usr&#x2F;bin&#x2F;mysqladmin
 参考链接：http://www.kaijia.me/2014/01/use-zabbix-monitor-mysql-server/
-]]></content>
-      <categories>
-        <category>Zabbix</category>
-      </categories>
-      <tags>
-        <tag>zabbix</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zabbix添加php-fpm监控</title>
-    <url>/2016/03/05/zabbix%E6%B7%BB%E5%8A%A0php-fpm%E7%9B%91%E6%8E%A7/</url>
-    <content><![CDATA[在配置文件中添加php-fpm &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;default.conf在 php-fpm配置文件 &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;etc&#x2F;php-fpm.d&#x2F;www.conf 中添加pm.status_path &#x3D; &#x2F;phpfpmstatus把脚本”monitor_phpfpm_status“放到&#x2F;etc&#x2F;zabbix&#x2F;scripts下，chmod 777添加变量内容到&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.confUserParameter&#x3D;phpfpm.status.pool,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status poolUserParameter&#x3D;phpfpm.status.process.manager,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status process_managerUserParameter&#x3D;phpfpm.status.start.since,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status start_sinceUserParameter&#x3D;phpfpm.status.accepted.conn,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status accepted_connUserParameter&#x3D;phpfpm.status.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queueUserParameter&#x3D;phpfpm.status.max.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_listen_queueUserParameter&#x3D;phpfpm.status.listen.queue.len,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queue_lenUserParameter&#x3D;phpfpm.status.idle.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status idle_processesUserParameter&#x3D;phpfpm.status.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status active_processesUserParameter&#x3D;phpfpm.status.total.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status total_processesUserParameter&#x3D;phpfpm.status.max.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_active_processesUserParameter&#x3D;phpfpm.status.max.children.reached,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_children_reached 5. 重启zabbix客户端 6.成功
 ]]></content>
       <categories>
         <category>Zabbix</category>
