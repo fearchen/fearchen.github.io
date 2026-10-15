@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>3.OpenShift-运维管理</title>
-    <url>/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
+    <title>1.OpenShift-架构概述</title>
+    <url>/2018/08/02/1.OpenShift-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[
 ]]></content>
       <categories>
@@ -10,8 +10,8 @@
       </categories>
   </entry>
   <entry>
-    <title>1.OpenShift-架构概述</title>
-    <url>/2018/08/02/1.OpenShift-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</url>
+    <title>3.OpenShift-运维管理</title>
+    <url>/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[
 ]]></content>
       <categories>
@@ -76,6 +76,19 @@ rm -rf &#x2F;path&#x2F;to&#x2F;httpd-2.2.4*根据安装步骤不同和版本不�
       </categories>
   </entry>
   <entry>
+    <title>Centos server配置ntp时间同步</title>
+    <url>/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</url>
+    <content><![CDATA[yum install ntp添加NTP服务器地址vi &#x2F;etc&#x2F;ntp.confserver 0.pool.ntp.orgserver 1.pool.ntp.orgserver 2.pool.ntp.orgserver 3.pool.ntp.org
+&#x2F;etc&#x2F;init.d&#x2F;ntp restartntpstat
+]]></content>
+      <categories>
+        <category>Centos</category>
+      </categories>
+      <tags>
+        <tag>ntp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CentOS 6.4下ELK套件搭建日志分析和监控平台</title>
     <url>/2016/03/05/CentOS%206.4%E4%B8%8BELK%E5%A5%97%E4%BB%B6%E6%90%AD%E5%BB%BA%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%92%8C%E7%9B%91%E6%8E%A7%E5%B9%B3%E5%8F%B0/</url>
     <content><![CDATA[简介：ELK套件（ELK stack）是指ElasticSearch、Logstash和Kibana三件套。这三个软件可以组成一套日志分析和监控工具。由于三个软件各自的版本号太多，建议采用ElasticSearch官网推荐的搭配组合：http://www.elasticsearch.org/overview/elkdownloads/ELK官网：https://www.elastic.co/参考链接：http://blog.kazaff.me/2015/06/05/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E6%9E%B6%E6%9E%84--ELK/这次使用版本：ElasticSearch-2.1.1Logstash-2.1.0Kibana-4.3.1
@@ -118,48 +131,26 @@ gem install passenger
       </tags>
   </entry>
   <entry>
-    <title>Centos server配置ntp时间同步</title>
-    <url>/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</url>
-    <content><![CDATA[yum install ntp添加NTP服务器地址vi &#x2F;etc&#x2F;ntp.confserver 0.pool.ntp.orgserver 1.pool.ntp.orgserver 2.pool.ntp.orgserver 3.pool.ntp.org
-&#x2F;etc&#x2F;init.d&#x2F;ntp restartntpstat
+    <title>Centos6.5搭建shdowsocks服务器</title>
+    <url>/2016/03/05/Centos6.5%E6%90%AD%E5%BB%BAshdowsocks%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[yum updateyum install python-setuptools &amp;&amp; easy_install pippip install shadowsocksvi &#x2F;etc&#x2F;shadowsocks.json[root@iZu1cf4uswmZ ~]# more &#x2F;etc&#x2F;shadowsocks.json{ “server”:”47.88.50.29”, “server_port”:8000, “password”:”PA@@w0rd”, “timeout”:300, “method”:”rc4-md5”, “fast_open”:true}
+######################################代码中各字段的含义：
+server：服务器 IP地址 (IPv4&#x2F;IPv6)
+server_port：服务器监听的端口，一般设为80，443等，注意不要设为使用中的端口
+password：设置密码，自定义
+timeout：超时时间（秒）
+method：加密方法，可选择 “aes-256-cfb”, “rc4-md5”等等。推荐使用 “rc4-md5”
+fast_open：true 或 false。如果你的服务器 Linux 内核在3.7+，可以开启 fast_open 以降低延迟。
+workers：workers数量，默认为 1。
+####################################################
+开启ssserver -c &#x2F;etc&#x2F;shadowsocks.json -d start停止ssserver -c &#x2F;etc&#x2F;shadowsocks.json -d stop
+直接命令启动&#x2F;usr&#x2F;bin&#x2F;python &#x2F;usr&#x2F;bin&#x2F;ssserver -p 8000 -k PA@@w0rd -m rc4-md5 -d start
 ]]></content>
       <categories>
-        <category>Centos</category>
+        <category>Other</category>
       </categories>
       <tags>
-        <tag>ntp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos6.5部署zabbix2.4.7过程</title>
-    <url>/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2zabbix2.4.7%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[首先配置zabbix服务器能通外网关闭iptables和selinux安装zabbix存储库包rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm安装zabbixyum install zabbix-server-mysql zabbix-web-mysql安装mysqlyum install mysql-server -y安装ntpyum install ntp -yntpdate time.nist.gov设置开机启动chkconfig ntpd onchkconfig httpd onchkconfig mysqld onchkconfig zabbix-server on启动服务&#x2F;etc&#x2F;init.d&#x2F;ntpd start&#x2F;etc&#x2F;init.d&#x2F;httpd start&#x2F;etc&#x2F;init.d&#x2F;mysqld start&#x2F;etc&#x2F;init.d&#x2F;zabbix-server start创建zabbix数据库mysql -uroot -pcreate database zabbix character set utf8 collate utf8_bin;设置mysql访问权限，只允许本机访问grant all privileges on zabbix.* to zabbix@localhost identified by ‘zabbix’;flush privileges;quit；导入数据表结构cd &#x2F;usr&#x2F;share&#x2F;doc&#x2F;zabbix-server-mysql-2.4.7&#x2F;createmysql -uzabbix -pzabbix zabbix &lt; schema.sqlmysql -uzabbix -pzabbix zabbix &lt; images.sqlmysql -uzabbix -pzabbix zabbix &lt; data.sql编辑zabbix配置文件指向数据库vi &#x2F;etc&#x2F;zabbix&#x2F;zabbix_server.confDBHost&#x3D;localhostDBName&#x3D;zabbixDBUser&#x3D;zabbixDBPassword&#x3D;zabbix
-修改httpd下的zabbix配置文件vi &#x2F;etc&#x2F;httpd&#x2F;conf.d&#x2F;zabbix.confphp_value max_execution_time 300php_value memory_limit 128Mphp_value post_max_size 16Mphp_value upload_max_filesize 2Mphp_value max_input_time 300php_value date.timezone Asia&#x2F;Shanghaiservice httpd restart
-添加iptables规则-A INPUT -p tcp -m tcp –dport 10050 -j ACCEPT-A INPUT -p udp -m udp –dport 10050 -j ACCEPT-A INPUT -p tcp -m tcp –dport 10051 -j ACCEPT-A INPUT -p udp -m udp –dport 10051 -j ACCEPT
-进入web安装向导http:&#x2F;&#x2F;服务器IP&#x2F;zabbix
-完成
-完成后登陆登陆链接：http://192.168.10.222/zabbix/index.php默认账号Admin，密码zabbix
-修改中文语言
-]]></content>
-      <categories>
-        <category>Zabbix</category>
-      </categories>
-      <tags>
-        <tag>zabbix</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>centos6.6物理机安装iml-lustre-client</title>
-    <url>/2016/03/05/Centos6.6%E7%89%A9%E7%90%86%E6%9C%BA%E5%AE%89%E8%A3%85iml-lustre-client/</url>
-    <content><![CDATA[首先确定IB是否装上
-安装编译好lusre-client包rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpmrpm -ivh lustre-client-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpm
-添加o2ib1 echo “options lnet networks&#x3D;o2ib1(ib0) “ &gt;&gt; &#x2F;etc&#x2F;modprobe.d&#x2F;lustre.conf编辑 vi &#x2F;etc&#x2F;rc.local 添加： echo “modprobe lustre” &gt;&gt; &#x2F;etc&#x2F;rc.local echo “modprobe lnet” &gt;&gt; &#x2F;etc&#x2F;rc.localmkdir &#x2F;mnt&#x2F;lustre重启挂载 mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre把挂载命令写入开机启动echo “mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre”&gt;&gt; &#x2F;etc&#x2F;rc.local
-]]></content>
-      <categories>
-        <category>Lustre</category>
-      </categories>
-      <tags>
-        <tag>iml-lustre</tag>
+        <tag>shdowsocks</tag>
       </tags>
   </entry>
   <entry>
@@ -197,6 +188,38 @@ OSS2上格式化ost01并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre �
       </tags>
   </entry>
   <entry>
+    <title>Centos6.5部署zabbix2.4.7过程</title>
+    <url>/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2zabbix2.4.7%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[首先配置zabbix服务器能通外网关闭iptables和selinux安装zabbix存储库包rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm安装zabbixyum install zabbix-server-mysql zabbix-web-mysql安装mysqlyum install mysql-server -y安装ntpyum install ntp -yntpdate time.nist.gov设置开机启动chkconfig ntpd onchkconfig httpd onchkconfig mysqld onchkconfig zabbix-server on启动服务&#x2F;etc&#x2F;init.d&#x2F;ntpd start&#x2F;etc&#x2F;init.d&#x2F;httpd start&#x2F;etc&#x2F;init.d&#x2F;mysqld start&#x2F;etc&#x2F;init.d&#x2F;zabbix-server start创建zabbix数据库mysql -uroot -pcreate database zabbix character set utf8 collate utf8_bin;设置mysql访问权限，只允许本机访问grant all privileges on zabbix.* to zabbix@localhost identified by ‘zabbix’;flush privileges;quit；导入数据表结构cd &#x2F;usr&#x2F;share&#x2F;doc&#x2F;zabbix-server-mysql-2.4.7&#x2F;createmysql -uzabbix -pzabbix zabbix &lt; schema.sqlmysql -uzabbix -pzabbix zabbix &lt; images.sqlmysql -uzabbix -pzabbix zabbix &lt; data.sql编辑zabbix配置文件指向数据库vi &#x2F;etc&#x2F;zabbix&#x2F;zabbix_server.confDBHost&#x3D;localhostDBName&#x3D;zabbixDBUser&#x3D;zabbixDBPassword&#x3D;zabbix
+修改httpd下的zabbix配置文件vi &#x2F;etc&#x2F;httpd&#x2F;conf.d&#x2F;zabbix.confphp_value max_execution_time 300php_value memory_limit 128Mphp_value post_max_size 16Mphp_value upload_max_filesize 2Mphp_value max_input_time 300php_value date.timezone Asia&#x2F;Shanghaiservice httpd restart
+添加iptables规则-A INPUT -p tcp -m tcp –dport 10050 -j ACCEPT-A INPUT -p udp -m udp –dport 10050 -j ACCEPT-A INPUT -p tcp -m tcp –dport 10051 -j ACCEPT-A INPUT -p udp -m udp –dport 10051 -j ACCEPT
+进入web安装向导http:&#x2F;&#x2F;服务器IP&#x2F;zabbix
+完成
+完成后登陆登陆链接：http://192.168.10.222/zabbix/index.php默认账号Admin，密码zabbix
+修改中文语言
+]]></content>
+      <categories>
+        <category>Zabbix</category>
+      </categories>
+      <tags>
+        <tag>zabbix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos6.6物理机安装iml-lustre-client</title>
+    <url>/2016/03/05/Centos6.6%E7%89%A9%E7%90%86%E6%9C%BA%E5%AE%89%E8%A3%85iml-lustre-client/</url>
+    <content><![CDATA[首先确定IB是否装上
+安装编译好lusre-client包rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpmrpm -ivh lustre-client-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpm
+添加o2ib1 echo “options lnet networks&#x3D;o2ib1(ib0) “ &gt;&gt; &#x2F;etc&#x2F;modprobe.d&#x2F;lustre.conf编辑 vi &#x2F;etc&#x2F;rc.local 添加： echo “modprobe lustre” &gt;&gt; &#x2F;etc&#x2F;rc.local echo “modprobe lnet” &gt;&gt; &#x2F;etc&#x2F;rc.localmkdir &#x2F;mnt&#x2F;lustre重启挂载 mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre把挂载命令写入开机启动echo “mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre”&gt;&gt; &#x2F;etc&#x2F;rc.local
+]]></content>
+      <categories>
+        <category>Lustre</category>
+      </categories>
+      <tags>
+        <tag>iml-lustre</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos6.6部署filebeat</title>
     <url>/2016/03/05/Centos6.6%E9%83%A8%E7%BD%B2filebeat/</url>
     <content><![CDATA[安装rpm -ivh filebeat-1.0.1-x86_64.rpmchkconfig –add filebeatchkconfig filebeat on
@@ -208,29 +231,6 @@ OSS2上格式化ost01并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre �
       </categories>
       <tags>
         <tag>filebeat</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos6.5搭建shdowsocks服务器</title>
-    <url>/2016/03/05/Centos6.5%E6%90%AD%E5%BB%BAshdowsocks%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[yum updateyum install python-setuptools &amp;&amp; easy_install pippip install shadowsocksvi &#x2F;etc&#x2F;shadowsocks.json[root@iZu1cf4uswmZ ~]# more &#x2F;etc&#x2F;shadowsocks.json{ “server”:”47.88.50.29”, “server_port”:8000, “password”:”PA@@w0rd”, “timeout”:300, “method”:”rc4-md5”, “fast_open”:true}
-######################################代码中各字段的含义：
-server：服务器 IP地址 (IPv4&#x2F;IPv6)
-server_port：服务器监听的端口，一般设为80，443等，注意不要设为使用中的端口
-password：设置密码，自定义
-timeout：超时时间（秒）
-method：加密方法，可选择 “aes-256-cfb”, “rc4-md5”等等。推荐使用 “rc4-md5”
-fast_open：true 或 false。如果你的服务器 Linux 内核在3.7+，可以开启 fast_open 以降低延迟。
-workers：workers数量，默认为 1。
-####################################################
-开启ssserver -c &#x2F;etc&#x2F;shadowsocks.json -d start停止ssserver -c &#x2F;etc&#x2F;shadowsocks.json -d stop
-直接命令启动&#x2F;usr&#x2F;bin&#x2F;python &#x2F;usr&#x2F;bin&#x2F;ssserver -p 8000 -k PA@@w0rd -m rc4-md5 -d start
-]]></content>
-      <categories>
-        <category>Other</category>
-      </categories>
-      <tags>
-        <tag>shdowsocks</tag>
       </tags>
   </entry>
   <entry>
@@ -289,36 +289,6 @@ i. docker run -itd --volumes-from modest_pare centos-7-x86_64 bash
       </tags>
   </entry>
   <entry>
-    <title>Centos7.2部署kubernetes</title>
-    <url>/2017/01/25/Centos7.2%E9%83%A8%E7%BD%B2kubernetes/</url>
-    <content><![CDATA[
-环境： a. master：192.168.254.141 b. node01：192.168.254.142 c. node02：192.168.254.143 d. 配置hosts
-
-master节点安装： a. systemctl stop firewalld &amp;&amp; systemctl disable firewalld b. yum install kubernetes-master etcd -y
-
-node节点安装： a. systemctl stop firewalld &amp;&amp; systemctl disable firewalld b. yum install kubernetes-node flannel docker -y c. systemctl enable docker &amp;&amp; systemctl start docker
-
-配置etc节点： a. egrep -v “^#” &#x2F;etc&#x2F;etcd&#x2F;etcd.confETCD_NAME&#x3D;defaultETCD_DATA_DIR&#x3D;”&#x2F;var&#x2F;lib&#x2F;etcd&#x2F;default.etcd”ETCD_LISTEN_CLIENT_URLS&#x3D;”http://192.168.254.141:2379&quot; b. 启动etcd
-i. systemctl start etcd &amp;&amp; systemctl enable etcd
-配置master节点： a. egrep -v “^#” &#x2F;etc&#x2F;kubernetes&#x2F;apiserver | grep -v “^$”KUBE_API_ADDRESS&#x3D;”–insecure-bind-address&#x3D;0.0.0.0”KUBE_ETCD_SERVERS&#x3D;”–etcd-servers&#x3D;http://192.168.254.141:8080&quot; d. 启动服务：
-i. systemctl enable kube-apiserver kube-scheduler kube-controller-managerii. systemctl start kube-apiserver kube-scheduler kube-controller-manager
-配置node节点 a. egrep -v “^#” &#x2F;etc&#x2F;kubernetes&#x2F;config | grep -v “^$”KUBE_LOGTOSTDERR&#x3D;”–logtostderr&#x3D;true”KUBE_LOG_LEVEL&#x3D;”–v&#x3D;0”KUBE_ALLOW_PRIV&#x3D;”–allow-privileged&#x3D;false”KUBE_MASTER&#x3D;”–master&#x3D;http://192.168.254.141:8080&quot;KUBELET_POD_INFRA_CONTAINER&#x3D;”–pod-infra-container-image&#x3D;registry.access.redhat.com&#x2F;rhel7&#x2F;pod-infrastructure:latest”KUBELET_ARGS&#x3D;”–pod-infra-container-image&#x3D;kubernetes&#x2F;pause” c. 启动服务：
-i. systemctl enable kubelet kube-proxyii. systemctl start kubelet kube-proxy
-配置node节点flannel a. 初始化flannel的etcd配置(etc节点操作)：
-i. etcdctl -C 127.0.0.1:2379 set /coreos.com/network/config &#x27;&#123; &quot;Network&quot;: &quot;10.1.0.0/16&quot; &#125;&#x27;
-
-b. node节点上操作：
-i. egrep -v &quot;^#&quot; /etc/sysconfig/flanneld | grep -v &quot;^$&quot;
-
-FLANNEL_ETCD_ENDPOINTS&#x3D;”]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>docker,kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos7.2部署elk过程</title>
     <url>/2016/03/05/Centos7.2%E9%83%A8%E7%BD%B2elk%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[安装java环境 yum install java-1.7.0-openjdk
@@ -347,19 +317,34 @@ echo_supervisord_conf &gt;&gt; &#x2F;etc&#x2F;supervisord.conf编辑配置文件
       </tags>
   </entry>
   <entry>
-    <title>Centos quick install OpenShift3.9.0</title>
-    <url>/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/</url>
-    <content><![CDATA[1. deploy Centos minial system2. yum update -ya. reboot
+    <title>Centos7.2部署kubernetes</title>
+    <url>/2017/01/25/Centos7.2%E9%83%A8%E7%BD%B2kubernetes/</url>
+    <content><![CDATA[
+环境： a. master：192.168.254.141 b. node01：192.168.254.142 c. node02：192.168.254.143 d. 配置hosts
 
-3. yum install git docker net-tools4. git clone https://github.com/gshipley/installcentos.gita. export DOMAIN=openshift.iob. export USERNAME=chenfc. export PASSWORD=&lt;your-password&gt;
+master节点安装： a. systemctl stop firewalld &amp;&amp; systemctl disable firewalld b. yum install kubernetes-master etcd -y
 
-5. cd installcentosa. ./install-openshift.sh
+node节点安装： a. systemctl stop firewalld &amp;&amp; systemctl disable firewalld b. yum install kubernetes-node flannel docker -y c. systemctl enable docker &amp;&amp; systemctl start docker
 
-6. DNS Sercera. openshift.io 8443b. openshift.io 80c. openshift.io 443
-]]></content>
+配置etc节点： a. egrep -v “^#” &#x2F;etc&#x2F;etcd&#x2F;etcd.confETCD_NAME&#x3D;defaultETCD_DATA_DIR&#x3D;”&#x2F;var&#x2F;lib&#x2F;etcd&#x2F;default.etcd”ETCD_LISTEN_CLIENT_URLS&#x3D;”http://192.168.254.141:2379&quot; b. 启动etcd
+i. systemctl start etcd &amp;&amp; systemctl enable etcd
+配置master节点： a. egrep -v “^#” &#x2F;etc&#x2F;kubernetes&#x2F;apiserver | grep -v “^$”KUBE_API_ADDRESS&#x3D;”–insecure-bind-address&#x3D;0.0.0.0”KUBE_ETCD_SERVERS&#x3D;”–etcd-servers&#x3D;http://192.168.254.141:8080&quot; d. 启动服务：
+i. systemctl enable kube-apiserver kube-scheduler kube-controller-managerii. systemctl start kube-apiserver kube-scheduler kube-controller-manager
+配置node节点 a. egrep -v “^#” &#x2F;etc&#x2F;kubernetes&#x2F;config | grep -v “^$”KUBE_LOGTOSTDERR&#x3D;”–logtostderr&#x3D;true”KUBE_LOG_LEVEL&#x3D;”–v&#x3D;0”KUBE_ALLOW_PRIV&#x3D;”–allow-privileged&#x3D;false”KUBE_MASTER&#x3D;”–master&#x3D;http://192.168.254.141:8080&quot;KUBELET_POD_INFRA_CONTAINER&#x3D;”–pod-infra-container-image&#x3D;registry.access.redhat.com&#x2F;rhel7&#x2F;pod-infrastructure:latest”KUBELET_ARGS&#x3D;”–pod-infra-container-image&#x3D;kubernetes&#x2F;pause” c. 启动服务：
+i. systemctl enable kubelet kube-proxyii. systemctl start kubelet kube-proxy
+配置node节点flannel a. 初始化flannel的etcd配置(etc节点操作)：
+i. etcdctl -C 127.0.0.1:2379 set /coreos.com/network/config &#x27;&#123; &quot;Network&quot;: &quot;10.1.0.0/16&quot; &#125;&#x27;
+
+b. node节点上操作：
+i. egrep -v &quot;^#&quot; /etc/sysconfig/flanneld | grep -v &quot;^$&quot;
+
+FLANNEL_ETCD_ENDPOINTS&#x3D;”]]></content>
       <categories>
-        <category>OpenShift</category>
+        <category>Docker</category>
       </categories>
+      <tags>
+        <tag>docker,kubernetes</tag>
+      </tags>
   </entry>
   <entry>
     <title>Centos安全配置参考</title>
@@ -398,6 +383,21 @@ hard nproc 20然后必须编辑&#x2F;etc&#x2F;pam.d&#x2F;login文件检查下面
       <tags>
         <tag>Centos</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Centos quick install OpenShift3.9.0</title>
+    <url>/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/</url>
+    <content><![CDATA[1. deploy Centos minial system2. yum update -ya. reboot
+
+3. yum install git docker net-tools4. git clone https://github.com/gshipley/installcentos.gita. export DOMAIN=openshift.iob. export USERNAME=chenfc. export PASSWORD=&lt;your-password&gt;
+
+5. cd installcentosa. ./install-openshift.sh
+
+6. DNS Sercera. openshift.io 8443b. openshift.io 80c. openshift.io 443
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
   </entry>
   <entry>
     <title>Centos网卡做bond0</title>
@@ -487,6 +487,27 @@ show variables like ‘max_connections’;
       </tags>
   </entry>
   <entry>
+    <title>Markdown基本语法</title>
+    <url>/2016/08/22/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>NFS安装配置</title>
+    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
+NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
+NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
+nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
+iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
+]]></content>
+      <categories>
+        <category>Centos</category>
+      </categories>
+      <tags>
+        <tag>nfs</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL Tuning Primer Script使用（Mysql调优脚本）</title>
     <url>/2017/01/03/MySQL%20Tuning%20Primer%20Script%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[
@@ -541,25 +562,62 @@ TABLE LOCKINGCurrent Lock Wait ratio &#x3D; 0 : 318Your table locking seems to b
       </tags>
   </entry>
   <entry>
-    <title>Markdown基本语法</title>
-    <url>/2016/08/22/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>NFS安装配置</title>
-    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
-NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
-NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
-nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
-iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
+    <title>OpenShift-S2I构建过程</title>
+    <url>/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
+如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
+编译和部署自己的应用程序docker生成镜像的过程，当我们创建自己的应用程序镜像的时候，一般来说有两种途径：
+
+通过Dockerfile来创建：
+
+传统做法是自己编写Dockerfile，使用基础镜像，copy源代码、RUN命令来安装依赖包、shell命令来编译程序、CMD名字指定可运行程序，最后使用docker build 生成镜像。
+
+通过docker run和docker commit来创建
+
+还有一种比较小众的做法。是docker run运行基础镜像，然后使用交互式shell下载源代码、安装依赖包最后使用dockercommit提交容器生成镜像。
+理解s2i 历程中的三个镜像要了解 s2i的过程我们先来理解三个阶段的三个镜像：
+
+基础镜像 base image：
+
+是我们在docker hub下载的某个语言的官方镜像，比如python2.7、PHP3.5，这些镜像只包含语言的编译环境，没有做任何加工。
+
+编译镜像 builder image：
+
+这个镜像是我们在基础镜像的基础上，经过加工以后，可以自动编译代码，并自动完成部署运行的镜像，这个镜像是通过dockerfile生成，继承自上面的baseimage。制作过程参考：https://github.com/openshift/source-to-image/
+
+运行时镜像 runtime image：
+
+这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builderimage; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builderimage，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit出一个新的image ，称为 runtime image
+OpenShift由builder image到runtime image的过程如下图：
+
+自定义s2i脚本openshift官方已经提供了各种语言的 builder image，(当然这些builderimage中已经注入了写好的s2i脚本，一般保存在&#x2F;usr&#x2F;libexec&#x2F;s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：
+有以下三种方式可以使用自定义s2i脚本来替换默认脚本：
+
+在代码中包含s2i脚本：在代码仓库的跟目录创建文件夹.s2i&#x2F;bin，把脚本放到这个目录中，当编译时会自动调用这个脚本，值得注意的是，早期版本使用的是.sti&#x2F;bin文件夹，后期版本使用的是.s2i&#x2F;bin。
+指定网络上的s2i脚本地址：通过设置bc的bc.spec.strategy.sourceStrategy.scripts项目来指定s2i脚本地址，系统会自动去该地址下载脚本。
+如果使用s2i工具创建，可以通过三种方式设置脚本位置
+
+s2i配置文件信息主要包含四个文件，分别为：
+
+assemble 用于对源码编译以及安装配置的脚本
+run 启动应用镜像时执行的脚本
+save-artifacts用于保存一些编译中复用的内容，这样下次编译可以直接使用这些文件，从而加快编译安装等速度
+usage 打印生成镜像的帮助信息
+
+这四个文件都需要用户自行定义，s2i会通过三种方式寻找这些文件，分别为：
+
+源码中.s2i&#x2F;bin下
+-scripts-url 参数指定的位置
+镜像中label：io.openshift.s2i.scripts-url指定的位置
+
+推荐使用第一种方式，这样方便管理和持续集成，其他两种url都支持以下三种形式：
+image:&#x2F;&#x2F;path_to_scripts_dir 在镜像内的绝对路径
+file:&#x2F;&#x2F;path_to_scripts_dir 在主机上的绝对或者相对路径
+http(s):&#x2F;&#x2F;path_to_scripts_dir 网络上的文件
 ]]></content>
       <categories>
-        <category>Centos</category>
+        <category>OpenShift</category>
       </categories>
-      <tags>
-        <tag>nfs</tag>
-      </tags>
   </entry>
   <entry>
     <title>Nginx安全配置参考</title>
@@ -582,6 +640,150 @@ messages with just a carriage return.static char ngx_http_error_400_page[] &#x3D
       <tags>
         <tag>Nginx</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>OpenShift-安全与配额</title>
+    <url>/2018/04/25/OpenShift-%E5%AE%89%E5%85%A8%E4%B8%8E%E9%85%8D%E9%A2%9D/</url>
+    <content><![CDATA[概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。
+容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全
+用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时间内对系统进行访问。
+
+获取token：oc whoami -t
+获取tokenAPI：&#x2F;oauth&#x2F;token&#x2F;request
+
+身份验证 identity provideropenshift提供不同的适配器链接不同的用户信息管理系统：LDAP、ActiveDirectory、HTPasswd。
+openshift默认采用HTPasswd的文件存储用户信息。该文件存储位置在：&#x2F;etc&#x2F;origin&#x2F;master&#x2F;htpasswd
+使用htpasswd命令可以对用户数据库进行增删改查
+用户组
+查看provider来源：oc get identity
+认证系统：authentication
+授权系统：authorization
+角色访问控制系统：RBAC （role based access control）
+
+权限cluster local
+role：角色，一组权限的集合，RBAC系统中，权限–&gt;role–&gt;用户或者组
+rule：规则，rule三要素：角色role、资源resource、动作verb。
+policy：策略，若干role组成的集合
+role binding ，角色与用户或者组的绑定关系
+policy binding，若干role组成的集合与用户或者组的绑定关系。
+
+权限操作
+授予用户查看当前项目权限：
+
+oc policy add-role-to-user view user2
+
+编辑权限：
+
+oc policy add-role-to-user edit user2
+删除：oc policy remove-role-from-user edit user2
+
+查看角色绑定关系：
+
+oc get rolebinding
+
+查看role的详细信息
+
+oc describe clusterrole admin
+
+创建组：
+
+oc adm groups new newgroups
+
+增加用户到组
+
+oc adm groups add-users newgroups user2
+
+绑定cluster-admin role到新建组
+
+oc adm policy add-cluster-role-to-group cluster-admin newgroups
+cluster-admin是系统管理员角色，这个角色可以在系统中对任意对象执行任意操作。
+Service Account
+builder对象：用于S2I
+default对象：用于运行容器
+depolyer对象：用于部署容器
+
+
+
+
+每个service account包含secret 和token
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+安全上下文SCCprivileged权限最大，restricted权限最小，普通用户及其创建的项目，都属于restricted组。这个组不允许容器以root用户运行，如该要容器以root权限运行，可以把项目默认的defaultservice account加入到高权限的组中，
+比如加入到anyuid组中，因为anyuid组中的RUNASUSER属性值为：RUNASANY，命令如下：
+oc adm policy add-scc-to-user anyuid -z default -n projectname
+
+
+
+查看当前用户的scc（Security content constraint）
+
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+Quota额度配置额度的控制通过资源额度对象resource quota管理（集群用clusterresourcequota），
+resourcequota是基于项目的，以项目为单位对资源进行额度管理，资源的额度对象分为两种：
+
+计算资源：compute resource
+
+
+计算资源：对CPU、内存资源的额度管理
+
+CPU：
+
+
+
+limits.cpu: “40” #limits ：容器所能使用的cpu上限值。 limits.memory: 40Gi requests.cpu: “4” #requests：容器运行所需的cpu下限值。 requests.memory: 4Gi
+
+
+
+
+
+
+CPU资源的度量最小单位是Millicore，一个计算节点上CPU核数乘以1000，即为该节点CPU资源总量。
+例如：4Core&#x3D;4000m
+注意：设置计算资源以后，用户部署容器的时候，必须显示的为每一个容器指定CPU和内存的requests及limits的值，否则容器无法部署。
+
+对象数量额度：pod、rc、rq、svc、cm、pvc、is、secrets
+
+
+
+
+openshift.io&#x2F;imagestreams: “400” persistentvolumeclaims: “400” pods: “40” replicationcontrollers: “40” resourcequotas: “40” secrets: “100” services: “100”
+
+
+
+
+
+
+
+cluster resource quota
+
+ClusterResourceQuota允许限制多个project，多个project可以通过annotation 或者label进行选择，比如某个用户下的所有project就可以通过：annotations：openshift.io&#x2F;requester&#x3D;进行限制。项目管理员不能创建和修改ClusterResourceQuota，但是可以查看集群限额在当前项目的应用情况，通过以下命令查看：
+
+
+
+oc describe AppliedClusterResourceQuota
+
+
+
+
+
+
+Limit Range 资源限制资源限制是更具体的控制每个容器具体使用多少CPU和内存资源。
+可以通过两个层面进行定义：
+
+项目级别统一定义每个容器资源是用总量
+容器级别单独定义某个容器资源是用总量
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
   </entry>
   <entry>
     <title>OpenShift-Project权限管理</title>
@@ -785,208 +987,6 @@ oc get clusterrolebinding
 
 
 
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-S2I构建过程</title>
-    <url>/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
-如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
-编译和部署自己的应用程序docker生成镜像的过程，当我们创建自己的应用程序镜像的时候，一般来说有两种途径：
-
-通过Dockerfile来创建：
-
-传统做法是自己编写Dockerfile，使用基础镜像，copy源代码、RUN命令来安装依赖包、shell命令来编译程序、CMD名字指定可运行程序，最后使用docker build 生成镜像。
-
-通过docker run和docker commit来创建
-
-还有一种比较小众的做法。是docker run运行基础镜像，然后使用交互式shell下载源代码、安装依赖包最后使用dockercommit提交容器生成镜像。
-理解s2i 历程中的三个镜像要了解 s2i的过程我们先来理解三个阶段的三个镜像：
-
-基础镜像 base image：
-
-是我们在docker hub下载的某个语言的官方镜像，比如python2.7、PHP3.5，这些镜像只包含语言的编译环境，没有做任何加工。
-
-编译镜像 builder image：
-
-这个镜像是我们在基础镜像的基础上，经过加工以后，可以自动编译代码，并自动完成部署运行的镜像，这个镜像是通过dockerfile生成，继承自上面的baseimage。制作过程参考：https://github.com/openshift/source-to-image/
-
-运行时镜像 runtime image：
-
-这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builderimage; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builderimage，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit出一个新的image ，称为 runtime image
-OpenShift由builder image到runtime image的过程如下图：
-
-自定义s2i脚本openshift官方已经提供了各种语言的 builder image，(当然这些builderimage中已经注入了写好的s2i脚本，一般保存在&#x2F;usr&#x2F;libexec&#x2F;s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：
-有以下三种方式可以使用自定义s2i脚本来替换默认脚本：
-
-在代码中包含s2i脚本：在代码仓库的跟目录创建文件夹.s2i&#x2F;bin，把脚本放到这个目录中，当编译时会自动调用这个脚本，值得注意的是，早期版本使用的是.sti&#x2F;bin文件夹，后期版本使用的是.s2i&#x2F;bin。
-指定网络上的s2i脚本地址：通过设置bc的bc.spec.strategy.sourceStrategy.scripts项目来指定s2i脚本地址，系统会自动去该地址下载脚本。
-如果使用s2i工具创建，可以通过三种方式设置脚本位置
-
-s2i配置文件信息主要包含四个文件，分别为：
-
-assemble 用于对源码编译以及安装配置的脚本
-run 启动应用镜像时执行的脚本
-save-artifacts用于保存一些编译中复用的内容，这样下次编译可以直接使用这些文件，从而加快编译安装等速度
-usage 打印生成镜像的帮助信息
-
-这四个文件都需要用户自行定义，s2i会通过三种方式寻找这些文件，分别为：
-
-源码中.s2i&#x2F;bin下
--scripts-url 参数指定的位置
-镜像中label：io.openshift.s2i.scripts-url指定的位置
-
-推荐使用第一种方式，这样方便管理和持续集成，其他两种url都支持以下三种形式：
-image:&#x2F;&#x2F;path_to_scripts_dir 在镜像内的绝对路径
-file:&#x2F;&#x2F;path_to_scripts_dir 在主机上的绝对或者相对路径
-http(s):&#x2F;&#x2F;path_to_scripts_dir 网络上的文件
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-安全与配额</title>
-    <url>/2018/04/25/OpenShift-%E5%AE%89%E5%85%A8%E4%B8%8E%E9%85%8D%E9%A2%9D/</url>
-    <content><![CDATA[概述：容器是在linux命名空间和CGroup的基础上，通过SELinux限制容器进程对资源的读取访问或限制容器的容量。容器的安全隔离已经达到了生产可用级别。
-容器安全涉及到多个层面：1、容器自身安全;2、容器镜像安全;3、宿主机安全
-用户认证：openshift通过OAuth进行用户认证，OAuth是一个开源的认证和授权框架，OAuth通过用户登录认证以后，返回一个token，用户可以在有效的时间内对系统进行访问。
-
-获取token：oc whoami -t
-获取tokenAPI：&#x2F;oauth&#x2F;token&#x2F;request
-
-身份验证 identity provideropenshift提供不同的适配器链接不同的用户信息管理系统：LDAP、ActiveDirectory、HTPasswd。
-openshift默认采用HTPasswd的文件存储用户信息。该文件存储位置在：&#x2F;etc&#x2F;origin&#x2F;master&#x2F;htpasswd
-使用htpasswd命令可以对用户数据库进行增删改查
-用户组
-查看provider来源：oc get identity
-认证系统：authentication
-授权系统：authorization
-角色访问控制系统：RBAC （role based access control）
-
-权限cluster local
-role：角色，一组权限的集合，RBAC系统中，权限–&gt;role–&gt;用户或者组
-rule：规则，rule三要素：角色role、资源resource、动作verb。
-policy：策略，若干role组成的集合
-role binding ，角色与用户或者组的绑定关系
-policy binding，若干role组成的集合与用户或者组的绑定关系。
-
-权限操作
-授予用户查看当前项目权限：
-
-oc policy add-role-to-user view user2
-
-编辑权限：
-
-oc policy add-role-to-user edit user2
-删除：oc policy remove-role-from-user edit user2
-
-查看角色绑定关系：
-
-oc get rolebinding
-
-查看role的详细信息
-
-oc describe clusterrole admin
-
-创建组：
-
-oc adm groups new newgroups
-
-增加用户到组
-
-oc adm groups add-users newgroups user2
-
-绑定cluster-admin role到新建组
-
-oc adm policy add-cluster-role-to-group cluster-admin newgroups
-cluster-admin是系统管理员角色，这个角色可以在系统中对任意对象执行任意操作。
-Service Account
-builder对象：用于S2I
-default对象：用于运行容器
-depolyer对象：用于部署容器
-
-
-
-
-每个service account包含secret 和token
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-安全上下文SCCprivileged权限最大，restricted权限最小，普通用户及其创建的项目，都属于restricted组。这个组不允许容器以root用户运行，如该要容器以root权限运行，可以把项目默认的defaultservice account加入到高权限的组中，
-比如加入到anyuid组中，因为anyuid组中的RUNASUSER属性值为：RUNASANY，命令如下：
-oc adm policy add-scc-to-user anyuid -z default -n projectname
-
-
-
-查看当前用户的scc（Security content constraint）
-
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-Quota额度配置额度的控制通过资源额度对象resource quota管理（集群用clusterresourcequota），
-resourcequota是基于项目的，以项目为单位对资源进行额度管理，资源的额度对象分为两种：
-
-计算资源：compute resource
-
-
-计算资源：对CPU、内存资源的额度管理
-
-CPU：
-
-
-
-limits.cpu: “40” #limits ：容器所能使用的cpu上限值。 limits.memory: 40Gi requests.cpu: “4” #requests：容器运行所需的cpu下限值。 requests.memory: 4Gi
-
-
-
-
-
-
-CPU资源的度量最小单位是Millicore，一个计算节点上CPU核数乘以1000，即为该节点CPU资源总量。
-例如：4Core&#x3D;4000m
-注意：设置计算资源以后，用户部署容器的时候，必须显示的为每一个容器指定CPU和内存的requests及limits的值，否则容器无法部署。
-
-对象数量额度：pod、rc、rq、svc、cm、pvc、is、secrets
-
-
-
-
-openshift.io&#x2F;imagestreams: “400” persistentvolumeclaims: “400” pods: “40” replicationcontrollers: “40” resourcequotas: “40” secrets: “100” services: “100”
-
-
-
-
-
-
-
-cluster resource quota
-
-ClusterResourceQuota允许限制多个project，多个project可以通过annotation 或者label进行选择，比如某个用户下的所有project就可以通过：annotations：openshift.io&#x2F;requester&#x3D;进行限制。项目管理员不能创建和修改ClusterResourceQuota，但是可以查看集群限额在当前项目的应用情况，通过以下命令查看：
-
-
-
-oc describe AppliedClusterResourceQuota
-
-
-
-
-
-
-Limit Range 资源限制资源限制是更具体的控制每个容器具体使用多少CPU和内存资源。
-可以通过两个层面进行定义：
-
-项目级别统一定义每个容器资源是用总量
-容器级别单独定义某个容器资源是用总量
 
 ]]></content>
       <categories>
@@ -2156,6 +2156,128 @@ kind: StorageClass apiVersion: storage.k8s.io&#x2F;v1 metadata: name: gluster-dy
       </categories>
   </entry>
   <entry>
+    <title>OpenShift-对象定义文件示例</title>
+    <url>/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/</url>
+    <content><![CDATA[Image Stream模版地址
+
+
+https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json
+
+
+
+
+
+
+example
+
+
+{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }
+
+
+
+
+
+
+Deployment Configdc.json
+
+
+{ “kind”: “DeploymentConfig”, “apiVersion”: “v1”, “metadata”: { “name”: “frontend” }, “spec”: { “strategy”: { “type”: “Recreate”, “resources”: {} }, “triggers”: [ { “type”: “ImageChange”, “imageChangeParams”: { “automatic”: true, “containerNames”: [ “helloworld” ], “from”: {}, “lastTriggeredImage”: “” } } ], “replicas”: 1, “selector”: { “name”: “frontend” }, “template”: { “metadata”: { “creationTimestamp”: null, “labels”: { “name”: “frontend” } }, “spec”: { “containers”: [ { “name”: “helloworld”, “image”: “openshift&#x2F;openshift&#x2F;origin-ruby-sample”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } } } }
+
+
+
+
+
+
+example
+
+
+kind: DeploymentConfig apiVersion: v1 metadata: name: tmsweb-deploy spec: replicas: 1 template: metadata: labels: name: tmsweb spec: containers: - image: dtr.ivops.cn:5443&#x2F;ivops&#x2F;nodejs6-alpine:v1.1.x imagePullPolicy: Always name: tmsweb-containers ports: - containerPort: 7200 protocol: TCP command: - &#x2F;usr&#x2F;bin&#x2F;node args: - &#x2F;opt&#x2F;TenancyWeb&#x2F;iv_web.js volumeMounts: - mountPath: &#x2F;opt&#x2F;TenancyWeb name: tmsweb-mount volumes: - name: tmsweb-mount persistentVolumeClaim: claimName: nfs-pvc-tmsweb
+
+
+
+
+
+
+
+Replication Controller
+Routes
+
+route.json
+
+
+{ “kind”: “Route”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-route” }, “spec”: { “host”: “hello-openshift.v3.rhcloud.com”, “to”: { “kind”: “Service”, “name”: “hello-openshift” } } }
+
+
+
+
+
+
+Serviceservice.json
+
+
+{ “kind”: “Service”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-openshift” }, “spec”: { “ports”: [ { “protocol”: “TCP”, “port”: 27017, “targetPort”: 8080, “nodePort”: 0 } ], “selector”: { “name”: “hello-openshift” }, “type”: “ClusterIP”, “sessionAffinity”: “None” } }
+
+
+
+
+
+
+example
+
+
+apiVersion: v1 kind: Service metadata: annotations: openshift.io&#x2F;generated-by: OpenShiftWebConsole labels: app: opsweb-deploy name: opsweb-deploy namespace: iv-ops spec: ports: - name: 7300-tcp port: 7300 protocol: TCP targetPort: 7300 selector: deploymentconfig: opsweb-deploy sessionAffinity: None type: ClusterIP status: loadBalancer: {}
+
+
+
+
+
+
+Podpod.json
+
+
+{ “kind”: “Pod”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-pod”, “labels”: { “name”: “hello-openshift” } }, “spec”: { “containers”: [ { “name”: “hello-openshift”, “image”: “openshift&#x2F;hello-openshift”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } }
+
+
+
+
+
+
+Template模版地址
+
+
+https://github.com/openshift/origin/tree/release-3.6/examples/quickstarts
+
+
+
+
+
+
+Persistent Volumeexample
+
+
+apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv-tmsweb spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: &#x2F;mnt&#x2F;nfs&#x2F;tmsweb server: 10.10.31.161 readOnly: false
+
+
+
+
+
+
+Persistent VolumeClainexample
+
+
+apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc-tmsweb spec: accessModes: - ReadWriteMany volumeName: nfs-pv-tmsweb resources: requests: storage: 1Gi status: #后加的 accessModes: - ReadWriteMany phase: Bound
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>OpenShift-性能监控</title>
     <url>/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/</url>
     <content><![CDATA[简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。
@@ -2287,128 +2409,6 @@ curl -H “Authorization: Bearer $(oc whoami -t)” \ -X GET https:&#x2F;&#x2F;$
 
 更多API接口信息，参考Heapster项目：
 https://github.com/kubernetes/heapster/
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-对象定义文件示例</title>
-    <url>/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/</url>
-    <content><![CDATA[Image Stream模版地址
-
-
-https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json
-
-
-
-
-
-
-example
-
-
-{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }
-
-
-
-
-
-
-Deployment Configdc.json
-
-
-{ “kind”: “DeploymentConfig”, “apiVersion”: “v1”, “metadata”: { “name”: “frontend” }, “spec”: { “strategy”: { “type”: “Recreate”, “resources”: {} }, “triggers”: [ { “type”: “ImageChange”, “imageChangeParams”: { “automatic”: true, “containerNames”: [ “helloworld” ], “from”: {}, “lastTriggeredImage”: “” } } ], “replicas”: 1, “selector”: { “name”: “frontend” }, “template”: { “metadata”: { “creationTimestamp”: null, “labels”: { “name”: “frontend” } }, “spec”: { “containers”: [ { “name”: “helloworld”, “image”: “openshift&#x2F;openshift&#x2F;origin-ruby-sample”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } } } }
-
-
-
-
-
-
-example
-
-
-kind: DeploymentConfig apiVersion: v1 metadata: name: tmsweb-deploy spec: replicas: 1 template: metadata: labels: name: tmsweb spec: containers: - image: dtr.ivops.cn:5443&#x2F;ivops&#x2F;nodejs6-alpine:v1.1.x imagePullPolicy: Always name: tmsweb-containers ports: - containerPort: 7200 protocol: TCP command: - &#x2F;usr&#x2F;bin&#x2F;node args: - &#x2F;opt&#x2F;TenancyWeb&#x2F;iv_web.js volumeMounts: - mountPath: &#x2F;opt&#x2F;TenancyWeb name: tmsweb-mount volumes: - name: tmsweb-mount persistentVolumeClaim: claimName: nfs-pvc-tmsweb
-
-
-
-
-
-
-
-Replication Controller
-Routes
-
-route.json
-
-
-{ “kind”: “Route”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-route” }, “spec”: { “host”: “hello-openshift.v3.rhcloud.com”, “to”: { “kind”: “Service”, “name”: “hello-openshift” } } }
-
-
-
-
-
-
-Serviceservice.json
-
-
-{ “kind”: “Service”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-openshift” }, “spec”: { “ports”: [ { “protocol”: “TCP”, “port”: 27017, “targetPort”: 8080, “nodePort”: 0 } ], “selector”: { “name”: “hello-openshift” }, “type”: “ClusterIP”, “sessionAffinity”: “None” } }
-
-
-
-
-
-
-example
-
-
-apiVersion: v1 kind: Service metadata: annotations: openshift.io&#x2F;generated-by: OpenShiftWebConsole labels: app: opsweb-deploy name: opsweb-deploy namespace: iv-ops spec: ports: - name: 7300-tcp port: 7300 protocol: TCP targetPort: 7300 selector: deploymentconfig: opsweb-deploy sessionAffinity: None type: ClusterIP status: loadBalancer: {}
-
-
-
-
-
-
-Podpod.json
-
-
-{ “kind”: “Pod”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-pod”, “labels”: { “name”: “hello-openshift” } }, “spec”: { “containers”: [ { “name”: “hello-openshift”, “image”: “openshift&#x2F;hello-openshift”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } }
-
-
-
-
-
-
-Template模版地址
-
-
-https://github.com/openshift/origin/tree/release-3.6/examples/quickstarts
-
-
-
-
-
-
-Persistent Volumeexample
-
-
-apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv-tmsweb spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: &#x2F;mnt&#x2F;nfs&#x2F;tmsweb server: 10.10.31.161 readOnly: false
-
-
-
-
-
-
-Persistent VolumeClainexample
-
-
-apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc-tmsweb spec: accessModes: - ReadWriteMany volumeName: nfs-pv-tmsweb resources: requests: storage: 1Gi status: #后加的 accessModes: - ReadWriteMany phase: Bound
-
-
-
-
-
-
 ]]></content>
       <categories>
         <category>OpenShift</category>
@@ -3249,133 +3249,6 @@ Builds:
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-混合云管理</title>
-    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
-混合云管理平台的价值：
-
-度量采集及分析
-策略控制
-自动化集成
-
-MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
-用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
-部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
-项目主页：http://manageiq.org/
-安装包下载页：http://manageiq.org/download/
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-
-下载VMWare VSphere的OVA文件，并导入到vmware环境
-
-
-默认用户密码root：smartvm
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-使用appliance_console命令修改系统信息
-
-
-先修改IP地址
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-配置跟OpenShift集群同一网段的IP地址
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-测试网络连通性
-
-
-测试链接Master地址
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-Web访问，默认密码admin：smartvm
-
-
-https://10.10.31.169/
-
-
-&lt;.&#x2F;media&#x2F;image6.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image7.png&gt;
-
-
-使用
-
-
-添加OpenShift集群
-
-
-
-计算-&gt;容器-&gt;供应商
-
-
-&lt;.&#x2F;media&#x2F;image8.png&gt;
-
-
-配置-&gt;添加新容器供应商
-
-
-获取token
-
-
-oc sa get-token -n management-infra management-admin
-
-
-&lt;.&#x2F;media&#x2F;image9.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image10.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image11.png&gt;
-
-
-添加完成
-
-
-&lt;.&#x2F;media&#x2F;image12.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image13.png&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenShift-核心组件和概念</title>
     <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
     <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
@@ -3410,162 +3283,6 @@ master内置DNS服务器，负责解析这个域名
 
 Router
 负责将集群外部的请求转发到集群的容器。
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PaaS平台介绍</title>
-    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-运维管理</title>
-    <url>/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
-项目URL：https://github.com/cockpit-project
-Cockpit部署
-所有节点执行
-
-
-
-
-yum install cockpit cockpit-docker cockpit-kubernetes -y
-
-
-
-systemctl start cockpit &amp;&amp; systemctl enable cockpit
-
-
-vim &#x2F;etc&#x2F;sysconfig&#x2F;iptables
-
-
-A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-systemctl restart iptables
-
-
-
-登陆
-
-
-
-
-登陆https://master.example.com:9090/
-
-
-
-用户名密码即服务器用户名密码
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-Cockpit集群运维
-
-
-在集群选项中可以添加OpenShift集群
-
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-各信息在浏览器中直观展现
-
-
-节点
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-拓扑
-
-
-&lt;.&#x2F;media&#x2F;image6.png&gt;
-
-
-持久化卷
-
-
-&lt;.&#x2F;media&#x2F;image7.png&gt;
-
-
-
-
-
-OpenShift集群扩容根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120000。
-目前集群扩容的方式有：
-
-半自动扩容：
-
-
-OpenShift默认提供了扩容的Ansible Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。
-
-
-全自动扩容：
-
-
-自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。
-
-Ansible Playbook通过AnsiblePlayboko进行扩容需要编辑Ansible的Inventory，&#x2F;etc&#x2F;ansible&#x2F;hosts文件，在相应角色下添加新节点的域名以及配置信息
-
-
-
-# host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com
-
-
-
-
-
-
-主节点扩容Playbook
-
-
-ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-master&#x2F;scaleup.yml
-
-
-
-
-
-
-计算节点扩容Playbook
-
-
-ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-node&#x2F;scaleup.yml
-
-
-
-
-
-
-OpenShift集群缩容缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。
-禁止参与调度
-
-
-控制一个计算节点是否参与到集群的调度运行应用
-
-
-
-oc adm manage-node master.example.com –schedulable&#x3D;false
-
-
-&lt;.&#x2F;media&#x2F;image8.png&gt;
-
 
 ]]></content>
       <categories>
@@ -5098,6 +4815,289 @@ oc new-app logging-deployer-template \ –param IMAGE_VERSION&#x3D;v1.3.0 \ –p
       </categories>
   </entry>
   <entry>
+    <title>OpenShift-混合云管理</title>
+    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
+混合云管理平台的价值：
+
+度量采集及分析
+策略控制
+自动化集成
+
+MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
+用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
+部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
+项目主页：http://manageiq.org/
+安装包下载页：http://manageiq.org/download/
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+
+下载VMWare VSphere的OVA文件，并导入到vmware环境
+
+
+默认用户密码root：smartvm
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+使用appliance_console命令修改系统信息
+
+
+先修改IP地址
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+配置跟OpenShift集群同一网段的IP地址
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+测试网络连通性
+
+
+测试链接Master地址
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+Web访问，默认密码admin：smartvm
+
+
+https://10.10.31.169/
+
+
+&lt;.&#x2F;media&#x2F;image6.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image7.png&gt;
+
+
+使用
+
+
+添加OpenShift集群
+
+
+
+计算-&gt;容器-&gt;供应商
+
+
+&lt;.&#x2F;media&#x2F;image8.png&gt;
+
+
+配置-&gt;添加新容器供应商
+
+
+获取token
+
+
+oc sa get-token -n management-infra management-admin
+
+
+&lt;.&#x2F;media&#x2F;image9.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image10.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image11.png&gt;
+
+
+添加完成
+
+
+&lt;.&#x2F;media&#x2F;image12.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image13.png&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PaaS平台介绍</title>
+    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-运维管理</title>
+    <url>/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
+项目URL：https://github.com/cockpit-project
+Cockpit部署
+所有节点执行
+
+
+
+
+yum install cockpit cockpit-docker cockpit-kubernetes -y
+
+
+
+systemctl start cockpit &amp;&amp; systemctl enable cockpit
+
+
+vim &#x2F;etc&#x2F;sysconfig&#x2F;iptables
+
+
+A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+systemctl restart iptables
+
+
+
+登陆
+
+
+
+
+登陆https://master.example.com:9090/
+
+
+
+用户名密码即服务器用户名密码
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+Cockpit集群运维
+
+
+在集群选项中可以添加OpenShift集群
+
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+各信息在浏览器中直观展现
+
+
+节点
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+拓扑
+
+
+&lt;.&#x2F;media&#x2F;image6.png&gt;
+
+
+持久化卷
+
+
+&lt;.&#x2F;media&#x2F;image7.png&gt;
+
+
+
+
+
+OpenShift集群扩容根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120000。
+目前集群扩容的方式有：
+
+半自动扩容：
+
+
+OpenShift默认提供了扩容的Ansible Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。
+
+
+全自动扩容：
+
+
+自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。
+
+Ansible Playbook通过AnsiblePlayboko进行扩容需要编辑Ansible的Inventory，&#x2F;etc&#x2F;ansible&#x2F;hosts文件，在相应角色下添加新节点的域名以及配置信息
+
+
+
+# host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com
+
+
+
+
+
+
+主节点扩容Playbook
+
+
+ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-master&#x2F;scaleup.yml
+
+
+
+
+
+
+计算节点扩容Playbook
+
+
+ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-node&#x2F;scaleup.yml
+
+
+
+
+
+
+OpenShift集群缩容缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。
+禁止参与调度
+
+
+控制一个计算节点是否参与到集群的调度运行应用
+
+
+
+oc adm manage-node master.example.com –schedulable&#x3D;false
+
+
+&lt;.&#x2F;media&#x2F;image8.png&gt;
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RHCA-RH413(服务器固化)学习笔记</title>
     <url>/2017/01/06/RHCA-RH413(%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9B%BA%E5%8C%96)%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[413-1-operating system update:
@@ -5405,18 +5405,6 @@ true
       </tags>
   </entry>
   <entry>
-    <title>Brew-cask安装本地应用</title>
-    <url>/2016/03/05/brew-cask%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[修改目录：&#x2F;usr&#x2F;local&#x2F;Library&#x2F;Taps&#x2F;caskroom&#x2F;homebrew-cask&#x2F;Casks下的相对应的.rb文件注释掉外网路径，并添加本地路径有的应用可能需要修改一下sha356值209214.png然后运行brew-cask cleanup清除缓存然后就可以正常安装了brew-cask install svnx
-]]></content>
-      <categories>
-        <category>Other</category>
-      </categories>
-      <tags>
-        <tag>brew-cask</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Haproxy-1.6.2启动脚本</title>
     <url>/2016/03/05/haproxy-1-6-2/</url>
     <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init
@@ -5433,16 +5421,16 @@ true
       </tags>
   </entry>
   <entry>
-    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
-    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
-    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
-modprobe lnet
-最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
-tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
+    <title>Brew-cask安装本地应用</title>
+    <url>/2016/03/05/brew-cask%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[修改目录：&#x2F;usr&#x2F;local&#x2F;Library&#x2F;Taps&#x2F;caskroom&#x2F;homebrew-cask&#x2F;Casks下的相对应的.rb文件注释掉外网路径，并添加本地路径有的应用可能需要修改一下sha356值209214.png然后运行brew-cask cleanup清除缓存然后就可以正常安装了brew-cask install svnx
 ]]></content>
       <categories>
-        <category>Lustre</category>
+        <category>Other</category>
       </categories>
+      <tags>
+        <tag>brew-cask</tag>
+      </tags>
   </entry>
   <entry>
     <title>hub.docker上搭建仓库并上传镜像</title>
@@ -5480,6 +5468,18 @@ i. docker pull docker.io&#x2F;fearchan&#x2F;kube-controller-manager-amd64:v1.5.1
       <tags>
         <tag>docker</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
+    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
+    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
+modprobe lnet
+最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
+tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
+]]></content>
+      <categories>
+        <category>Lustre</category>
+      </categories>
   </entry>
   <entry>
     <title>Iml-lustre multipath安装(centos 6.6)</title>
@@ -5680,6 +5680,23 @@ Slave_SQL_Running: Yes
       </tags>
   </entry>
   <entry>
+    <title>Sysbench测试mysql性能</title>
+    <url>/2016/03/05/sysbench%E6%B5%8B%E8%AF%95mysql%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[下载sysbench URL：https://codeload.github.com/akopytov/sysbench/zip/0.5上传到&#x2F;root&#x2F;backup下解压进入目录安装编译依赖包：yum install gcc gcc-c++ libtool unzip编译并安装：.&#x2F;autogen.sh
+.&#x2F;configure –prefix&#x3D;&#x2F;data&#x2F;sysbench
+make &amp;&amp; make install
+测试命令：CPU测试：&#x2F;data&#x2F;sysbench&#x2F;bin&#x2F;sysbench –test&#x3D;cpu –cpu-max-prime&#x3D;20000 run
+测试脚本
+测试结果
+]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>Sysbencg</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis-3.0.4启动脚本</title>
     <url>/2016/03/05/redis-3-0-4/</url>
     <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script配置文件在&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;redis.conf拷贝到init.d下：cp &#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script &#x2F;etc&#x2F;init.d&#x2F;redis-server修改安装于配置问价路径：
@@ -5727,23 +5744,6 @@ for db in **do sql_file&#x3D;”&#x2F;data&#x2F;$db.sql” echo “$db Export St
       </categories>
       <tags>
         <tag>Tengine</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Sysbench测试mysql性能</title>
-    <url>/2016/03/05/sysbench%E6%B5%8B%E8%AF%95mysql%E6%80%A7%E8%83%BD/</url>
-    <content><![CDATA[下载sysbench URL：https://codeload.github.com/akopytov/sysbench/zip/0.5上传到&#x2F;root&#x2F;backup下解压进入目录安装编译依赖包：yum install gcc gcc-c++ libtool unzip编译并安装：.&#x2F;autogen.sh
-.&#x2F;configure –prefix&#x3D;&#x2F;data&#x2F;sysbench
-make &amp;&amp; make install
-测试命令：CPU测试：&#x2F;data&#x2F;sysbench&#x2F;bin&#x2F;sysbench –test&#x3D;cpu –cpu-max-prime&#x3D;20000 run
-测试脚本
-测试结果
-]]></content>
-      <categories>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>Sysbencg</tag>
       </tags>
   </entry>
   <entry>
