@@ -1,206 +1,246 @@
 {
-  "updated": "2026-10-19",
+  "updated": "2026-10-26",
   "github": {
     "source": "https://github.com/trending?since=weekly",
-    "fetched": "2026-10-19",
+    "fetched": "2026-10-26",
     "items": [
       {
-        "key": "morluto/rea",
-        "name": "morluto/rea",
-        "url": "https://github.com/morluto/rea",
-        "desc_en": "Reverse engineer anything with agents, from app behavior down to native binaries.",
-        "stars_week": 229268,
-        "stars_total": 322779,
+        "key": "cloudflare/security-audit-skill",
+        "name": "cloudflare/security-audit-skill",
+        "url": "https://github.com/cloudflare/security-audit-skill",
+        "desc_en": "A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
+        "stars_week": 15072,
+        "stars_total": 46964,
+        "lang": "JavaScript",
+        "desc_zh": "Cloudflare 开源的编码 Agent 安全审计技能：让 Agent 按侦察、覆盖式漏洞排查、候选验证、结构化输出、独立复核与报告六个阶段做代码安全审计，产出可机器读取的确认/待验证/驳回结论。它是 Cloudflare 漏洞发现系统最初的单仓库版本。"
+      },
+      {
+        "key": "ruvnet/ruflo",
+        "name": "ruvnet/ruflo",
+        "url": "https://github.com/ruvnet/ruflo",
+        "desc_en": "🌊 The original agent harness. Deploy intelligent multi-player swarms, coordinate autonomous workflows, and build conversational AI systems. Features adaptive memory, self-learning intelligence, federation, vector RAG integration, and native Claude Code / Codex / Hermes and many more Integrated",
+        "stars_week": 2987,
+        "stars_total": 79288,
         "lang": "TypeScript",
-        "desc_zh": "面向逆向工程与安全研究的智能体工具（REA）。通过 MCP 把反汇编、应用行为和二进制级分析交给 Agent，帮你从“看到某个功能”一路追到底层实现；适合做逆向、安全审计、研究别人应用内部逻辑的工程师。"
+        "desc_zh": "面向 Claude Code 和 Codex 的 Agent 元框架（meta-harness），用于部署多智能体集群、编排自主工作流，带自适应记忆、向量 RAG 等能力。可在 Claude Code 里以插件安装（核心工具、可视化控制台、路由与策略模块），其他支持 MCP 的工具可通过 npx 初始化接入。"
       },
       {
-        "key": "storytold/artcraft",
-        "name": "storytold/artcraft",
-        "url": "https://github.com/storytold/artcraft",
-        "desc_en": "ArtCraft is an intentional crafting engine for artists, designers, and filmmakers",
-        "stars_week": 16379,
-        "stars_total": 32760,
-        "lang": "Rust",
-        "desc_zh": "面向艺术家、设计师和电影创作者的 AI 图像与视频创作工具，自称“艺术家的 IDE”。可以在 2D 里构图、在 3D 里布置场景和机位，再挑选合适的模型生成，用可视化工具代替纯文字提示词，追求精确、可重复的结果。提供桌面版下载，也可从源码构建。"
-      },
-      {
-        "key": "boykopovar/AnyPS5",
-        "name": "boykopovar/AnyPS5",
-        "url": "https://github.com/boykopovar/AnyPS5",
-        "desc_en": "Tool for automatic PS5 executables porting to Linux and Windows",
-        "stars_week": 14224,
-        "stars_total": 43244,
-        "lang": "C++",
-        "desc_zh": "把 PS5 可执行程序自动移植到 Linux / Windows 的开源工具。自带重链接器和系统库实现，不依赖模拟器或独立运行时；还提供本地 Web 转换器，文件不必上传。适合想在 PC 上跑或研究 PS5 程序的开发者。"
-      },
-      {
-        "key": "anthropics/claude-plugins-official",
-        "name": "anthropics/claude-plugins-official",
-        "url": "https://github.com/anthropics/claude-plugins-official",
-        "desc_en": "Official, Anthropic-managed directory of high quality Claude Code Plugins.",
-        "stars_week": 4774,
-        "stars_total": 42721,
+        "key": "anthropics/knowledge-work-plugins",
+        "name": "anthropics/knowledge-work-plugins",
+        "url": "https://github.com/anthropics/knowledge-work-plugins",
+        "desc_en": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+        "stars_week": 2790,
+        "stars_total": 32989,
         "lang": "Python",
-        "desc_zh": "Anthropic 官方维护的 Claude Code 插件目录。/plugins 放 Anthropic 自己开发的插件，/external_plugins 收录合作方和社区提交、经过质量与安全审核的第三方插件；在 Claude Code 里用 /plugin install 即可安装。官方提醒安装前要确认信任该插件。"
+        "desc_zh": "Anthropic 开源的知识工作者插件集，主要用于 Claude Cowork，也兼容 Claude Code。每个插件按岗位打包技能、连接器、斜杠命令和子 Agent（如生产力、日程与任务管理等），可按公司自己的工具、术语和流程定制。"
       },
       {
-        "key": "mksglu/context-mode",
-        "name": "mksglu/context-mode",
-        "url": "https://github.com/mksglu/context-mode",
-        "desc_en": "Context window optimization for AI coding agents. Sandboxes tool output (98% reduction), persists session memory, and enforces routing across 17 platforms via MCP + hooks.",
-        "stars_week": 4138,
-        "stars_total": 30770,
+        "key": "anomalyco/opencode",
+        "name": "anomalyco/opencode",
+        "url": "https://github.com/anomalyco/opencode",
+        "desc_en": "The open source coding agent.",
+        "stars_week": 5921,
+        "stars_total": 221536,
         "lang": "TypeScript",
-        "desc_zh": "给 AI 编程智能体做上下文窗口优化的工具。把工具输出放进沙箱处理（号称减少 98% 的上下文占用），持久保存会话记忆，并通过 MCP 加钩子在 17 个平台上强制执行路由规则，适合经常被长输出塞满上下文的 Agent 用户。"
+        "desc_zh": "开源的 AI 编码 Agent（OpenCode），支持 curl 脚本、npm、Homebrew、Arch、mise、Nix 等多种方式安装，README 提供包括简体中文在内的多语言版本。"
       },
       {
-        "key": "cathrynlavery/diagram-design",
-        "name": "cathrynlavery/diagram-design",
-        "url": "https://github.com/cathrynlavery/diagram-design",
-        "desc_en": "Editorial diagram design for Claude Code, Codex, GitHub Copilot, Cursor, Factory Droid, and Pi. 44 diagram types. Self-contained HTML + SVG. No shadows. No Mermaid slop.",
-        "stars_week": 7901,
-        "stars_total": 57719,
-        "lang": "HTML",
-        "desc_zh": "给 Claude Code、Codex、Copilot、Cursor 等用的“画图技能”：输出自包含 HTML+SVG，约 45 种图类型，刻意避开 Mermaid 默认样式。适合需要一次性画出版式干净示意图的设计师与工程师。"
-      },
-      {
-        "key": "NationalSecurityAgency/ghidra",
-        "name": "NationalSecurityAgency/ghidra",
-        "url": "https://github.com/NationalSecurityAgency/ghidra",
-        "desc_en": "Ghidra is a software reverse engineering (SRE) framework",
-        "stars_week": 7602,
-        "stars_total": 90931,
-        "lang": "Java",
-        "desc_zh": "美国国家安全局开源的软件逆向工程框架，提供反汇编、反编译、图分析、脚本等能力，支持多平台指令集与可执行格式。适合恶意代码分析、漏洞研究、二进制审计从业者。"
+        "key": "stablyai/orca",
+        "name": "stablyai/orca",
+        "url": "https://github.com/stablyai/orca",
+        "desc_en": "Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any coding agent with your own subscription. Available on desktop, mobile and remote runtime.",
+        "stars_week": 9622,
+        "stars_total": 105864,
+        "lang": "TypeScript",
+        "desc_zh": "管理一组编码 Agent 的工作台：可用自己的订阅并排运行 Codex、Claude Code、OpenCode 等，每个 Agent 在独立的 git worktree 中工作、统一跟踪，便于对比结果择优合并；提供桌面端、手机端（完成通知、远程追加指令）和远程运行环境。"
       },
       {
         "key": "heygen-com/hyperframes",
         "name": "heygen-com/hyperframes",
         "url": "https://github.com/heygen-com/hyperframes",
         "desc_en": "Write HTML. Render video. Built for agents.",
-        "stars_week": 5883,
-        "stars_total": 66769,
+        "stars_week": 5612,
+        "stars_total": 72187,
         "lang": "TypeScript",
         "desc_zh": "HeyGen 开源的视频生成框架：用 HTML 写画面，渲染成视频，专为 Agent 调用设计。提供 Studio 与 Quickstart，适合想用代码/Agent 批量做短视频、演示片的产品与内容团队。"
       },
       {
-        "key": "cursor/plugins",
-        "name": "cursor/plugins",
-        "url": "https://github.com/cursor/plugins",
-        "desc_en": "Cursor plugin specification and official plugins",
-        "stars_week": 1717,
-        "stars_total": 12757,
-        "lang": "TypeScript",
-        "desc_zh": "Cursor 官方的插件规范和官方插件合集，每个插件是仓库根目录下一个带 .cursor-plugin/plugin.json 清单的独立目录。目前包括教学、持续学习、团队工作流、深度分支审查、插件脚手架、PR 审查画布、文档画布、Cursor SDK 等插件。"
+        "key": "android/skills",
+        "name": "android/skills",
+        "url": "https://github.com/android/skills",
+        "desc_en": "",
+        "stars_week": 1070,
+        "stars_total": 9721,
+        "lang": "Kotlin",
+        "desc_zh": "Android 官方的 Agent 技能库：遵循开放的 Agent Skills 标准（SKILL.md），以模块化说明帮助大模型按 developer.android.com 的最佳实践完成 Android 开发任务，重点覆盖评测中大模型表现较差的场景，可通过 Android CLI 安装。"
       },
       {
-        "key": "MadsLorentzen/ai-job-search",
-        "name": "MadsLorentzen/ai-job-search",
-        "url": "https://github.com/MadsLorentzen/ai-job-search",
-        "desc_en": "The job search that runs on your machine. AI job application framework built on Claude Code: evaluate postings, tailor CVs, write cover letters, prep interviews. Fork it and own it.",
-        "stars_week": 5742,
-        "stars_total": 53314,
+        "key": "Graphify-Labs/graphify",
+        "name": "Graphify-Labs/graphify",
+        "url": "https://github.com/Graphify-Labs/graphify",
+        "desc_en": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.",
+        "stars_week": 6903,
+        "stars_total": 135280,
         "lang": "Python",
-        "desc_zh": "基于 Claude Code 的 AI 求职框架，全部在本机运行。Fork 后填好个人资料，就能让 Claude 评估招聘信息、按岗位定制简历、写求职信、准备面试。作者用这套流程投了 69 份定制申请、拿到 20 次初面，最终入职 AI 工程师岗位。"
+        "desc_zh": "把代码库连同文档、SQL 结构、配置和 PDF 转成可查询的知识图谱，以 /graphify 技能的形式用于 Claude Code、Cursor、Codex 和 Gemini CLI。代码用 tree-sitter 在本地做确定性的语法树解析，不依赖大模型和向量库，让 Agent 查图谱而不是逐文件 grep。"
+      },
+      {
+        "key": "akitaonrails/ai-memory",
+        "name": "akitaonrails/ai-memory",
+        "url": "https://github.com/akitaonrails/ai-memory",
+        "desc_en": "Solution for long term memory for agent coding CLIs and to facilitate handoff between different agent vendors",
+        "stars_week": 3254,
+        "stars_total": 13530,
+        "lang": "Rust",
+        "desc_zh": "给 AI 编码 Agent 用的长期记忆方案：Claude Code、Codex、Cursor、Gemini CLI、OpenCode 等二十多种工具共享同一份记忆，中途换工具或交接给同事时，下一个 Agent 能接着上次的架构、失败尝试和未决问题继续干。"
+      },
+      {
+        "key": "Comfy-Org/ComfyUI",
+        "name": "Comfy-Org/ComfyUI",
+        "url": "https://github.com/Comfy-Org/ComfyUI",
+        "desc_en": "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface. The fastest local inference engine in the world.",
+        "stars_week": 4790,
+        "stars_total": 142950,
+        "lang": "Python",
+        "desc_zh": "模块化的扩散模型图形界面、API 与后端，用节点图的方式搭建 AI 图像等内容生成流程，强调本地推理速度。"
+      },
+      {
+        "key": "anthropics/claude-plugins-official",
+        "name": "anthropics/claude-plugins-official",
+        "url": "https://github.com/anthropics/claude-plugins-official",
+        "desc_en": "Official, Anthropic-managed directory of high quality Claude Code Plugins.",
+        "stars_week": 2245,
+        "stars_total": 44570,
+        "lang": "Python",
+        "desc_zh": "Anthropic 官方维护的 Claude Code 插件目录。/plugins 放 Anthropic 自己开发的插件，/external_plugins 收录合作方和社区提交、经过质量与安全审核的第三方插件；在 Claude Code 里用 /plugin install 即可安装。官方提醒安装前要确认信任该插件。"
+      },
+      {
+        "key": "vllm-project/vllm",
+        "name": "vllm-project/vllm",
+        "url": "https://github.com/vllm-project/vllm",
+        "desc_en": "A high-throughput and memory-efficient inference and serving engine for LLMs",
+        "stars_week": 1445,
+        "stars_total": 95499,
+        "lang": "Python",
+        "desc_zh": "高吞吐、省显存的大模型推理与服务引擎，起源于加州大学伯克利分校 Sky Computing Lab，现有 2000 多名贡献者。核心特性包括 PagedAttention 管理注意力 KV 缓存、连续批处理等，追求业界领先的服务吞吐。"
+      },
+      {
+        "key": "multica-ai/andrej-karpathy-skills",
+        "name": "multica-ai/andrej-karpathy-skills",
+        "url": "https://github.com/multica-ai/andrej-karpathy-skills",
+        "desc_en": "A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls.",
+        "stars_week": 2937,
+        "stars_total": 223865,
+        "lang": null,
+        "desc_zh": "一个用来改善 Claude Code 行为的 CLAUDE.md 文件，依据 Andrej Karpathy 对大模型写代码常见问题的观察（擅自假设不确认、过度设计、顺手改动不理解的代码等），归纳成四条原则。"
+      },
+      {
+        "key": "pingdotgg/t3code",
+        "name": "pingdotgg/t3code",
+        "url": "https://github.com/pingdotgg/t3code",
+        "desc_en": "",
+        "stars_week": 1770,
+        "stars_total": 30135,
+        "lang": "TypeScript",
+        "desc_zh": "T3 Code 是一个“Agent 控制台”：通过手机 App（iOS/Android）、网页版和 Electron 桌面版，控制你电脑上已配置好的编码 Agent，支持 Claude Code、Codex、Cursor、Grok Build、OpenCode 和 Google Antigravity，作者称完全开放、不卖东西。"
       }
     ]
   },
   "producthunt": {
-    "source": "https://www.producthunt.com/leaderboard/weekly/2026/42",
-    "title": "Best of Product Hunt: Week of October 12, 2026 | Product Hunt",
-    "fetched": "2026-10-19",
+    "source": "https://www.producthunt.com/leaderboard/weekly/2026/43",
+    "title": "Best of Product Hunt: Week of October 19, 2026 | Product Hunt",
+    "fetched": "2026-10-26",
     "error": null,
     "items": [
       {
-        "key": "ph:1221402",
-        "name": "Pancake",
-        "tagline_en": "The Vercel for GTM",
-        "url": "https://www.producthunt.com/products/pancake-6",
-        "votes": 567,
+        "key": "ph:1285391",
+        "name": "/dev/null",
+        "tagline_en": "a social network for devs",
+        "url": "https://www.producthunt.com/products/dev-null",
+        "votes": 493,
         "rank": 1,
-        "desc_zh": "号称“GTM 领域的 Vercel”。通过一个 MCP 连接，让你在 Claude、Codex 等 AI 智能体里直接部署各种市场推广（GTM）想法：提供 GTM 知识中枢、发信基础设施，以及 40 多个数据源和信息补全服务。"
+        "desc_zh": "/dev/null 是一个面向 Web 开发者的社交网络，起源于 JetBrains 办公室的一场直播：2026 年 10 月 15 日，Nuno Maduro 等四人在 48 小时内公开从零搭建。用 GitHub 登录，可分享代码片段、点赞和回复，直播期间收到了数百个社区 PR。"
       },
       {
-        "key": "ph:1274680",
-        "name": "Jockey by TwelveLabs",
-        "tagline_en": "Your entire video library: organized, searchable, understood",
-        "url": "https://www.producthunt.com/products/twelvelabs",
-        "votes": 419,
+        "key": "ph:1289897",
+        "name": "Product Hunt Visual Launch Editor",
+        "tagline_en": "See your launch as you build it",
+        "url": "https://www.producthunt.com/products/producthunt",
+        "votes": 429,
         "rank": 2,
-        "desc_zh": "TwelveLabs 推出的视频理解 AI，把整个视频库整理成可搜索、可理解的资料。基于其多模态模型 Marengo 和 Pegasus，能大规模地搜索、分析视频内容，并从视频生成文本。"
+        "desc_zh": "Product Hunt 推出的可视化发布编辑器，口号是“边搭建边看到你的发布页效果”。产品页只提供了 Product Hunt 本身的介绍（2013 年起家的新品发布社区），未给出更多功能细节。"
       },
       {
-        "key": "ph:1265035",
-        "name": "Inferock",
-        "tagline_en": "Serverless inference, with credits back for failed calls.",
-        "url": "https://www.producthunt.com/products/inferock",
-        "votes": 386,
+        "key": "ph:1284611",
+        "name": "Beam.win",
+        "tagline_en": "Run AI agents on one Mac and use its windows on another",
+        "url": "https://www.producthunt.com/products/beam-win",
+        "votes": 377,
         "rank": 3,
-        "desc_zh": "无服务器推理服务，失败的调用会退还额度。其 Inferock-bench 是一个本地代理，夹在你的应用和 OpenAI、Anthropic、Gemini、OpenRouter 格式的调用之间，记录每次调用的 token 用量、失败和重试，并生成独立账单，告诉你被收了多少钱、多付了多少。"
+        "desc_zh": "让 AI Agent 和构建任务在一台 Mac（如 Mac mini、Studio）上持续运行，再把它们的终端、浏览器等应用窗口搬到你面前的另一台 Mac 上，每个窗口独立显示、有 Dock 图标并支持 ⌘Tab 切换；两台 Mac 之间加密传输，可免费试用。"
       },
       {
-        "key": "ph:1267617",
-        "name": "Articos MCP",
-        "tagline_en": "See how simulated buyers react, right in your agent",
-        "url": "https://www.producthunt.com/products/articos",
-        "votes": 360,
+        "key": "ph:1286749",
+        "name": "DeepCell",
+        "tagline_en": "Your deadline survival kit for office work",
+        "url": "https://www.producthunt.com/products/deepcell",
+        "votes": 348,
         "rank": 4,
-        "desc_zh": "在智能体里直接看模拟买家的反应。帮 SaaS 团队、代理公司和创始人，用匹配目标客户画像（ICP）的模拟用户去测试文案、定位和落地页，30 分钟内拿到反馈；官方称经同行评审，与 Baymard、Nielsen Norman 对比准确率达 86%。"
+        "desc_zh": "面向赶截止日期的办公任务：建模、销售复盘、预算预测、月报等需要同时写说明、算数和做展示的工作。可生成带来源和讲解要点的文档、表格和幻灯片，修改一处会联动更新相关部分；有网页版和 Agent 插件，基于自研的 .deepcell 文档格式。"
       },
       {
-        "key": "ph:1267030",
-        "name": "Talanoa",
-        "tagline_en": "Email that feels like chat",
-        "url": "https://www.producthunt.com/products/talanoa-2",
-        "votes": 334,
+        "key": "ph:1288350",
+        "name": "Claude Duet",
+        "tagline_en": "Proactive agent that understands what needs your attention",
+        "url": "https://www.producthunt.com/products/claude",
+        "votes": 343,
         "rank": 5,
-        "desc_zh": "“像聊天一样的邮件”客户端。把杂乱的邮件往来整理成干净的聊天式对话，去掉引用、签名等冗余；能把邮件转成待办、在收件箱里管理日历，并用本地运行的私有 AI 搜索、总结和写信。支持 Gmail、Outlook、iCloud 和任意 IMAP 账户统一收件，数据全部留在本机，不做云同步和追踪。"
+        "desc_zh": "Anthropic 推出的 Claude Duet，口号是“能理解哪些事需要你关注的主动式 Agent”。产品页只有 Anthropic 和 Claude 的公司介绍，未给出更多功能细节。"
       },
       {
-        "key": "ph:1281483",
-        "name": "Harness by Autonomous",
-        "tagline_en": "Every coding agent, every machine, one command center.",
-        "url": "https://www.producthunt.com/products/harness-by-autonomous",
-        "votes": 324,
+        "key": "ph:1265727",
+        "name": "Composio Instant",
+        "tagline_en": "The easiest way for AI agents to pay for their own tools",
+        "url": "https://www.producthunt.com/products/composio",
+        "votes": 338,
         "rank": 6,
-        "desc_zh": "开源的编程智能体“指挥中心”。把公司里的 Claude Code、家里的 Codex、云端的 Hermes 等不同机器上的智能体并排管理，可用桌面应用、终端命令 hn，或 iOS/Android 应用语音回复智能体，端到端加密。还提供 49 个面向 CAD、电路、机器人、游戏和音乐的 harness。Mac 和 Linux 免费。"
+        "desc_zh": "Composio 推出的 Instant，口号是“让 AI Agent 自己为所用工具付费的最简方式”。Composio 为 Agent 提供 1000 多个可直接上线的工具，托管 OAuth 授权、权限、工具匹配和沙箱执行，几行代码就能把聊天机器人变成通用 Agent，Zoom、Glean、HubSpot 等团队在用。"
       },
       {
-        "key": "ph:1278232",
-        "name": "OpenCode 2.0",
-        "tagline_en": "The open source AI coding agent",
-        "url": "https://www.producthunt.com/products/opencode",
-        "votes": 320,
+        "key": "ph:1280279",
+        "name": "UseIt Studio",
+        "tagline_en": "Your AI design agent for real, editable project files.",
+        "url": "https://www.producthunt.com/products/useit-studio-from-idea-to-delivery",
+        "votes": 327,
         "rank": 7,
-        "desc_zh": "开源 AI 编程智能体 opencode 的 2.0 版，专为终端打造。拥有原生 TUI 界面、支持多会话，不绑定模型，可以接 Claude、OpenAI、Google，甚至本地模型。"
+        "desc_zh": "做实物设计的 AI 设计 Agent：一句话描述需求，它像设计师一样追问、和你一起设计，并可指着细节修改；输出的是可编辑的真实设计文件，带实际尺寸、出血和刀版线，能直接打印裁切，适合徽章、贴纸、礼盒、立体贺卡、品牌套件等。支持浏览器和 Windows 桌面。"
       },
       {
-        "key": "ph:1271805",
-        "name": "Google EmbeddingGemma 2",
-        "tagline_en": "An open, lightweight multimodal embedding model",
-        "url": "https://www.producthunt.com/products/embeddinggemma-2",
-        "votes": 318,
+        "key": "ph:1281583",
+        "name": "zCAD AI",
+        "tagline_en": "AI 3D that creates real parts, not just shapes",
+        "url": "https://www.producthunt.com/products/zcad-ai",
+        "votes": 310,
         "rank": 8,
-        "desc_zh": "Google DeepMind 推出的开源轻量多模态嵌入模型，把文本、代码、图片、视频和音频映射到同一个向量空间，一条查询就能跨模态搜索。7.4 亿参数，可在端侧运行，在 Pixel 11 Pro 上完整多模态模型约占 567MB 内存（纯文本 191MB）。Apache 2.0 许可，权重发布在 Hugging Face 和 Kaggle，MTEB Code 分数从 68.76 提升到 78.68。"
+        "desc_zh": "AI 原生的参数化 3D 建模平台，面向设计师、创客和工程师：用自然语言描述零件或装配体，生成基于真实 CAD 几何、由尺寸驱动的可编辑模型（而非静态网格），可一句话生成带配合关系的完整装配，用语言或浏览器 CAD 编辑器修改，并导出 STEP。"
       },
       {
-        "key": "ph:1273961",
-        "name": "NitroStack",
-        "tagline_en": "Build, test, and deploy MCP servers in one place",
-        "url": "https://www.producthunt.com/products/nitrostack",
-        "votes": 301,
+        "key": "ph:1278273",
+        "name": "BAND for Developers",
+        "tagline_en": "Coding agents, meet teamwork",
+        "url": "https://www.producthunt.com/products/band",
+        "votes": 309,
         "rank": 9,
-        "desc_zh": "构建、测试和部署 MCP 服务器的一站式平台。提供开源的 TypeScript 和 Python SDK，在 NitroStack Studio 里可视化测试调试，用 NitroStack Workflow 编排智能体流程，部署到 NitroStack Cloud，再用 NitroStack Chat 做品牌化前端；可对接 ChatGPT、Claude 等 AI 客户端，官方称已支撑 8 万多个 MCP 服务器。"
+        "desc_zh": "面向开发者的 BAND，口号是“让编码 Agent 学会团队协作”。它在分布式 AI Agent 与人类团队之间提供共享交互层，支持实时多方协作并内置治理机制；与编排工具或 Agent 框架不同，它治理的是交互层本身。"
       },
       {
-        "key": "ph:1266889",
-        "name": "ngram 2.0",
-        "tagline_en": "Create explainers, screencasts, and AI avatar videos",
-        "url": "https://www.producthunt.com/products/ngram",
-        "votes": 283,
+        "key": "ph:1255211",
+        "name": "MOVO AI",
+        "tagline_en": "The world's first long-form video agent for mobile",
+        "url": "https://www.producthunt.com/products/movo-ai",
+        "votes": 301,
         "rank": 10,
-        "desc_zh": "生成讲解视频、录屏演示和 AI 数字人视频的工具 2.0 版。它的 AI 视频智能体能把发布说明、规格文档、截图、网址和产品录屏，变成符合品牌风格的视频，用于发布、演示、上手引导、客服、销售和社交媒体；会自动规划要点、写脚本、做分镜并生成多个视觉版本。"
+        "desc_zh": "号称全球首个手机端长视频 AI Agent，也支持网页版。拍摄、上传素材或只给一个想法，告诉它要什么，它会规划、生成、修改并保持角色和场景一致，最终合成完整视频；锁屏后仍在后台工作，可回来通过对话审阅修改。"
       }
     ]
   }

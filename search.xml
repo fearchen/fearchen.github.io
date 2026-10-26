@@ -10,6 +10,24 @@
       </categories>
   </entry>
   <entry>
+    <title>2.OpenShift-应用部署</title>
+    <url>/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>3.OpenShift-运维管理</title>
+    <url>/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Apache安全配置参考</title>
     <url>/2017/01/03/Apache%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
     <content><![CDATA[date: 2017-01-03 13:30:120X01 账号以专门的非root用户账号和组运行Apache。操作： 根据需要为Apache创建用户、组。参考配置操作：修改httpd.conf配置文件，添加如下语句：User apacheGroup apachegroup其中apache、apachegroup分别是为Apache创建的用户和组。检测：检查httpd.conf配置文件，检查用户配置文件。补充说明：
@@ -58,22 +76,17 @@ rm -rf &#x2F;path&#x2F;to&#x2F;httpd-2.2.4*根据安装步骤不同和版本不�
       </tags>
   </entry>
   <entry>
-    <title>3.OpenShift-运维管理</title>
-    <url>/2018/08/02/3.OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[
+    <title>Centos server配置ntp时间同步</title>
+    <url>/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</url>
+    <content><![CDATA[yum install ntp添加NTP服务器地址vi &#x2F;etc&#x2F;ntp.confserver 0.pool.ntp.orgserver 1.pool.ntp.orgserver 2.pool.ntp.orgserver 3.pool.ntp.org
+&#x2F;etc&#x2F;init.d&#x2F;ntp restartntpstat
 ]]></content>
       <categories>
-        <category>OpenShift</category>
+        <category>Centos</category>
       </categories>
-  </entry>
-  <entry>
-    <title>2.OpenShift-应用部署</title>
-    <url>/2018/08/02/2.OpenShift-%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
+      <tags>
+        <tag>ntp</tag>
+      </tags>
   </entry>
   <entry>
     <title>CentOS 6.4下ELK套件搭建日志分析和监控平台</title>
@@ -99,19 +112,6 @@ service iptables restart安装JDKyum -y install java-1.7.0-openjdk*
       </categories>
       <tags>
         <tag>elk</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos server配置ntp时间同步</title>
-    <url>/2016/03/05/Centos%20server%E9%85%8D%E7%BD%AEntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/</url>
-    <content><![CDATA[yum install ntp添加NTP服务器地址vi &#x2F;etc&#x2F;ntp.confserver 0.pool.ntp.orgserver 1.pool.ntp.orgserver 2.pool.ntp.orgserver 3.pool.ntp.org
-&#x2F;etc&#x2F;init.d&#x2F;ntp restartntpstat
-]]></content>
-      <categories>
-        <category>Centos</category>
-      </categories>
-      <tags>
-        <tag>ntp</tag>
       </tags>
   </entry>
   <entry>
@@ -151,40 +151,6 @@ workers：workers数量，默认为 1。
       </categories>
       <tags>
         <tag>shdowsocks</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos6.5部署Lustre2.5.3过程</title>
-    <url>/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2Lustre2.5.3%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[MDS上操作：
-所有机器都需配置基础环境service iptables stopchkconfig iptables offsed -i ‘&#x2F;SELINUX&#x2F;s&#x2F;enforcing&#x2F;disabled&#x2F;‘ &#x2F;etc&#x2F;selinux&#x2F;config
-安装编译依赖包yum install zlib-devel python-devel rpm-build libtool libselinux-devel redhat-rpm-config expect tcl gcc-gfortran tk
-安装Lustre Kernel更新Kernel：rpm -ivh kernel-firmware-2.6.32-431.23.3.el6_lustre.x86_64.rpmrpm -ivh kernel-devel-2.6.32-431.23.3.el6_lustre.x86_64.rpmrpm -ivh kernel-2.6.32-431.23.3.el6_lustre.x86_64.rpm
-reboo重启检查内核是否切换为Lustre内核
-安装e2fsrpm -Uvh –nodeps e2fsprogs-libs-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-static-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh e2fsprogs-1.42.12.wc1-7.el6.x86_64.rpm
-编译Lustre：安装Lustre源码包：rpm -ivh lustre-source-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmcd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.3&#x2F;开始编译：.&#x2F;configure –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.23.3.el6_lustre.x86_64&#x2F; –enable-mpitests&#x3D;no –enable-ext4
-make
-make rpms
-安装编译完的Lustre包：cp -r &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64 &#x2F;root&#x2F;backup&#x2F;lustre2.5.3&#x2F;安装：cd &#x2F;root&#x2F;backup&#x2F;lustre2.5.3&#x2F;x86_64&#x2F;rpm -ivh lustre-modules-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-osd-ldiskfs-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpm
-把编译生成的rpm包传到各个OSS上，再各个OOS上也需要安装上面的Lustre包
-配置Lustre模块和网络echo “options lnet networks&#x3D;tcp(eth0)” &gt;&gt; &#x2F;etc&#x2F;modprobe.d&#x2F;lustre.confecho “modprobe lustre” &gt;&gt;&#x2F;etc&#x2F;rc.localecho “modprobe lnet” &gt;&gt; &#x2F;etc&#x2F;rc.local重启检查是否加载上lsmod | grep lustrelsmod |grep lnetlctl list_nids
-MDS上格式化mdt并挂载：格式化：mkfs.lustre –fsname&#x3D;fclustre –mgs –mdt –index&#x3D;0 –reformat &#x2F;dev&#x2F;sdb转换普通用户也有可写权限：tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb挂载：mkdir -p &#x2F;mnt&#x2F;fclustre-mdt0写入开机启动：echo “mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-mdt0” &gt;&gt; &#x2F;etc&#x2F;rc.local
-
-OSS1上操作：
-安装e2fsrpm -Uvh –nodeps e2fsprogs-libs-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-static-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh e2fsprogs-1.42.12.wc1-7.el6.x86_64.rpm
-安装编译生成的Lustre包rpm -ivh lustre-modules-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-osd-ldiskfs-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpm
-OSS1上格式化ost00并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre –ost –index&#x3D;0 --mgsnode&#x3D;192.168.10.42@tcp –reformat &#x2F;dev&#x2F;sdb挂载mkdir -p &#x2F;mnt&#x2F;fclustre-ost00mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost00写入开机启动：echo “mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost00” &gt;&gt; &#x2F;etc&#x2F;rc.local
-OSS2上操作：
-安装e2fsrpm -Uvh –nodeps e2fsprogs-libs-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-static-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh e2fsprogs-1.42.12.wc1-7.el6.x86_64.rpm
-安装编译生成的Lustre包rpm -ivh lustre-modules-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-osd-ldiskfs-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpm
-OSS2上格式化ost01并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre –ost –index&#x3D;1 --mgsnode&#x3D;192.168.10.42@tcp –reformat &#x2F;dev&#x2F;sdb挂载mkdir -p &#x2F;mnt&#x2F;fclustre-ost01mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost01写入开机启动：echo “mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost01” &gt;&gt; &#x2F;etc&#x2F;rc.local
-编译并安装Lustre Client：安装编译依赖包：yum install perl expect zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel安装client源码包：rpm -ivh lustre-client-source-2.5.3-2.6.32_431.23.3.el6.x86_64.x86_64.rpmcd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.3
-]]></content>
-      <categories>
-        <category>Lustre</category>
-      </categories>
-      <tags>
-        <tag>lustre</tag>
       </tags>
   </entry>
   <entry>
@@ -231,6 +197,68 @@ OSS2上格式化ost01并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre �
       </categories>
       <tags>
         <tag>iml-lustre</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos7.2部署elk过程</title>
+    <url>/2016/03/05/Centos7.2%E9%83%A8%E7%BD%B2elk%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[安装java环境 yum install java-1.7.0-openjdk
+安装lasticsearchrpm -ivh elasticsearch-2.1.1.rpm
+安装logstashrpm -ivh logstash-2.1.1-1.noarch.rpm
+安装kibana并配置supervisor解压tar zxvf kibana-4.3.1-linux-x64.tar.gz拷贝到&#x2F;etc&#x2F;目录cp -r kibana-4.3.1-linux-x64 &#x2F;etc&#x2F;kibana4.3.1
+安装supervisoryum install python-setuptools
+easy_install supervisor生成配置文件：
+echo_supervisord_conf &gt;&gt; &#x2F;etc&#x2F;supervisord.conf编辑配置文件vi &#x2F;etc&#x2F;supervisord.conf最后添加：[include]files &#x3D; &#x2F;etc&#x2F;supervisord.d&#x2F;*.conf
+添加kibana配置文件：mkdir &#x2F;etc&#x2F;supervisord.dvi kibana.conf添加：[program:kibana]command&#x3D;&#x2F;etc&#x2F;kibana4.3.1&#x2F;bin&#x2F;kibanaautorestart &#x3D; trueredirect &#x3D; truestderr_logfile &#x3D; &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.logstartsecs &#x3D; 3
+给日志文件建目录：mkdir &#x2F;var&#x2F;log&#x2F;kibanatouch &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.log启动：
+&#x2F;usr&#x2F;bin&#x2F;python &#x2F;usr&#x2F;bin&#x2F;supervisord -c &#x2F;etc&#x2F;supervisord.conf
+防火墙打开5601端口firewall-cmd –permanent –add-port&#x3D;5601&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
+配置elastcisearch修改配置文件：vim &#x2F;etc&#x2F;elasticsearch&#x2F;elasticsearch.yml修改如下几处
+启动：systemctl daemon-reloadsystemctl enable elasticsearch.servicesystemctl start elasticsearchsystemctl status elasticsearch
+使用9200和9300端口，防火墙打开端口firewall-cmd –permanent –add-port&#x3D;{9200&#x2F;tcp,9300&#x2F;tcp}firewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
+配置logstash添加配置文件：vim &#x2F;etc&#x2F;logstash&#x2F;conf.d&#x2F;nginxconf.json
+防火墙打开5044端口firewall-cmd –permanent –add-port&#x3D;5044&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
+启动：systemctl start logstashsystemctl status logstashchkconfig logstash on (开机启动设置特殊)
+]]></content>
+      <categories>
+        <category>ELK</category>
+      </categories>
+      <tags>
+        <tag>elk</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos6.5部署Lustre2.5.3过程</title>
+    <url>/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2Lustre2.5.3%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[MDS上操作：
+所有机器都需配置基础环境service iptables stopchkconfig iptables offsed -i ‘&#x2F;SELINUX&#x2F;s&#x2F;enforcing&#x2F;disabled&#x2F;‘ &#x2F;etc&#x2F;selinux&#x2F;config
+安装编译依赖包yum install zlib-devel python-devel rpm-build libtool libselinux-devel redhat-rpm-config expect tcl gcc-gfortran tk
+安装Lustre Kernel更新Kernel：rpm -ivh kernel-firmware-2.6.32-431.23.3.el6_lustre.x86_64.rpmrpm -ivh kernel-devel-2.6.32-431.23.3.el6_lustre.x86_64.rpmrpm -ivh kernel-2.6.32-431.23.3.el6_lustre.x86_64.rpm
+reboo重启检查内核是否切换为Lustre内核
+安装e2fsrpm -Uvh –nodeps e2fsprogs-libs-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-static-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh e2fsprogs-1.42.12.wc1-7.el6.x86_64.rpm
+编译Lustre：安装Lustre源码包：rpm -ivh lustre-source-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmcd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.3&#x2F;开始编译：.&#x2F;configure –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.23.3.el6_lustre.x86_64&#x2F; –enable-mpitests&#x3D;no –enable-ext4
+make
+make rpms
+安装编译完的Lustre包：cp -r &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64 &#x2F;root&#x2F;backup&#x2F;lustre2.5.3&#x2F;安装：cd &#x2F;root&#x2F;backup&#x2F;lustre2.5.3&#x2F;x86_64&#x2F;rpm -ivh lustre-modules-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-osd-ldiskfs-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpm
+把编译生成的rpm包传到各个OSS上，再各个OOS上也需要安装上面的Lustre包
+配置Lustre模块和网络echo “options lnet networks&#x3D;tcp(eth0)” &gt;&gt; &#x2F;etc&#x2F;modprobe.d&#x2F;lustre.confecho “modprobe lustre” &gt;&gt;&#x2F;etc&#x2F;rc.localecho “modprobe lnet” &gt;&gt; &#x2F;etc&#x2F;rc.local重启检查是否加载上lsmod | grep lustrelsmod |grep lnetlctl list_nids
+MDS上格式化mdt并挂载：格式化：mkfs.lustre –fsname&#x3D;fclustre –mgs –mdt –index&#x3D;0 –reformat &#x2F;dev&#x2F;sdb转换普通用户也有可写权限：tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb挂载：mkdir -p &#x2F;mnt&#x2F;fclustre-mdt0写入开机启动：echo “mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-mdt0” &gt;&gt; &#x2F;etc&#x2F;rc.local
+
+OSS1上操作：
+安装e2fsrpm -Uvh –nodeps e2fsprogs-libs-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-static-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh e2fsprogs-1.42.12.wc1-7.el6.x86_64.rpm
+安装编译生成的Lustre包rpm -ivh lustre-modules-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-osd-ldiskfs-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpm
+OSS1上格式化ost00并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre –ost –index&#x3D;0 --mgsnode&#x3D;192.168.10.42@tcp –reformat &#x2F;dev&#x2F;sdb挂载mkdir -p &#x2F;mnt&#x2F;fclustre-ost00mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost00写入开机启动：echo “mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost00” &gt;&gt; &#x2F;etc&#x2F;rc.local
+OSS2上操作：
+安装e2fsrpm -Uvh –nodeps e2fsprogs-libs-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libcom_err-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps libss-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-static-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh –nodeps e2fsprogs-devel-1.42.12.wc1-7.el6.x86_64.rpmrpm -Uvh e2fsprogs-1.42.12.wc1-7.el6.x86_64.rpm
+安装编译生成的Lustre包rpm -ivh lustre-modules-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-osd-ldiskfs-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpmrpm -ivh lustre-2.5.3-2.6.32_431.23.3.el6_lustre.x86_64.x86_64.rpm
+OSS2上格式化ost01并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre –ost –index&#x3D;1 --mgsnode&#x3D;192.168.10.42@tcp –reformat &#x2F;dev&#x2F;sdb挂载mkdir -p &#x2F;mnt&#x2F;fclustre-ost01mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost01写入开机启动：echo “mount -t lustre &#x2F;dev&#x2F;sdb &#x2F;mnt&#x2F;fclustre-ost01” &gt;&gt; &#x2F;etc&#x2F;rc.local
+编译并安装Lustre Client：安装编译依赖包：yum install perl expect zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel安装client源码包：rpm -ivh lustre-client-source-2.5.3-2.6.32_431.23.3.el6.x86_64.x86_64.rpmcd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.3
+]]></content>
+      <categories>
+        <category>Lustre</category>
+      </categories>
+      <tags>
+        <tag>lustre</tag>
       </tags>
   </entry>
   <entry>
@@ -289,49 +317,6 @@ i. docker run -itd --volumes-from modest_pare centos-7-x86_64 bash
       </tags>
   </entry>
   <entry>
-    <title>Centos7.2部署elk过程</title>
-    <url>/2016/03/05/Centos7.2%E9%83%A8%E7%BD%B2elk%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[安装java环境 yum install java-1.7.0-openjdk
-安装lasticsearchrpm -ivh elasticsearch-2.1.1.rpm
-安装logstashrpm -ivh logstash-2.1.1-1.noarch.rpm
-安装kibana并配置supervisor解压tar zxvf kibana-4.3.1-linux-x64.tar.gz拷贝到&#x2F;etc&#x2F;目录cp -r kibana-4.3.1-linux-x64 &#x2F;etc&#x2F;kibana4.3.1
-安装supervisoryum install python-setuptools
-easy_install supervisor生成配置文件：
-echo_supervisord_conf &gt;&gt; &#x2F;etc&#x2F;supervisord.conf编辑配置文件vi &#x2F;etc&#x2F;supervisord.conf最后添加：[include]files &#x3D; &#x2F;etc&#x2F;supervisord.d&#x2F;*.conf
-添加kibana配置文件：mkdir &#x2F;etc&#x2F;supervisord.dvi kibana.conf添加：[program:kibana]command&#x3D;&#x2F;etc&#x2F;kibana4.3.1&#x2F;bin&#x2F;kibanaautorestart &#x3D; trueredirect &#x3D; truestderr_logfile &#x3D; &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.logstartsecs &#x3D; 3
-给日志文件建目录：mkdir &#x2F;var&#x2F;log&#x2F;kibanatouch &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.log启动：
-&#x2F;usr&#x2F;bin&#x2F;python &#x2F;usr&#x2F;bin&#x2F;supervisord -c &#x2F;etc&#x2F;supervisord.conf
-防火墙打开5601端口firewall-cmd –permanent –add-port&#x3D;5601&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
-配置elastcisearch修改配置文件：vim &#x2F;etc&#x2F;elasticsearch&#x2F;elasticsearch.yml修改如下几处
-启动：systemctl daemon-reloadsystemctl enable elasticsearch.servicesystemctl start elasticsearchsystemctl status elasticsearch
-使用9200和9300端口，防火墙打开端口firewall-cmd –permanent –add-port&#x3D;{9200&#x2F;tcp,9300&#x2F;tcp}firewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
-配置logstash添加配置文件：vim &#x2F;etc&#x2F;logstash&#x2F;conf.d&#x2F;nginxconf.json
-防火墙打开5044端口firewall-cmd –permanent –add-port&#x3D;5044&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
-启动：systemctl start logstashsystemctl status logstashchkconfig logstash on (开机启动设置特殊)
-]]></content>
-      <categories>
-        <category>ELK</category>
-      </categories>
-      <tags>
-        <tag>elk</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos quick install OpenShift3.9.0</title>
-    <url>/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/</url>
-    <content><![CDATA[1. deploy Centos minial system2. yum update -ya. reboot
-
-3. yum install git docker net-tools4. git clone https://github.com/gshipley/installcentos.gita. export DOMAIN=openshift.iob. export USERNAME=chenfc. export PASSWORD=&lt;your-password&gt;
-
-5. cd installcentosa. ./install-openshift.sh
-
-6. DNS Sercera. openshift.io 8443b. openshift.io 80c. openshift.io 443
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Centos7.2部署kubernetes</title>
     <url>/2017/01/25/Centos7.2%E9%83%A8%E7%BD%B2kubernetes/</url>
     <content><![CDATA[
@@ -362,25 +347,19 @@ FLANNEL_ETCD_ENDPOINTS&#x3D;”]]></content>
       </tags>
   </entry>
   <entry>
-    <title>Centos网卡做bond0</title>
-    <url>/2016/03/05/Centos%E7%BD%91%E5%8D%A1%E5%81%9Abond0/</url>
-    <content><![CDATA[mode&#x3D;0：平衡负载模式，有自动备援，但需要”Switch”支援及设定。
-mode&#x3D;1：自动备援模式，其中一条线若断线，其他线路将会自动备援。
-系统启动时加载bonding模块：添加一个bind配置文件：vi &#x2F;etc&#x2F;modprobe.d&#x2F;bonding.confalias bond0 bonding
-网卡配置文件：
-ifcfg-bond0：
-DEVICE&#x3D;bond0BOOTPROTO&#x3D;noneONBOOT&#x3D;yesIPADDR&#x3D;10.3.8.4NETMASK&#x3D;255.255.0.0GATEWAY&#x3D;10.3.1.254USERCTL&#x3D;noBONDING_OPTS&#x3D;”mode&#x3D;0 miimon&#x3D;100”
-ifcfg-em1：
-DEVICE&#x3D;em1MASTER&#x3D;bond0SLAVE&#x3D;yesUSERCTL&#x3D;noONBOOT&#x3D;yesBOOTPROTO&#x3D;none
-ifcfg-em2：
-DEVICE&#x3D;em2MASTER&#x3D;bond0SLAVE&#x3D;yesUSERCTL&#x3D;noONBOOT&#x3D;yesBOOTPROTO&#x3D;none
+    <title>Centos quick install OpenShift3.9.0</title>
+    <url>/2018/04/26/Centos%E5%8D%95%E6%9C%BA%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85OpenShift3.9.0/</url>
+    <content><![CDATA[1. deploy Centos minial system2. yum update -ya. reboot
+
+3. yum install git docker net-tools4. git clone https://github.com/gshipley/installcentos.gita. export DOMAIN=openshift.iob. export USERNAME=chenfc. export PASSWORD=&lt;your-password&gt;
+
+5. cd installcentosa. ./install-openshift.sh
+
+6. DNS Sercera. openshift.io 8443b. openshift.io 80c. openshift.io 443
 ]]></content>
       <categories>
-        <category>Centos</category>
+        <category>OpenShift</category>
       </categories>
-      <tags>
-        <tag>bond0</tag>
-      </tags>
   </entry>
   <entry>
     <title>Centos安全配置参考</title>
@@ -421,6 +400,27 @@ hard nproc 20然后必须编辑&#x2F;etc&#x2F;pam.d&#x2F;login文件检查下面
       </tags>
   </entry>
   <entry>
+    <title>Centos网卡做bond0</title>
+    <url>/2016/03/05/Centos%E7%BD%91%E5%8D%A1%E5%81%9Abond0/</url>
+    <content><![CDATA[mode&#x3D;0：平衡负载模式，有自动备援，但需要”Switch”支援及设定。
+mode&#x3D;1：自动备援模式，其中一条线若断线，其他线路将会自动备援。
+系统启动时加载bonding模块：添加一个bind配置文件：vi &#x2F;etc&#x2F;modprobe.d&#x2F;bonding.confalias bond0 bonding
+网卡配置文件：
+ifcfg-bond0：
+DEVICE&#x3D;bond0BOOTPROTO&#x3D;noneONBOOT&#x3D;yesIPADDR&#x3D;10.3.8.4NETMASK&#x3D;255.255.0.0GATEWAY&#x3D;10.3.1.254USERCTL&#x3D;noBONDING_OPTS&#x3D;”mode&#x3D;0 miimon&#x3D;100”
+ifcfg-em1：
+DEVICE&#x3D;em1MASTER&#x3D;bond0SLAVE&#x3D;yesUSERCTL&#x3D;noONBOOT&#x3D;yesBOOTPROTO&#x3D;none
+ifcfg-em2：
+DEVICE&#x3D;em2MASTER&#x3D;bond0SLAVE&#x3D;yesUSERCTL&#x3D;noONBOOT&#x3D;yesBOOTPROTO&#x3D;none
+]]></content>
+      <categories>
+        <category>Centos</category>
+      </categories>
+      <tags>
+        <tag>bond0</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Esxi虚拟机安装iml-lustre-client</title>
     <url>/2016/03/05/Esxi%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85iml-lustre-client/</url>
     <content><![CDATA[给虚拟机挂一块IB网卡执行ip-over-ib.sh，给ib网卡赋予ip地址写入echo “options lnet networks&#x3D;tcp1(eth1)” &gt;&gt; &#x2F;etc&#x2F;modprobe.d&#x2F;lustre.conf
@@ -431,40 +431,6 @@ hard nproc 20然后必须编辑&#x2F;etc&#x2F;pam.d&#x2F;login文件检查下面
       </categories>
       <tags>
         <tag>esxi</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HAproxy编译安装与配置</title>
-    <url>/2016/03/05/HAproxy%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[安装haproxy从官网下载最新稳定版的haproxy-1.6.2.tar.gz，url：http://www.haproxy.org/download/1.6/src/haproxy-1.6.2.tar.gz放置&#x2F;root&#x2F;backup目录下，解压并进入目录安装编译依赖包前注释掉yum禁止更新内核选项：&#x2F;etc&#x2F;yum.conf
-安装依赖包：yum install gcc -ymake TARGET&#x3D;linux26 PREFIX&#x3D;&#x2F;app&#x2F;haproxy
-make install PREFIX&#x3D;&#x2F;app&#x2F;haproxy
-验证安装完成
-启动命令：&#x2F;app&#x2F;haproxy&#x2F;sbin&#x2F;haproxy -D -f &#x2F;app&#x2F;haproxy&#x2F;haproxy.cfg -p &#x2F;var&#x2F;run&#x2F;haproxy.pid
-配置文件：
-#访问*****.com强制转到https:&#x2F;&#x2F;*.com acl is_pan hdr_beg(host) ＊＊＊＊＊ redirect prefix https:&#x2F;&#x2F;****** if is_pan
-acl is_cbs hdr_beg(host) ＊＊＊＊＊redirect prefix https://******** if is_cbs`&lt;/pre&gt;#通过正则acl转发https协议    acl is_pans req.ssl_sni *******    use_backend pans if is_pans&lt;pre&gt;`acl is_cbss req.ssl_sni ********use_backend cbss if is_cbss
-]]></content>
-      <categories>
-        <category>Centos</category>
-      </categories>
-      <tags>
-        <tag>haproxy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MAC设置无共享密钥的IPsec链接</title>
-    <url>/2016/03/05/MAC%E8%AE%BE%E7%BD%AE%E6%97%A0%E5%85%B1%E4%BA%AB%E5%AF%86%E9%92%A5%E7%9A%84IPsec%E9%93%BE%E6%8E%A5/</url>
-    <content><![CDATA[在&#x2F;etc&#x2F;ppp目录下新建一个文件options :
-1cd &#x2F;etc&#x2F;ppp2sudo vi options
-写人如下内容：
-plugin L2TP.pppl2tpnoipsec
-]]></content>
-      <categories>
-        <category>Other</category>
-      </categories>
-      <tags>
-        <tag>mac</tag>
       </tags>
   </entry>
   <entry>
@@ -487,9 +453,43 @@ show variables like ‘max_connections’;
       </tags>
   </entry>
   <entry>
+    <title>HAproxy编译安装与配置</title>
+    <url>/2016/03/05/HAproxy%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[安装haproxy从官网下载最新稳定版的haproxy-1.6.2.tar.gz，url：http://www.haproxy.org/download/1.6/src/haproxy-1.6.2.tar.gz放置&#x2F;root&#x2F;backup目录下，解压并进入目录安装编译依赖包前注释掉yum禁止更新内核选项：&#x2F;etc&#x2F;yum.conf
+安装依赖包：yum install gcc -ymake TARGET&#x3D;linux26 PREFIX&#x3D;&#x2F;app&#x2F;haproxy
+make install PREFIX&#x3D;&#x2F;app&#x2F;haproxy
+验证安装完成
+启动命令：&#x2F;app&#x2F;haproxy&#x2F;sbin&#x2F;haproxy -D -f &#x2F;app&#x2F;haproxy&#x2F;haproxy.cfg -p &#x2F;var&#x2F;run&#x2F;haproxy.pid
+配置文件：
+#访问*****.com强制转到https:&#x2F;&#x2F;*.com acl is_pan hdr_beg(host) ＊＊＊＊＊ redirect prefix https:&#x2F;&#x2F;****** if is_pan
+acl is_cbs hdr_beg(host) ＊＊＊＊＊redirect prefix https://******** if is_cbs`&lt;/pre&gt;#通过正则acl转发https协议    acl is_pans req.ssl_sni *******    use_backend pans if is_pans&lt;pre&gt;`acl is_cbss req.ssl_sni ********use_backend cbss if is_cbss
+]]></content>
+      <categories>
+        <category>Centos</category>
+      </categories>
+      <tags>
+        <tag>haproxy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Markdown基本语法</title>
     <url>/2016/08/22/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>MAC设置无共享密钥的IPsec链接</title>
+    <url>/2016/03/05/MAC%E8%AE%BE%E7%BD%AE%E6%97%A0%E5%85%B1%E4%BA%AB%E5%AF%86%E9%92%A5%E7%9A%84IPsec%E9%93%BE%E6%8E%A5/</url>
+    <content><![CDATA[在&#x2F;etc&#x2F;ppp目录下新建一个文件options :
+1cd &#x2F;etc&#x2F;ppp2sudo vi options
+写人如下内容：
+plugin L2TP.pppl2tpnoipsec
+]]></content>
+      <categories>
+        <category>Other</category>
+      </categories>
+      <tags>
+        <tag>mac</tag>
+      </tags>
   </entry>
   <entry>
     <title>MySQL Tuning Primer Script使用（Mysql调优脚本）</title>
@@ -546,6 +546,22 @@ TABLE LOCKINGCurrent Lock Wait ratio &#x3D; 0 : 318Your table locking seems to b
       </tags>
   </entry>
   <entry>
+    <title>NFS安装配置</title>
+    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
+NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
+NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
+nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
+iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
+]]></content>
+      <categories>
+        <category>Centos</category>
+      </categories>
+      <tags>
+        <tag>nfs</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Nginx安全配置参考</title>
     <url>/2017/01/03/Nginx%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
     <content><![CDATA[0X01 日志审计① 参考配置操作(1)编辑 nginx.conf 配置文件将 error_log 前的“#”去掉，记录错误日志将 access_log 前的“#”去掉，记录访问日志(2)设置 access_log，修改配置文件如下：log_format formatname ‘$remote_addr - $remote_user [$time_local] ‘‘ “$request” $status $body_bytes_sent “$http_referer” ‘‘ “$http_user_agent” “$http_x_forwarded_for”‘; access_loglogs&#x2F;access.log formantname; #formatname 是设置配置文件格式的名称② 备注事项查看 nginx.conf 配置文件中，error_log、access_log 前的“#”是否去掉0x02 服务1 限制 IP 访问对网站或敏感目录的访问 IP 进行限制① 参考配置操作(1)修改配置文件
@@ -565,22 +581,6 @@ messages with just a carriage return.static char ngx_http_error_400_page[] &#x3D
       </categories>
       <tags>
         <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NFS安装配置</title>
-    <url>/2016/03/05/NFS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[Cetnos6.6安装NFSservice iptables stop&#x2F;&#x2F;vi &#x2F;etc&#x2F;selinux&#x2F;conf disabledchkconfig iptables off
-NFS Server:1，yum install rpcbind nfs-utils2，echo “&#x2F;storage *(rw,async,no_root_squash,no_subtree_check)” &gt;&gt; &#x2F;etc&#x2F;exports3,&#x2F;etc&#x2F;init.d&#x2F;rpcbind start4,&#x2F;etc&#x2F;init.d&#x2F;nfs start5,showmount -e 10.161.4.106(查看挂载是否生效)6,chkconfig rpcbind on7,chkconfig nfs on
-NFS Client:1，yum install rpcbind nfs-utils2，showmount -e 10.161.4.106(查看是否能识别到server的挂载)3，mount -t nfs 10.161.4.106:&#x2F;storage &#x2F;storage4, echo “mount -t nfs 110.161.4.106:&#x2F;storage &#x2F;storage” &gt;&gt; &#x2F;etc&#x2F;rc.local
-nfs服务端修改端口：（客户端不需要修改）RQUOTAD_PORT&#x3D;30001LOCKD_TCPPORT&#x3D;30002LOCKD_UDPPORT&#x3D;30003MOUNTD_PORT&#x3D;30004STATD_PORT&#x3D;30005RDMA_PORT&#x3D;30006
-iptables配置：（客户端不需要修改）nfs服务器iptables添加允许规则-A INPUT -p tcp -m tcp –dport 111 -j ACCEPT-A INPUT -p udp -m udp –dport 111 -j ACCEPT-A INPUT -p tcp -m tcp –dport 2049 -j ACCEPT-A INPUT -p udp -m udp –dport 2049 -j ACCEPT-A INPUT -p tcp -m tcp –dport 30001:30006 -j ACCEPT-A INPUT -p udp -m udp –dport 3001:30006 -j ACCEPT
-]]></content>
-      <categories>
-        <category>Centos</category>
-      </categories>
-      <tags>
-        <tag>nfs</tag>
       </tags>
   </entry>
   <entry>
@@ -1110,6 +1110,143 @@ apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc-tmsweb spec: 
 
 
 
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-性能监控</title>
+    <url>/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/</url>
+    <content><![CDATA[简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。
+
+项目URL：https://github.com/openshift/origin-metrics
+
+主要通过以下组件实现：
+
+Heapster
+
+
+Heapster通过Master API收集系统级别的信息，如CPU、内存、网络，然后将这些信息发送到Hawkular
+
+
+https://github.com/kubernetes/heapster
+
+
+Hawkular Metrics
+
+
+Hawkular Metrics是来此Hawkular项目的监控存储引擎。它提供了通过json REST接口来创建、访问和管理历史存储指标的方法。
+
+
+https://github.com/hawkular/hawkular-metrics
+
+
+Cassandra
+
+
+Cassandra是Hawkular的分布式数据库
+
+http://cassandra.apache.org/
+
+Hawkular OpenShift Agent
+
+
+Hawkular OpenShift Agent是一个代理组件，用来收集来此pod的应用程序级别的数据。前提是pod公开自己希望被收集的信息。
+
+
+OpenShift的监控采集方案的组件Heapster、HawkularMetrics、Canssandra数据库都是以容器的形式提供，并默认提供了可快速部署的Temaplate。
+启用集群监控版本1.4之前OpenShiftOrigin提供template的方式，供用户安装Metrics组件，从版本1.5开始到当前环境的3.6版本，OpenShiftOrigin开始已Ansible Playbook的方式安装Metris组件。
+Playbook URL：.&#x2F;openshift-ansible&#x2F;playbooks&#x2F;common&#x2F;openshift-cluster&#x2F;openshift_metrics.yml
+
+
+
+由于部署需要联网下载docker 镜像，网络原因导致失败，提前下载。
+
+
+
+在infra-node上下载以下镜像，并保证infrra-node物理内存&gt;4G
+
+
+docker pull docker.io&#x2F;openshift&#x2F;origin-metrics-heapster:latest docker pull docker.io&#x2F;openshift&#x2F;origin-metrics-hawkular-metrics:latest docker pull docker.io&#x2F;openshift&#x2F;origin-metrics-heapster:lates
+
+
+
+
+
+开始部署Metric组件
+
+
+ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-cluster&#x2F;openshift-metrics.yml \ -e openshift_metrics_install_metrics&#x3D;True \ -e openshift_metrics_hawkular_hostname&#x3D;hawkular-metrics.example.com
+
+
+因为测试使用临时存储，若要持久化存储： ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-cluster&#x2F;openshift-metrics.yml \ -e openshift_metrics_install_metrics&#x3D;True \ -e openshift_metrics_hawkular_hostname&#x3D;hawkular-metrics.example.com \ -e openshift_metrics_cassandra_storage_type&#x3D;pv
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+oc project openshift-infra
+
+
+oc get po
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+使用集群监控
+
+
+部署完成后，在OpenShift的Web控制台，进入某一个Pod的详情页面，单机Metrics页签，可以看到当前Pod的CPU，内存及网络的使用情况，如下图
+
+
+
+
+
+
+
+集群监控容量规划OpenShiftOrigin监控存储使用的是Cassandra数据库。默认设置，监控数据存储七天，七天后，Cassandra开始清除旧数据。已删除的Pod和Project的监控数据不会自动清除，只要超过7天才会被删除
+
+
+
+Pod运行累计数据表
+
+
+
+
+
+
+1000Pod
+10000Pod
+
+
+24小时Cassandra数据占用
+2.5GB
+11.4GB
+
+
+7天Cassandra数据占用
+20GB
+90GB
+
+
+监控组件配置在实际环境中，强烈建议为Cassandra数据库配置后端持久化存储，并且规划好容量。此外根据集群以及应用规模，可以调整HawkularMetrics及Cassandra数据库的实例数量，保证性能及相应速度。
+详细关于监控的配置项，参考官方文档：https://docs.openshift.org/3.6/install_config/cluster_metrics.html
+监控接口OpenShift的监控信息最终都存放在HawkularMetrics后端的Cassandra数据库中。可以访问HawkularMetrics的RESTful接口获取其中的信息，着对需要将OpenShift的监控和企业现有监控对接有很大帮助。
+Heapster已配置通过API访问，并且需要cluster-reader或cluster-admin权限。
+
+
+
+示例
+
+
+
+curl -H “Authorization: Bearer $(oc whoami -t)” \ -X GET https:&#x2F;&#x2F;${KUBERNETES_MASTER}&#x2F;api&#x2F;v1&#x2F;proxy&#x2F;namespaces&#x2F;openshift-infra&#x2F;services&#x2F;https:heapster:&#x2F;validate
+
+
+更多API接口信息，参考Heapster项目：
+https://github.com/kubernetes/heapster/
 ]]></content>
       <categories>
         <category>OpenShift</category>
@@ -2278,143 +2415,6 @@ kind: StorageClass apiVersion: storage.k8s.io&#x2F;v1 metadata: name: gluster-dy
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-性能监控</title>
-    <url>/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/</url>
-    <content><![CDATA[简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。
-
-项目URL：https://github.com/openshift/origin-metrics
-
-主要通过以下组件实现：
-
-Heapster
-
-
-Heapster通过Master API收集系统级别的信息，如CPU、内存、网络，然后将这些信息发送到Hawkular
-
-
-https://github.com/kubernetes/heapster
-
-
-Hawkular Metrics
-
-
-Hawkular Metrics是来此Hawkular项目的监控存储引擎。它提供了通过json REST接口来创建、访问和管理历史存储指标的方法。
-
-
-https://github.com/hawkular/hawkular-metrics
-
-
-Cassandra
-
-
-Cassandra是Hawkular的分布式数据库
-
-http://cassandra.apache.org/
-
-Hawkular OpenShift Agent
-
-
-Hawkular OpenShift Agent是一个代理组件，用来收集来此pod的应用程序级别的数据。前提是pod公开自己希望被收集的信息。
-
-
-OpenShift的监控采集方案的组件Heapster、HawkularMetrics、Canssandra数据库都是以容器的形式提供，并默认提供了可快速部署的Temaplate。
-启用集群监控版本1.4之前OpenShiftOrigin提供template的方式，供用户安装Metrics组件，从版本1.5开始到当前环境的3.6版本，OpenShiftOrigin开始已Ansible Playbook的方式安装Metris组件。
-Playbook URL：.&#x2F;openshift-ansible&#x2F;playbooks&#x2F;common&#x2F;openshift-cluster&#x2F;openshift_metrics.yml
-
-
-
-由于部署需要联网下载docker 镜像，网络原因导致失败，提前下载。
-
-
-
-在infra-node上下载以下镜像，并保证infrra-node物理内存&gt;4G
-
-
-docker pull docker.io&#x2F;openshift&#x2F;origin-metrics-heapster:latest docker pull docker.io&#x2F;openshift&#x2F;origin-metrics-hawkular-metrics:latest docker pull docker.io&#x2F;openshift&#x2F;origin-metrics-heapster:lates
-
-
-
-
-
-开始部署Metric组件
-
-
-ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-cluster&#x2F;openshift-metrics.yml \ -e openshift_metrics_install_metrics&#x3D;True \ -e openshift_metrics_hawkular_hostname&#x3D;hawkular-metrics.example.com
-
-
-因为测试使用临时存储，若要持久化存储： ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-cluster&#x2F;openshift-metrics.yml \ -e openshift_metrics_install_metrics&#x3D;True \ -e openshift_metrics_hawkular_hostname&#x3D;hawkular-metrics.example.com \ -e openshift_metrics_cassandra_storage_type&#x3D;pv
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-oc project openshift-infra
-
-
-oc get po
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-使用集群监控
-
-
-部署完成后，在OpenShift的Web控制台，进入某一个Pod的详情页面，单机Metrics页签，可以看到当前Pod的CPU，内存及网络的使用情况，如下图
-
-
-
-
-
-
-
-集群监控容量规划OpenShiftOrigin监控存储使用的是Cassandra数据库。默认设置，监控数据存储七天，七天后，Cassandra开始清除旧数据。已删除的Pod和Project的监控数据不会自动清除，只要超过7天才会被删除
-
-
-
-Pod运行累计数据表
-
-
-
-
-
-
-1000Pod
-10000Pod
-
-
-24小时Cassandra数据占用
-2.5GB
-11.4GB
-
-
-7天Cassandra数据占用
-20GB
-90GB
-
-
-监控组件配置在实际环境中，强烈建议为Cassandra数据库配置后端持久化存储，并且规划好容量。此外根据集群以及应用规模，可以调整HawkularMetrics及Cassandra数据库的实例数量，保证性能及相应速度。
-详细关于监控的配置项，参考官方文档：https://docs.openshift.org/3.6/install_config/cluster_metrics.html
-监控接口OpenShift的监控信息最终都存放在HawkularMetrics后端的Cassandra数据库中。可以访问HawkularMetrics的RESTful接口获取其中的信息，着对需要将OpenShift的监控和企业现有监控对接有很大帮助。
-Heapster已配置通过API访问，并且需要cluster-reader或cluster-admin权限。
-
-
-
-示例
-
-
-
-curl -H “Authorization: Bearer $(oc whoami -t)” \ -X GET https:&#x2F;&#x2F;${KUBERNETES_MASTER}&#x2F;api&#x2F;v1&#x2F;proxy&#x2F;namespaces&#x2F;openshift-infra&#x2F;services&#x2F;https:heapster:&#x2F;validate
-
-
-更多API接口信息，参考Heapster项目：
-https://github.com/kubernetes/heapster/
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenShift-持续集成-Jenkins</title>
     <url>/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/</url>
     <content><![CDATA[部署Jenkins
@@ -3241,321 +3241,6 @@ Builds:
 
 
 &lt;.&#x2F;media&#x2F;image11.png&gt;
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-核心组件和概念</title>
-    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
-    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
-
-api server ：提供集群的web console以及restful api 服务。
-datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
-scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
-replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
-
-Node节点介绍
-主要负责介绍master节点指令，运行和维护docker容器
-master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
-通过oc get nodes 可以查看系统中的node节点信息。
-
-Project
-namespace：在k8s中使用命名空间概念来隔离资源。
-project：在openshift中，引入了project概念。
-
-Pod
-pod是一种特殊的容器，oc get pods 可以查看pod
-可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
-查看pod日志：oc logs
-进入容器内部：oc rsh
-
-Service
-service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
-service起到了代理的作用，在相互依赖的容器之间实现了解耦。
-oc get svc 查看servie
-service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
-除了IP地址访问service，还可以通过域名访问service。
-master内置DNS服务器，负责解析这个域名
-
-Router
-负责将集群外部的请求转发到集群的容器。
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-运维管理</title>
-    <url>/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
-项目URL：https://github.com/cockpit-project
-Cockpit部署
-所有节点执行
-
-
-
-
-yum install cockpit cockpit-docker cockpit-kubernetes -y
-
-
-
-systemctl start cockpit &amp;&amp; systemctl enable cockpit
-
-
-vim &#x2F;etc&#x2F;sysconfig&#x2F;iptables
-
-
-A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-systemctl restart iptables
-
-
-
-登陆
-
-
-
-
-登陆https://master.example.com:9090/
-
-
-
-用户名密码即服务器用户名密码
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-Cockpit集群运维
-
-
-在集群选项中可以添加OpenShift集群
-
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-各信息在浏览器中直观展现
-
-
-节点
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-拓扑
-
-
-&lt;.&#x2F;media&#x2F;image6.png&gt;
-
-
-持久化卷
-
-
-&lt;.&#x2F;media&#x2F;image7.png&gt;
-
-
-
-
-
-OpenShift集群扩容根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120000。
-目前集群扩容的方式有：
-
-半自动扩容：
-
-
-OpenShift默认提供了扩容的Ansible Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。
-
-
-全自动扩容：
-
-
-自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。
-
-Ansible Playbook通过AnsiblePlayboko进行扩容需要编辑Ansible的Inventory，&#x2F;etc&#x2F;ansible&#x2F;hosts文件，在相应角色下添加新节点的域名以及配置信息
-
-
-
-# host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com
-
-
-
-
-
-
-主节点扩容Playbook
-
-
-ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-master&#x2F;scaleup.yml
-
-
-
-
-
-
-计算节点扩容Playbook
-
-
-ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-node&#x2F;scaleup.yml
-
-
-
-
-
-
-OpenShift集群缩容缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。
-禁止参与调度
-
-
-控制一个计算节点是否参与到集群的调度运行应用
-
-
-
-oc adm manage-node master.example.com –schedulable&#x3D;false
-
-
-&lt;.&#x2F;media&#x2F;image8.png&gt;
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-混合云管理</title>
-    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
-混合云管理平台的价值：
-
-度量采集及分析
-策略控制
-自动化集成
-
-MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
-用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
-部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
-项目主页：http://manageiq.org/
-安装包下载页：http://manageiq.org/download/
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-
-下载VMWare VSphere的OVA文件，并导入到vmware环境
-
-
-默认用户密码root：smartvm
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-使用appliance_console命令修改系统信息
-
-
-先修改IP地址
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-配置跟OpenShift集群同一网段的IP地址
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-测试网络连通性
-
-
-测试链接Master地址
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-Web访问，默认密码admin：smartvm
-
-
-https://10.10.31.169/
-
-
-&lt;.&#x2F;media&#x2F;image6.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image7.png&gt;
-
-
-使用
-
-
-添加OpenShift集群
-
-
-
-计算-&gt;容器-&gt;供应商
-
-
-&lt;.&#x2F;media&#x2F;image8.png&gt;
-
-
-配置-&gt;添加新容器供应商
-
-
-获取token
-
-
-oc sa get-token -n management-infra management-admin
-
-
-&lt;.&#x2F;media&#x2F;image9.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image10.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image11.png&gt;
-
-
-添加完成
-
-
-&lt;.&#x2F;media&#x2F;image12.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image13.png&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ]]></content>
@@ -5089,9 +4774,168 @@ oc new-app logging-deployer-template \ –param IMAGE_VERSION&#x3D;v1.3.0 \ –p
       </categories>
   </entry>
   <entry>
-    <title>PaaS平台介绍</title>
-    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[
+    <title>OpenShift-混合云管理</title>
+    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
+混合云管理平台的价值：
+
+度量采集及分析
+策略控制
+自动化集成
+
+MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
+用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
+部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
+项目主页：http://manageiq.org/
+安装包下载页：http://manageiq.org/download/
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+
+下载VMWare VSphere的OVA文件，并导入到vmware环境
+
+
+默认用户密码root：smartvm
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+使用appliance_console命令修改系统信息
+
+
+先修改IP地址
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+配置跟OpenShift集群同一网段的IP地址
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+测试网络连通性
+
+
+测试链接Master地址
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+Web访问，默认密码admin：smartvm
+
+
+https://10.10.31.169/
+
+
+&lt;.&#x2F;media&#x2F;image6.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image7.png&gt;
+
+
+使用
+
+
+添加OpenShift集群
+
+
+
+计算-&gt;容器-&gt;供应商
+
+
+&lt;.&#x2F;media&#x2F;image8.png&gt;
+
+
+配置-&gt;添加新容器供应商
+
+
+获取token
+
+
+oc sa get-token -n management-infra management-admin
+
+
+&lt;.&#x2F;media&#x2F;image9.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image10.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image11.png&gt;
+
+
+添加完成
+
+
+&lt;.&#x2F;media&#x2F;image12.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image13.png&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-核心组件和概念</title>
+    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
+    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
+
+api server ：提供集群的web console以及restful api 服务。
+datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
+scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
+replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
+
+Node节点介绍
+主要负责介绍master节点指令，运行和维护docker容器
+master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
+通过oc get nodes 可以查看系统中的node节点信息。
+
+Project
+namespace：在k8s中使用命名空间概念来隔离资源。
+project：在openshift中，引入了project概念。
+
+Pod
+pod是一种特殊的容器，oc get pods 可以查看pod
+可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
+查看pod日志：oc logs
+进入容器内部：oc rsh
+
+Service
+service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
+service起到了代理的作用，在相互依赖的容器之间实现了解耦。
+oc get svc 查看servie
+service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
+除了IP地址访问service，还可以通过域名访问service。
+master内置DNS服务器，负责解析这个域名
+
+Router
+负责将集群外部的请求转发到集群的容器。
+
 ]]></content>
       <categories>
         <category>OpenShift</category>
@@ -5207,6 +5051,162 @@ iptables a. setup b. iptables -L -v -n
       <tags>
         <tag>RH413</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>OpenShift-运维管理</title>
+    <url>/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
+项目URL：https://github.com/cockpit-project
+Cockpit部署
+所有节点执行
+
+
+
+
+yum install cockpit cockpit-docker cockpit-kubernetes -y
+
+
+
+systemctl start cockpit &amp;&amp; systemctl enable cockpit
+
+
+vim &#x2F;etc&#x2F;sysconfig&#x2F;iptables
+
+
+A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+systemctl restart iptables
+
+
+
+登陆
+
+
+
+
+登陆https://master.example.com:9090/
+
+
+
+用户名密码即服务器用户名密码
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+Cockpit集群运维
+
+
+在集群选项中可以添加OpenShift集群
+
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+各信息在浏览器中直观展现
+
+
+节点
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+拓扑
+
+
+&lt;.&#x2F;media&#x2F;image6.png&gt;
+
+
+持久化卷
+
+
+&lt;.&#x2F;media&#x2F;image7.png&gt;
+
+
+
+
+
+OpenShift集群扩容根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120000。
+目前集群扩容的方式有：
+
+半自动扩容：
+
+
+OpenShift默认提供了扩容的Ansible Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。
+
+
+全自动扩容：
+
+
+自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。
+
+Ansible Playbook通过AnsiblePlayboko进行扩容需要编辑Ansible的Inventory，&#x2F;etc&#x2F;ansible&#x2F;hosts文件，在相应角色下添加新节点的域名以及配置信息
+
+
+
+# host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com
+
+
+
+
+
+
+主节点扩容Playbook
+
+
+ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-master&#x2F;scaleup.yml
+
+
+
+
+
+
+计算节点扩容Playbook
+
+
+ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-node&#x2F;scaleup.yml
+
+
+
+
+
+
+OpenShift集群缩容缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。
+禁止参与调度
+
+
+控制一个计算节点是否参与到集群的调度运行应用
+
+
+
+oc adm manage-node master.example.com –schedulable&#x3D;false
+
+
+&lt;.&#x2F;media&#x2F;image8.png&gt;
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PaaS平台介绍</title>
+    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
   </entry>
   <entry>
     <title>RHCA-RH442(性能调优)学习笔记</title>
@@ -5367,6 +5367,46 @@ i. Official maximum size is 9000 bytes (52/9000=0.58% overheadii. vi /etc/syscon
       </tags>
   </entry>
   <entry>
+    <title>Brew-cask安装本地应用</title>
+    <url>/2016/03/05/brew-cask%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[修改目录：&#x2F;usr&#x2F;local&#x2F;Library&#x2F;Taps&#x2F;caskroom&#x2F;homebrew-cask&#x2F;Casks下的相对应的.rb文件注释掉外网路径，并添加本地路径有的应用可能需要修改一下sha356值209214.png然后运行brew-cask cleanup清除缓存然后就可以正常安装了brew-cask install svnx
+]]></content>
+      <categories>
+        <category>Other</category>
+      </categories>
+      <tags>
+        <tag>brew-cask</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Haproxy-1.6.2启动脚本</title>
+    <url>/2016/03/05/haproxy-1-6-2/</url>
+    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init
+拷贝到init.d下面直接用：cp &#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init &#x2F;etc&#x2F;init.d&#x2F;haproxy修改下脚本中的编译安装路径：
+改权限：chmod 755 php- fpm
+加到开机服务：chkconfig –add php-fpm
+设置开机自启动：chkconfig php-fpm on
+]]></content>
+      <categories>
+        <category>Middleware</category>
+      </categories>
+      <tags>
+        <tag>haproy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
+    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
+    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
+modprobe lnet
+最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
+tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
+]]></content>
+      <categories>
+        <category>Lustre</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Tomcat安全配置参考</title>
     <url>/2017/01/03/Tomcat%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
     <content><![CDATA[0x01 基本配置1 删除默认目录 安装完tomcat后，删除$CATALINA_HOME&#x2F;webapps下默认的所有目录文件 rm -rf &#x2F;srv&#x2F;apache-tomcat&#x2F;webapps&#x2F;*2 隐藏tomcat版本信息修改$CATALINA_HOME&#x2F;conf&#x2F;server.xml,在Connector节点添加server字段，示例如下
@@ -5405,34 +5445,6 @@ true
       </tags>
   </entry>
   <entry>
-    <title>Brew-cask安装本地应用</title>
-    <url>/2016/03/05/brew-cask%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[修改目录：&#x2F;usr&#x2F;local&#x2F;Library&#x2F;Taps&#x2F;caskroom&#x2F;homebrew-cask&#x2F;Casks下的相对应的.rb文件注释掉外网路径，并添加本地路径有的应用可能需要修改一下sha356值209214.png然后运行brew-cask cleanup清除缓存然后就可以正常安装了brew-cask install svnx
-]]></content>
-      <categories>
-        <category>Other</category>
-      </categories>
-      <tags>
-        <tag>brew-cask</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Haproxy-1.6.2启动脚本</title>
-    <url>/2016/03/05/haproxy-1-6-2/</url>
-    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init
-拷贝到init.d下面直接用：cp &#x2F;root&#x2F;backup&#x2F;haproxy-1.6.2&#x2F;examples&#x2F;haproxy.init &#x2F;etc&#x2F;init.d&#x2F;haproxy修改下脚本中的编译安装路径：
-改权限：chmod 755 php- fpm
-加到开机服务：chkconfig –add php-fpm
-设置开机自启动：chkconfig php-fpm on
-]]></content>
-      <categories>
-        <category>Middleware</category>
-      </categories>
-      <tags>
-        <tag>haproy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hub.docker上搭建仓库并上传镜像</title>
     <url>/2017/02/09/hub.docker%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%BB%93%E5%BA%93%E5%B9%B6%E4%B8%8A%E4%BC%A0%E9%95%9C%E5%83%8F/</url>
     <content><![CDATA[
@@ -5467,39 +5479,6 @@ i. docker pull docker.io&#x2F;fearchan&#x2F;kube-controller-manager-amd64:v1.5.1
       </categories>
       <tags>
         <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
-    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
-    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
-modprobe lnet
-最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
-tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
-]]></content>
-      <categories>
-        <category>Lustre</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>keepalived-1.2.19启动脚本</title>
-    <url>/2016/03/05/keepalived-1-2-19/</url>
-    <content><![CDATA[找到编译的安装目录，之际拷贝到的init.dcp &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;keepalived &#x2F;etc&#x2F;init.d&#x2F;
-修改vi &#x2F;etc&#x2F;init.d&#x2F;keepalived
-. &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;sysconfig&#x2F;keepalived
-PATH&#x3D;”$PATH:&#x2F;app&#x2F;keepalived&#x2F;sbin”
-export PATH
-修改vi &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;sysconfig&#x2F;keepalived
-KEEPALIVED_OPTIONS&#x3D;”-D -f &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;keepalived&#x2F;keepalived.conf”
-改权限：chmod 755 keepalived
-加到开机服务：chkconfig –add keepalived
-设置开机自启动：chkconfig rkeepalived on
-]]></content>
-      <categories>
-        <category>Middleware</category>
-      </categories>
-      <tags>
-        <tag>keepalived</tag>
       </tags>
   </entry>
   <entry>
@@ -5553,6 +5532,27 @@ i. http://192.168.254.160:31618/
       </tags>
   </entry>
   <entry>
+    <title>keepalived-1.2.19启动脚本</title>
+    <url>/2016/03/05/keepalived-1-2-19/</url>
+    <content><![CDATA[找到编译的安装目录，之际拷贝到的init.dcp &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;keepalived &#x2F;etc&#x2F;init.d&#x2F;
+修改vi &#x2F;etc&#x2F;init.d&#x2F;keepalived
+. &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;sysconfig&#x2F;keepalived
+PATH&#x3D;”$PATH:&#x2F;app&#x2F;keepalived&#x2F;sbin”
+export PATH
+修改vi &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;sysconfig&#x2F;keepalived
+KEEPALIVED_OPTIONS&#x3D;”-D -f &#x2F;app&#x2F;keepalived&#x2F;etc&#x2F;keepalived&#x2F;keepalived.conf”
+改权限：chmod 755 keepalived
+加到开机服务：chkconfig –add keepalived
+设置开机自启动：chkconfig rkeepalived on
+]]></content>
+      <categories>
+        <category>Middleware</category>
+      </categories>
+      <tags>
+        <tag>keepalived</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux漏洞扫描工具【lynis】</title>
     <url>/2017/01/03/linux%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%B7%A5%E5%85%B7%E3%80%90lynis%E3%80%91/</url>
     <content><![CDATA[
@@ -5574,6 +5574,19 @@ Lynis是针对Unix&#x2F;Linux的安全检查工具，可以发现潜在的安全
       </categories>
       <tags>
         <tag>lynis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Memcached-1.4.24启动脚本</title>
+    <url>/2016/03/05/memcached-1-4-24/</url>
+    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv拷贝到init.d下面用：cp &#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv &#x2F;etc&#x2F;init.d&#x2F;memcached新建var下目录：mkdir &#x2F;var&#x2F;run&#x2F;memcached需要修改安装路径：
+改权限：chmod 755 memcached加到开机服务：chkconfig –add memcached设置开机自启动：chkconfig memcached on
+]]></content>
+      <categories>
+        <category>Middleware</category>
+      </categories>
+      <tags>
+        <tag>memcache</tag>
       </tags>
   </entry>
   <entry>
@@ -5615,31 +5628,6 @@ mysql初始化：&#x2F;data&#x2F;mysql&#x2F;bin&#x2F;mysqld –initialize-insecu
       </categories>
   </entry>
   <entry>
-    <title>Memcached-1.4.24启动脚本</title>
-    <url>/2016/03/05/memcached-1-4-24/</url>
-    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv拷贝到init.d下面用：cp &#x2F;root&#x2F;backup&#x2F;memcached-1.4.24&#x2F;scripts&#x2F;memcached.sysv &#x2F;etc&#x2F;init.d&#x2F;memcached新建var下目录：mkdir &#x2F;var&#x2F;run&#x2F;memcached需要修改安装路径：
-改权限：chmod 755 memcached加到开机服务：chkconfig –add memcached设置开机自启动：chkconfig memcached on
-]]></content>
-      <categories>
-        <category>Middleware</category>
-      </categories>
-      <tags>
-        <tag>memcache</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Php-5.4.45启动脚本</title>
-    <url>/2016/03/05/php-5-4-45/</url>
-    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm拷贝到init.d下面直接用：cp &#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm &#x2F;etc&#x2F;init.d&#x2F;php-fpm改权限：chmod 755 php- fpm加到开机服务：chkconfig –add php-fpm设置开机自启动：chkconfig php-fpm on
-]]></content>
-      <categories>
-        <category>Middleware</category>
-      </categories>
-      <tags>
-        <tag>Php</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mysql5.6配置主从</title>
     <url>/2016/03/05/mysql5.6%E9%85%8D%E7%BD%AE%E4%B8%BB%E4%BB%8E/</url>
     <content><![CDATA[修改mysql配置文件，增加同步参数：mkdir &#x2F;mysqllog主：server-id&#x3D;1
@@ -5666,18 +5654,15 @@ Slave_SQL_Running: Yes
       </tags>
   </entry>
   <entry>
-    <title>Redis-3.0.4启动脚本</title>
-    <url>/2016/03/05/redis-3-0-4/</url>
-    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script配置文件在&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;redis.conf拷贝到init.d下：cp &#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script &#x2F;etc&#x2F;init.d&#x2F;redis-server修改安装于配置问价路径：
-拷贝配置文件到安装目录：cp &#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;redis.conf &#x2F;app&#x2F;redis&#x2F;6379.conf
-改权限：chmod 755 redis-server加到开机服务：首先添加运行级别：
-chkconfig –add redis-server设置开机自启动：chkconfig redis-server on
+    <title>Php-5.4.45启动脚本</title>
+    <url>/2016/03/05/php-5-4-45/</url>
+    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm拷贝到init.d下面直接用：cp &#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm &#x2F;etc&#x2F;init.d&#x2F;php-fpm改权限：chmod 755 php- fpm加到开机服务：chkconfig –add php-fpm设置开机自启动：chkconfig php-fpm on
 ]]></content>
       <categories>
         <category>Middleware</category>
       </categories>
       <tags>
-        <tag>Rredis</tag>
+        <tag>Php</tag>
       </tags>
   </entry>
   <entry>
@@ -5692,6 +5677,21 @@ chkconfig –add redis-server设置开机自启动：chkconfig redis-server on
       </categories>
       <tags>
         <tag>Rabbitmq</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis-3.0.4启动脚本</title>
+    <url>/2016/03/05/redis-3-0-4/</url>
+    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script配置文件在&#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;redis.conf拷贝到init.d下：cp &#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;utils&#x2F;redis_init_script &#x2F;etc&#x2F;init.d&#x2F;redis-server修改安装于配置问价路径：
+拷贝配置文件到安装目录：cp &#x2F;root&#x2F;backup&#x2F;redis-3.0.4&#x2F;redis.conf &#x2F;app&#x2F;redis&#x2F;6379.conf
+改权限：chmod 755 redis-server加到开机服务：首先添加运行级别：
+chkconfig –add redis-server设置开机自启动：chkconfig redis-server on
+]]></content>
+      <categories>
+        <category>Middleware</category>
+      </categories>
+      <tags>
+        <tag>Rredis</tag>
       </tags>
   </entry>
   <entry>
@@ -5801,6 +5801,18 @@ hexo deploy重新部署
       </tags>
   </entry>
   <entry>
+    <title>Zabbix添加php-fpm监控</title>
+    <url>/2016/03/05/zabbix%E6%B7%BB%E5%8A%A0php-fpm%E7%9B%91%E6%8E%A7/</url>
+    <content><![CDATA[在配置文件中添加php-fpm &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;default.conf在 php-fpm配置文件 &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;etc&#x2F;php-fpm.d&#x2F;www.conf 中添加pm.status_path &#x3D; &#x2F;phpfpmstatus把脚本”monitor_phpfpm_status“放到&#x2F;etc&#x2F;zabbix&#x2F;scripts下，chmod 777添加变量内容到&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.confUserParameter&#x3D;phpfpm.status.pool,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status poolUserParameter&#x3D;phpfpm.status.process.manager,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status process_managerUserParameter&#x3D;phpfpm.status.start.since,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status start_sinceUserParameter&#x3D;phpfpm.status.accepted.conn,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status accepted_connUserParameter&#x3D;phpfpm.status.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queueUserParameter&#x3D;phpfpm.status.max.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_listen_queueUserParameter&#x3D;phpfpm.status.listen.queue.len,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queue_lenUserParameter&#x3D;phpfpm.status.idle.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status idle_processesUserParameter&#x3D;phpfpm.status.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status active_processesUserParameter&#x3D;phpfpm.status.total.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status total_processesUserParameter&#x3D;phpfpm.status.max.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_active_processesUserParameter&#x3D;phpfpm.status.max.children.reached,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_children_reached 5. 重启zabbix客户端 6.成功
+]]></content>
+      <categories>
+        <category>Zabbix</category>
+      </categories>
+      <tags>
+        <tag>zabbix</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zabbix监控mysql</title>
     <url>/2016/03/05/zabbix%E7%9B%91%E6%8E%A7mysql/</url>
     <content><![CDATA[在mysql中建立zabbix用户GRANTUSAGEON_._TO‘zabbix‘@’localhost’IDENTIFIED BY’*‘;FLUSHPRIVILEGES;
@@ -5836,18 +5848,6 @@ zabbix只对&#x2F;usr&#x2F;bin和&#x2F;usr&#x2F;sbin下的环境变量识别，�
       </categories>
       <tags>
         <tag>iozone</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zabbix添加php-fpm监控</title>
-    <url>/2016/03/05/zabbix%E6%B7%BB%E5%8A%A0php-fpm%E7%9B%91%E6%8E%A7/</url>
-    <content><![CDATA[在配置文件中添加php-fpm &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;default.conf在 php-fpm配置文件 &#x2F;usr&#x2F;local&#x2F;landhightech&#x2F;etc&#x2F;php-fpm.d&#x2F;www.conf 中添加pm.status_path &#x3D; &#x2F;phpfpmstatus把脚本”monitor_phpfpm_status“放到&#x2F;etc&#x2F;zabbix&#x2F;scripts下，chmod 777添加变量内容到&#x2F;etc&#x2F;zabbix&#x2F;zabbix_agentd.confUserParameter&#x3D;phpfpm.status.pool,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status poolUserParameter&#x3D;phpfpm.status.process.manager,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status process_managerUserParameter&#x3D;phpfpm.status.start.since,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status start_sinceUserParameter&#x3D;phpfpm.status.accepted.conn,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status accepted_connUserParameter&#x3D;phpfpm.status.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queueUserParameter&#x3D;phpfpm.status.max.listen.queue,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_listen_queueUserParameter&#x3D;phpfpm.status.listen.queue.len,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status listen_queue_lenUserParameter&#x3D;phpfpm.status.idle.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status idle_processesUserParameter&#x3D;phpfpm.status.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status active_processesUserParameter&#x3D;phpfpm.status.total.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status total_processesUserParameter&#x3D;phpfpm.status.max.active.processes,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_active_processesUserParameter&#x3D;phpfpm.status.max.children.reached,&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;monitor_phpfpm_status max_children_reached 5. 重启zabbix客户端 6.成功
-]]></content>
-      <categories>
-        <category>Zabbix</category>
-      </categories>
-      <tags>
-        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
