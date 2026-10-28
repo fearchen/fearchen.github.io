@@ -115,22 +115,6 @@ service iptables restart安装JDKyum -y install java-1.7.0-openjdk*
       </tags>
   </entry>
   <entry>
-    <title>Centos6.4部署puppet3.8.4</title>
-    <url>/2016/03/05/Centos6.4%E9%83%A8%E7%BD%B2puppet3.8.4/</url>
-    <content><![CDATA[关闭ipatbles和selinuxpuppet官网下载puppetyum源url：http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm上传至puppet服务器并安装
-yum安装puppet-serveryum install puppet-server启动puppetchkconfig puppetmaster onchkconfig puppet on&#x2F;etc&#x2F;init.d&#x2F;puppetmaster start&#x2F;etc&#x2F;init.d&#x2F;puppet start在puppet-server上查看证书puppet cert list –all
-使用apache+passenger运行puppet-serveryum install httpd httpd-devel ruby-devel mod_ssl make gcc gcc-c++ curl-devel openssl-devel zlib-devel安装rack和passengergem install rack
-gem install passenger
-编译passengerpassenger-install-apache2-module
-]]></content>
-      <categories>
-        <category>Dev Ops</category>
-      </categories>
-      <tags>
-        <tag>puppet</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos6.5搭建shdowsocks服务器</title>
     <url>/2016/03/05/Centos6.5%E6%90%AD%E5%BB%BAshdowsocks%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
     <content><![CDATA[yum updateyum install python-setuptools &amp;&amp; easy_install pippip install shadowsocksvi &#x2F;etc&#x2F;shadowsocks.json[root@iZu1cf4uswmZ ~]# more &#x2F;etc&#x2F;shadowsocks.json{ “server”:”47.88.50.29”, “server_port”:8000, “password”:”PA@@w0rd”, “timeout”:300, “method”:”rc4-md5”, “fast_open”:true}
@@ -154,77 +138,19 @@ workers：workers数量，默认为 1。
       </tags>
   </entry>
   <entry>
-    <title>Centos6.5部署zabbix2.4.7过程</title>
-    <url>/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2zabbix2.4.7%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[首先配置zabbix服务器能通外网关闭iptables和selinux安装zabbix存储库包rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm安装zabbixyum install zabbix-server-mysql zabbix-web-mysql安装mysqlyum install mysql-server -y安装ntpyum install ntp -yntpdate time.nist.gov设置开机启动chkconfig ntpd onchkconfig httpd onchkconfig mysqld onchkconfig zabbix-server on启动服务&#x2F;etc&#x2F;init.d&#x2F;ntpd start&#x2F;etc&#x2F;init.d&#x2F;httpd start&#x2F;etc&#x2F;init.d&#x2F;mysqld start&#x2F;etc&#x2F;init.d&#x2F;zabbix-server start创建zabbix数据库mysql -uroot -pcreate database zabbix character set utf8 collate utf8_bin;设置mysql访问权限，只允许本机访问grant all privileges on zabbix.* to zabbix@localhost identified by ‘zabbix’;flush privileges;quit；导入数据表结构cd &#x2F;usr&#x2F;share&#x2F;doc&#x2F;zabbix-server-mysql-2.4.7&#x2F;createmysql -uzabbix -pzabbix zabbix &lt; schema.sqlmysql -uzabbix -pzabbix zabbix &lt; images.sqlmysql -uzabbix -pzabbix zabbix &lt; data.sql编辑zabbix配置文件指向数据库vi &#x2F;etc&#x2F;zabbix&#x2F;zabbix_server.confDBHost&#x3D;localhostDBName&#x3D;zabbixDBUser&#x3D;zabbixDBPassword&#x3D;zabbix
-修改httpd下的zabbix配置文件vi &#x2F;etc&#x2F;httpd&#x2F;conf.d&#x2F;zabbix.confphp_value max_execution_time 300php_value memory_limit 128Mphp_value post_max_size 16Mphp_value upload_max_filesize 2Mphp_value max_input_time 300php_value date.timezone Asia&#x2F;Shanghaiservice httpd restart
-添加iptables规则-A INPUT -p tcp -m tcp –dport 10050 -j ACCEPT-A INPUT -p udp -m udp –dport 10050 -j ACCEPT-A INPUT -p tcp -m tcp –dport 10051 -j ACCEPT-A INPUT -p udp -m udp –dport 10051 -j ACCEPT
-进入web安装向导http:&#x2F;&#x2F;服务器IP&#x2F;zabbix
-完成
-完成后登陆登陆链接：http://192.168.10.222/zabbix/index.php默认账号Admin，密码zabbix
-修改中文语言
+    <title>Centos6.4部署puppet3.8.4</title>
+    <url>/2016/03/05/Centos6.4%E9%83%A8%E7%BD%B2puppet3.8.4/</url>
+    <content><![CDATA[关闭ipatbles和selinuxpuppet官网下载puppetyum源url：http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm上传至puppet服务器并安装
+yum安装puppet-serveryum install puppet-server启动puppetchkconfig puppetmaster onchkconfig puppet on&#x2F;etc&#x2F;init.d&#x2F;puppetmaster start&#x2F;etc&#x2F;init.d&#x2F;puppet start在puppet-server上查看证书puppet cert list –all
+使用apache+passenger运行puppet-serveryum install httpd httpd-devel ruby-devel mod_ssl make gcc gcc-c++ curl-devel openssl-devel zlib-devel安装rack和passengergem install rack
+gem install passenger
+编译passengerpassenger-install-apache2-module
 ]]></content>
       <categories>
-        <category>Zabbix</category>
+        <category>Dev Ops</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos6.6部署filebeat</title>
-    <url>/2016/03/05/Centos6.6%E9%83%A8%E7%BD%B2filebeat/</url>
-    <content><![CDATA[安装rpm -ivh filebeat-1.0.1-x86_64.rpmchkconfig –add filebeatchkconfig filebeat on
-编辑配置文件vi &#x2F;etc&#x2F;filebeat&#x2F;filebeat.yml添加要收集的日志路径 14 paths: 15 - &#x2F;var&#x2F;log&#x2F;.log 16 - &#x2F;data&#x2F;logs&#x2F;.log 17 - &#x2F;data&#x2F;logs&#x2F;payment&#x2F;*.log
-添加要发送到logstash的服务器地址 230 logstash: 231 # The Logstash hosts 232 hosts: [“15.3.4.22:5044”]
-]]></content>
-      <categories>
-        <category>ELK</category>
-      </categories>
-      <tags>
-        <tag>filebeat</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>centos6.6物理机安装iml-lustre-client</title>
-    <url>/2016/03/05/Centos6.6%E7%89%A9%E7%90%86%E6%9C%BA%E5%AE%89%E8%A3%85iml-lustre-client/</url>
-    <content><![CDATA[首先确定IB是否装上
-安装编译好lusre-client包rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpmrpm -ivh lustre-client-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpm
-添加o2ib1 echo “options lnet networks&#x3D;o2ib1(ib0) “ &gt;&gt; &#x2F;etc&#x2F;modprobe.d&#x2F;lustre.conf编辑 vi &#x2F;etc&#x2F;rc.local 添加： echo “modprobe lustre” &gt;&gt; &#x2F;etc&#x2F;rc.local echo “modprobe lnet” &gt;&gt; &#x2F;etc&#x2F;rc.localmkdir &#x2F;mnt&#x2F;lustre重启挂载 mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre把挂载命令写入开机启动echo “mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre”&gt;&gt; &#x2F;etc&#x2F;rc.local
-]]></content>
-      <categories>
-        <category>Lustre</category>
-      </categories>
-      <tags>
-        <tag>iml-lustre</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos7.2部署elk过程</title>
-    <url>/2016/03/05/Centos7.2%E9%83%A8%E7%BD%B2elk%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[安装java环境 yum install java-1.7.0-openjdk
-安装lasticsearchrpm -ivh elasticsearch-2.1.1.rpm
-安装logstashrpm -ivh logstash-2.1.1-1.noarch.rpm
-安装kibana并配置supervisor解压tar zxvf kibana-4.3.1-linux-x64.tar.gz拷贝到&#x2F;etc&#x2F;目录cp -r kibana-4.3.1-linux-x64 &#x2F;etc&#x2F;kibana4.3.1
-安装supervisoryum install python-setuptools
-easy_install supervisor生成配置文件：
-echo_supervisord_conf &gt;&gt; &#x2F;etc&#x2F;supervisord.conf编辑配置文件vi &#x2F;etc&#x2F;supervisord.conf最后添加：[include]files &#x3D; &#x2F;etc&#x2F;supervisord.d&#x2F;*.conf
-添加kibana配置文件：mkdir &#x2F;etc&#x2F;supervisord.dvi kibana.conf添加：[program:kibana]command&#x3D;&#x2F;etc&#x2F;kibana4.3.1&#x2F;bin&#x2F;kibanaautorestart &#x3D; trueredirect &#x3D; truestderr_logfile &#x3D; &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.logstartsecs &#x3D; 3
-给日志文件建目录：mkdir &#x2F;var&#x2F;log&#x2F;kibanatouch &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.log启动：
-&#x2F;usr&#x2F;bin&#x2F;python &#x2F;usr&#x2F;bin&#x2F;supervisord -c &#x2F;etc&#x2F;supervisord.conf
-防火墙打开5601端口firewall-cmd –permanent –add-port&#x3D;5601&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
-配置elastcisearch修改配置文件：vim &#x2F;etc&#x2F;elasticsearch&#x2F;elasticsearch.yml修改如下几处
-启动：systemctl daemon-reloadsystemctl enable elasticsearch.servicesystemctl start elasticsearchsystemctl status elasticsearch
-使用9200和9300端口，防火墙打开端口firewall-cmd –permanent –add-port&#x3D;{9200&#x2F;tcp,9300&#x2F;tcp}firewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
-配置logstash添加配置文件：vim &#x2F;etc&#x2F;logstash&#x2F;conf.d&#x2F;nginxconf.json
-防火墙打开5044端口firewall-cmd –permanent –add-port&#x3D;5044&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
-启动：systemctl start logstashsystemctl status logstashchkconfig logstash on (开机启动设置特殊)
-]]></content>
-      <categories>
-        <category>ELK</category>
-      </categories>
-      <tags>
-        <tag>elk</tag>
+        <tag>puppet</tag>
       </tags>
   </entry>
   <entry>
@@ -259,6 +185,52 @@ OSS2上格式化ost01并挂载：格式化：mkfs.lustre –fsname&#x3D;lustre �
       </categories>
       <tags>
         <tag>lustre</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos6.5部署zabbix2.4.7过程</title>
+    <url>/2016/03/05/Centos6.5%E9%83%A8%E7%BD%B2zabbix2.4.7%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[首先配置zabbix服务器能通外网关闭iptables和selinux安装zabbix存储库包rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm安装zabbixyum install zabbix-server-mysql zabbix-web-mysql安装mysqlyum install mysql-server -y安装ntpyum install ntp -yntpdate time.nist.gov设置开机启动chkconfig ntpd onchkconfig httpd onchkconfig mysqld onchkconfig zabbix-server on启动服务&#x2F;etc&#x2F;init.d&#x2F;ntpd start&#x2F;etc&#x2F;init.d&#x2F;httpd start&#x2F;etc&#x2F;init.d&#x2F;mysqld start&#x2F;etc&#x2F;init.d&#x2F;zabbix-server start创建zabbix数据库mysql -uroot -pcreate database zabbix character set utf8 collate utf8_bin;设置mysql访问权限，只允许本机访问grant all privileges on zabbix.* to zabbix@localhost identified by ‘zabbix’;flush privileges;quit；导入数据表结构cd &#x2F;usr&#x2F;share&#x2F;doc&#x2F;zabbix-server-mysql-2.4.7&#x2F;createmysql -uzabbix -pzabbix zabbix &lt; schema.sqlmysql -uzabbix -pzabbix zabbix &lt; images.sqlmysql -uzabbix -pzabbix zabbix &lt; data.sql编辑zabbix配置文件指向数据库vi &#x2F;etc&#x2F;zabbix&#x2F;zabbix_server.confDBHost&#x3D;localhostDBName&#x3D;zabbixDBUser&#x3D;zabbixDBPassword&#x3D;zabbix
+修改httpd下的zabbix配置文件vi &#x2F;etc&#x2F;httpd&#x2F;conf.d&#x2F;zabbix.confphp_value max_execution_time 300php_value memory_limit 128Mphp_value post_max_size 16Mphp_value upload_max_filesize 2Mphp_value max_input_time 300php_value date.timezone Asia&#x2F;Shanghaiservice httpd restart
+添加iptables规则-A INPUT -p tcp -m tcp –dport 10050 -j ACCEPT-A INPUT -p udp -m udp –dport 10050 -j ACCEPT-A INPUT -p tcp -m tcp –dport 10051 -j ACCEPT-A INPUT -p udp -m udp –dport 10051 -j ACCEPT
+进入web安装向导http:&#x2F;&#x2F;服务器IP&#x2F;zabbix
+完成
+完成后登陆登陆链接：http://192.168.10.222/zabbix/index.php默认账号Admin，密码zabbix
+修改中文语言
+]]></content>
+      <categories>
+        <category>Zabbix</category>
+      </categories>
+      <tags>
+        <tag>zabbix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos6.6物理机安装iml-lustre-client</title>
+    <url>/2016/03/05/Centos6.6%E7%89%A9%E7%90%86%E6%9C%BA%E5%AE%89%E8%A3%85iml-lustre-client/</url>
+    <content><![CDATA[首先确定IB是否装上
+安装编译好lusre-client包rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpmrpm -ivh lustre-client-2.5.34.1-2.6.32_504.el6.x86_64.x86_64.rpm
+添加o2ib1 echo “options lnet networks&#x3D;o2ib1(ib0) “ &gt;&gt; &#x2F;etc&#x2F;modprobe.d&#x2F;lustre.conf编辑 vi &#x2F;etc&#x2F;rc.local 添加： echo “modprobe lustre” &gt;&gt; &#x2F;etc&#x2F;rc.local echo “modprobe lnet” &gt;&gt; &#x2F;etc&#x2F;rc.localmkdir &#x2F;mnt&#x2F;lustre重启挂载 mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre把挂载命令写入开机启动echo “mount -t lustre 15.3.4.12@o2ib1:15.3.4.13@o2ib1:&#x2F;vsospace &#x2F;mnt&#x2F;lustre”&gt;&gt; &#x2F;etc&#x2F;rc.local
+]]></content>
+      <categories>
+        <category>Lustre</category>
+      </categories>
+      <tags>
+        <tag>iml-lustre</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos6.6部署filebeat</title>
+    <url>/2016/03/05/Centos6.6%E9%83%A8%E7%BD%B2filebeat/</url>
+    <content><![CDATA[安装rpm -ivh filebeat-1.0.1-x86_64.rpmchkconfig –add filebeatchkconfig filebeat on
+编辑配置文件vi &#x2F;etc&#x2F;filebeat&#x2F;filebeat.yml添加要收集的日志路径 14 paths: 15 - &#x2F;var&#x2F;log&#x2F;.log 16 - &#x2F;data&#x2F;logs&#x2F;.log 17 - &#x2F;data&#x2F;logs&#x2F;payment&#x2F;*.log
+添加要发送到logstash的服务器地址 230 logstash: 231 # The Logstash hosts 232 hosts: [“15.3.4.22:5044”]
+]]></content>
+      <categories>
+        <category>ELK</category>
+      </categories>
+      <tags>
+        <tag>filebeat</tag>
       </tags>
   </entry>
   <entry>
@@ -314,6 +286,34 @@ i. docker run -itd --volumes-from modest_pare centos-7-x86_64 bash
       </categories>
       <tags>
         <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos7.2部署elk过程</title>
+    <url>/2016/03/05/Centos7.2%E9%83%A8%E7%BD%B2elk%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[安装java环境 yum install java-1.7.0-openjdk
+安装lasticsearchrpm -ivh elasticsearch-2.1.1.rpm
+安装logstashrpm -ivh logstash-2.1.1-1.noarch.rpm
+安装kibana并配置supervisor解压tar zxvf kibana-4.3.1-linux-x64.tar.gz拷贝到&#x2F;etc&#x2F;目录cp -r kibana-4.3.1-linux-x64 &#x2F;etc&#x2F;kibana4.3.1
+安装supervisoryum install python-setuptools
+easy_install supervisor生成配置文件：
+echo_supervisord_conf &gt;&gt; &#x2F;etc&#x2F;supervisord.conf编辑配置文件vi &#x2F;etc&#x2F;supervisord.conf最后添加：[include]files &#x3D; &#x2F;etc&#x2F;supervisord.d&#x2F;*.conf
+添加kibana配置文件：mkdir &#x2F;etc&#x2F;supervisord.dvi kibana.conf添加：[program:kibana]command&#x3D;&#x2F;etc&#x2F;kibana4.3.1&#x2F;bin&#x2F;kibanaautorestart &#x3D; trueredirect &#x3D; truestderr_logfile &#x3D; &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.logstartsecs &#x3D; 3
+给日志文件建目录：mkdir &#x2F;var&#x2F;log&#x2F;kibanatouch &#x2F;var&#x2F;log&#x2F;kibana&#x2F;kibana.log启动：
+&#x2F;usr&#x2F;bin&#x2F;python &#x2F;usr&#x2F;bin&#x2F;supervisord -c &#x2F;etc&#x2F;supervisord.conf
+防火墙打开5601端口firewall-cmd –permanent –add-port&#x3D;5601&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
+配置elastcisearch修改配置文件：vim &#x2F;etc&#x2F;elasticsearch&#x2F;elasticsearch.yml修改如下几处
+启动：systemctl daemon-reloadsystemctl enable elasticsearch.servicesystemctl start elasticsearchsystemctl status elasticsearch
+使用9200和9300端口，防火墙打开端口firewall-cmd –permanent –add-port&#x3D;{9200&#x2F;tcp,9300&#x2F;tcp}firewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
+配置logstash添加配置文件：vim &#x2F;etc&#x2F;logstash&#x2F;conf.d&#x2F;nginxconf.json
+防火墙打开5044端口firewall-cmd –permanent –add-port&#x3D;5044&#x2F;tcpfirewall-cmd –reload查看防火墙端口情况firewall-cmd –list-all
+启动：systemctl start logstashsystemctl status logstashchkconfig logstash on (开机启动设置特殊)
+]]></content>
+      <categories>
+        <category>ELK</category>
+      </categories>
+      <tags>
+        <tag>elk</tag>
       </tags>
   </entry>
   <entry>
@@ -434,25 +434,6 @@ DEVICE&#x3D;em2MASTER&#x3D;bond0SLAVE&#x3D;yesUSERCTL&#x3D;noONBOOT&#x3D;yesBOOT
       </tags>
   </entry>
   <entry>
-    <title>MariaDB调整最大连接数－centos7.2</title>
-    <url>/2017/01/03/MariaDB%E8%B0%83%E6%95%B4%E6%9C%80%E5%A4%A7%E8%BF%9E%E6%8E%A5%E6%95%B0%EF%BC%8Dcentos7.2/</url>
-    <content><![CDATA[首先查看mariadb数据库最大连接数，默认为151
-show variables like ‘max_connections’;
-配置&#x2F;etc&#x2F;my.cnf[mysqld]新添加一行如下参数：max_connections&#x3D;1000重启mariadb服务，再次查看mariadb数据库最大连接数，可以看到最大连接数是214，并非我们设置的1000。
-这是由于mariadb有默认打开文件数限制。可以通过配置&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;mariadb.service来调大打开文件数目。
-配置&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;mariadb.service[Service]新添加两行如下参数：LimitNOFILE&#x3D;10000LimitNPROC&#x3D;10000
-重新加载系统服务，并重启mariadb服务systemctl daemon-reloadsystemctl restart mariadb.service
-再次查看mariadb数据库最大连接数，可以看到最大连接数已经是1000
-参考链接：http://blog.csdn.net/hnhuangyiyang/article/details/51132141
-]]></content>
-      <categories>
-        <category>MariaDB</category>
-      </categories>
-      <tags>
-        <tag>MariaDB</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>HAproxy编译安装与配置</title>
     <url>/2016/03/05/HAproxy%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[安装haproxy从官网下载最新稳定版的haproxy-1.6.2.tar.gz，url：http://www.haproxy.org/download/1.6/src/haproxy-1.6.2.tar.gz放置&#x2F;root&#x2F;backup目录下，解压并进入目录安装编译依赖包前注释掉yum禁止更新内核选项：&#x2F;etc&#x2F;yum.conf
@@ -472,11 +453,6 @@ acl is_cbs hdr_beg(host) ＊＊＊＊＊redirect prefix https://******** if is_c
       </tags>
   </entry>
   <entry>
-    <title>Markdown基本语法</title>
-    <url>/2016/08/22/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>MAC设置无共享密钥的IPsec链接</title>
     <url>/2016/03/05/MAC%E8%AE%BE%E7%BD%AE%E6%97%A0%E5%85%B1%E4%BA%AB%E5%AF%86%E9%92%A5%E7%9A%84IPsec%E9%93%BE%E6%8E%A5/</url>
     <content><![CDATA[在&#x2F;etc&#x2F;ppp目录下新建一个文件options :
@@ -490,6 +466,30 @@ plugin L2TP.pppl2tpnoipsec
       <tags>
         <tag>mac</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>MariaDB调整最大连接数－centos7.2</title>
+    <url>/2017/01/03/MariaDB%E8%B0%83%E6%95%B4%E6%9C%80%E5%A4%A7%E8%BF%9E%E6%8E%A5%E6%95%B0%EF%BC%8Dcentos7.2/</url>
+    <content><![CDATA[首先查看mariadb数据库最大连接数，默认为151
+show variables like ‘max_connections’;
+配置&#x2F;etc&#x2F;my.cnf[mysqld]新添加一行如下参数：max_connections&#x3D;1000重启mariadb服务，再次查看mariadb数据库最大连接数，可以看到最大连接数是214，并非我们设置的1000。
+这是由于mariadb有默认打开文件数限制。可以通过配置&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;mariadb.service来调大打开文件数目。
+配置&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;mariadb.service[Service]新添加两行如下参数：LimitNOFILE&#x3D;10000LimitNPROC&#x3D;10000
+重新加载系统服务，并重启mariadb服务systemctl daemon-reloadsystemctl restart mariadb.service
+再次查看mariadb数据库最大连接数，可以看到最大连接数已经是1000
+参考链接：http://blog.csdn.net/hnhuangyiyang/article/details/51132141
+]]></content>
+      <categories>
+        <category>MariaDB</category>
+      </categories>
+      <tags>
+        <tag>MariaDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown基本语法</title>
+    <url>/2016/08/22/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>MySQL Tuning Primer Script使用（Mysql调优脚本）</title>
@@ -582,6 +582,64 @@ messages with just a carriage return.static char ngx_http_error_400_page[] &#x3D
       <tags>
         <tag>Nginx</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>OpenShift-S2I构建过程</title>
+    <url>/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
+如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
+编译和部署自己的应用程序docker生成镜像的过程，当我们创建自己的应用程序镜像的时候，一般来说有两种途径：
+
+通过Dockerfile来创建：
+
+传统做法是自己编写Dockerfile，使用基础镜像，copy源代码、RUN命令来安装依赖包、shell命令来编译程序、CMD名字指定可运行程序，最后使用docker build 生成镜像。
+
+通过docker run和docker commit来创建
+
+还有一种比较小众的做法。是docker run运行基础镜像，然后使用交互式shell下载源代码、安装依赖包最后使用dockercommit提交容器生成镜像。
+理解s2i 历程中的三个镜像要了解 s2i的过程我们先来理解三个阶段的三个镜像：
+
+基础镜像 base image：
+
+是我们在docker hub下载的某个语言的官方镜像，比如python2.7、PHP3.5，这些镜像只包含语言的编译环境，没有做任何加工。
+
+编译镜像 builder image：
+
+这个镜像是我们在基础镜像的基础上，经过加工以后，可以自动编译代码，并自动完成部署运行的镜像，这个镜像是通过dockerfile生成，继承自上面的baseimage。制作过程参考：https://github.com/openshift/source-to-image/
+
+运行时镜像 runtime image：
+
+这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builderimage; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builderimage，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit出一个新的image ，称为 runtime image
+OpenShift由builder image到runtime image的过程如下图：
+
+自定义s2i脚本openshift官方已经提供了各种语言的 builder image，(当然这些builderimage中已经注入了写好的s2i脚本，一般保存在&#x2F;usr&#x2F;libexec&#x2F;s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：
+有以下三种方式可以使用自定义s2i脚本来替换默认脚本：
+
+在代码中包含s2i脚本：在代码仓库的跟目录创建文件夹.s2i&#x2F;bin，把脚本放到这个目录中，当编译时会自动调用这个脚本，值得注意的是，早期版本使用的是.sti&#x2F;bin文件夹，后期版本使用的是.s2i&#x2F;bin。
+指定网络上的s2i脚本地址：通过设置bc的bc.spec.strategy.sourceStrategy.scripts项目来指定s2i脚本地址，系统会自动去该地址下载脚本。
+如果使用s2i工具创建，可以通过三种方式设置脚本位置
+
+s2i配置文件信息主要包含四个文件，分别为：
+
+assemble 用于对源码编译以及安装配置的脚本
+run 启动应用镜像时执行的脚本
+save-artifacts用于保存一些编译中复用的内容，这样下次编译可以直接使用这些文件，从而加快编译安装等速度
+usage 打印生成镜像的帮助信息
+
+这四个文件都需要用户自行定义，s2i会通过三种方式寻找这些文件，分别为：
+
+源码中.s2i&#x2F;bin下
+-scripts-url 参数指定的位置
+镜像中label：io.openshift.s2i.scripts-url指定的位置
+
+推荐使用第一种方式，这样方便管理和持续集成，其他两种url都支持以下三种形式：
+image:&#x2F;&#x2F;path_to_scripts_dir 在镜像内的绝对路径
+file:&#x2F;&#x2F;path_to_scripts_dir 在主机上的绝对或者相对路径
+http(s):&#x2F;&#x2F;path_to_scripts_dir 网络上的文件
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
   </entry>
   <entry>
     <title>OpenShift-Project权限管理</title>
@@ -792,58 +850,122 @@ oc get clusterrolebinding
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-S2I构建过程</title>
-    <url>/2018/04/25/OpenShift-S2I%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[概念介绍OpenShift的s2i过程是把基础镜像和源代码结合，生成可以运行的application镜像的过程，s2i中的四个脚本详细介绍请参考：https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md。
-如果我们有特殊的要求，比如自定义build过程，一般通过重写s2i脚本实现。
-编译和部署自己的应用程序docker生成镜像的过程，当我们创建自己的应用程序镜像的时候，一般来说有两种途径：
+    <title>OpenShift-对象定义文件示例</title>
+    <url>/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/</url>
+    <content><![CDATA[Image Stream模版地址
 
-通过Dockerfile来创建：
 
-传统做法是自己编写Dockerfile，使用基础镜像，copy源代码、RUN命令来安装依赖包、shell命令来编译程序、CMD名字指定可运行程序，最后使用docker build 生成镜像。
+https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json
 
-通过docker run和docker commit来创建
 
-还有一种比较小众的做法。是docker run运行基础镜像，然后使用交互式shell下载源代码、安装依赖包最后使用dockercommit提交容器生成镜像。
-理解s2i 历程中的三个镜像要了解 s2i的过程我们先来理解三个阶段的三个镜像：
 
-基础镜像 base image：
 
-是我们在docker hub下载的某个语言的官方镜像，比如python2.7、PHP3.5，这些镜像只包含语言的编译环境，没有做任何加工。
 
-编译镜像 builder image：
 
-这个镜像是我们在基础镜像的基础上，经过加工以后，可以自动编译代码，并自动完成部署运行的镜像，这个镜像是通过dockerfile生成，继承自上面的baseimage。制作过程参考：https://github.com/openshift/source-to-image/
+example
 
-运行时镜像 runtime image：
 
-这个镜像是通过s2i构建出来的镜像，已经完成了编译工作，直接运行容器就可以启动,这个镜像的生成包括三个要素：1：builderimage; 2：source code; 3：s2i script;这个镜像的生成过程是，运行builderimage，在容器中注入代码，并使用s2i脚本安装依赖包以及编译工作，最后把生成的镜像comit出一个新的image ，称为 runtime image
-OpenShift由builder image到runtime image的过程如下图：
+{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }
 
-自定义s2i脚本openshift官方已经提供了各种语言的 builder image，(当然这些builderimage中已经注入了写好的s2i脚本，一般保存在&#x2F;usr&#x2F;libexec&#x2F;s2i目录下)，这些脚本通常适用于一些简单的程序部署，如该应用程序的编译和部署过程比较复杂，这些脚本就不能满足要求，这时候我们可以通过自定义s2i脚本来控制build和deploy过程，自定义s2i脚本的编写过程不再赘述，可以参考s2i官方文档，这里说明一下怎么应用自己编写的s2i脚本：
-有以下三种方式可以使用自定义s2i脚本来替换默认脚本：
 
-在代码中包含s2i脚本：在代码仓库的跟目录创建文件夹.s2i&#x2F;bin，把脚本放到这个目录中，当编译时会自动调用这个脚本，值得注意的是，早期版本使用的是.sti&#x2F;bin文件夹，后期版本使用的是.s2i&#x2F;bin。
-指定网络上的s2i脚本地址：通过设置bc的bc.spec.strategy.sourceStrategy.scripts项目来指定s2i脚本地址，系统会自动去该地址下载脚本。
-如果使用s2i工具创建，可以通过三种方式设置脚本位置
 
-s2i配置文件信息主要包含四个文件，分别为：
 
-assemble 用于对源码编译以及安装配置的脚本
-run 启动应用镜像时执行的脚本
-save-artifacts用于保存一些编译中复用的内容，这样下次编译可以直接使用这些文件，从而加快编译安装等速度
-usage 打印生成镜像的帮助信息
 
-这四个文件都需要用户自行定义，s2i会通过三种方式寻找这些文件，分别为：
 
-源码中.s2i&#x2F;bin下
--scripts-url 参数指定的位置
-镜像中label：io.openshift.s2i.scripts-url指定的位置
+Deployment Configdc.json
 
-推荐使用第一种方式，这样方便管理和持续集成，其他两种url都支持以下三种形式：
-image:&#x2F;&#x2F;path_to_scripts_dir 在镜像内的绝对路径
-file:&#x2F;&#x2F;path_to_scripts_dir 在主机上的绝对或者相对路径
-http(s):&#x2F;&#x2F;path_to_scripts_dir 网络上的文件
+
+{ “kind”: “DeploymentConfig”, “apiVersion”: “v1”, “metadata”: { “name”: “frontend” }, “spec”: { “strategy”: { “type”: “Recreate”, “resources”: {} }, “triggers”: [ { “type”: “ImageChange”, “imageChangeParams”: { “automatic”: true, “containerNames”: [ “helloworld” ], “from”: {}, “lastTriggeredImage”: “” } } ], “replicas”: 1, “selector”: { “name”: “frontend” }, “template”: { “metadata”: { “creationTimestamp”: null, “labels”: { “name”: “frontend” } }, “spec”: { “containers”: [ { “name”: “helloworld”, “image”: “openshift&#x2F;openshift&#x2F;origin-ruby-sample”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } } } }
+
+
+
+
+
+
+example
+
+
+kind: DeploymentConfig apiVersion: v1 metadata: name: tmsweb-deploy spec: replicas: 1 template: metadata: labels: name: tmsweb spec: containers: - image: dtr.ivops.cn:5443&#x2F;ivops&#x2F;nodejs6-alpine:v1.1.x imagePullPolicy: Always name: tmsweb-containers ports: - containerPort: 7200 protocol: TCP command: - &#x2F;usr&#x2F;bin&#x2F;node args: - &#x2F;opt&#x2F;TenancyWeb&#x2F;iv_web.js volumeMounts: - mountPath: &#x2F;opt&#x2F;TenancyWeb name: tmsweb-mount volumes: - name: tmsweb-mount persistentVolumeClaim: claimName: nfs-pvc-tmsweb
+
+
+
+
+
+
+
+Replication Controller
+Routes
+
+route.json
+
+
+{ “kind”: “Route”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-route” }, “spec”: { “host”: “hello-openshift.v3.rhcloud.com”, “to”: { “kind”: “Service”, “name”: “hello-openshift” } } }
+
+
+
+
+
+
+Serviceservice.json
+
+
+{ “kind”: “Service”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-openshift” }, “spec”: { “ports”: [ { “protocol”: “TCP”, “port”: 27017, “targetPort”: 8080, “nodePort”: 0 } ], “selector”: { “name”: “hello-openshift” }, “type”: “ClusterIP”, “sessionAffinity”: “None” } }
+
+
+
+
+
+
+example
+
+
+apiVersion: v1 kind: Service metadata: annotations: openshift.io&#x2F;generated-by: OpenShiftWebConsole labels: app: opsweb-deploy name: opsweb-deploy namespace: iv-ops spec: ports: - name: 7300-tcp port: 7300 protocol: TCP targetPort: 7300 selector: deploymentconfig: opsweb-deploy sessionAffinity: None type: ClusterIP status: loadBalancer: {}
+
+
+
+
+
+
+Podpod.json
+
+
+{ “kind”: “Pod”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-pod”, “labels”: { “name”: “hello-openshift” } }, “spec”: { “containers”: [ { “name”: “hello-openshift”, “image”: “openshift&#x2F;hello-openshift”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } }
+
+
+
+
+
+
+Template模版地址
+
+
+https://github.com/openshift/origin/tree/release-3.6/examples/quickstarts
+
+
+
+
+
+
+Persistent Volumeexample
+
+
+apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv-tmsweb spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: &#x2F;mnt&#x2F;nfs&#x2F;tmsweb server: 10.10.31.161 readOnly: false
+
+
+
+
+
+
+Persistent VolumeClainexample
+
+
+apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc-tmsweb spec: accessModes: - ReadWriteMany volumeName: nfs-pv-tmsweb resources: requests: storage: 1Gi status: #后加的 accessModes: - ReadWriteMany phase: Bound
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>OpenShift</category>
@@ -994,128 +1116,6 @@ Limit Range 资源限制资源限制是更具体的控制每个容器具体使�
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-对象定义文件示例</title>
-    <url>/2018/04/25/OpenShift-%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B/</url>
-    <content><![CDATA[Image Stream模版地址
-
-
-https://github.com/openshift/origin/blob/release-3.6/examples/image-streams/image-streams-centos7.json
-
-
-
-
-
-
-example
-
-
-{ “kind”: “ImageStream”, “apiVersion”: “v1”, “metadata”: { “name”: “ivops-mariadb”, “creationTimestamp”: null }, “spec”: { “dockerImageRepository”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb”, “tags”: [ { “name”: “v1.1.x”, “annotations”: null, “from”: { “kind”: “DockerImage”, “name”: “dtr.ivops.cn:5443&#x2F;ivops&#x2F;mariadb:v1.1.x” }, “generation”: 1, “importPolicy”: { “insecure”: true } } ] } }
-
-
-
-
-
-
-Deployment Configdc.json
-
-
-{ “kind”: “DeploymentConfig”, “apiVersion”: “v1”, “metadata”: { “name”: “frontend” }, “spec”: { “strategy”: { “type”: “Recreate”, “resources”: {} }, “triggers”: [ { “type”: “ImageChange”, “imageChangeParams”: { “automatic”: true, “containerNames”: [ “helloworld” ], “from”: {}, “lastTriggeredImage”: “” } } ], “replicas”: 1, “selector”: { “name”: “frontend” }, “template”: { “metadata”: { “creationTimestamp”: null, “labels”: { “name”: “frontend” } }, “spec”: { “containers”: [ { “name”: “helloworld”, “image”: “openshift&#x2F;openshift&#x2F;origin-ruby-sample”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } } } }
-
-
-
-
-
-
-example
-
-
-kind: DeploymentConfig apiVersion: v1 metadata: name: tmsweb-deploy spec: replicas: 1 template: metadata: labels: name: tmsweb spec: containers: - image: dtr.ivops.cn:5443&#x2F;ivops&#x2F;nodejs6-alpine:v1.1.x imagePullPolicy: Always name: tmsweb-containers ports: - containerPort: 7200 protocol: TCP command: - &#x2F;usr&#x2F;bin&#x2F;node args: - &#x2F;opt&#x2F;TenancyWeb&#x2F;iv_web.js volumeMounts: - mountPath: &#x2F;opt&#x2F;TenancyWeb name: tmsweb-mount volumes: - name: tmsweb-mount persistentVolumeClaim: claimName: nfs-pvc-tmsweb
-
-
-
-
-
-
-
-Replication Controller
-Routes
-
-route.json
-
-
-{ “kind”: “Route”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-route” }, “spec”: { “host”: “hello-openshift.v3.rhcloud.com”, “to”: { “kind”: “Service”, “name”: “hello-openshift” } } }
-
-
-
-
-
-
-Serviceservice.json
-
-
-{ “kind”: “Service”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-openshift” }, “spec”: { “ports”: [ { “protocol”: “TCP”, “port”: 27017, “targetPort”: 8080, “nodePort”: 0 } ], “selector”: { “name”: “hello-openshift” }, “type”: “ClusterIP”, “sessionAffinity”: “None” } }
-
-
-
-
-
-
-example
-
-
-apiVersion: v1 kind: Service metadata: annotations: openshift.io&#x2F;generated-by: OpenShiftWebConsole labels: app: opsweb-deploy name: opsweb-deploy namespace: iv-ops spec: ports: - name: 7300-tcp port: 7300 protocol: TCP targetPort: 7300 selector: deploymentconfig: opsweb-deploy sessionAffinity: None type: ClusterIP status: loadBalancer: {}
-
-
-
-
-
-
-Podpod.json
-
-
-{ “kind”: “Pod”, “apiVersion”: “v1”, “metadata”: { “name”: “hello-pod”, “labels”: { “name”: “hello-openshift” } }, “spec”: { “containers”: [ { “name”: “hello-openshift”, “image”: “openshift&#x2F;hello-openshift”, “ports”: [ { “containerPort”: 8080, “protocol”: “TCP” } ], “resources”: {}, “terminationMessagePath”: “&#x2F;dev&#x2F;termination-log”, “imagePullPolicy”: “IfNotPresent”, “capabilities”: {}, “securityContext”: { “capabilities”: {}, “privileged”: false } } ], “restartPolicy”: “Always”, “dnsPolicy”: “ClusterFirst” } }
-
-
-
-
-
-
-Template模版地址
-
-
-https://github.com/openshift/origin/tree/release-3.6/examples/quickstarts
-
-
-
-
-
-
-Persistent Volumeexample
-
-
-apiVersion: v1 kind: PersistentVolume metadata: name: nfs-pv-tmsweb spec: capacity: storage: 1Gi accessModes: - ReadWriteMany persistentVolumeReclaimPolicy: Retain nfs: path: &#x2F;mnt&#x2F;nfs&#x2F;tmsweb server: 10.10.31.161 readOnly: false
-
-
-
-
-
-
-Persistent VolumeClainexample
-
-
-apiVersion: v1 kind: PersistentVolumeClaim metadata: name: nfs-pvc-tmsweb spec: accessModes: - ReadWriteMany volumeName: nfs-pv-tmsweb resources: requests: storage: 1Gi status: #后加的 accessModes: - ReadWriteMany phase: Bound
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenShift-性能监控</title>
     <url>/2018/04/25/OpenShift-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/</url>
     <content><![CDATA[简介OpenShift在Kubernetes架构的基础上提供了一套易于使用的度量采集和性能监控方案。设计从整个环境中的容器、POD、Node节点中收集信息，然后在Web控制台中显示这些信息。
@@ -1247,6 +1247,34 @@ curl -H “Authorization: Bearer $(oc whoami -t)” \ -X GET https:&#x2F;&#x2F;$
 
 更多API接口信息，参考Heapster项目：
 https://github.com/kubernetes/heapster/
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-持续集成-Jenkins</title>
+    <url>/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/</url>
+    <content><![CDATA[部署Jenkins
+
+
+使用自带模版部署
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+
+
+
+
+准备Dockfile
+生成Builder Image
+上传OpenShift
+根据源代码构建
+生成Template
+
 ]]></content>
       <categories>
         <category>OpenShift</category>
@@ -2415,27 +2443,83 @@ kind: StorageClass apiVersion: storage.k8s.io&#x2F;v1 metadata: name: gluster-dy
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-持续集成-Jenkins</title>
-    <url>/2018/04/25/OpenShift-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins/</url>
-    <content><![CDATA[部署Jenkins
+    <title>OpenShift-构建-Rabbitmq</title>
+    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/</url>
+    <content><![CDATA[准备Rabbitmq镜像Dockfile
 
 
-使用自带模版部署
+FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.description&#x3D;”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.display-name&#x3D;”Rabbitmq-server lastest” \ io.openshift.expose-services&#x3D;”5672:rabbitmq” \ io.openshift.tags&#x3D;”rabbitmq” EXPOSE 5672&#x2F;tcp EXPOSE 25672&#x2F;tcp USER root ADD root &#x2F; RUN echo ‘deb http://www.rabbitmq.com/debian/ testing main’ \
+sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;rabbitmq.list RUN apt-get update RUN apt-get install -y wget RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc \
+sudo apt-key add - RUN apt-get update RUN apt-get install -y rabbitmq-server RUN echo -n ‘LCQLSHVOPZFHRUXMMAPF’ &gt; &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie RUN chown -R rabbitmq. &#x2F;var&#x2F;lib&#x2F;rabbitmq RUN chmod 400 &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie ADD rabbitmq-env.conf &#x2F;etc&#x2F;rabbitmq&#x2F;rabbitmq-env.conf ENTRYPOINT [“&#x2F;usr&#x2F;bin&#x2F;container-entrypoint.sh”]
+
+
+
+
+
+
+
+
+生成镜像
+
+
+docker build -t rabbitmq .
 
 
 
 &lt;.&#x2F;media&#x2F;image1.png&gt;
 
 
+上传OpenShift上传到Harbor
+
+
+docker tag rabbitmq dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
+
+
+
+docker push dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+部署应用创建rabbitmq用户
+
+
+oc create serviceaccount rabbitmq
+
+
+
+oc adm policy add-scc-to-user anyuid -z rabbitmq
+
+
+部署rabbitmq
+
+
+oc create -f rabbitmq.yaml
+
+
+
+apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io&#x2F;tolerate-unready-endpoints: “true” name: rabbitmq labels: app: rabbit spec: ports: - port: 5672 name: rabbit clusterIP: None selector: app: rabbit — apiVersion: apps&#x2F;v1beta1 kind: StatefulSet metadata: name: rabbit spec: serviceName: “rabbitmq” replicas: 3 template: metadata: labels: app: rabbit annotations: pod.alpha.kubernetes.io&#x2F;initialized: “true” spec: containers: - name: rabbit image: dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq imagePullPolicy: IfNotPresent ports: - containerPort: 5672 name: rabbit - containerPort: 25672 name: bean readinessProbe: exec: command: - &#x2F;usr&#x2F;share&#x2F;container-scripts&#x2F;rabbitmq&#x2F;readiness-probe.sh initialDelaySeconds: 15 timeoutSeconds: 5 env: - name: POD_NAMESPACE valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.namespace - name: RABBITMQ_USE_LONGNAME value: “true” - name: RABBITMQ_NODENAME value: “rabbit” nodeSelector: region: infra serviceAccount: rabbitmq securityContext: {} serviceAccountName: rabbitmq
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
 
 
 
 
-准备Dockfile
-生成Builder Image
-上传OpenShift
-根据源代码构建
-生成Template
+
+集群状态
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+
+
+
 
 ]]></content>
       <categories>
@@ -2573,83 +2657,15 @@ openshift_logging_journal_read_from_head
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-构建-Rabbitmq</title>
-    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA-Rabbitmq/</url>
-    <content><![CDATA[准备Rabbitmq镜像Dockfile
-
-
-FROM ubuntu:14.04 MAINTAINER Chen Fei &lt;chenf@inno-view.cn&gt; LABEL io.k8s.description&#x3D;”rabbitmq is a multi-user, multi-threaded message broker server” \ io.k8s.display-name&#x3D;”Rabbitmq-server lastest” \ io.openshift.expose-services&#x3D;”5672:rabbitmq” \ io.openshift.tags&#x3D;”rabbitmq” EXPOSE 5672&#x2F;tcp EXPOSE 25672&#x2F;tcp USER root ADD root &#x2F; RUN echo ‘deb http://www.rabbitmq.com/debian/ testing main’ \
-sudo tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;rabbitmq.list RUN apt-get update RUN apt-get install -y wget RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc \
-sudo apt-key add - RUN apt-get update RUN apt-get install -y rabbitmq-server RUN echo -n ‘LCQLSHVOPZFHRUXMMAPF’ &gt; &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie RUN chown -R rabbitmq. &#x2F;var&#x2F;lib&#x2F;rabbitmq RUN chmod 400 &#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;.erlang.cookie ADD rabbitmq-env.conf &#x2F;etc&#x2F;rabbitmq&#x2F;rabbitmq-env.conf ENTRYPOINT [“&#x2F;usr&#x2F;bin&#x2F;container-entrypoint.sh”]
-
-
-
-
-
-
-
-
-生成镜像
-
-
-docker build -t rabbitmq .
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-上传OpenShift上传到Harbor
-
-
-docker tag rabbitmq dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
-
-
-
-docker push dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-部署应用创建rabbitmq用户
-
-
-oc create serviceaccount rabbitmq
-
-
-
-oc adm policy add-scc-to-user anyuid -z rabbitmq
-
-
-部署rabbitmq
-
-
-oc create -f rabbitmq.yaml
-
-
-
-apiVersion: v1 kind: Service metadata: annotations: service.alpha.kubernetes.io&#x2F;tolerate-unready-endpoints: “true” name: rabbitmq labels: app: rabbit spec: ports: - port: 5672 name: rabbit clusterIP: None selector: app: rabbit — apiVersion: apps&#x2F;v1beta1 kind: StatefulSet metadata: name: rabbit spec: serviceName: “rabbitmq” replicas: 3 template: metadata: labels: app: rabbit annotations: pod.alpha.kubernetes.io&#x2F;initialized: “true” spec: containers: - name: rabbit image: dtr.ivops.cn:5443&#x2F;openshift-chenf&#x2F;rabbitmq imagePullPolicy: IfNotPresent ports: - containerPort: 5672 name: rabbit - containerPort: 25672 name: bean readinessProbe: exec: command: - &#x2F;usr&#x2F;share&#x2F;container-scripts&#x2F;rabbitmq&#x2F;readiness-probe.sh initialDelaySeconds: 15 timeoutSeconds: 5 env: - name: POD_NAMESPACE valueFrom: fieldRef: apiVersion: v1 fieldPath: metadata.namespace - name: RABBITMQ_USE_LONGNAME value: “true” - name: RABBITMQ_NODENAME value: “rabbit” nodeSelector: region: infra serviceAccount: rabbitmq securityContext: {} serviceAccountName: rabbitmq
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-
-
-
-集群状态
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-
-
-
+    <title>OpenShift-构建自动化-NodeJS</title>
+    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-NodeJS/</url>
+    <content><![CDATA[
+准备S2I脚本
+准备Dockfile
+生成Builder Image
+上传OpenShift
+根据源代码构建
+生成Template
 
 ]]></content>
       <categories>
@@ -3085,22 +3101,6 @@ oc create -f tomcat8-jdk8.yml -n openshift
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-构建自动化-NodeJS</title>
-    <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-NodeJS/</url>
-    <content><![CDATA[
-准备S2I脚本
-准备Dockfile
-生成Builder Image
-上传OpenShift
-根据源代码构建
-生成Template
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenShift-构建自动化-Nginx</title>
     <url>/2018/04/25/OpenShift-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%8A%A8%E5%8C%96-S2i-Nginx/</url>
     <content><![CDATA[创建S2I项目
@@ -3247,6 +3247,637 @@ Builds:
       <categories>
         <category>OpenShift</category>
       </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-核心组件和概念</title>
+    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
+    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
+
+api server ：提供集群的web console以及restful api 服务。
+datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
+scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
+replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
+
+Node节点介绍
+主要负责介绍master节点指令，运行和维护docker容器
+master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
+通过oc get nodes 可以查看系统中的node节点信息。
+
+Project
+namespace：在k8s中使用命名空间概念来隔离资源。
+project：在openshift中，引入了project概念。
+
+Pod
+pod是一种特殊的容器，oc get pods 可以查看pod
+可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
+查看pod日志：oc logs
+进入容器内部：oc rsh
+
+Service
+service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
+service起到了代理的作用，在相互依赖的容器之间实现了解耦。
+oc get svc 查看servie
+service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
+除了IP地址访问service，还可以通过域名访问service。
+master内置DNS服务器，负责解析这个域名
+
+Router
+负责将集群外部的请求转发到集群的容器。
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-混合云管理</title>
+    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
+混合云管理平台的价值：
+
+度量采集及分析
+策略控制
+自动化集成
+
+MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
+用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
+部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
+项目主页：http://manageiq.org/
+安装包下载页：http://manageiq.org/download/
+
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+
+下载VMWare VSphere的OVA文件，并导入到vmware环境
+
+
+默认用户密码root：smartvm
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+使用appliance_console命令修改系统信息
+
+
+先修改IP地址
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+配置跟OpenShift集群同一网段的IP地址
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+测试网络连通性
+
+
+测试链接Master地址
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+Web访问，默认密码admin：smartvm
+
+
+https://10.10.31.169/
+
+
+&lt;.&#x2F;media&#x2F;image6.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image7.png&gt;
+
+
+使用
+
+
+添加OpenShift集群
+
+
+
+计算-&gt;容器-&gt;供应商
+
+
+&lt;.&#x2F;media&#x2F;image8.png&gt;
+
+
+配置-&gt;添加新容器供应商
+
+
+获取token
+
+
+oc sa get-token -n management-infra management-admin
+
+
+&lt;.&#x2F;media&#x2F;image9.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image10.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image11.png&gt;
+
+
+添加完成
+
+
+&lt;.&#x2F;media&#x2F;image12.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image13.png&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenShift-运维管理</title>
+    <url>/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
+项目URL：https://github.com/cockpit-project
+Cockpit部署
+所有节点执行
+
+
+
+
+yum install cockpit cockpit-docker cockpit-kubernetes -y
+
+
+
+systemctl start cockpit &amp;&amp; systemctl enable cockpit
+
+
+vim &#x2F;etc&#x2F;sysconfig&#x2F;iptables
+
+
+A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT
+
+
+&lt;.&#x2F;media&#x2F;image1.png&gt;
+
+
+systemctl restart iptables
+
+
+
+登陆
+
+
+
+
+登陆https://master.example.com:9090/
+
+
+
+用户名密码即服务器用户名密码
+
+
+&lt;.&#x2F;media&#x2F;image2.png&gt;
+
+
+&lt;.&#x2F;media&#x2F;image3.png&gt;
+
+
+Cockpit集群运维
+
+
+在集群选项中可以添加OpenShift集群
+
+
+
+&lt;.&#x2F;media&#x2F;image4.png&gt;
+
+
+各信息在浏览器中直观展现
+
+
+节点
+
+
+&lt;.&#x2F;media&#x2F;image5.png&gt;
+
+
+拓扑
+
+
+&lt;.&#x2F;media&#x2F;image6.png&gt;
+
+
+持久化卷
+
+
+&lt;.&#x2F;media&#x2F;image7.png&gt;
+
+
+
+
+
+OpenShift集群扩容根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120000。
+目前集群扩容的方式有：
+
+半自动扩容：
+
+
+OpenShift默认提供了扩容的Ansible Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。
+
+
+全自动扩容：
+
+
+自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。
+
+Ansible Playbook通过AnsiblePlayboko进行扩容需要编辑Ansible的Inventory，&#x2F;etc&#x2F;ansible&#x2F;hosts文件，在相应角色下添加新节点的域名以及配置信息
+
+
+
+# host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com
+
+
+
+
+
+
+主节点扩容Playbook
+
+
+ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-master&#x2F;scaleup.yml
+
+
+
+
+
+
+计算节点扩容Playbook
+
+
+ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-node&#x2F;scaleup.yml
+
+
+
+
+
+
+OpenShift集群缩容缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。
+禁止参与调度
+
+
+控制一个计算节点是否参与到集群的调度运行应用
+
+
+
+oc adm manage-node master.example.com –schedulable&#x3D;false
+
+
+&lt;.&#x2F;media&#x2F;image8.png&gt;
+
+
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PaaS平台介绍</title>
+    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>OpenShift</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>RHCA-RH413(服务器固化)学习笔记</title>
+    <url>/2017/01/06/RHCA-RH413(%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9B%BA%E5%8C%96)%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[413-1-operating system update:
+
+CVES and Red Hat Errata a. Red Hat Security Advisory(RHSA) b. Red Hat Bug Fix Advisory(RHBA) c. Red Hat Enhancement Advisory(RHEA)
+
+Check update informaton a. yum updateinfo b. yum updateinfo –security c. yum updateinfo –security list
+
+Apply certain type of update a. yum update –security b. yum update –bugfix
+
+BugTraq
+
+Package Integrity Check a. rpm –import gpa-key-file b. rpm K rpm-file c. rpm -qa | grep gpg-pubkey d. rpm -e gpg-pubkey-keyed e. gpgcheck&#x3D;1 in &#x2F;etc&#x2F;yum.conf0 f. gpgkey&#x3D;&#x2F;path&#x2F;to&#x2F;file g. rpm -qpl rpm-file h. rpm -qp –scripts rpm-file i. rpm -qp –tiggers rpm-file413-2-ecryption:
+
+Linux Unified Key Setup(LUKS) a. cryptsetup luksFormat &#x2F;dev&#x2F;vg&#x2F;lv b. cryptsetup luksOpen &#x2F;dev&#x2F;vg&#x2F;lv name c. mkfs.ext4 &#x2F;dev&#x2F;mapper&#x2F;name d. mkdir &#x2F;secure e. mount &#x2F;dev&#x2F;mapper&#x2F;name &#x2F;secure f. umount &#x2F;secure g. cryptserup liksClose name
+
+Persistently Mount Encrypted Volume a. dd if&#x3D;&#x2F;dev&#x2F;urandom of&#x3D;&#x2F;path&#x2F;to&#x2F;password&#x2F;file bs&#x3D;4096 count&#x3D;1 b. chmod 600 &#x2F;path&#x2F;to&#x2F;password&#x2F;file c. cryptsetup luksAddKey &#x2F;dev&#x2F;vg&#x2F;lv &#x2F;path&#x2F;to&#x2F;password&#x2F;file d. &#x2F;etc&#x2F;crypttab
+i. name  /dev/vg/lv  /path/to/password/file
+
+e. &#x2F;etc&#x2F;fstab
+i. /dev/mapper/name  /secure  ext4  defauls 0 0
+File System Defauls Mount Options a. dev,exec,suid,rw… b. nodev c. noexec d. nosuid e. ro
+
+Manae Superblock Mount Options a. tune2fs -l &#x2F;dev&#x2F;vda1 b. tune2fs -o ^acl &#x2F;dev&#x2F;vda1 c. tune2fs -o acl &#x2F;dev&#x2F;vda1
+
+File System Attributes a. chattr +a file(append only只读) b. chattr +i file(Immutable免疫) c. chattr +j file(Journal) d. chattr +S file(Synchronous立即同步磁盘) e. lsattr file
+
+Review Specia Permissions a. SUID on executables b. SGID on executables c. SGID on directories d. Sticky Bit on directories(or files)
+
+Search special files a. find &#x2F;bin -type f -perm -4000(SUID文件) b. find &#x2F;usr&#x2F;bin -type f -perm -2000（SGID文件） c. find &#x2F;var -perm -1000 d. find &#x2F;usr&#x2F;bin -perm &#x2F;7000（所有带特殊位文件
+
+Default File Permissions a. umask b. Default user mask is 002
+i. file will be:777-002-111=664ii. directory will be:777-002=775
+
+c. Default root mask is 022
+i. file will be:777-002-111=644ii. directory will be:777-022=755
+
+d. Global change
+i. /etc/profileii. /etc/bashrc
+
+e. Individual change
+i. ~/.bash_profileii. ~/.bashrc
+ACLs a. setfacl -m … dir b. setfacl -m d:… dir c. serfacl -x … dir
+
+Intrusion Detectiona. AIDE
+i. yum install aideii. vim /etc/aide.confiii. aide --init;iv. mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gzv. aide --check
+
+413-3-password policy
+
+chage passwd a. chage -m 3 -M 90 -W 7 -l 356 username b. chage -l username c. chage -d 0 username d. defaults passwd defined in &#x2F;etc&#x2F;login.defs
+i. PASS_MAX_DAYS 60ii. PASS_MIN_DAYS 3
+PAM a. ls &#x2F;lib64&#x2F;security&#x2F; b. ls &#x2F;etc&#x2F;pam.d&#x2F;
+i. more system-authii. more passwd-auth
+
+c. pam_cracklib.so
+i. minlenii. lcredit,ucredit,dcredit,ocreditiii. minclassiv. vi /etc/pam.d/system-authv. vi /etc/pam.d/passwd-auth
+
+d. pam_tally2.so
+i. pam_tally2ii. pam_tally2 --reset -u username
+&#x2F;etc&#x2F;security&#x2F;limits.conf a. more &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;90-nproc.conf b. ulimit -a413-4-ipa server
+
+IPA project(Identity,Policy,Audit) a. LDAP b. MIT Kerberos KDC c. Dogtag project d. NTP service e. DNS service
+
+Install IPA Server a. chkconfig NetworkManager off b. service NEtworkManager stop c. config static ipaddr d. chkconfig network on e. service network restart f. yum install ipa-server g. ipa-server-install –help h. ipa-sever-install –hostname&#x3D;server1.example.com -n example.com -r EXAMPLE.COM -p redhat123 -a redhat123 -idstart&#x3D;5000 -idmax&#x3D;7000 -N -U i. service sshd restart j. kinit admin k. klist l. firefox m. http://server.example.com n. configure browser for SSO
+
+Install IPA Client a. yum install ipa-client b. ipa-client-install –domian&#x3D;example.com –server&#x3D;server.example.com –realm&#x3D;EXAMPLE.COM -p admin -w redhat123 –mkhomedir -N -U c. kinit username d. ssh username@server1
+
+Uninstall IPA Client a. ipa-client-install –uninstall b. rm -rf &#x2F;etc&#x2F;ipa&#x2F;ca.crt c. reboot413-5(1)-log srver and client:
+
+vi &#x2F;etc&#x2F;rsyslog.conf
+
+vi &#x2F;etc&#x2F;rsyslog.d&#x2F;filter.conf a. :fromhost, isequal, “desktop1.example.com” &#x2F;var&#x2F;log&#x2F;desktop1.log b. :fromhost, isequal, “desktop1.example.com” ~413-5(2)-log srver and client:
+
+vi &#x2F;etc&#x2F;rsyslog.d&#x2F;ssl.conf413-6-audit file access:
+
+auditd
+
+&#x2F;vat&#x2F;log&#x2F;audit&#x2F;audit.log
+
+ausearch -i -a 28708
+
+auditctl
+
+vi &#x2F;etc&#x2F;audit&#x2F;audit.rules
+
+&#x2F;etc&#x2F;init.d&#x2F;auditd restart
+
+pam_tty_audit.so
+
+vi &#x2F;etc&#x2F;pam.d&#x2F;system-auth a. session required pam_tty_audit.so enable&#x3D;root
+
+vi &#x2F;etc&#x2F;pam.d&#x2F;passwd-auth a. session required pam_tty_audit.so enable&#x3D;root
+
+&#x2F;etc&#x2F;init.d&#x2F;auditd restart
+
+aureport –tty413-7- firewall:
+
+iptables a. setup b. iptables -L -v -n
+
+&#x2F;etc&#x2F;sysconfig&#x2F;iptables-config a. IPTABLES_MODULES&#x3D;”nf_conntrack_ftp” b. &#x2F;etc&#x2F;init.d&#x2F;iptables restart
+
+
+]]></content>
+      <categories>
+        <category>RHCA</category>
+      </categories>
+      <tags>
+        <tag>RH413</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RHCA-RH442(性能调优)学习笔记</title>
+    <url>/2017/01/03/RHCA-RH442(%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98)%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[RHCA 442-1(1)
+
+Business Level Tuning &gt; Application Level Tuning &gt; Kernel Level Tuning(RH442)
+
+grep CPU &#x2F;proc&#x2F;cpuinfo
+
+lscpu a. lscpu -p
+
+cat &#x2F;proc&#x2F;cpuinfo a. cat &#x2F;proc&#x2F;meminfoRHCA 442-1(2)
+
+dmesg(实时kernel信息)
+
+&#x2F;var&#x2F;log&#x2F;dmesg(开机kernel信息写入)
+
+getconf -a
+
+x85info(yum install x86info -y)
+
+dmidecode a. dmidecode -t 0
+
+cd &#x2F;sys&#x2F;class&#x2F;dmi&#x2F;id&#x2F;
+
+lspci a. lspci -v b. lspci -vv c. lspci -vvv
+
+lsusb a. lsusb -v
+
+ethtool eth0
+
+powertop(yum install powertop -y)
+
+sosreportRHCA 442-2(1)
+
+K&#x3D;1000 a. Ki&#x3D;1024
+
+vmstat a. vmstat 1 5 b. dd if&#x3D;&#x2F;dev&#x2F;zero of&#x3D;&#x2F;dev&#x2F;null c. buffer&#x3D; buffer cache(文件描述数据) d. cache&#x3D; page cache(文件内容数据) e. echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;drop_cahces f. bi&#x3D; block in g. bo&#x3D; block out
+
+iostat a. iostat -x sda 1
+
+mpstat a. mpstat 1 b. mpstat -p 0 1
+
+sar a. yum install sysstat b. cat &#x2F;etc&#x2F;cron.d&#x2F;sysstat c. LANG&#x3D;C sar -q(CPU负载) d. LANG&#x3D;C sar -b(I&#x2F;O状况)
+i. sar -b -s 17:00:00 -e 19:00:00
+
+e. LANG&#x3D;C sar -p 0 (第一颗cpu状态) f. LAMD&#x3D;C sar -d(磁盘状态) g. LANG&#x3D;C sar -n DEV|EDEV(网络信息) h. cd &#x2F;var&#x2F;log&#x2F;sa&#x2F; i. cat &#x2F;etc&#x2F;sysconfig&#x2F;sysstat
+
+awk a. awk -F: ‘{print $1}’ &#x2F;etc&#x2F;passwd b. df -P | awk ‘{print $1 “ is mount on “ $NF}’ c. awk -F: ‘BEGIN{print “User List:”} {print $1} END{print “Done.”}’ &#x2F;etc&#x2F;passwd d. df -hP | awk ‘BEGIN{print “File System status:”}{print $1,$(NF-2)} END{print “Done.”}’ e. awk -F: ‘&#x2F;^r&#x2F; {print $1}’ &#x2F;etc&#x2F;passwd f. awk -F: ‘&#x2F;^[a-z]t:.&#x2F; {print $1}’ &#x2F;etc&#x2F;passwd g. sar -q | awk ‘&#x2F;^[^a-z]+$&#x2F;{print $1,$4,$5,$6}’ &gt; &#x2F;tmp&#x2F;cpudata
+
+gnuplot a. yum install gnuplot -t b. gnuplot
+i. set xdata timii. set timefmt &quot;%H:%M:%S&quot;iii. plot &quot;/tmp/cpudata&quot; using 1:2 with lines
+
+RHCA 442-2(2)
+
+Little’s Law
+
+L(lenth) &#x3D; A(arrival time)* W(wait time)
+
+W(wait time) &#x3D; Q(queue time) +S(service time)
+
+S(service time) &#x3D; St(sys time) + Ut(user time)
+
+time command a. time updatedb b. echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;drop_caches c. time updatedbRHCA 442-3(1-2)
+
+lsmod a. ls &#x2F;lib&#x2F;modules&#x2F;3.10.0-327.el7.x86_64&#x2F; (kernel模块) b. ll &#x2F;boot&#x2F;vmlinuz-3.10.0-327.el7.x86_64 (kernel本身)
+
+modinfo a. modinfo st b. modinfo -p st c. modinfo usb_storage d. modinfo sx8
+
+modprobe a. modprobe st
+
+rmmod a. rmmod st
+
+&#x2F;etc&#x2F;modprobe.d&#x2F;my.conf a. options usb_storage delay_user &#x3D; 3 b. options st buffer_kbs &#x3D; 64 c. options sx8 max_queue &#x3D; 15
+
+&#x2F;sys&#x2F;module&#x2F;$(mname)&#x2F;paraments&#x2F;$(pname) a. more &#x2F;sys&#x2F;module&#x2F;usb_storage&#x2F;parameters&#x2F;delay_use
+
+more &#x2F;etc&#x2F;sysconfig&#x2F;modules&#x2F;st.modules (开机模块加载)
+
+I&#x2F;O Schedulers a. cfq,deadline,anticipatory,noop b. cat &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;scheduler ([]中是当前电梯算法) c. more &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;nr_requests d. more &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;read_ahead_kb e. echo cfq &gt; &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;scheduler f. more &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;scheduler g. ll &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;ioschedRHCA 442-3(3)
+
+tuned a. yum info tuned b. yum install tuned -y c. tuned-adm active d. tuned-adm list e. tuned-adm profile desktop f. ll &#x2F;usr&#x2F;lib&#x2F;tuned&#x2F; g. cp -a &#x2F;usr&#x2F;lib&#x2F;tuned&#x2F;desktop&#x2F;* &#x2F;etc&#x2F;tuned&#x2F;ex442&#x2F;RHCA 442-4(1)
+
+CPU Scheduling
+
+CFS Scheduler a. virtual time
+
+chrt command a. chrt -f 10 top b. chrt -r 1 md5sum &#x2F;dev&#x2F;zeroRHCA 442-4(2)
+
+x86info -c
+
+valgrind -tool&#x3D;cahcegrind command1
+
+perf stat -e cahce-misses commandRHCA 442-4(3-4)
+
+pam_limits a. vi &#x2F;etc&#x2F;security&#x2F;limits.conf
+i. user    hard        cpu        1
+
+b. ulimit -a c. cgroup
+i. service cgconfig startii. service cgred startiii. lssubsys -miv. echo 0 &gt; /sys/devices/system/cpu/cpu1/online (下线cpu)v. mount -t tmpfs none /mnt/tmpfs (物理内存挂成分区)
+
+RHCA 442-5(1)
+
+strace a. kernel space(system call) b. strace updatedb c. strace -e trace&#x3D;network ping -c1 i d. strace -e trace&#x3D;file ls &#x2F; e. strace -p 1 f. strace -c updatedb
+
+ltrace a. user space(library call [glibc]) b. ltrace updatedb c. ltrace ls &#x2F;
+
+systemtap a. yum install kernel-debuginfo -y
+i. yum install systemtapii. stap -c /usr/share/doc/systemtap-client-3.0/examples/profiling/topsys.stp
+
+b. stap -v abc.stap c. staprun abc.ko d. stapusr group e. stapdev groupRHCA 442-5(2)
+
+Paging a. pages，x86 normal page size is 4KiB b. getconf PAGE_SIZE
+
+VSZ
+
+RSS
+
+TLB
+
+mount -t hugetlbfs none &#x2F;muntpoint
+
+Tune per-BDI Flush Threads a. vm.dirty_expire_centisecs b. vm.dirty_writeback_centisecs
+
+Oou of Menory(OOM)
+
+Memory Overcommit a. sysctl -p | grep overcommit_memory b. sysctl -p | grep overcommit_ratio c. grep Coomitted_AS &#x2F;proc&#x2F;meminfo
+
+SysV IPC a. ipcs b. ipcs -l c. Tune Semaphores d. Message queues e. Shared memory
+i. kernel.shmmniii. kernel.shmmaxiii. kernel.shmall
+
+RHCA 442-6(1)
+
+File Systems a. EXT3 b. EXT4 c. XFS d. BTRFS
+
+External Journaling a. mkfs.ext4 -O journal_dev -b 4096 &#x2F;dev&#x2F;vdb1 b. mkfs.ext4 -J device&#x3D;&#x2F;dev&#x2F;vdb1 -b 4096 &#x2F;dev&#x2F;vda3 c. blkidRHCA 442-6(2)
+
+yum install qperf
+
+sysctl net.ipv4.tcp_low_latency
+
+net.ipv4.tcp_mem&#x2F;net.ipv4.udp_mem(单位pages)
+
+tc qdisc show
+
+Bonding mode a. balance-rr: mode 0 b. actice-backup: mode 1 c. 802.3ad: mode 4(工作在2层，需要配交换机) d. cat &#x2F;proc&#x2F;net&#x2F;bonding&#x2F;bond0
+
+MTU(最大传输单元 default 1500bytes) a. TCP protocol headers 52 (52&#x2F;1500&#x3D;3.5% overhead) b. TDP protocol headers 28 (28&#x2F;1500&#x3D;1.9% overhead) c. Jumbo Frames (MTU bigger that 1500 需要配置交换机)
+i. Official maximum size is 9000 bytes (52/9000=0.58% overheadii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
+
+]]></content>
+      <categories>
+        <category>RHCA</category>
+      </categories>
+      <tags>
+        <tag>RH442</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Tomcat安全配置参考</title>
+    <url>/2017/01/03/Tomcat%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[0x01 基本配置1 删除默认目录 安装完tomcat后，删除$CATALINA_HOME&#x2F;webapps下默认的所有目录文件 rm -rf &#x2F;srv&#x2F;apache-tomcat&#x2F;webapps&#x2F;*2 隐藏tomcat版本信息修改$CATALINA_HOME&#x2F;conf&#x2F;server.xml,在Connector节点添加server字段，示例如下
+server&#x3D;”WVS1.1”  
+3 自定义错误页面修改tomcat&#x2F; conf&#x2F;web.xml,自定义40x、50x等容错页面，防止信息泄露。(1)配置tomcat&#x2F;conf&#x2F;web.xml文件:在最后一行之前加入以下内容：
+404
+&#x2F;noFile.htm  
+……………
+java.lang.NullPointerException
+&#x2F; error.jsp  
+ 第一个之间的配置实现了将404未找到jsp网页的错误导向noFile.htm页面，也可以用类似方法添加其多的错误代码导向页面，如403,500等。 第二个之间的配置实现了当jsp网页出现java.lang.NullPointerException导常时，转向error.jsp错误页面，还需要在第个jsp网页中加入以下内容:&lt;%@ page errorPage&#x3D;”&#x2F;error.jsp” %&gt;典型的error.jsp错误页面的程序写法如下:&lt;%@ page contentType&#x3D;”text&#x2F;html;charset&#x3D;GB2312”%&gt;&lt;%@ page isErrorPage&#x3D;”true”%&gt;
+错误页面
+出错了：
+错误信息: &lt;%&#x3D; exception.getMessage() %&gt;  
+Stack Trace is :
+&lt;%  java.io.CharArrayWriter cw = new java.io.CharArrayWriter();  java.io.PrintWriter pw = new java.io.PrintWriter(cw,true);  exception.printStackTrace(pw);  out.println(cw.toString());  %&gt;
+
+当出现NullPointerException异常时tomcat会把网页导入到error.jsp，且会打印出出错信息。(2)重新启动tomcat服务4 更改tomcat服务器默认端口1、参考配置操作（1）修改tomcat&#x2F;conf&#x2F;server.xml配置文件，更改默认管理端口到8800 （2）重启tomcat服务 2、补充操作说明② 备注事项，登陆http://127.0.0.1:8888 ，进行验证配置。0X02 安全配置1 用户权限 在服务器设备权限配置范围内，根据我们的业务需要，配置其所需的最小权限。同时应删除或锁定与设备运行、维护等工作无关的账号。例如admin, 666等。还有使用单独的账号允许，不能使用与系统账号一样的账号密码。1、Tomcat 4.x和5.x版本用户角色分为：role1，tomcat，admin，manager四种。role1：具有读权限；tomcat：具有读和运行权限；admin：具有读、运行和写权限；manager：具有远程管理权限。Tomcat 6.0.18版本只有admin和manager两种用户角色，且admin用户具有manager管理权限。2、Tomcat 4.1.37和5.5.27版本及以后发行的版本默认除admin用户外其他用户都不具有manager管理权限。① 建议配置编辑tomcat&#x2F;conf&#x2F;tomcat-user.xml配置文件，修改用户角色权限 ，例如
+② 登陆http://ip:8080/manager/html页面，使用tomcat账号进行本地登录，进行验证配置。2 口令安全要求 对于采用静态口令认证技术的设备，口令长度至少8位，并包括数字、小写字母、大写字母和特殊符号4类中至少2类。① 建议配置 在tomcat&#x2F;conf&#x2F;tomcat-user.xml配置文件中设置密码
+② 备注事项 检查tomcat&#x2F;conf&#x2F;tomcat-user.xml配置文件中的帐号口令是否符合移动通过配置口令复杂度要求。（1）人工检查配置文件中帐号口令是否符合；（2）使用tomcat弱口令扫描工具定期对Tomcat Web服务器进行远程扫描，检查是否存在弱口令帐号。3 禁止列目录（高版本默认已禁止）① 建议配置(1) 编辑tomcat&#x2F;conf&#x2F;web.xml配置文件， 注意原文件和下面的区别。
+listings false  
+ (2)重新启动tomcat服务② 备注事项当WEB目录中没有默认首页如index.html,index.jsp等文件时，不会列出目录内容，直接访问http://ip:8800/webadd4 定时账户自动登出 对于类似web具备字符交互界面的设备，应支持定时账户自动登出。登出后用户需再次登录才能进入系统。① 建议配置编辑tomcat&#x2F;conf&#x2F;server.xml配置文件，修改为30秒
+② 备注事项 登陆tomcat默认页面http://ip:8080/manager/html ，使用管理账号登陆，10分钟无操作或者关闭浏览器自动退出。5 启用cookie的HttpOnly属性修改$CATALINA_HOME&#x2F;conf&#x2F;context.xml，添加配置cookie的secure属性，在web.xml中sesion-config节点配置cooker-config，此配置只允许cookie在加密方式下传输。
+&lt;session-config&gt;    &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+
+true  
+6 AJP端口管理 AJP是为 Tomcat 与 HTTP 服务器之间通信而定制的协议，能提供较高的通信速度和效率。如果tomcat前端放的是apache的时候，会使用到AJP这个连接器。前端如果是由nginx做的反向代理的话可以不使用此连接器，因此需要注销掉该连接器。0x03 其他事项1 日志记录 应配置日志功能，对用户登录进行记录，记录内容包括用户登录使用的账号，登录是否成功，登录时间，以及远程登录时，用户使用的IP地址。① 建议配置编辑server.xml配置文件，在标签中增加记录日志功能将以下内容的注释标记&lt; ! – – &gt;取消
+② 备注事项classname:This MUST be set to org.apache.catalina.valves.AccessLogValve touse the default access log valve. &amp;&lt;60Directory:日志文件放置的目录，在tomcat下面有个logs文件夹，那里面是专门放置日志文件的，也可以修改为其他路径；Prefix: 这个是日志文件的名称前缀，日志名称为localhost_access_log.2008-10-22.txt，前面的前缀就是这个localhost_access_logSuffix: 文件后缀名Pattern: common方式时，将记录访问源IP、本地服务器IP、记录日志服务器IP、访问方式、发送字节数、本地接收端口、访问URL地址等相关信息在日志文件中resolveHosts:值为true时，tomcat会将这个服务器IP地址通过DNS转换为主机名，如果是false，就直接写服务器IP地址2 HTTPS加密协议① 建议配置(1)使用JDK自带的keytool工具生成一个证书JAVA_HOME&#x2F;bin&#x2F;keytool -genkey –alias tomcat –keyalg RSA-keystore &#x2F;path&#x2F;to&#x2F;my&#x2F;keystore(2)修改tomcat&#x2F;conf&#x2F;server.xml配置文件，更改为使用https方式，增加如下行：Connector classname&#x3D;”org.apache.catalina.http.HttpConnector”port&#x3D;”8443” minProcessors&#x3D;”5” maxprocessors&#x3D;”100”enableLookups&#x3D;”true” acceptCount&#x3D;”10” debug&#x3D;”0”scheme&#x3D;”https” secure&#x3D;”true” &gt;Factory classname&#x3D;”org.apache.catalina.SSLServerSocketFactory”clientAuth&#x3D;”false”keystoreFile&#x3D;”&#x2F;path&#x2F;to&#x2F;my&#x2F;keystore” keystorePass&#x3D;”runway”protocol&#x3D;”TLS”&#x2F;&gt;&#x2F;Connector&gt;其中keystorePass的值为生成keystore时输入的密码(3)重新启动tomcat服务② 备注事项 使用https方式登陆tomcat服务器页面，如果登陆成功，证明配置成功；如果登陆失败，证明配置失败。
+参考链接：http://blog.csdn.net/qq_29277155/article/details/52821229
+]]></content>
+      <categories>
+        <category>安全配置参考</category>
+      </categories>
+      <tags>
+        <tag>Tomcat</tag>
+      </tags>
   </entry>
   <entry>
     <title>OpenShift架构了解与实践</title>
@@ -4774,599 +5405,6 @@ oc new-app logging-deployer-template \ –param IMAGE_VERSION&#x3D;v1.3.0 \ –p
       </categories>
   </entry>
   <entry>
-    <title>OpenShift-混合云管理</title>
-    <url>/2018/04/25/OpenShift-%E6%B7%B7%E5%90%88%E4%BA%91%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[简介在现代企业中，企业需要考虑如何有效的集成和管理不同厂商的云产品。更多的用户希望能有一个统一的入口来管理和运维这些云平台。对于OpenShift容器云而言，常见的混合云的需求有自动扩容缩容以及多集群的应用部署等。
-混合云管理平台的价值：
-
-度量采集及分析
-策略控制
-自动化集成
-
-MangeIQ是一个开源的混合云管理平台项目。其商业版本为RedHat的CloudForms。MangeIQ原生提供了对OpenStack、VMWare、Amazon等公有云的支持，同时也对OpenShift提供了集成支持。
-用户可哟通过MangeIQ对多个不同的云平台进行统一管理。
-部署MaanageIQ提供了非常丰富的部署方式，本文将通过VMware vSphere平台进行部署。
-项目主页：http://manageiq.org/
-安装包下载页：http://manageiq.org/download/
-
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-
-下载VMWare VSphere的OVA文件，并导入到vmware环境
-
-
-默认用户密码root：smartvm
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-使用appliance_console命令修改系统信息
-
-
-先修改IP地址
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-配置跟OpenShift集群同一网段的IP地址
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-测试网络连通性
-
-
-测试链接Master地址
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-Web访问，默认密码admin：smartvm
-
-
-https://10.10.31.169/
-
-
-&lt;.&#x2F;media&#x2F;image6.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image7.png&gt;
-
-
-使用
-
-
-添加OpenShift集群
-
-
-
-计算-&gt;容器-&gt;供应商
-
-
-&lt;.&#x2F;media&#x2F;image8.png&gt;
-
-
-配置-&gt;添加新容器供应商
-
-
-获取token
-
-
-oc sa get-token -n management-infra management-admin
-
-
-&lt;.&#x2F;media&#x2F;image9.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image10.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image11.png&gt;
-
-
-添加完成
-
-
-&lt;.&#x2F;media&#x2F;image12.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image13.png&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenShift-核心组件和概念</title>
-    <url>/2018/04/25/OpenShift-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%92%8C%E6%A6%82%E5%BF%B5/</url>
-    <content><![CDATA[Master节点介绍master 节点上运行着众多集群的服务组建：
-
-api server ：提供集群的web console以及restful api 服务。
-datastore：数据源，集群的所有动态信息都存储在后端的一个etcd分布式数据库中，默认etcd安装在master上，也可以将etcd部署在集群之外。
-scheduler：调度控制器，负责按照用户输入的要求寻找合适的计算节点
-replicationcontroller：负责监控容器数量，当发现容器数量少于部署定义数量时，出发新的部署。
-
-Node节点介绍
-主要负责介绍master节点指令，运行和维护docker容器
-master节点本身也是一个node节点，一般人为的关闭了容器运行功能。
-通过oc get nodes 可以查看系统中的node节点信息。
-
-Project
-namespace：在k8s中使用命名空间概念来隔离资源。
-project：在openshift中，引入了project概念。
-
-Pod
-pod是一种特殊的容器，oc get pods 可以查看pod
-可以近似的认为容器运行在pod内部，一个pod内部可以运行多个容器，pod内多个容器共享pod的网络及存储资源。
-查看pod日志：oc logs
-进入容器内部：oc rsh
-
-Service
-service对象与一个或者多个pod关联，每个service会分配一个ip地址，这个地址相对恒定，通过这个IP地址和端口，请求会被转发到pod相应的端口之上。
-service起到了代理的作用，在相互依赖的容器之间实现了解耦。
-oc get svc 查看servie
-service IP地址是一个虚拟IP，只有在集群内的节点和容器可以识别。
-除了IP地址访问service，还可以通过域名访问service。
-master内置DNS服务器，负责解析这个域名
-
-Router
-负责将集群外部的请求转发到集群的容器。
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>RHCA-RH413(服务器固化)学习笔记</title>
-    <url>/2017/01/06/RHCA-RH413(%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9B%BA%E5%8C%96)%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[413-1-operating system update:
-
-CVES and Red Hat Errata a. Red Hat Security Advisory(RHSA) b. Red Hat Bug Fix Advisory(RHBA) c. Red Hat Enhancement Advisory(RHEA)
-
-Check update informaton a. yum updateinfo b. yum updateinfo –security c. yum updateinfo –security list
-
-Apply certain type of update a. yum update –security b. yum update –bugfix
-
-BugTraq
-
-Package Integrity Check a. rpm –import gpa-key-file b. rpm K rpm-file c. rpm -qa | grep gpg-pubkey d. rpm -e gpg-pubkey-keyed e. gpgcheck&#x3D;1 in &#x2F;etc&#x2F;yum.conf0 f. gpgkey&#x3D;&#x2F;path&#x2F;to&#x2F;file g. rpm -qpl rpm-file h. rpm -qp –scripts rpm-file i. rpm -qp –tiggers rpm-file413-2-ecryption:
-
-Linux Unified Key Setup(LUKS) a. cryptsetup luksFormat &#x2F;dev&#x2F;vg&#x2F;lv b. cryptsetup luksOpen &#x2F;dev&#x2F;vg&#x2F;lv name c. mkfs.ext4 &#x2F;dev&#x2F;mapper&#x2F;name d. mkdir &#x2F;secure e. mount &#x2F;dev&#x2F;mapper&#x2F;name &#x2F;secure f. umount &#x2F;secure g. cryptserup liksClose name
-
-Persistently Mount Encrypted Volume a. dd if&#x3D;&#x2F;dev&#x2F;urandom of&#x3D;&#x2F;path&#x2F;to&#x2F;password&#x2F;file bs&#x3D;4096 count&#x3D;1 b. chmod 600 &#x2F;path&#x2F;to&#x2F;password&#x2F;file c. cryptsetup luksAddKey &#x2F;dev&#x2F;vg&#x2F;lv &#x2F;path&#x2F;to&#x2F;password&#x2F;file d. &#x2F;etc&#x2F;crypttab
-i. name  /dev/vg/lv  /path/to/password/file
-
-e. &#x2F;etc&#x2F;fstab
-i. /dev/mapper/name  /secure  ext4  defauls 0 0
-File System Defauls Mount Options a. dev,exec,suid,rw… b. nodev c. noexec d. nosuid e. ro
-
-Manae Superblock Mount Options a. tune2fs -l &#x2F;dev&#x2F;vda1 b. tune2fs -o ^acl &#x2F;dev&#x2F;vda1 c. tune2fs -o acl &#x2F;dev&#x2F;vda1
-
-File System Attributes a. chattr +a file(append only只读) b. chattr +i file(Immutable免疫) c. chattr +j file(Journal) d. chattr +S file(Synchronous立即同步磁盘) e. lsattr file
-
-Review Specia Permissions a. SUID on executables b. SGID on executables c. SGID on directories d. Sticky Bit on directories(or files)
-
-Search special files a. find &#x2F;bin -type f -perm -4000(SUID文件) b. find &#x2F;usr&#x2F;bin -type f -perm -2000（SGID文件） c. find &#x2F;var -perm -1000 d. find &#x2F;usr&#x2F;bin -perm &#x2F;7000（所有带特殊位文件
-
-Default File Permissions a. umask b. Default user mask is 002
-i. file will be:777-002-111=664ii. directory will be:777-002=775
-
-c. Default root mask is 022
-i. file will be:777-002-111=644ii. directory will be:777-022=755
-
-d. Global change
-i. /etc/profileii. /etc/bashrc
-
-e. Individual change
-i. ~/.bash_profileii. ~/.bashrc
-ACLs a. setfacl -m … dir b. setfacl -m d:… dir c. serfacl -x … dir
-
-Intrusion Detectiona. AIDE
-i. yum install aideii. vim /etc/aide.confiii. aide --init;iv. mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gzv. aide --check
-
-413-3-password policy
-
-chage passwd a. chage -m 3 -M 90 -W 7 -l 356 username b. chage -l username c. chage -d 0 username d. defaults passwd defined in &#x2F;etc&#x2F;login.defs
-i. PASS_MAX_DAYS 60ii. PASS_MIN_DAYS 3
-PAM a. ls &#x2F;lib64&#x2F;security&#x2F; b. ls &#x2F;etc&#x2F;pam.d&#x2F;
-i. more system-authii. more passwd-auth
-
-c. pam_cracklib.so
-i. minlenii. lcredit,ucredit,dcredit,ocreditiii. minclassiv. vi /etc/pam.d/system-authv. vi /etc/pam.d/passwd-auth
-
-d. pam_tally2.so
-i. pam_tally2ii. pam_tally2 --reset -u username
-&#x2F;etc&#x2F;security&#x2F;limits.conf a. more &#x2F;etc&#x2F;security&#x2F;limits.d&#x2F;90-nproc.conf b. ulimit -a413-4-ipa server
-
-IPA project(Identity,Policy,Audit) a. LDAP b. MIT Kerberos KDC c. Dogtag project d. NTP service e. DNS service
-
-Install IPA Server a. chkconfig NetworkManager off b. service NEtworkManager stop c. config static ipaddr d. chkconfig network on e. service network restart f. yum install ipa-server g. ipa-server-install –help h. ipa-sever-install –hostname&#x3D;server1.example.com -n example.com -r EXAMPLE.COM -p redhat123 -a redhat123 -idstart&#x3D;5000 -idmax&#x3D;7000 -N -U i. service sshd restart j. kinit admin k. klist l. firefox m. http://server.example.com n. configure browser for SSO
-
-Install IPA Client a. yum install ipa-client b. ipa-client-install –domian&#x3D;example.com –server&#x3D;server.example.com –realm&#x3D;EXAMPLE.COM -p admin -w redhat123 –mkhomedir -N -U c. kinit username d. ssh username@server1
-
-Uninstall IPA Client a. ipa-client-install –uninstall b. rm -rf &#x2F;etc&#x2F;ipa&#x2F;ca.crt c. reboot413-5(1)-log srver and client:
-
-vi &#x2F;etc&#x2F;rsyslog.conf
-
-vi &#x2F;etc&#x2F;rsyslog.d&#x2F;filter.conf a. :fromhost, isequal, “desktop1.example.com” &#x2F;var&#x2F;log&#x2F;desktop1.log b. :fromhost, isequal, “desktop1.example.com” ~413-5(2)-log srver and client:
-
-vi &#x2F;etc&#x2F;rsyslog.d&#x2F;ssl.conf413-6-audit file access:
-
-auditd
-
-&#x2F;vat&#x2F;log&#x2F;audit&#x2F;audit.log
-
-ausearch -i -a 28708
-
-auditctl
-
-vi &#x2F;etc&#x2F;audit&#x2F;audit.rules
-
-&#x2F;etc&#x2F;init.d&#x2F;auditd restart
-
-pam_tty_audit.so
-
-vi &#x2F;etc&#x2F;pam.d&#x2F;system-auth a. session required pam_tty_audit.so enable&#x3D;root
-
-vi &#x2F;etc&#x2F;pam.d&#x2F;passwd-auth a. session required pam_tty_audit.so enable&#x3D;root
-
-&#x2F;etc&#x2F;init.d&#x2F;auditd restart
-
-aureport –tty413-7- firewall:
-
-iptables a. setup b. iptables -L -v -n
-
-&#x2F;etc&#x2F;sysconfig&#x2F;iptables-config a. IPTABLES_MODULES&#x3D;”nf_conntrack_ftp” b. &#x2F;etc&#x2F;init.d&#x2F;iptables restart
-
-
-]]></content>
-      <categories>
-        <category>RHCA</category>
-      </categories>
-      <tags>
-        <tag>RH413</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OpenShift-运维管理</title>
-    <url>/2018/04/25/OpenShift-%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[Cockpit介绍Cockpit是一个开源的系统管理项目，其目的是为用户提供一个灵活高效的Linux系统运维管理界面。目前Cockpit支持Docker、Kubernetes和OpenShift。通过Cockpit，用户可以在一个统一的系统中获取OpenShift集群节点操作系统的实时信息及配置，用户也可以在Cockpit中以管理员的身份对OpenShift集群进行管理。
-项目URL：https://github.com/cockpit-project
-Cockpit部署
-所有节点执行
-
-
-
-
-yum install cockpit cockpit-docker cockpit-kubernetes -y
-
-
-
-systemctl start cockpit &amp;&amp; systemctl enable cockpit
-
-
-vim &#x2F;etc&#x2F;sysconfig&#x2F;iptables
-
-
-A INPUT -p tcp -m state –state NEW -m tcp –dport 9090 -j ACCEPT
-
-
-&lt;.&#x2F;media&#x2F;image1.png&gt;
-
-
-systemctl restart iptables
-
-
-
-登陆
-
-
-
-
-登陆https://master.example.com:9090/
-
-
-
-用户名密码即服务器用户名密码
-
-
-&lt;.&#x2F;media&#x2F;image2.png&gt;
-
-
-&lt;.&#x2F;media&#x2F;image3.png&gt;
-
-
-Cockpit集群运维
-
-
-在集群选项中可以添加OpenShift集群
-
-
-
-&lt;.&#x2F;media&#x2F;image4.png&gt;
-
-
-各信息在浏览器中直观展现
-
-
-节点
-
-
-&lt;.&#x2F;media&#x2F;image5.png&gt;
-
-
-拓扑
-
-
-&lt;.&#x2F;media&#x2F;image6.png&gt;
-
-
-持久化卷
-
-
-&lt;.&#x2F;media&#x2F;image7.png&gt;
-
-
-
-
-
-OpenShift集群扩容根据OpenShift项目官方资料，单个计算节点可以支持250个Pod，单一集群目前实际最大部署数量达到1000个节点，单一集群的最大Pod数量为120000。
-目前集群扩容的方式有：
-
-半自动扩容：
-
-
-OpenShift默认提供了扩容的Ansible Playbook解决自动化节点的安装和配置，之所以称为半自动，是因为Ansible扩容的时机是由用户决定的。
-
-
-全自动扩容：
-
-
-自动扩容是在半自动扩容的基础上由系统自动判别当前集群资源是否足够，如果不足，则调用Ansible Playbook进行扩容。自动扩容需要ManageIQ第三方云管理平台的支持，根据用户预定义的规则，在满足规则条件的情况下对集群进行扩容或缩容。
-
-Ansible Playbook通过AnsiblePlayboko进行扩容需要编辑Ansible的Inventory，&#x2F;etc&#x2F;ansible&#x2F;hosts文件，在相应角色下添加新节点的域名以及配置信息
-
-
-
-# host group for masters [masters] master.example.com # host group for etcd [etcd] master.example.com # host group for nodes, includes region info [nodes] master.example.com node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘east’}” node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘primary’, ‘zone’: ‘west’}” infra-node1.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” infra-node2.example.com openshift_node_labels&#x3D;”{‘region’: ‘infra’, ‘zone’: ‘default’}” #新增计算节点 node3.example.com node4.example.com
-
-
-
-
-
-
-主节点扩容Playbook
-
-
-ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-master&#x2F;scaleup.yml
-
-
-
-
-
-
-计算节点扩容Playbook
-
-
-ansible-playbook &#x2F;root&#x2F;openshift-ansible&#x2F;playbooks&#x2F;byo&#x2F;openshift-node&#x2F;scaleup.yml
-
-
-
-
-
-
-OpenShift集群缩容缩容是指减小集群的计算资源，缩容主要考虑如何将计算资源抽离集群而不影响现有的业务。在缩容的场景中，集群管理员需要保证：1.新的容器不会再创建于要缩减的计算之上；2.当前运行在计划缩减的计算节点之上的容器能迁移到其他计算节点之上。
-禁止参与调度
-
-
-控制一个计算节点是否参与到集群的调度运行应用
-
-
-
-oc adm manage-node master.example.com –schedulable&#x3D;false
-
-
-&lt;.&#x2F;media&#x2F;image8.png&gt;
-
-
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PaaS平台介绍</title>
-    <url>/2018/08/02/PaaS%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[
-]]></content>
-      <categories>
-        <category>OpenShift</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>RHCA-RH442(性能调优)学习笔记</title>
-    <url>/2017/01/03/RHCA-RH442(%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98)%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[RHCA 442-1(1)
-
-Business Level Tuning &gt; Application Level Tuning &gt; Kernel Level Tuning(RH442)
-
-grep CPU &#x2F;proc&#x2F;cpuinfo
-
-lscpu a. lscpu -p
-
-cat &#x2F;proc&#x2F;cpuinfo a. cat &#x2F;proc&#x2F;meminfoRHCA 442-1(2)
-
-dmesg(实时kernel信息)
-
-&#x2F;var&#x2F;log&#x2F;dmesg(开机kernel信息写入)
-
-getconf -a
-
-x85info(yum install x86info -y)
-
-dmidecode a. dmidecode -t 0
-
-cd &#x2F;sys&#x2F;class&#x2F;dmi&#x2F;id&#x2F;
-
-lspci a. lspci -v b. lspci -vv c. lspci -vvv
-
-lsusb a. lsusb -v
-
-ethtool eth0
-
-powertop(yum install powertop -y)
-
-sosreportRHCA 442-2(1)
-
-K&#x3D;1000 a. Ki&#x3D;1024
-
-vmstat a. vmstat 1 5 b. dd if&#x3D;&#x2F;dev&#x2F;zero of&#x3D;&#x2F;dev&#x2F;null c. buffer&#x3D; buffer cache(文件描述数据) d. cache&#x3D; page cache(文件内容数据) e. echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;drop_cahces f. bi&#x3D; block in g. bo&#x3D; block out
-
-iostat a. iostat -x sda 1
-
-mpstat a. mpstat 1 b. mpstat -p 0 1
-
-sar a. yum install sysstat b. cat &#x2F;etc&#x2F;cron.d&#x2F;sysstat c. LANG&#x3D;C sar -q(CPU负载) d. LANG&#x3D;C sar -b(I&#x2F;O状况)
-i. sar -b -s 17:00:00 -e 19:00:00
-
-e. LANG&#x3D;C sar -p 0 (第一颗cpu状态) f. LAMD&#x3D;C sar -d(磁盘状态) g. LANG&#x3D;C sar -n DEV|EDEV(网络信息) h. cd &#x2F;var&#x2F;log&#x2F;sa&#x2F; i. cat &#x2F;etc&#x2F;sysconfig&#x2F;sysstat
-
-awk a. awk -F: ‘{print $1}’ &#x2F;etc&#x2F;passwd b. df -P | awk ‘{print $1 “ is mount on “ $NF}’ c. awk -F: ‘BEGIN{print “User List:”} {print $1} END{print “Done.”}’ &#x2F;etc&#x2F;passwd d. df -hP | awk ‘BEGIN{print “File System status:”}{print $1,$(NF-2)} END{print “Done.”}’ e. awk -F: ‘&#x2F;^r&#x2F; {print $1}’ &#x2F;etc&#x2F;passwd f. awk -F: ‘&#x2F;^[a-z]t:.&#x2F; {print $1}’ &#x2F;etc&#x2F;passwd g. sar -q | awk ‘&#x2F;^[^a-z]+$&#x2F;{print $1,$4,$5,$6}’ &gt; &#x2F;tmp&#x2F;cpudata
-
-gnuplot a. yum install gnuplot -t b. gnuplot
-i. set xdata timii. set timefmt &quot;%H:%M:%S&quot;iii. plot &quot;/tmp/cpudata&quot; using 1:2 with lines
-
-RHCA 442-2(2)
-
-Little’s Law
-
-L(lenth) &#x3D; A(arrival time)* W(wait time)
-
-W(wait time) &#x3D; Q(queue time) +S(service time)
-
-S(service time) &#x3D; St(sys time) + Ut(user time)
-
-time command a. time updatedb b. echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;drop_caches c. time updatedbRHCA 442-3(1-2)
-
-lsmod a. ls &#x2F;lib&#x2F;modules&#x2F;3.10.0-327.el7.x86_64&#x2F; (kernel模块) b. ll &#x2F;boot&#x2F;vmlinuz-3.10.0-327.el7.x86_64 (kernel本身)
-
-modinfo a. modinfo st b. modinfo -p st c. modinfo usb_storage d. modinfo sx8
-
-modprobe a. modprobe st
-
-rmmod a. rmmod st
-
-&#x2F;etc&#x2F;modprobe.d&#x2F;my.conf a. options usb_storage delay_user &#x3D; 3 b. options st buffer_kbs &#x3D; 64 c. options sx8 max_queue &#x3D; 15
-
-&#x2F;sys&#x2F;module&#x2F;$(mname)&#x2F;paraments&#x2F;$(pname) a. more &#x2F;sys&#x2F;module&#x2F;usb_storage&#x2F;parameters&#x2F;delay_use
-
-more &#x2F;etc&#x2F;sysconfig&#x2F;modules&#x2F;st.modules (开机模块加载)
-
-I&#x2F;O Schedulers a. cfq,deadline,anticipatory,noop b. cat &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;scheduler ([]中是当前电梯算法) c. more &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;nr_requests d. more &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;read_ahead_kb e. echo cfq &gt; &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;scheduler f. more &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;scheduler g. ll &#x2F;sys&#x2F;block&#x2F;sda&#x2F;queue&#x2F;ioschedRHCA 442-3(3)
-
-tuned a. yum info tuned b. yum install tuned -y c. tuned-adm active d. tuned-adm list e. tuned-adm profile desktop f. ll &#x2F;usr&#x2F;lib&#x2F;tuned&#x2F; g. cp -a &#x2F;usr&#x2F;lib&#x2F;tuned&#x2F;desktop&#x2F;* &#x2F;etc&#x2F;tuned&#x2F;ex442&#x2F;RHCA 442-4(1)
-
-CPU Scheduling
-
-CFS Scheduler a. virtual time
-
-chrt command a. chrt -f 10 top b. chrt -r 1 md5sum &#x2F;dev&#x2F;zeroRHCA 442-4(2)
-
-x86info -c
-
-valgrind -tool&#x3D;cahcegrind command1
-
-perf stat -e cahce-misses commandRHCA 442-4(3-4)
-
-pam_limits a. vi &#x2F;etc&#x2F;security&#x2F;limits.conf
-i. user    hard        cpu        1
-
-b. ulimit -a c. cgroup
-i. service cgconfig startii. service cgred startiii. lssubsys -miv. echo 0 &gt; /sys/devices/system/cpu/cpu1/online (下线cpu)v. mount -t tmpfs none /mnt/tmpfs (物理内存挂成分区)
-
-RHCA 442-5(1)
-
-strace a. kernel space(system call) b. strace updatedb c. strace -e trace&#x3D;network ping -c1 i d. strace -e trace&#x3D;file ls &#x2F; e. strace -p 1 f. strace -c updatedb
-
-ltrace a. user space(library call [glibc]) b. ltrace updatedb c. ltrace ls &#x2F;
-
-systemtap a. yum install kernel-debuginfo -y
-i. yum install systemtapii. stap -c /usr/share/doc/systemtap-client-3.0/examples/profiling/topsys.stp
-
-b. stap -v abc.stap c. staprun abc.ko d. stapusr group e. stapdev groupRHCA 442-5(2)
-
-Paging a. pages，x86 normal page size is 4KiB b. getconf PAGE_SIZE
-
-VSZ
-
-RSS
-
-TLB
-
-mount -t hugetlbfs none &#x2F;muntpoint
-
-Tune per-BDI Flush Threads a. vm.dirty_expire_centisecs b. vm.dirty_writeback_centisecs
-
-Oou of Menory(OOM)
-
-Memory Overcommit a. sysctl -p | grep overcommit_memory b. sysctl -p | grep overcommit_ratio c. grep Coomitted_AS &#x2F;proc&#x2F;meminfo
-
-SysV IPC a. ipcs b. ipcs -l c. Tune Semaphores d. Message queues e. Shared memory
-i. kernel.shmmniii. kernel.shmmaxiii. kernel.shmall
-
-RHCA 442-6(1)
-
-File Systems a. EXT3 b. EXT4 c. XFS d. BTRFS
-
-External Journaling a. mkfs.ext4 -O journal_dev -b 4096 &#x2F;dev&#x2F;vdb1 b. mkfs.ext4 -J device&#x3D;&#x2F;dev&#x2F;vdb1 -b 4096 &#x2F;dev&#x2F;vda3 c. blkidRHCA 442-6(2)
-
-yum install qperf
-
-sysctl net.ipv4.tcp_low_latency
-
-net.ipv4.tcp_mem&#x2F;net.ipv4.udp_mem(单位pages)
-
-tc qdisc show
-
-Bonding mode a. balance-rr: mode 0 b. actice-backup: mode 1 c. 802.3ad: mode 4(工作在2层，需要配交换机) d. cat &#x2F;proc&#x2F;net&#x2F;bonding&#x2F;bond0
-
-MTU(最大传输单元 default 1500bytes) a. TCP protocol headers 52 (52&#x2F;1500&#x3D;3.5% overhead) b. TDP protocol headers 28 (28&#x2F;1500&#x3D;1.9% overhead) c. Jumbo Frames (MTU bigger that 1500 需要配置交换机)
-i. Official maximum size is 9000 bytes (52/9000=0.58% overheadii. vi /etc/sysconfig/network-scripts/ifcfg/eth0==》&quot;MTU=9000&quot;
-
-]]></content>
-      <categories>
-        <category>RHCA</category>
-      </categories>
-      <tags>
-        <tag>RH442</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Brew-cask安装本地应用</title>
     <url>/2016/03/05/brew-cask%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[修改目录：&#x2F;usr&#x2F;local&#x2F;Library&#x2F;Taps&#x2F;caskroom&#x2F;homebrew-cask&#x2F;Casks下的相对应的.rb文件注释掉外网路径，并添加本地路径有的应用可能需要修改一下sha356值209214.png然后运行brew-cask cleanup清除缓存然后就可以正常安装了brew-cask install svnx
@@ -5392,56 +5430,6 @@ i. Official maximum size is 9000 bytes (52/9000=0.58% overheadii. vi /etc/syscon
       </categories>
       <tags>
         <tag>haproy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
-    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
-    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
-modprobe lnet
-最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
-tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
-]]></content>
-      <categories>
-        <category>Lustre</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Tomcat安全配置参考</title>
-    <url>/2017/01/03/Tomcat%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[0x01 基本配置1 删除默认目录 安装完tomcat后，删除$CATALINA_HOME&#x2F;webapps下默认的所有目录文件 rm -rf &#x2F;srv&#x2F;apache-tomcat&#x2F;webapps&#x2F;*2 隐藏tomcat版本信息修改$CATALINA_HOME&#x2F;conf&#x2F;server.xml,在Connector节点添加server字段，示例如下
-server&#x3D;”WVS1.1”  
-3 自定义错误页面修改tomcat&#x2F; conf&#x2F;web.xml,自定义40x、50x等容错页面，防止信息泄露。(1)配置tomcat&#x2F;conf&#x2F;web.xml文件:在最后一行之前加入以下内容：
-404
-&#x2F;noFile.htm  
-……………
-java.lang.NullPointerException
-&#x2F; error.jsp  
- 第一个之间的配置实现了将404未找到jsp网页的错误导向noFile.htm页面，也可以用类似方法添加其多的错误代码导向页面，如403,500等。 第二个之间的配置实现了当jsp网页出现java.lang.NullPointerException导常时，转向error.jsp错误页面，还需要在第个jsp网页中加入以下内容:&lt;%@ page errorPage&#x3D;”&#x2F;error.jsp” %&gt;典型的error.jsp错误页面的程序写法如下:&lt;%@ page contentType&#x3D;”text&#x2F;html;charset&#x3D;GB2312”%&gt;&lt;%@ page isErrorPage&#x3D;”true”%&gt;
-错误页面
-出错了：
-错误信息: &lt;%&#x3D; exception.getMessage() %&gt;  
-Stack Trace is :
-&lt;%  java.io.CharArrayWriter cw = new java.io.CharArrayWriter();  java.io.PrintWriter pw = new java.io.PrintWriter(cw,true);  exception.printStackTrace(pw);  out.println(cw.toString());  %&gt;
-
-当出现NullPointerException异常时tomcat会把网页导入到error.jsp，且会打印出出错信息。(2)重新启动tomcat服务4 更改tomcat服务器默认端口1、参考配置操作（1）修改tomcat&#x2F;conf&#x2F;server.xml配置文件，更改默认管理端口到8800 （2）重启tomcat服务 2、补充操作说明② 备注事项，登陆http://127.0.0.1:8888 ，进行验证配置。0X02 安全配置1 用户权限 在服务器设备权限配置范围内，根据我们的业务需要，配置其所需的最小权限。同时应删除或锁定与设备运行、维护等工作无关的账号。例如admin, 666等。还有使用单独的账号允许，不能使用与系统账号一样的账号密码。1、Tomcat 4.x和5.x版本用户角色分为：role1，tomcat，admin，manager四种。role1：具有读权限；tomcat：具有读和运行权限；admin：具有读、运行和写权限；manager：具有远程管理权限。Tomcat 6.0.18版本只有admin和manager两种用户角色，且admin用户具有manager管理权限。2、Tomcat 4.1.37和5.5.27版本及以后发行的版本默认除admin用户外其他用户都不具有manager管理权限。① 建议配置编辑tomcat&#x2F;conf&#x2F;tomcat-user.xml配置文件，修改用户角色权限 ，例如
-② 登陆http://ip:8080/manager/html页面，使用tomcat账号进行本地登录，进行验证配置。2 口令安全要求 对于采用静态口令认证技术的设备，口令长度至少8位，并包括数字、小写字母、大写字母和特殊符号4类中至少2类。① 建议配置 在tomcat&#x2F;conf&#x2F;tomcat-user.xml配置文件中设置密码
-② 备注事项 检查tomcat&#x2F;conf&#x2F;tomcat-user.xml配置文件中的帐号口令是否符合移动通过配置口令复杂度要求。（1）人工检查配置文件中帐号口令是否符合；（2）使用tomcat弱口令扫描工具定期对Tomcat Web服务器进行远程扫描，检查是否存在弱口令帐号。3 禁止列目录（高版本默认已禁止）① 建议配置(1) 编辑tomcat&#x2F;conf&#x2F;web.xml配置文件， 注意原文件和下面的区别。
-listings false  
- (2)重新启动tomcat服务② 备注事项当WEB目录中没有默认首页如index.html,index.jsp等文件时，不会列出目录内容，直接访问http://ip:8800/webadd4 定时账户自动登出 对于类似web具备字符交互界面的设备，应支持定时账户自动登出。登出后用户需再次登录才能进入系统。① 建议配置编辑tomcat&#x2F;conf&#x2F;server.xml配置文件，修改为30秒
-② 备注事项 登陆tomcat默认页面http://ip:8080/manager/html ，使用管理账号登陆，10分钟无操作或者关闭浏览器自动退出。5 启用cookie的HttpOnly属性修改$CATALINA_HOME&#x2F;conf&#x2F;context.xml，添加配置cookie的secure属性，在web.xml中sesion-config节点配置cooker-config，此配置只允许cookie在加密方式下传输。
-&lt;session-config&gt;    &lt;session-timeout&gt;30&lt;/session-timeout&gt;
-
-true  
-6 AJP端口管理 AJP是为 Tomcat 与 HTTP 服务器之间通信而定制的协议，能提供较高的通信速度和效率。如果tomcat前端放的是apache的时候，会使用到AJP这个连接器。前端如果是由nginx做的反向代理的话可以不使用此连接器，因此需要注销掉该连接器。0x03 其他事项1 日志记录 应配置日志功能，对用户登录进行记录，记录内容包括用户登录使用的账号，登录是否成功，登录时间，以及远程登录时，用户使用的IP地址。① 建议配置编辑server.xml配置文件，在标签中增加记录日志功能将以下内容的注释标记&lt; ! – – &gt;取消
-② 备注事项classname:This MUST be set to org.apache.catalina.valves.AccessLogValve touse the default access log valve. &amp;&lt;60Directory:日志文件放置的目录，在tomcat下面有个logs文件夹，那里面是专门放置日志文件的，也可以修改为其他路径；Prefix: 这个是日志文件的名称前缀，日志名称为localhost_access_log.2008-10-22.txt，前面的前缀就是这个localhost_access_logSuffix: 文件后缀名Pattern: common方式时，将记录访问源IP、本地服务器IP、记录日志服务器IP、访问方式、发送字节数、本地接收端口、访问URL地址等相关信息在日志文件中resolveHosts:值为true时，tomcat会将这个服务器IP地址通过DNS转换为主机名，如果是false，就直接写服务器IP地址2 HTTPS加密协议① 建议配置(1)使用JDK自带的keytool工具生成一个证书JAVA_HOME&#x2F;bin&#x2F;keytool -genkey –alias tomcat –keyalg RSA-keystore &#x2F;path&#x2F;to&#x2F;my&#x2F;keystore(2)修改tomcat&#x2F;conf&#x2F;server.xml配置文件，更改为使用https方式，增加如下行：Connector classname&#x3D;”org.apache.catalina.http.HttpConnector”port&#x3D;”8443” minProcessors&#x3D;”5” maxprocessors&#x3D;”100”enableLookups&#x3D;”true” acceptCount&#x3D;”10” debug&#x3D;”0”scheme&#x3D;”https” secure&#x3D;”true” &gt;Factory classname&#x3D;”org.apache.catalina.SSLServerSocketFactory”clientAuth&#x3D;”false”keystoreFile&#x3D;”&#x2F;path&#x2F;to&#x2F;my&#x2F;keystore” keystorePass&#x3D;”runway”protocol&#x3D;”TLS”&#x2F;&gt;&#x2F;Connector&gt;其中keystorePass的值为生成keystore时输入的密码(3)重新启动tomcat服务② 备注事项 使用https方式登陆tomcat服务器页面，如果登陆成功，证明配置成功；如果登陆失败，证明配置失败。
-参考链接：http://blog.csdn.net/qq_29277155/article/details/52821229
-]]></content>
-      <categories>
-        <category>安全配置参考</category>
-      </categories>
-      <tags>
-        <tag>Tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -5482,6 +5470,18 @@ i. docker pull docker.io&#x2F;fearchan&#x2F;kube-controller-manager-amd64:v1.5.1
       </tags>
   </entry>
   <entry>
+    <title>iml-lusre-client编译(esxi虚拟机centos 6.5)</title>
+    <url>/2016/03/05/iml-lusre-client%E7%BC%96%E8%AF%91(esxi%E8%99%9A%E6%8B%9F%E6%9C%BAcentos%206.5)/</url>
+    <content><![CDATA[yum install perl expect -y安装源码包：rpm -ivh lustre-client-source-2.5.34.1-2.6.32_504.16.2.el6.x86_64.x86_64.rpm安装依赖包yum install kernel-devel kernel-headers -yyum install zlib-devel python-devel rpm-build libtool libselinux-devel binutils binutils-devel flex tcl tcl-devel -y进入编译目录：cd &#x2F;usr&#x2F;src&#x2F;lustre-2.5.34.1编译命令：.&#x2F;configure –disable-server –enable-client –enable-ext4 –with-linux&#x3D;&#x2F;usr&#x2F;src&#x2F;kernels&#x2F;2.6.32-431.el6.x86_64&#x2F;生成rpm：make rpms进入生成的rpm包目录：cd &#x2F;root&#x2F;rpmbuild&#x2F;RPMS&#x2F;x86_64&#x2F;安装： rpm -ivh lustre-client-modules-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpm安装： rpm -ivh lustre-client-2.5.34.1-2.6.32_431.el6.x86_64.x86_64.rpmvi &#x2F;etc&#x2F;rc.local添加：modprobe lustre
+modprobe lnet
+最后挂在lustre：mkdir &#x2F;mnt&#x2F;chenfeimount -t lustre 10.3.10.114@tcp0:&#x2F;chenfei &#x2F;mnt&#x2F;chenfei
+tunefs.lustre –param mdt.identity_upcall&#x3D;NONE &#x2F;dev&#x2F;sdb mds上执行这个就可以让普通用户在lustre上读写权限（是需要把所有挂载都卸载 然后使用命令来转）
+]]></content>
+      <categories>
+        <category>Lustre</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Iml-lustre multipath安装(centos 6.6)</title>
     <url>/2016/03/05/iml-lustre%20multipath%E5%AE%89%E8%A3%85(centos%206.6)/</url>
     <content><![CDATA[服务器上插入Dell存储自带的光盘，然后挂载mount &#x2F;dev&#x2F;cdrom &#x2F;mnt&#x2F;cd &#x2F;mnt&#x2F;linux&#x2F;dkms先安装rpm依赖包 rpm -ivh dkms-2.1.1.2-1.noarch.rpmcd ..&#x2F;dm安装 .&#x2F;install_dm.sh安装完成后reboot重启完后根据multipath -ll下的dm-*编号，修改vi &#x2F;etc&#x2F;multipath.conf配置文件修改完后重启multipan &#x2F;etc&#x2F;init.d&#x2F;multipathd restart
@@ -5491,44 +5491,6 @@ i. docker pull docker.io&#x2F;fearchan&#x2F;kube-controller-manager-amd64:v1.5.1
       </categories>
       <tags>
         <tag>multipath</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kuadm搭建kubernetes 1.5</title>
-    <url>/2017/02/16/kuadm%E6%90%AD%E5%BB%BAkubernetes%201.5/</url>
-    <content><![CDATA[
-环境： a. 192.168.254.160 k8s01.160 b. 192.168.254.161 k8s02.161 c. 192.168.254.162 k8s03.162 d. 配置好hosts和hostname e. 保证时间一致
-
-以下在所有机器上安装 a. 配置阿里k8s源cat &lt; &#x2F;etc&#x2F;yum.repos.d&#x2F;kubernetes.repo[kubernetes]name&#x3D;Kubernetesbaseurl&#x3D;http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64enabled&#x3D;1gpgcheck&#x3D;0EOF b. setenforce 0 &#x2F;&#x2F;为了让docker可以访问文件系统 c. sed -i ‘s&#x2F;SELINUX&#x3D;enforcing&#x2F;SELINUX&#x3D;permissive&#x2F;‘ &#x2F;etc&#x2F;selinux&#x2F;config d. systemctl stop firewalld &amp;&amp; systemctl disable firewalld e. yum install -y docker kubelet kubeadm kubectl kubernetes-cni f. systemctl enable docker &amp;&amp; systemctl start docker g. 提前将google相关的一些image下载到本地会加快构建集群的速度，，这里用自己提前自动构建的镜像images&#x3D;(kube-proxy-amd64:v1.5.2 \ kube-discovery-amd64:1.0 \ kubedns-amd64:1.9 \ kube-scheduler-amd64:v1.5.2 \ kube-controller-manager-amd64:v1.5.2 \ kube-apiserver-amd64:v1.5.2 \ etcd-amd64:3.0.14-kubeadm \ kube-dnsmasq-amd64:1.4 \ exechealthz-amd64:v1.2.0 \ pause-amd64:3.0 \ kubernetes-dashboard-amd64:v1.5.1)for imageName in ${images[@]} ; dodocker pull fearchan&#x2F;$imageNamedocker tag fearchan&#x2F;$imageName gcr.io&#x2F;google_containers&#x2F;$imageNamedocker rmi fearchan&#x2F;$imageNamedone
-
-初始化Maseter节点 a. systemctl enable kubelet &amp;&amp; systemctl start kubelet b. kubeadm init
-c. 初始化成功，记住生成的token值以便后续加节点
-i. 记住：kubeadm join --token=50d2be.a776c64bb95af773 192.168.254.160
-添加node a. systemctl enable kubelet &amp;&amp; systemctl start kubelet b. kubeadm join –token&#x3D;50d2be.a776c64bb95af773 192.168.254.160
-c. 添加成功
-
-在Master测试 a. kubectl get nodes
-
-部署 weave 网络，不部署weave，dns无法启动 a. 浏览器打开https://git.io/weave-kube，下载好weave-daemonset.yaml文件传到服务器上 b. kubectl create -f weave-daemonset.yaml
-
-部署 dashboard a. 下载https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml文件，并做修改，是为了使用本地dashboard镜像 b. 编辑 yaml 改一下 imagePullPolicy，把 Always 改成 IfNotPresent(本地没有再去拉取) 或者 Never(从不去拉取) 即可 c. 保证本地有gcr.io&#x2F;google_containers&#x2F;kubernetes-dashboard-amd64:v1.5.1 d. 执行：
-i. kubectl create -f kubernetes-dashboard.yaml
-
-e. 等待创建完成：
-i. kubectl get pod --all-namespaces | grep dashboard
-
-f. 查看暴露出来的端口即可访问
-i. kubectl describe svc kubernetes-dashboard --namespace=kube-system
-
-g. 访问地址：
-i. http://192.168.254.160:31618/
-
-]]></content>
-      <categories>
-        <category>kubernetes</category>
-      </categories>
-      <tags>
-        <tag>k8s</tag>
       </tags>
   </entry>
   <entry>
@@ -5574,6 +5536,44 @@ Lynis是针对Unix&#x2F;Linux的安全检查工具，可以发现潜在的安全
       </categories>
       <tags>
         <tag>lynis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kuadm搭建kubernetes 1.5</title>
+    <url>/2017/02/16/kuadm%E6%90%AD%E5%BB%BAkubernetes%201.5/</url>
+    <content><![CDATA[
+环境： a. 192.168.254.160 k8s01.160 b. 192.168.254.161 k8s02.161 c. 192.168.254.162 k8s03.162 d. 配置好hosts和hostname e. 保证时间一致
+
+以下在所有机器上安装 a. 配置阿里k8s源cat &lt; &#x2F;etc&#x2F;yum.repos.d&#x2F;kubernetes.repo[kubernetes]name&#x3D;Kubernetesbaseurl&#x3D;http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64enabled&#x3D;1gpgcheck&#x3D;0EOF b. setenforce 0 &#x2F;&#x2F;为了让docker可以访问文件系统 c. sed -i ‘s&#x2F;SELINUX&#x3D;enforcing&#x2F;SELINUX&#x3D;permissive&#x2F;‘ &#x2F;etc&#x2F;selinux&#x2F;config d. systemctl stop firewalld &amp;&amp; systemctl disable firewalld e. yum install -y docker kubelet kubeadm kubectl kubernetes-cni f. systemctl enable docker &amp;&amp; systemctl start docker g. 提前将google相关的一些image下载到本地会加快构建集群的速度，，这里用自己提前自动构建的镜像images&#x3D;(kube-proxy-amd64:v1.5.2 \ kube-discovery-amd64:1.0 \ kubedns-amd64:1.9 \ kube-scheduler-amd64:v1.5.2 \ kube-controller-manager-amd64:v1.5.2 \ kube-apiserver-amd64:v1.5.2 \ etcd-amd64:3.0.14-kubeadm \ kube-dnsmasq-amd64:1.4 \ exechealthz-amd64:v1.2.0 \ pause-amd64:3.0 \ kubernetes-dashboard-amd64:v1.5.1)for imageName in ${images[@]} ; dodocker pull fearchan&#x2F;$imageNamedocker tag fearchan&#x2F;$imageName gcr.io&#x2F;google_containers&#x2F;$imageNamedocker rmi fearchan&#x2F;$imageNamedone
+
+初始化Maseter节点 a. systemctl enable kubelet &amp;&amp; systemctl start kubelet b. kubeadm init
+c. 初始化成功，记住生成的token值以便后续加节点
+i. 记住：kubeadm join --token=50d2be.a776c64bb95af773 192.168.254.160
+添加node a. systemctl enable kubelet &amp;&amp; systemctl start kubelet b. kubeadm join –token&#x3D;50d2be.a776c64bb95af773 192.168.254.160
+c. 添加成功
+
+在Master测试 a. kubectl get nodes
+
+部署 weave 网络，不部署weave，dns无法启动 a. 浏览器打开https://git.io/weave-kube，下载好weave-daemonset.yaml文件传到服务器上 b. kubectl create -f weave-daemonset.yaml
+
+部署 dashboard a. 下载https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml文件，并做修改，是为了使用本地dashboard镜像 b. 编辑 yaml 改一下 imagePullPolicy，把 Always 改成 IfNotPresent(本地没有再去拉取) 或者 Never(从不去拉取) 即可 c. 保证本地有gcr.io&#x2F;google_containers&#x2F;kubernetes-dashboard-amd64:v1.5.1 d. 执行：
+i. kubectl create -f kubernetes-dashboard.yaml
+
+e. 等待创建完成：
+i. kubectl get pod --all-namespaces | grep dashboard
+
+f. 查看暴露出来的端口即可访问
+i. kubectl describe svc kubernetes-dashboard --namespace=kube-system
+
+g. 访问地址：
+i. http://192.168.254.160:31618/
+
+]]></content>
+      <categories>
+        <category>kubernetes</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
       </tags>
   </entry>
   <entry>
@@ -5628,6 +5628,18 @@ mysql初始化：&#x2F;data&#x2F;mysql&#x2F;bin&#x2F;mysqld –initialize-insecu
       </categories>
   </entry>
   <entry>
+    <title>Php-5.4.45启动脚本</title>
+    <url>/2016/03/05/php-5-4-45/</url>
+    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm拷贝到init.d下面直接用：cp &#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm &#x2F;etc&#x2F;init.d&#x2F;php-fpm改权限：chmod 755 php- fpm加到开机服务：chkconfig –add php-fpm设置开机自启动：chkconfig php-fpm on
+]]></content>
+      <categories>
+        <category>Middleware</category>
+      </categories>
+      <tags>
+        <tag>Php</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Mysql5.6配置主从</title>
     <url>/2016/03/05/mysql5.6%E9%85%8D%E7%BD%AE%E4%B8%BB%E4%BB%8E/</url>
     <content><![CDATA[修改mysql配置文件，增加同步参数：mkdir &#x2F;mysqllog主：server-id&#x3D;1
@@ -5651,18 +5663,6 @@ Slave_SQL_Running: Yes
       </categories>
       <tags>
         <tag>mysql5.6</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Php-5.4.45启动脚本</title>
-    <url>/2016/03/05/php-5-4-45/</url>
-    <content><![CDATA[启动脚本在源码包目录下：&#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm拷贝到init.d下面直接用：cp &#x2F;root&#x2F;backup&#x2F;php-5.4.45&#x2F;sapi&#x2F;fpm&#x2F;init.d.php-fpm &#x2F;etc&#x2F;init.d&#x2F;php-fpm改权限：chmod 755 php- fpm加到开机服务：chkconfig –add php-fpm设置开机自启动：chkconfig php-fpm on
-]]></content>
-      <categories>
-        <category>Middleware</category>
-      </categories>
-      <tags>
-        <tag>Php</tag>
       </tags>
   </entry>
   <entry>
