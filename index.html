@@ -98,7 +98,7 @@ openai: { name:"OpenAI Academy", short:"OpenAI", home:"https://academy.openai.co
    {title:"在工作中应用 AI", courses:[
     {slug:"ai-foundations",cn:"AI 基础",en:"AI Foundations",mins:"60–75 分钟",status:"todo",desc:"AI 基础知识、写清晰的提示词、补充上下文、审核输出、负责任地使用 AI。"},
     {slug:"applied-ai-foundations",cn:"AI 应用基础",en:"Applied AI Foundations",mins:"75–90 分钟",status:"todo",desc:"把工作拆解为步骤，构建带有审核节点、可重复使用的工作流。"},
-    {slug:"agents-and-workflows",cn:"智能体与工作流",en:"Agents and Workflows",mins:"75–90 分钟",status:"doing",progress:4,desc:"把结构化任务委派给智能体：给上下文、定边界、设检查点，人工审核后再放行。"}]},
+    {slug:"agents-and-workflows",cn:"智能体与工作流",en:"Agents and Workflows",mins:"75–90 分钟",status:"doing",progress:8,desc:"把结构化任务委派给智能体：给上下文、定边界、设检查点，人工审核后再放行。"}]},
    {title:"利用 AI 开发", courses:[
     {slug:"scoping-ai-solutions",cn:"界定 AI 解决方案的范围",en:"Scoping AI Solutions",mins:"30 分钟",status:"todo",desc:"发现有价值的 AI 应用机会，并为选定场景制定解决方案计划。"},
     {slug:"evaluating-ai-apps",cn:"评估 AI 应用",en:"Evaluating AI Applications",mins:"70 分钟",status:"todo",desc:"构建有代表性的评估、诊断失败原因、防止质量退化。"},
@@ -145,7 +145,7 @@ function home(){
   var feat=[["anthropic",allCourses("anthropic").filter(function(c){return c.slug==="claude-code-in-action"})[0]],
             ["openai",allCourses("openai").filter(function(c){return c.slug==="agents-and-workflows"})[0]],
             ["anthropic",allCourses("anthropic").filter(function(c){return c.slug==="intro-agent-skills"})[0]]];
-  var h='<div class="hero"><span class="kicker">非官方翻译 · 免费开放</span><h1>把最好的 AI 官方课程，<br>翻成<span class="hl">中文</span>给你看</h1><p>OpenAI 与 Anthropic 的官方课程，逐课忠实翻译，代码与命令保留原文，手机上随手就能学。</p><div class="stats"><div class="stat"><b>2</b><span>官方源站</span></div><div class="stat"><b>'+total+'</b><span>课程总数</span></div><div class="stat"><b>2</b><span>已译课次</span></div><div class="stat"><b>100%</b><span>免费</span></div></div></div>';
+  var h='<div class="hero"><span class="kicker">非官方翻译 · 免费开放</span><h1>把最好的 AI 官方课程，<br>翻成<span class="hl">中文</span>给你看</h1><p>OpenAI 与 Anthropic 的官方课程，逐课忠实翻译，代码与命令保留原文，手机上随手就能学。</p><div class="stats"><div class="stat"><b>2</b><span>官方源站</span></div><div class="stat"><b>'+total+'</b><span>课程总数</span></div><div class="stat"><b>3</b><span>已译课次</span></div><div class="stat"><b>100%</b><span>免费</span></div></div></div>';
   h+='<div class="wrap"><div class="sec-title">正在翻译</div><div class="sec-sub">最新进度，先看这些</div><div class="grid">'+feat.map(function(f){return card(f[0],f[1])}).join("")+'</div>';
   Object.keys(CATALOG).forEach(function(a){
     h+='<div class="sec-title">'+CATALOG[a].name+'</div><div class="sec-sub">原站：<a href="'+CATALOG[a].home+'" target="_blank" rel="noopener" style="text-decoration:underline">'+CATALOG[a].home.replace("https://","").replace(/\/$/,"")+'</a></div>'+grid(a,allCourses(a));

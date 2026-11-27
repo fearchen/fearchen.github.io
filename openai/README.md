@@ -6,7 +6,7 @@
 
 - [AI 基础](openai/ai-foundations.md) ⬜
 - [AI 应用基础](openai/applied-ai-foundations.md) ⬜
-- [智能体与工作流](openai/agents-and-workflows.md) 🚧（1.1 已完成）
+- [智能体与工作流](openai/agents-and-workflows.md) 🚧（1.1、1.2 已完成）
 
 ## 利用 AI 开发
 

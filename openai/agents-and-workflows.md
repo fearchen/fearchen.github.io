@@ -4,7 +4,7 @@
 - **原文**：[academy.openai.com/home/courses/agents-and-workflows-y0qoc](https://academy.openai.com/home/courses/agents-and-workflows-y0qoc)
 - **时长**：约 90 分钟（25 课，6 个模块＋结课考核）；级别：中级；自学进度，进度自动保存
 - **适合谁**：想把多步骤任务交给 ChatGPT 智能体、并对结果负责的人
-- **状态**：🚧 翻译中（第 1.1 课已完成）
+- **状态**：🚧 翻译中（第 1.1、1.2 课已完成）
 
 ## 你将学到
 
@@ -19,7 +19,7 @@
 
 **模块 1 从提问到派活（From Asking to Assigning Work）**
 1. [1.1 欢迎来到智能体与工作流](openai/welcome-agents-workflows.md) ✅
-2. 1.2 你的智能体将构建什么 ⬜
+2. [1.2 你的智能体将构建什么](openai/what-your-agent-will-build.md) ✅
 3. 1.3 智能体如何工作 ⬜
 4. 1.4 看 ChatGPT Work 实战演示 ⬜
 5. 1.5 什么样的工作流才算好 ⬜
